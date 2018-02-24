@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script type="text/javascript">
+    function pagestate_ctrl(pagestate_in) {
+      var show_page = '#' + pagestate_in
+      var hide_page = 'div:not(#' + pagestate_in + ')'
+      $(show_page).show()
+      $(hide_page).hide()
+      $("#banner_image").show()
+    }
+
+    function pagestate_alloff() {
+      $('div:not(#0)').hide()
+      $("#banner_image").show()
+    }
+
+    function time_ops() {
+      // declare internal variables
+      var time
+      var datetime
+      var datetime_word
+      var dbname
+      //define methods
+      function checkTime(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      }
+
+      function pad(n, width, z) {
+        z = z || '0';
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+      }
+
+      function startTime() {
+        var today = new Date();
+        var day = pad(today.getDate(), 2);
+        var month = pad(today.getMonth() + 1, 2);
+        var year = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        // add a zero in front of numbers<10
+        m = checkTime(m);
+        s = checkTime(s);
+
+        time = h + ":" + m + ":" + s;
+        datetime = day + "-" + month + "-" + year + " " + h + ":" + m + ":" + s;
+        datetime_word = day + "_" + month + "_" + year + "_" + h + "_" + m + "_" + s;
+        dbname = "db_" + day + "_" + month + "_" + year + "_" + h + "_" + m + "_" + s;
+        t = setTimeout(function() {
+          startTime()
+        }, 500);
+      }
+      startTime();
+      //declare how outside-world can receive returned variables
+      return {
+        time: time,
+        datetime: datetime,
+        datetime_word: datetime_word,
+        dbname: dbname
+      }
+    }
+  </script>
+  <script>
+    var mode = 'prod'
+    var title
+    var story
+    $(document).ready(function() {
+      // function when data output from index-page
+      $('#1').click(function() {
+        if (mode == 'dev') {
+          console.log('proceed button pressed on index-page')
+        }
+        pagestate_ctrl(2)
+        return false;
+      });
+      // function when data output from title-page
+      $('#2').submit(function() {
+        if (mode == 'dev') {
+          console.log('data submitted form title-page')
+        }
+        if ($('#title').val()) {
+          title = $('#title').val()
+          if (mode == 'dev') {
+            console.log("This is the new title: " + title)
+          }
+          pagestate_ctrl(3)
+          return false;
+        }
+        //
+        else {
+          if (mode == 'dev') {
+            console.log("You have not entered a valid title yet")
+          }
+        }
+      });
+      // function when data output from story-page
+      $('#3').submit(function() {
+        if (mode == 'dev') {
+          console.log('data submitted form story-page')
+        }
+        if ($('#story').val()) {
+          story = $('#story').val()
+          if (mode == 'dev') {
+            console.log("This is the new story: " + story)
+          }
+          pagestate_ctrl(4)
+          //send title & story to server from here
+          return false;
+        }
+        //
+        else {
+          if (mode == 'dev') {
+            console.log("You have not entered a valid story yet")
+          }
+        }
+      });
+      // function when data output from thankyou-page
+      $('#4').click(function() {
+        if (mode == 'dev') {
+          console.log('return button pressed on thankyou-page')
+        }
+        pagestate_ctrl(1)
+        return false;
+      });
+    });
+  </script>
+
+</head>
+
+<body>
+
+  <h1>Lets Fake News</h1>
+
+  <!-- landing  -->
+  <div id="1">
+    <p>
+      <%= title %>. When you have thought of a short fake-news-story, press the button to proceed</p>
+    <button id="gototitle" name="gototitle" class="float-left submit-button">PROCEED</button>
+  </div>
+
+  <!-- title_input  -->
+  <div id="2" style="display:none">
+    <p>Input a title for your fake-news-report</p>
+    <form id="title_form">
+      <input id="title" autocomplete="off" maxlength="20" placeholder='Enter your story title ...' />
+      <button>SUBMIT</button>
+    </form><br/>
+  </div>
+
+  <!-- story_input  -->
+  <div id="3" style="display:none">
+    <p>Input a story as a series of sentences upto 240 chars (just like a tweet) </p>
+    <form id="story_form">
+      <input id="story" autocomplete="off" maxlength="240" placeholder='Enter your story ...' />
+      <button>SUBMIT</button>
+    </form><br/>
+  </div>
+
+  <!-- thankyou  -->
+  <div id="4" style="display:none">
+    <p>Thank you for your fake-news-story</p>
+    <button id="thankyou" name="thankyou" class="float-left submit-button">RETURN</button>
+  </div>
+
+</body>
+
+</html>
