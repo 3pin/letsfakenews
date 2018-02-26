@@ -30,16 +30,22 @@ router.post('/add_title_story', function(req, res) {
   var title;
   var story;
   var image_search_result = [];
+  //
   // Get our form values. These rely on the "name" attributes
+  //
   title = req.body.title;
   story = req.body.story;
   debug_post('Title: ' + title + '\n' + 'Story: ' + story);
+  //
   // parse: STORY downto NOUNS
+  //
   var parsed_sentence_array = NLP_parser_module.NLP_parse_words(story)
   for (let pos of parsed_sentence_array) {
     debug_parse('pos: ' + pos)
   }
+  //
   // search: a URL foreach NOUN
+  //
   for (let value of parsed_sentence_array) {
     //console.log('parsed_sentence nouns: ' + value)
     image_search_result.push(image_search_module.google_image_search(value))
@@ -47,9 +53,9 @@ router.post('/add_title_story', function(req, res) {
   for (let result of image_search_result) {
     debug_search('image_search_result now: ' + result)
   }
-  // // //
+  //
   // on calllback from above, the retruned URLS trigger save-to-database
-  // // //
+  //
   // save: to database - start by setting our internal DB variable
   var db = req.db;
   // Set our collection

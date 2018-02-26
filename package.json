@@ -1,6 +1,8 @@
 {
-  "name": "letsfakenews_ingest_then_parse",
-  "version": "0.0.0",
+  "author": "Leon McCarthy",
+  "name": "letsfakenews",
+  "license": "",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
@@ -8,18 +10,15 @@
   },
   "dependencies": {
     "body-parser": "~1.16.0",
-    "constantinople": "^3.0.2",
     "cookie-parser": "~1.4.3",
     "debug": "^2.6.9",
     "dotenv": "^5.0.0",
     "ejs": "^2.5.7",
     "express": "~4.14.1",
-    "jade": "~1.11.0",
     "mongodb": "^2.2.25",
     "monk": "^4.0.0",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.2",
-    "transformer": "^1.0.0"
+    "serve-favicon": "~2.3.2"
   },
   "devDependencies": {
     "nodemon": "^1.14.12"
