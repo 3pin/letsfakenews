@@ -11,9 +11,7 @@ const port = process.env.PORT
 const uri = process.env.URI
 const mode = process.env.MODE
 
-const debug_startup = require('debug')('startup')
-const debug_routes = require('debug')('routes')
-const debug_database = require('debug')('database')
+let debug_startup = require('debug')('startup')
 
 // modules
 const express = require('express');
@@ -47,20 +45,6 @@ app.use(cookieParser());
 
 // condense the visible URL address in a client's browser
 app.use(express.static(path.join(__dirname, 'public')));
-
-var story_title
-var story_text
-/*
-// POST /story_title data to database
-app.post('/submit_title', function(req, res){
-  debug_routes('/POST /submit_title request')
-	const obj = {};
-	debug_routes('body: ' + JSON.stringify(req.body));
-  //res.send('You sent the tite "' + req.body.story_title + '".');
-  //res.send('You sent the name "' + req.body.name + '".');
-  //res.redirect('/02_story.html');
-});
-*/
 
 // Make our db accessible to our router
 app.use(function(req,res,next){

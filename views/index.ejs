@@ -72,7 +72,7 @@
     }
   </script>
   <script>
-    var mode = 'dev'
+    var mode = 'dev' // otherwise set mode = 'prod'
     var title
     var story
     $(document).ready(function() {
@@ -107,7 +107,7 @@
       });
       // function when data output from story-page
       $('#3').submit(function(e) {
-        e.preventDefault();
+        //e.preventDefault();
         if (mode == 'dev') {
           console.log('story submitted')
         }
@@ -126,14 +126,16 @@
               title: title,
               story: story
             }),
-            dataType: 'JSON',
+            dataType: 'JSON'
+            /*
             success: function(response) {
               alert('Success');
             },
             error: function(request, textStatus, errorThrown) {
               alert('Failure');
             }
-          })
+            */
+          });
           pagestate_ctrl(4)
           return false;
         }
@@ -149,6 +151,8 @@
         if (mode == 'dev') {
           console.log('return button pressed on thankyou-page')
         }
+        $('#story').val("");
+        $('#title').val("");
         pagestate_ctrl(1)
         return false;
       });
