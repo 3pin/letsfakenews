@@ -55,7 +55,6 @@ router.post('/add_title_story', function(req, res) {
   }
   //
   // on calllback from above, the retruned URLS trigger save-to-database
-  //
   // save: to database - start by setting our internal DB variable
   var db = req.db;
   // Set our collection

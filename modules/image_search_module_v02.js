@@ -13,8 +13,8 @@ module.exports = {
     var searchterm_url_result
 
     const GoogleImages = require('google-images');
-    var custom_search_engine_ID = '007494652346127192836:6cbemcp9dwc';
-    var APIkey = 'AIzaSyBfpB5Rv9Eofz02DdT7G_cSe9FegCObJig';
+    var custom_search_engine_ID = process.env.CUSTOM_SEARCH_ENGINE_ID;
+    var APIkey = process.env.CUSTOM_SEARCH_APIKEY;
     const client = new GoogleImages(custom_search_engine_ID, APIkey);
     var searchSettings = {
       searchType: 'image',
