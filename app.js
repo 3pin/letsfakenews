@@ -26,7 +26,7 @@ const bodyParser = require('body-parser');
 // to connect to database
 const mongo = require('mongodb');
 const monk = require('monk');
-const db = monk('localhost:27017/nodetest1_nonJade');
+const db = monk('localhost:27017/letsfakenews');
 
 // routes
 const index = require('./routes/index');

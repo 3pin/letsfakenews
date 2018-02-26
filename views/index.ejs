@@ -72,22 +72,23 @@
     }
   </script>
   <script>
-    var mode = 'prod'
+    var mode = 'dev'
     var title
     var story
     $(document).ready(function() {
       // function when data output from index-page
       $('#1').click(function() {
         if (mode == 'dev') {
-          console.log('proceed button pressed on index-page')
+          console.log('proceed button pressed')
         }
         pagestate_ctrl(2)
         return false;
       });
       // function when data output from title-page
-      $('#2').submit(function() {
+      $('#2').submit(function(e) {
+        e.preventDefault();
         if (mode == 'dev') {
-          console.log('data submitted form title-page')
+          console.log('title submitted')
         }
         if ($('#title').val()) {
           title = $('#title').val()
@@ -105,17 +106,35 @@
         }
       });
       // function when data output from story-page
-      $('#3').submit(function() {
+      $('#3').submit(function(e) {
+        e.preventDefault();
         if (mode == 'dev') {
-          console.log('data submitted form story-page')
+          console.log('story submitted')
         }
         if ($('#story').val()) {
           story = $('#story').val()
+          //var server_title = $('form#story_form').serialize()
           if (mode == 'dev') {
             console.log("This is the new story: " + story)
           }
+          //Submit the form via Ajax POST request:
+          $.ajax({
+            type: 'POST',
+            url: '/add_title_story',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              title: title,
+              story: story
+            }),
+            dataType: 'JSON',
+            success: function(response) {
+              alert('Success');
+            },
+            error: function(request, textStatus, errorThrown) {
+              alert('Failure');
+            }
+          })
           pagestate_ctrl(4)
-          //send title & story to server from here
           return false;
         }
         //
@@ -152,7 +171,7 @@
   <!-- title_input  -->
   <div id="2" style="display:none">
     <p>Input a title for your fake-news-report</p>
-    <form id="title_form">
+    <form id="title_form" method="post">
       <input id="title" autocomplete="off" maxlength="20" placeholder='Enter your story title ...' />
       <button>SUBMIT</button>
     </form><br/>
