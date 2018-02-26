@@ -49,6 +49,12 @@ router.post('/add_title_story', function(req, res) {
   var title = req.body.title;
   var story = req.body.story;
   debug_post_data('title: ' + title + '... story: ' + story)
+  //
+  // parse: STORY for NOUNS
+  //
+  // search: for URL per NOUNS
+  //
+  // save: to database
   // Set our collection
   var collection = db.get('usercollection');
   // Submit to the DB
