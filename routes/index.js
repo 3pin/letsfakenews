@@ -25,9 +25,9 @@ router.post('/post_test', (req, res, next) => {
 });
 
 // receive title-story /POST
-router.post('/add_title_story_urls', function(req, res) {
+router.post('/add_title_story', function(req, res) {
   //
-  //variables to be set
+  //variables to be set and later saved to a
   var title;
   var story;
   var parsed_sentence_array;
@@ -70,9 +70,8 @@ router.post('/add_title_story_urls', function(req, res) {
           }
         }
         searchterm_url_result = searchterm + ': ' + urlArray[0]
-        debug_search(searchterm_url_result) // print the URL of the first image returned via image-search
-        //return doneCallback(null, searchterm_url_result);// pass through full results
-        return doneCallback(null, urlArray[0]); // pass through full results
+        debug_search(searchterm_url_result)      // print the URL of the first image returned via image-search
+        return doneCallback(null, urlArray[0]);   // pass through full results
       })
   }
   async.map(parsed_sentence_array, operation, function(err, results) {
@@ -94,10 +93,10 @@ router.post('/add_title_story_urls', function(req, res) {
     }, function(err, doc) {
       if (err) {
         // If it failed, return error
-        //res.send("There was a problem adding to the database.");
+        res.send("There was a problem adding to the database.");
       } else {
         // If it saved
-        //res.send("Saved to the database.");
+        res.send("Saved to the database.");
         // And forward to success page
         //res.render('index', {title: 'Lets Fake News'});
       }
