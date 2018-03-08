@@ -7,11 +7,8 @@
   </title>
   <link rel='stylesheet' href='/stylesheets/style.css'>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-
   <script type="text/JavaScript">
-      function timedRefresh(timeoutPeriod) {
-      setTimeout("location.reload(true);",timeoutPeriod);
-  }
+    function timedRefresh(timeoutPeriod) { setTimeout( "location.reload(true);",timeoutPeriod); }
   </script>
 
   <script type="text/javascript">
@@ -36,35 +33,62 @@
     var story = data.story
     var content = data.content
     var urls = []
-    var pic
     for (var key in content) {
       console.log(key + ': ' + content[key]);
       urls.push(content[key])
     }
-    pic = urls[0]
-    console.log(pic)
+    var pic
+    var picLength
+    var index_loader = 0
 
     $(document).ready(function() {
-      document.getElementById("img").src = pic;
+
+      // on startup metadata save duration
+      var duration;
+      var vid = document.getElementById("videoPlayer");
+      vid.onloadedmetadata = function() {
+        console.log("Meta data for video loaded");
+        duration = vid.duration
+        console.log('duration: ' + duration)
+        piclength = duration / urls.length
+      };
+
+      // swap the picture
+      document.getElementById("img").src = urls[0];
+
+      // during playback report currenttime
+      $("#videoPlayer").on("timeupdate", function(event) {
+        var currentTime = this.currentTime
+        //console.log('duration: ' + duration)
+        //console.log('currentTime: ' + this.currentTime)
+      });
+
+      // detect when video-playback complete
+      $("#videoPlayer").on("ended", function(event) {
+        console.log('refresh... ')
+        //location.reload(true);
+        window.location.reload(true);
+      });
+
     });
   </script>
 
+
 </head>
 
-<body onload="javascript:timedRefresh(4000);">
+<body>
 
-  <h1>Lets Fake News</h1>
-
-  <!-- Titles  -->
-  <div id="1">
-    <p>
-      HEADLINE: <%= title %></p>
-      STORY: <%= story %></p>
-  </div>
-
-  <!-- banner image -->
-  <div id="2'">
-    <img id="img" width="500" />
+  <!-- video region -->
+  <div id="videoDiv">
+    <!-- video itself -->
+    <div id="videoBlock">
+      <video id="videoPlayer" src="/videos/test_short.MP4" muted controls="false" preload="metadata" autoplay="true" controls> video not supported </video>
+      <div id="videoMessage">
+        <h1 class="spacer"> HEADLINE: <%= title %> </h1>
+        <h2 class="spacer"> STORY: <%= story %> </h2>
+        <img id="img"/>
+      </div>
+    </div>
   </div>
 
 </body>
