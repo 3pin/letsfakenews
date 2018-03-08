@@ -10,8 +10,9 @@ let debug_post = require('debug')('post');
 let debug_parse = require('debug')('parse');
 let debug_search = require('debug')('search');
 let debug_save = require('debug')('save');
+let debug_db = require('debug')('db');
 
-// serve homepage index /GET
+// serve homepage index
 router.get('/', (req, res, next) => {
   debug_get('/GET msg to index page')
   res.render('index', {
@@ -20,21 +21,43 @@ router.get('/', (req, res, next) => {
   //res.send(process.env.MODE);
 });
 
-// serve display page /GET
-router.get('/display', (req, res, next) => {
-  debug_get('/GET msg to display page')
-  res.render('display', {
-    title: 'Display... '
+// fetch db data... serve display page
+router.get('/display', function(req, res) {
+  var db;
+  var collection = {};
+
+  db = req.db;
+  collection = db.get("test_collection");
+
+  collection.find( {},  { fields: { _id:1} }, function(err, data) {
+    if (err) {
+      debug_db(err);
+    } else {
+      // load _ids of db entries
+      var times = data;
+      // pick a random entry via _id
+      var randomnumber = Math.floor(Math.random() * (times.length));
+      var query = times[randomnumber];
+      var id = query._id
+      // return the randomly-picked JSON from the db
+      collection.findOne( {_id: id} , function(err, data ) {
+        if (err) {
+          debug_db(err)
+        } else {
+          // parse and send data to client html display-page
+          res.render('display', {
+            data: data,
+            maintitle: 'THE LATEST FAKE NEWS STORY... ',
+            title: data.title,
+            story: data.story
+          });
+        }
+      });
+    }
   });
-  //res.send(process.env.MODE);
 });
 
-// receive test /POST.
-router.post('/post_test', (req, res, next) => {
-  debug_post('recvd msg /post_test')
-});
-
-// receive title-story /POST
+// receive title-story info
 router.post('/add_title_story', function(req, res) {
   //
   //variables to be set and later saved to a
@@ -46,10 +69,11 @@ router.post('/add_title_story', function(req, res) {
   // Get our form values. These rely on the "name" attributes
   title = req.body.title.toUpperCase();
   story = req.body.story.toUpperCase();
+  var title_story = title + ' ' + story
   debug_post('Title: ' + title + '\n' + 'Story: ' + story);
   //
   // parse: STORY downto NOUNS... save to an array
-  parsed_sentence_array = NLP_parser_module.NLP_parse_words(story)
+  parsed_sentence_array = NLP_parser_module.NLP_parse_words(title_story)
   for (let pos of parsed_sentence_array) {
     debug_parse('pos: ' + pos)
   }

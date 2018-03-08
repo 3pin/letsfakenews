@@ -3,10 +3,17 @@
 
 <head>
   <title>
-    <%= title %>
+    <%= maintitle %>
   </title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/style.css'>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+  <script type="text/JavaScript">
+      function timedRefresh(timeoutPeriod) {
+      setTimeout("location.reload(true);",timeoutPeriod);
+  }
+  </script>
+
   <script type="text/javascript">
     function pagestate_ctrl(pagestate_in) {
       var show_page = '#' + pagestate_in
@@ -15,133 +22,49 @@
       $(hide_page).hide()
       $("#banner_image").show()
     }
+
     function pagestate_alloff() {
       $('div:not(#0)').hide()
       $("#banner_image").show()
     }
   </script>
+
   <script>
+    var data = <%-JSON.stringify(data)%>
     var mode = 'dev' // otherwise set mode = 'prod'
-    var title
-    var story
+    var title = data.title
+    var story = data.story
+    var content = data.content
+    var urls = []
+    var pic
+    for (var key in content) {
+      console.log(key + ': ' + content[key]);
+      urls.push(content[key])
+    }
+    pic = urls[0]
+    console.log(pic)
+
     $(document).ready(function() {
-      // function when data output from index-page
-      $('#1').click(function() {
-        if (mode == 'dev') {
-          console.log('proceed button pressed')
-        }
-        pagestate_ctrl(2)
-        return false;
-      });
-      // function when data output from title-page
-      $('#2').submit(function(e) {
-        e.preventDefault();
-        if (mode == 'dev') {
-          console.log('title submitted')
-        }
-        if ($('#title').val()) {
-          title = $('#title').val()
-          if (mode == 'dev') {
-            console.log("This is the new title: " + title)
-          }
-          pagestate_ctrl(3)
-          return false;
-        }
-        //
-        else {
-          if (mode == 'dev') {
-            console.log("You have not entered a valid title yet")
-          }
-        }
-      });
-      // function when data output from story-page
-      $('#3').submit(function(e) {
-        //e.preventDefault();
-        if (mode == 'dev') {
-          console.log('story submitted')
-        }
-        if ($('#story').val()) {
-          story = $('#story').val()
-          //var server_title = $('form#story_form').serialize()
-          if (mode == 'dev') {
-            console.log("This is the new story: " + story)
-          }
-          //Submit the form via Ajax POST request:
-          $.ajax({
-            type: 'POST',
-            url: '/add_title_story',
-            contentType: 'application/json',
-            data: JSON.stringify({
-              title: title,
-              story: story
-            }),
-            dataType: 'JSON'
-            /*
-            success: function(response) {
-              alert('Success');
-            },
-            error: function(request, textStatus, errorThrown) {
-              alert('Failure');
-            }
-            */
-          });
-          pagestate_ctrl(4)
-          return false;
-        }
-        //
-        else {
-          if (mode == 'dev') {
-            console.log("You have not entered a valid story yet")
-          }
-        }
-      });
-      // function when data output from thankyou-page
-      $('#4').click(function() {
-        if (mode == 'dev') {
-          console.log('return button pressed on thankyou-page')
-        }
-        $('#story').val("");
-        $('#title').val("");
-        pagestate_ctrl(1)
-        return false;
-      });
+      document.getElementById("img").src = pic;
     });
   </script>
 
 </head>
 
-<body>
+<body onload="javascript:timedRefresh(4000);">
 
   <h1>Lets Fake News</h1>
 
-  <!-- landing  -->
+  <!-- Titles  -->
   <div id="1">
     <p>
-      <%= title %></p>
+      HEADLINE: <%= title %></p>
+      STORY: <%= story %></p>
   </div>
 
-  <!-- title_input  -->
-  <div id="2" style="display:none">
-    <p>Input a title for your fake-news-report</p>
-    <form id="title_form" method="post">
-      <input id="title" autocomplete="off" maxlength="20" placeholder='Enter your story title ...' />
-      <button>SUBMIT</button>
-    </form><br/>
-  </div>
-
-  <!-- story_input  -->
-  <div id="3" style="display:none">
-    <p>Input a story as a series of sentences upto 240 chars (just like a tweet) </p>
-    <form id="story_form">
-      <input id="story" autocomplete="off" maxlength="240" placeholder='Enter your story ...' />
-      <button>SUBMIT</button>
-    </form><br/>
-  </div>
-
-  <!-- thankyou  -->
-  <div id="4" style="display:none">
-    <p>Thank you for your fake-news-story</p>
-    <button id="thankyou" name="thankyou" class="float-left submit-button">RETURN</button>
+  <!-- banner image -->
+  <div id="2'">
+    <img id="img" width="500" />
   </div>
 
 </body>
