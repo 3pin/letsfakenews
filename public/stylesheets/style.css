@@ -7,13 +7,127 @@ a {
   color: #00B7FF;
 }
 
-#videoDiv {width: 100%; height: 360px; position: relative;}
-#videoBlock {width: 100%; height: 100%;  display: flex;  justify-content: center; align-items: center;}
-#videoMessage {width: 100%; height:100%; position: absolute; top: 0; left: 0;}
-#videoMessage *{padding:0.4em; margin:0}
-#videoMessage {text-shadow: 2px 2px 2px #000000; color:white;z-index:99 }
-#videoMessage h1{font-size: 2em;color:#ffffff;text-align:center;}
-#videoMessage h2{font-size: 1.5em;color:#ffffff;text-align:center;}
-#videoMessage h3{font-size: 1.2em;color:#ffffff;text-align:center;}
-.videoClick {text-align:center}
-.videoClick a{color:white;background-color:rgba(241, 241, 241, 0.25);font-size: 1.7em;cursor:pointer;cursor:hand}
+#videoDiv {
+  width: 100%;
+  height: 360px;
+  position: relative;
+}
+
+#videoBlock {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#videoMessage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#videoMessage * {
+  padding: 0.4em;
+  margin: 0
+}
+
+#videoMessage {
+  text-shadow: 2px 2px 2px #000000;
+  color: white;
+  z-index: 99
+}
+
+#videoMessage h1 {
+  font-size: 2em;
+  color: #ffffff;
+  text-align: center;
+}
+
+#videoMessage h2 {
+  font-size: 1.5em;
+  color: #ffffff;
+  text-align: center;
+}
+
+#videoMessage h3 {
+  font-size: 1.2em;
+  color: #ffffff;
+  text-align: center;
+}
+
+.videoClick {
+  text-align: center
+}
+
+.videoClick a {
+  color: white;
+  background-color: rgba(241, 241, 241, 0.25);
+  font-size: 1.7em;
+  cursor: pointer;
+  cursor: hand
+}
+
+<style style="text/css">.scroll-left {
+  height: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.scroll-left p {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  line-height: 50px;
+  text-align: center;
+  /* Starting position */
+  -moz-transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+  /* Apply animation to this element */
+  -moz-animation: scroll-left 10s linear infinite;
+  -webkit-animation: scroll-left 10s linear infinite;
+  animation: scroll-left 10s linear infinite;
+}
+
+/* Move it (define the animation) */
+
+@-moz-keyframes scroll-left {
+  0% {
+    -moz-transform: translateX(100%);
+  }
+  100% {
+    -moz-transform: translateX(-100%);
+  }
+}
+
+@-webkit-keyframes scroll-left {
+  0% {
+    -webkit-transform: translateX(100%);
+  }
+  100% {
+    -webkit-transform: translateX(-100%);
+  }
+}
+
+@keyframes scroll-left {
+  0% {
+    -moz-transform: translateX(100%);
+    /* Browser bug fix */
+    -webkit-transform: translateX(100%);
+    /* Browser bug fix */
+    transform: translateX(100%);
+  }
+  100% {
+    -moz-transform: translateX(-100%);
+    /* Browser bug fix */
+    -webkit-transform: translateX(-100%);
+    /* Browser bug fix */
+    transform: translateX(-100%);
+  }
+}
+
+</style>

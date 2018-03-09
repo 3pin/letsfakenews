@@ -15,6 +15,7 @@
       $(hide_page).hide()
       $("#banner_image").show()
     }
+
     function pagestate_alloff() {
       $('div:not(#0)').hide()
       $("#banner_image").show()
@@ -123,18 +124,20 @@
 
   <!-- title_input  -->
   <div id="2" style="display:none">
-    <p>Input a title for your fake-news-report</p>
+    <p>Input a 'title' of your story... 50 chars max</p>
     <form id="title_form" method="post">
-      <input id="title" autocomplete="off" maxlength="20" placeholder='Enter your story title ...' />
+      <input id="title" <textarea name='titlearea' autocomplete="off" required placeholder="Title..." maxlength="50" rows="1" cols="50"></textarea>
+      <br/>
       <button>SUBMIT</button>
     </form><br/>
   </div>
 
   <!-- story_input  -->
   <div id="3" style="display:none">
-    <p>Input a story as a series of sentences upto 240 chars (just like a tweet) </p>
+    <p>Input the 'phrases' of your story... 280 chars max</p>
     <form id="story_form">
-      <input id="story" autocomplete="off" maxlength="240" placeholder='Enter your story ...' />
+      <input id="story" <textarea name="storyarea" autocomplete="off" required placeholder="Story..." maxlength="280" rows="6" cols="50"></textarea>
+      <br/>
       <button>SUBMIT</button>
     </form><br/>
   </div>

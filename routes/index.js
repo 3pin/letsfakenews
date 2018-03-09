@@ -29,18 +29,25 @@ router.get('/display', function(req, res) {
   db = req.db;
   collection = db.get("test_collection");
 
-  collection.find( {},  { fields: { _id:1} }, function(err, data) {
+  collection.find({}, {
+    fields: {
+      _id: 1
+    }
+  }, function(err, data) {
     if (err) {
       debug_db(err);
     } else {
       // load _ids of db entries
       var times = data;
       // pick a random entry via _id
-      var randomnumber = Math.floor(Math.random() * (times.length));
+      //var randomnumber = Math.floor(Math.random() * (times.length));
+      var randomnumber = times.length-1
       var query = times[randomnumber];
       var id = query._id
       // return the randomly-picked JSON from the db
-      collection.findOne( {_id: id} , function(err, data ) {
+      collection.findOne({
+        _id: id
+      }, function(err, data) {
         if (err) {
           debug_db(err)
         } else {
@@ -68,12 +75,12 @@ router.post('/add_title_story', function(req, res) {
   //
   // Get our form values. These rely on the "name" attributes
   title = req.body.title.toUpperCase();
-  story = req.body.story.toUpperCase();
-  var title_story = title + ' ' + story
+  story = req.body.story;
   debug_post('Title: ' + title + '\n' + 'Story: ' + story);
   //
-  // parse: STORY downto NOUNS... save to an array
-  parsed_sentence_array = NLP_parser_module.NLP_parse_words(title_story)
+  // parse: STORY downto NOUNS... save to an array... tags eg. ["NN", "NNP", "NNPS", "NNS"]
+  var tags = ["NNP", "NNPS", "NNS"]
+  parsed_sentence_array = NLP_parser_module.NLP_parse_words(story, tags)
   for (let pos of parsed_sentence_array) {
     debug_parse('pos: ' + pos)
   }

@@ -2,18 +2,20 @@
 
 module.exports = {
 
-  NLP_parse_words: function(input_text) {
+  NLP_parse_words: function(input_text, pos) {
 
     let debug_module_parse = require('debug')('module_parse')
-
     var uniqueArray = [];
 
-    // data input... text
+    // data input...
+    // tags eg. ["NN", "NNP", "NNPS", "NNS"]
+    var tags = pos
+    console.log(tags)
     var text = input_text;
     debug_module_parse("Input text to NLP_parse_words: " + text);
 
     // parse according to pos-tags ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
-    var tags = ["NN", "NNP", "NNPS", "NNS"];
+    //var tags = ["NN", "NNP", "NNPS", "NNS"];
     var pos = require('pos');
     var parsed_word_array = [];
     var words = new pos.Lexer().lex(text);
@@ -26,6 +28,7 @@ module.exports = {
       debug_module_parse('Word:' + word + ' - Tag:' + tag)
       for (let z of tags) {
         if (tag == z) {
+          console.log(tag + ':' + word)
           parsed_word_array.push(word);
         }
       }
@@ -65,8 +68,8 @@ module.exports = {
       value = value.trim()
       debug_module_parse('sentence_array: ' + value)
     }
+
     // parse according to pos-tags ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
-    var tags = ["NN", "NNP", "NNPS", "NNS"]
     var pos = require('pos');
     for (let values of sentence_array) {
       var shorter_sentence = ""
