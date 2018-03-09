@@ -2,15 +2,12 @@
 <html>
 
 <head>
+  <meta itemprop="name" content="screenfull.js">
   <title>
     <%= maintitle %>
   </title>
   <link rel='stylesheet' href='/stylesheets/style.css'>
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <script type="text/JavaScript">
-    function timedRefresh(timeoutPeriod) { setTimeout( "location.reload(true);",timeoutPeriod); }
-  </script>
-
   <script type="text/javascript">
     function pagestate_ctrl(pagestate_in) {
       var show_page = '#' + pagestate_in
@@ -24,43 +21,66 @@
       $('div:not(#0)').hide()
       $("#banner_image").show()
     }
-  </script>
 
+    function timedRefresh(timeoutPeriod) {
+      setTimeout("location.reload(true);", timeoutPeriod);
+    }
+  </script>
   <script>
     var data = <%-JSON.stringify(data)%>
     var mode = 'dev' // otherwise set mode = 'prod'
-    var title = data.title
-    var story = data.story
-    var content = data.content
+    var title = data.title;
+    var story = data.story;
+    var content = data.content;
     var urls = []
     for (var key in content) {
       console.log(key + ': ' + content[key]);
-      urls.push(content[key])
+      urls.push(content[key]);
     }
-    var pic
-    var picLength
-    var index_loader = 0
+    var pic;
+    var picLength;
+    var index_loader = 0;
 
     $(document).ready(function() {
+
+      // pass text into scroller
+      document.getElementById("popup_title_text").innerHTML = 'TITLE: ' + title;
+      document.getElementById("panel_title_text").innerHTML = 'TITLE: ' + title;
+      document.getElementById("panel_story_text").innerHTML = story;
 
       // on startup metadata save duration
       var duration;
       var vid = document.getElementById("videoPlayer");
       vid.onloadedmetadata = function() {
         console.log("Meta data for video loaded");
-        duration = vid.duration
-        console.log('duration: ' + duration)
-        piclength = duration / urls.length
+        duration = vid.duration;
+        //console.log('duration: ' + duration);
+        piclength = duration / urls.length;
       };
 
       // swap the picture
-      document.getElementById("img").src = urls[0];
+      document.getElementById("panel_img").src = urls[0];
 
       // during playback report currenttime
       $("#videoPlayer").on("timeupdate", function(event) {
         var currentTime = this.currentTime
-        //console.log('duration: ' + duration)
-        //console.log('currentTime: ' + this.currentTime)
+        console.log('currentTime: ' + this.currentTime)
+        if (currentTime >= 3.2 && currentTime <= 5.6) {
+          // display pop-up title text
+          $("#popup_title").show()
+        } else {
+          $("#popup_title").hide()
+        }
+        if (currentTime >= 14.2 && currentTime <= 37.7) {
+          // display main_titlein panel
+          $("#panel_title").show()
+          $("#panel_story").show()
+          $("#panel_img").show()
+        } else {
+          $("#panel_title").hide()
+          $("#panel_story").hide()
+          $("#panel_img").hide()
+        }
       });
 
       // detect when video-playback complete
@@ -77,18 +97,73 @@
 </head>
 
 <body>
+  <!-- fullscreen scripts -->
+  <script src="/screenfull/dist/screenfull.js"></script>
+  <script>
+    $(function() {
+      $('#videoDiv').click(function() {
+        screenfull.toggle($('#container')[0]);
+      });
+
+      function fullscreenchange() {
+        var elem = screenfull.element;
+        $('#status').text('Is fullscreen: ' + screenfull.isFullscreen);
+        if (elem) {
+          $('#element').text('Element: ' + elem.localName + (elem.id ? '#' + elem.id : ''));
+        }
+        if (!screenfull.isFullscreen) {
+          $('#external-iframe').remove();
+          document.body.style.overflow = 'auto';
+        }
+      }
+      screenfull.on('change', fullscreenchange);
+      // Set the initial values
+      fullscreenchange();
+    });
+  </script>
 
   <!-- video region -->
   <div id="videoDiv">
-    <!-- video itself -->
+
+    <!-- video block -->
     <div id="videoBlock">
-      <video id="videoPlayer" src="/videos/test.MP4" muted controls="false" preload="metadata" autoplay="true" controls> video not supported </video>
+
+      <video id="videoPlayer" preload="metadata" autoplay="true" poster="/comp_mp4_v03/comp_mp4_v03-poster.jpg" controls> video not supported
+        <source src="/videos/aljazeera-desktop.m4v"></source>
+        </video>
+
+      <!-- text overlays -->
       <div id="videoMessage">
-        <h1 class="spacer"> HEADLINE: <%= title %> </h1>
-        <h2 class="spacer"> STORY: <%= story %> </h2>
-        <img id="img"/>
+
+        <!-- popup title text -->
+        <div id="popup_title" style="display:none">
+          <p id="popup_title_text">Default popup-title text... </p>
+        </div>
+
+        <!-- panel title text -->
+        <div id="panel_title" style="display:none">
+          <p id="panel_title_text">Default panel-title text... </p>
+        </div>
+
+        <!-- panel title story -->
+        <div id="panel_story" style="display:none">
+          <p id="panel_story_text">Default panel-story text... </p>
+        </div>
+
+        <!-- image url overlays -->
+        <img id="panel_img" style="display:none" />
+
+        <!-- scrolling text overlay -->
+        <div class="scroll-left" style="display:none">
+          <p id="scroller">Default scrolling story text... </p>
+        </div>
+
+
+        <!-- end text overlays -->
       </div>
+      <!-- end video block -->
     </div>
+    <!-- end video region -->
   </div>
 
 </body>

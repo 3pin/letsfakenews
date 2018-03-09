@@ -1,6 +1,7 @@
 body {
-  padding: 50px;
+  padding: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 
 a {
@@ -8,69 +9,55 @@ a {
 }
 
 #videoDiv {
-  width: 100%;
-  height: 360px;
+  margin: auto;
+  padding: 0px;
+  text-align: center;
+}
+
+#popup_title {
   position: relative;
+  bottom: 120px;
+  font-size: 19px;
+  color: black;
 }
 
-#videoBlock {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#panel_title {
+  text-align: left;
+  position: relative;
+  bottom: 180px;
+  left: 250px;
+  font-size: 16px;
+  color: black;
 }
 
-#videoMessage {
-  width: 100%;
-  height: 100%;
+#panel_story {
+  text-align: left;
+  position: relative;
+  bottom: 170px;
+  left: 250px;
+  font-size: 16px;
+  color: black;
+}
+
+#panel_img {
   position: absolute;
-  top: 0;
-  left: 0;
+  max-width: 514px;
+  text-align: left;
+  top: 08px;
+  left: 260px;
+  font-size: 16px;
+  color: black;
 }
 
-#videoMessage * {
-  padding: 0.4em;
-  margin: 0
+#scroll-left {
+  position: relative;
+  bottom: 120px;
+  left: 120px;
+  font-size: 19px;
+  color: black;
 }
 
-#videoMessage {
-  text-shadow: 2px 2px 2px #000000;
-  color: white;
-  z-index: 99
-}
-
-#videoMessage h1 {
-  font-size: 2em;
-  color: #ffffff;
-  text-align: center;
-}
-
-#videoMessage h2 {
-  font-size: 1.5em;
-  color: #ffffff;
-  text-align: center;
-}
-
-#videoMessage h3 {
-  font-size: 1.2em;
-  color: #ffffff;
-  text-align: center;
-}
-
-.videoClick {
-  text-align: center
-}
-
-.videoClick a {
-  color: white;
-  background-color: rgba(241, 241, 241, 0.25);
-  font-size: 1.7em;
-  cursor: pointer;
-  cursor: hand
-}
-
-<style style="text/css">.scroll-left {
+.scroll-left {
   height: 50px;
   overflow: hidden;
   position: relative;
@@ -82,7 +69,7 @@ a {
   height: 100%;
   margin: 0;
   line-height: 50px;
-  text-align: center;
+  text-align: left;
   /* Starting position */
   -moz-transform: translateX(100%);
   -webkit-transform: translateX(100%);
@@ -129,5 +116,3 @@ a {
     transform: translateX(-100%);
   }
 }
-
-</style>

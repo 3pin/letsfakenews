@@ -45,6 +45,8 @@ app.use(cookieParser());
 
 // condense the visible URL address in a client's browser
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'node_modules')));
+//app.use('/scripts', express.static(__dirname + '/node_modules/'));
 
 // Make our db accessible to our router
 app.use(function(req,res,next){
