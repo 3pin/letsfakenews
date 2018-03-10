@@ -2,12 +2,12 @@
 <html>
 
 <head>
-  <meta itemprop="name" content="screenfull.js">
-  <title>
-    <%= maintitle %>
-  </title>
   <link rel='stylesheet' href='/stylesheets/style.css'>
+  <!-- setup Title Tab -->
+  <title><%= tabtitle %></title>
+  <!-- load jQUery -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <!-- load functions -->
   <script type="text/javascript">
     function pagestate_ctrl(pagestate_in) {
       var show_page = '#' + pagestate_in
@@ -26,6 +26,7 @@
       setTimeout("location.reload(true);", timeoutPeriod);
     }
   </script>
+  <!-- load documentReady jQuery methods -->
   <script>
     var data = <%-JSON.stringify(data)%>
     var mode = 'dev' // otherwise set mode = 'prod'
@@ -52,10 +53,9 @@
       var duration;
       var vid = document.getElementById("videoPlayer");
       vid.onloadedmetadata = function() {
-        console.log("Meta data for video loaded");
         duration = vid.duration;
-        //console.log('duration: ' + duration);
         piclength = duration / urls.length;
+        console.log("Meta data for video loaded... video duration: " + duration);
       };
 
       // swap the picture
@@ -64,7 +64,7 @@
       // during playback report currenttime
       $("#videoPlayer").on("timeupdate", function(event) {
         var currentTime = this.currentTime
-        console.log('currentTime: ' + this.currentTime)
+        //console.log('currentTime: ' + this.currentTime)
         if (currentTime >= 3.2 && currentTime <= 5.6) {
           // display pop-up title text
           $("#popup_title").show()
@@ -94,6 +94,7 @@
   </script>
 
 
+
 </head>
 
 <body>
@@ -101,10 +102,13 @@
   <script src="/screenfull/dist/screenfull.js"></script>
   <script>
     $(function() {
-      $('#videoDiv').click(function() {
-        screenfull.toggle($('#container')[0]);
+      $('#popup_title').click(function() {
+        console.log('click')
+        screenfull.toggle($('#videoDiv')[0]);
+        //screenfull.toggle($('#videoBlock')[0]);
+        //screenfull.toggle($('#videoPlayer')[0]);
+        //screenfull.toggle($('#videoMessage')[0]);
       });
-
       function fullscreenchange() {
         var elem = screenfull.element;
         $('#status').text('Is fullscreen: ' + screenfull.isFullscreen);
@@ -126,43 +130,38 @@
   <div id="videoDiv">
 
     <!-- video block -->
-    <div id="videoBlock">
+    <div id="videoBlock" >
 
-      <video id="videoPlayer" preload="metadata" autoplay="true" poster="/comp_mp4_v03/comp_mp4_v03-poster.jpg" controls> video not supported
+      <video id="videoPlayer" width="100%" height="auto" preload="metadata" autoplay="true" muted controls="false" poster="/comp_mp4_v03/comp_mp4_v03-poster.jpg" controls> video not supported
         <source src="/videos/aljazeera-desktop.m4v"></source>
         </video>
 
-      <!-- text overlays -->
-      <div id="videoMessage">
-
-        <!-- popup title text -->
-        <div id="popup_title" style="display:none">
-          <p id="popup_title_text">Default popup-title text... </p>
+        <!-- text overlays -->
+        <div id="videoMessage" >
+          <!-- popup title text -->
+          <div id="popup_title" style="display:none">
+            <p id="popup_title_text">Default popup-title text... </p>
+          </div>
+          <!-- panel title text -->
+          <div id="panel_title" style="display:none">
+            <p id="panel_title_text">Default panel-title text... </p>
+          </div>
+          <!-- panel title story -->
+          <div id="panel_story" style="display:none">
+            <p id="panel_story_text">Default panel-story text... </p>
+          </div>
+          <!-- image url overlays -->
+          <img id="panel_img" style="display:none" />
+          <!-- scrolling text overlay -->
+          <div class="scroll-left" style="display:none">
+            <p id="scroller">Default scrolling story text... </p>
+          </div>
+          <!-- end text overlays -->
         </div>
 
-        <!-- panel title text -->
-        <div id="panel_title" style="display:none">
-          <p id="panel_title_text">Default panel-title text... </p>
-        </div>
-
-        <!-- panel title story -->
-        <div id="panel_story" style="display:none">
-          <p id="panel_story_text">Default panel-story text... </p>
-        </div>
-
-        <!-- image url overlays -->
-        <img id="panel_img" style="display:none" />
-
-        <!-- scrolling text overlay -->
-        <div class="scroll-left" style="display:none">
-          <p id="scroller">Default scrolling story text... </p>
-        </div>
-
-
-        <!-- end text overlays -->
-      </div>
       <!-- end video block -->
     </div>
+
     <!-- end video region -->
   </div>
 

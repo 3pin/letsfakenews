@@ -1,16 +1,52 @@
 body {
-  padding: 0px;
+  margin: 0;
+  padding: 0;
+  border: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
   font-weight: bold;
 }
 
-a {
-  color: #00B7FF;
+p {
+  font-weight: normal;
+}
+
+.position_absolute {
+  position: absolute;
 }
 
 #videoDiv {
+  /*
+  overflow: hidden;
+  position: absolute;
+  height: 100%;
+  width: 100%;
   margin: auto;
-  padding: 0px;
+  */
+  border: 2px solid blue;
+}
+
+#videoBlock {
+  /*
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  */
+  border: 2px solid green;
+  margin: auto;
+}
+
+#videoPlayer {
+  border: 2px solid red;
+  min-width: 50%;
+  min-height: 50%;
   text-align: center;
 }
 

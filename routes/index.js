@@ -17,7 +17,7 @@ let debug_refresh = require('debug')('refresh_display');
 router.get('/', (req, res, next) => {
   debug_get('/GET msg to index page')
   res.render('index', {
-    title: 'Welcome... '
+    tabtitle: "LetsFakeNews"
   });
   //res.send(process.env.MODE);
 });
@@ -55,7 +55,7 @@ router.get('/display', function(req, res) {
           // parse and send data to client html display-page
           res.render('display', {
             data: data,
-            maintitle: 'THE LATEST FAKE NEWS STORY... ',
+            tabtitle: "Display: LetsFakeNews",
             title: data.title,
             story: data.story
           });
