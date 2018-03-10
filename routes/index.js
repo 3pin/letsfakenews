@@ -13,7 +13,7 @@ let debug_save = require('debug')('save');
 let debug_db = require('debug')('db');
 let debug_refresh = require('debug')('refresh_display');
 
-// serve homepage index
+// serve homepage / index
 router.get('/', (req, res, next) => {
   debug_get('/GET msg to index page')
   res.render('index', {
@@ -22,50 +22,7 @@ router.get('/', (req, res, next) => {
   //res.send(process.env.MODE);
 });
 
-// fetch db data... serve display page
-router.get('/display', function(req, res) {
-  var db;
-  var collection = {};
-
-  db = req.db;
-  collection = db.get("test_collection");
-
-  collection.find({}, {
-    fields: {
-      _id: 1
-    }
-  }, function(err, data) {
-    if (err) {
-      debug_db(err);
-    } else {
-      // load _ids of db entries
-      var times = data;
-      // pick a random entry via _id
-      var randomnumber = Math.floor(Math.random() * (times.length));
-      //var randomnumber = times.length-1
-      var query = times[randomnumber];
-      var id = query._id
-      // return the randomly-picked JSON from the db
-      collection.findOne({
-        _id: id
-      }, function(err, data) {
-        if (err) {
-          debug_db(err)
-        } else {
-          // parse and send data to client html display-page
-          res.render('display', {
-            data: data,
-            tabtitle: "Display: LetsFakeNews",
-            title: data.title,
-            story: data.story
-          });
-        }
-      });
-    }
-  });
-});
-
-// receive title-story info
+// receive title-story info from homepage
 router.post('/add_title_story', function(req, res) {
   //
   //variables to be set and later saved to a
@@ -172,6 +129,98 @@ router.post('/add_title_story', function(req, res) {
     });
     */
   });
+});
+
+// serve display page (pass it db-data)
+router.get('/display', function(req, res) {
+  var db;
+  var collection = {};
+  db = req.db;
+  collection = db.get("test_collection");
+  // return an array with the list of all the '_id' in the test_collection
+  collection.find({}, {
+    fields: {
+      _id: 1
+    }
+  }, function(err, data) {
+    if (err) {
+      debug_db(err);
+    } else {
+      // create an array of all the '_ids' in the collection
+      var times = data;
+      // pick a random entry with which to pick an '_id' entry from the array
+      var randomnumber = Math.floor(Math.random() * (times.length));
+      //var randomnumber = times.length-1
+      // pick a random '_id'
+      var query = times[randomnumber];
+      var id = query._id
+      // return the randomly-picked JSON from the db
+      collection.findOne({
+        _id: id
+      }, function(err, data) {
+        if (err) {
+          debug_db(err)
+        } else {
+          // parse and send data to client html display-page
+          res.render('display', {
+            data: data,
+            tabtitle: "Display: LetsFakeNews",
+            title: data.title,
+            story: data.story
+          });
+        }
+      });
+    }
+  });
+});
+
+// serve new_story to displaypage (pass it db-data)
+router.get('/request_new_story', (req, res, next) => {
+  debug_get('/GET request_new_story')
+  var db;
+  var collection = {};
+  db = req.db;
+  collection = db.get("test_collection");
+  // return an array with the list of all the '_id' in the test_collection
+  collection.find({}, {
+    fields: {
+      _id: 1
+    }
+  }, function(err, data) {
+    if (err) {
+      debug_db(err);
+    } else {
+      // create an array of all the '_ids' in the collection
+      var times = data;
+      // pick a random entry with which to pick an '_id' entry from the array
+      var randomnumber = Math.floor(Math.random() * (times.length));
+      //var randomnumber = times.length-1
+      // pick a random '_id'
+      var query = times[randomnumber];
+      var id = query._id
+      // return the randomly-picked JSON from the db
+      collection.findOne({
+        _id: id
+      }, function(err, data) {
+        if (err) {
+          debug_db(err)
+        } else {
+          debug_db('///')
+          debug_db('///')
+          debug_db('///')
+          debug_db(data)
+          // parse and send data to client html display-page
+          res.send(data);
+        }
+      });
+    }
+  });
+  /*
+  res.render('index', {
+    tabtitle: "LetsFakeNews"
+  });
+  */
+  //res.send(process.env.MODE);
 });
 
 module.exports = router;
