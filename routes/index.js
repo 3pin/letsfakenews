@@ -164,9 +164,7 @@ router.get('/display', function(req, res) {
           // parse and send data to client html display-page
           res.render('display', {
             data: data,
-            tabtitle: "Display: LetsFakeNews",
-            title: data.title,
-            story: data.story
+            tabtitle: "Display: LetsFakeNews"
           });
         }
       });
