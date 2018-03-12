@@ -52,43 +52,47 @@
       // time-period during which images/story are displayed
       var image_duration = imagesEnd - imagesStart;
 
-      // parse returned JSON from database
-      var data = <%-JSON.stringify(data)%>;
-      //console.log(data);
-      var mode = 'dev'; // otherwise set mode = 'prod'
-      var title = data.title;
-      var story = data.story;
-      var content = data.content;
-      // pass title/story text into innerHTML
-      document.getElementById("popup_title_text").innerHTML = 'TITLE: ' + title;
-      document.getElementById("panel_title_text").innerHTML = 'TITLE: ' + title;
-      document.getElementById("panel_story_text").innerHTML = story;
-      console.log("Title:" + title + '\n' + 'Story:' + story)
-      //console.log(content);
-
-      // load all image-urls into an array
-      for (var key in content) {
-        //console.log(key + ': ' + content[key]);
-        urls.push(content[key]);
-        console.log(content[key]);
-      }
-      pic_duration = image_duration / urls.length;
-
       // on startup metadata save vid_duration
       var vid = document.getElementById("videoPlayer");
       vid.onloadedmetadata = function() {
+        console.log('First Page Visit');
+
+        var mode = 'dev'; // otherwise set mode = 'prod'
+        // parse returned JSON from database
+        var data = <%-JSON.stringify(data)%>;
+        console.log(data);
+        var title = data.title;
+        var story = data.story;
+        var content = data.content;
+        console.log("Title:" + title + '\n' + 'Story:' + story)
+
+        // pass title/story text into innerHTML
+        document.getElementById("popup_title_text").innerHTML = 'TITLE: ' + title;
+        document.getElementById("panel_title_text").innerHTML = 'TITLE: ' + title;
+        document.getElementById("panel_story_text").innerHTML = story;
+
+        // load all image-urls into an array
+        for (var key in content) {
+          //console.log(key + ': ' + content[key]);
+          urls.push(content[key]);
+          //console.log(content[key]);
+        }
+
+        // calculate durations/periods
+        pic_duration = image_duration / urls.length;
         vid_duration = vid.duration;
         console.log("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
-        // populate the marker-array with timecodes
+
+        // populate the marker-array with durations/periods/timecodes
         for (i = 1; i <= urls.length; i++) {
           markers.push(imagesStart + pic_duration * i);
-          console.log('marker: ' + markers[i - 1]);
+          //console.log('marker: ' + markers[i - 1]);
         }
-        console.log('No of image: ' + urls.length);
+        //console.log('No of image: ' + urls.length);
 
         // load the first image-URL picture
         url_index = 0
-        console.log(urls[url_index]);
+        //console.log(urls[url_index]);;
         document.getElementById("panel_img").src = urls[url_index];
       };
 
@@ -97,8 +101,8 @@
         var currentTime = this.currentTime;
         if (currentTime >= markers[url_index]) {
           url_index++;
-          console.log('New url_index: ' + url_index)
-          console.log(urls[url_index]);
+          //console.log('New url_index: ' + url_index)
+          //console.log(urls[url_index]);;
           document.getElementById("panel_img").src = urls[url_index];
         }
         //console.log('currentTime: ' + this.currentTime)
@@ -127,32 +131,57 @@
         console.log('video ended... seeking new db-data ')
         //location.reload(true);
         //window.location.reload(true);
-        //
         $.get("request_new_story", function(data, status) {
-          console.log(data)
-          //alert("Data: " + data + "\nStatus: " + status);
-          // parse in data
-          title = data.title;
-          story = data.story;
-          console.log("Title:" + title + '\n' + 'Story:' + story)
-          content = data.content;
-          urls = []
-          for (var key in content) {
-            //console.log(key + ': ' + content[key]);
-            urls.push(content[key]);
-          }
+          console.log('Refreshed Page');
+          console.log(data);
 
-          var index_loader = 0;
+          // on-re-start metadata save vid_duration
+          var vid = document.getElementById('videoPlayer');
+          vid.onloadedmetadata = function() {
 
-          // pass text into scroller
-          document.getElementById("popup_title_text").innerHTML = 'TITLE: ' + title;
-          document.getElementById("panel_title_text").innerHTML = 'TITLE: ' + title;
-          document.getElementById("panel_story_text").innerHTML = story;
+            //reset arrays
+            urls = []
+            markers = []
+
+            // parse in data
+            title = data.title;
+            story = data.story;
+            content = data.content;
+            console.log("New title:" + title + '\n' + 'New story:' + story)
+
+            // pass title/story text into innerHTML
+            document.getElementById("popup_title_text").innerHTML = 'TITLE: ' + title;
+            document.getElementById("panel_title_text").innerHTML = 'TITLE: ' + title;
+            document.getElementById("panel_story_text").innerHTML = story;
+
+            // load all image-urls into an array
+            for (var key in content) {
+              //console.log(key + ': ' + content[key]);
+              urls.push(content[key]);
+              //console.log(content[key]);
+            }
+
+            // calculate durations/periods
+            pic_duration = image_duration / urls.length;
+            vid_duration = vid.duration;
+            console.log("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
+
+            // populate the marker-array with durations/periods/timecodes
+            for (i = 1; i <= urls.length; i++) {
+              markers.push(imagesStart + pic_duration * i);
+              //console.log('marker: ' + markers[i - 1]);
+            }
+            //console.log('No of image: ' + urls.length);
+
+            // load the first image-URL picture
+            url_index = 0
+            //console.log(urls[url_index]);
+            document.getElementById("panel_img").src = urls[url_index];
+          };
 
           //restart video
-          var video = document.getElementById('videoPlayer');
-          video.currentTime = 0;
-          video.load();
+          vid.currentTime = 0;
+          vid.load();
 
         });
       });
