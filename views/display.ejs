@@ -7,6 +7,8 @@
   <title>
     <%= tabtitle %>
   </title>
+  <!-- load debug script -->
+  <script type="text/javascript" src="/javascripts/debug_browserify.js"></script>
   <!-- load jQUery -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- load functions -->
@@ -32,6 +34,12 @@
   <script>
     $(document).ready(function() {
 
+      localStorage.debug = 'process:debug_datain;debug_setup'
+      //var debug = require('debug');
+      debug_datain = debug('process:debug_datain');
+      debug_setup = debug('process:debug_setup');
+      debug_display = debug('process:debug_display');
+
       // array to store the image-URLS
       var urls = []
       // array to stores a time-marker per image-URL
@@ -43,97 +51,102 @@
       // display-duration for each image-url in the array
       var pic_duration;
       // define time-regions for pop-up-title, text-display, image-display
-      var popupStart = 3.2
-      var popupEnd = 5.6;
+      var popupStart = 6.23;
+      var popupEnd = 11.21;
       // time-period during which popup-title is displayed
       var popup_duration = popupEnd - popupStart;
-      var imagesStart = 14.2;
-      var imagesEnd = 37.7;
+      var imagesStart = 17.13;
+      var imagesEnd = 41.11;
       // time-period during which images/story are displayed
       var image_duration = imagesEnd - imagesStart;
 
       // on startup metadata save vid_duration
       var vid = document.getElementById("videoPlayer");
       vid.onloadedmetadata = function() {
-        console.log('First Page Visit');
+        debug_setup('First Page Visit');
 
         var mode = 'dev'; // otherwise set mode = 'prod'
         // parse returned JSON from database
         var data = <%-JSON.stringify(data)%>;
-        console.log(data);
+        debug_datain(data);
         var title = data.title;
         var story = data.story;
         var content = data.content;
-        console.log("Title:" + title + '\n' + 'Story:' + story)
+        debug_datain("Title:" + title + '\n' + 'Story:' + story)
 
         // pass title/story text into innerHTML
-        document.getElementById("popup_title_text").innerHTML = 'TITLE: ' + title;
-        document.getElementById("panel_title_text").innerHTML = 'TITLE: ' + title;
+        document.getElementById("popup_title_text").innerHTML = title;
+        document.getElementById("panel_title_text").innerHTML = title;
         document.getElementById("panel_story_text").innerHTML = story;
+        document.getElementById("scroller").innerHTML = story;
 
         // load all image-urls into an array
         for (var key in content) {
-          //console.log(key + ': ' + content[key]);
           urls.push(content[key]);
-          //console.log(content[key]);
+          debug_datain(content[key]);
         }
 
         // calculate durations/periods
         pic_duration = image_duration / urls.length;
         vid_duration = vid.duration;
-        console.log("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
+        debug_setup("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
 
         // populate the marker-array with durations/periods/timecodes
         for (i = 1; i <= urls.length; i++) {
           markers.push(imagesStart + pic_duration * i);
-          //console.log('marker: ' + markers[i - 1]);
+          debug_setup('marker: ' + markers[i - 1]);
         }
-        //console.log('No of image: ' + urls.length);
+        debug_setup('No of image: ' + urls.length);
 
         // load the first image-URL picture
         url_index = 0
-        //console.log(urls[url_index]);;
+        debug_display('loading the first image: ' + urls[url_index]);;
         document.getElementById("panel_img").src = urls[url_index];
       };
 
       // during playback report currenttime
       $("#videoPlayer").on("timeupdate", function(event) {
+        debug_display('currentTime: ' + this.currentTime)
         var currentTime = this.currentTime;
         if (currentTime >= markers[url_index]) {
           url_index++;
-          //console.log('New url_index: ' + url_index)
-          //console.log(urls[url_index]);;
-          document.getElementById("panel_img").src = urls[url_index];
+          if (url_index < urls.length) {
+            debug_display('New url_index: ' + url_index)
+            document.getElementById("panel_img").src = urls[url_index];
+          }
         }
-        //console.log('currentTime: ' + this.currentTime)
         if (currentTime <= popupStart) {
           $("#popup_title").hide()
           $("#panel_img").hide()
           $("#panel_story").hide()
           $("#panel_title").hide()
+          //
+          //this.currentTime = 7.0;
+          this.currentTime = 16.0;
+          //
         } else if (currentTime >= popupStart && currentTime <= popupEnd) {
           $("#popup_title").show()
         } else if (currentTime >= imagesStart && currentTime <= imagesEnd) {
           // display main_titlein panel
           $("#panel_img").show()
-          $("#panel_title").show()
-          $("#panel_story").show()
+          $("#scroller_div").show()
         } else {
           $("#popup_title").hide()
           $("#panel_img").hide()
           $("#panel_story").hide()
           $("#panel_title").hide()
+          $("#scroller_div").hide()
         }
       });
 
       // detect when video-playback complete.. if true request new-story db-data
       $("#videoPlayer").on("ended", function(event) {
-        console.log('video ended... seeking new db-data ')
+        debug_display('video ended... seeking new db-data ')
         //location.reload(true);
         //window.location.reload(true);
         $.get("request_new_story", function(data, status) {
-          console.log('Refreshed Page');
-          console.log(data);
+          debug_setup('Refreshed Page');
+          debug_datain(data);
 
           // on-re-start metadata save vid_duration
           var vid = document.getElementById('videoPlayer');
@@ -147,35 +160,35 @@
             title = data.title;
             story = data.story;
             content = data.content;
-            console.log("New title:" + title + '\n' + 'New story:' + story)
+            debug_datain("New title:" + title + '\n' + 'New story:' + story)
 
             // pass title/story text into innerHTML
-            document.getElementById("popup_title_text").innerHTML = 'TITLE: ' + title;
-            document.getElementById("panel_title_text").innerHTML = 'TITLE: ' + title;
+            document.getElementById("popup_title_text").innerHTML = title;
+            document.getElementById("panel_title_text").innerHTML = title;
             document.getElementById("panel_story_text").innerHTML = story;
+            document.getElementById("scroller").innerHTML = story;
 
             // load all image-urls into an array
             for (var key in content) {
-              //console.log(key + ': ' + content[key]);
               urls.push(content[key]);
-              //console.log(content[key]);
+              debug_datain(content[key]);
             }
 
             // calculate durations/periods
             pic_duration = image_duration / urls.length;
             vid_duration = vid.duration;
-            console.log("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
+            debug_setup("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
 
             // populate the marker-array with durations/periods/timecodes
             for (i = 1; i <= urls.length; i++) {
               markers.push(imagesStart + pic_duration * i);
-              //console.log('marker: ' + markers[i - 1]);
+              debug_setup('marker: ' + markers[i - 1]);
             }
-            //console.log('No of image: ' + urls.length);
+            debug_setup('No of image: ' + urls.length);
 
             // load the first image-URL picture
             url_index = 0
-            //console.log(urls[url_index]);
+            debug_display('loading the first image: ' + urls[url_index]);
             document.getElementById("panel_img").src = urls[url_index];
           };
 
@@ -198,7 +211,7 @@
   <script>
     $(function() {
       $('#popup_title').click(function() {
-        console.log('click')
+        debug_setup('click')
         screenfull.toggle($('#videoDiv')[0]);
         //screenfull.toggle($('#videoBlock')[0]);
         //screenfull.toggle($('#videoPlayer')[0]);
@@ -223,33 +236,33 @@
   </script>
 
   <!-- video region -->
-  <div id="videoDiv">
+  <div id="videoDiv" class="panels">
 
     <!-- video block -->
     <div id="videoBlock">
 
-      <video id="videoPlayer" width="100%" height="auto" preload="metadata" autoplay="true" muted controls="false" poster="/comp_mp4_v03/comp_mp4_v03-poster.jpg" controls> video not supported
+      <video id="videoPlayer"  width="100%" height="auto" preload="metadata" autoplay="true" muted controls="false" controls> video not supported
         <source src="/videos/aljazeera-desktop.m4v"></source>
         </video>
 
       <!-- text overlays -->
-      <div id="videoMessage">
+      <div id="videoMessage" class="panels">
         <!-- popup title text -->
-        <div id="popup_title" style="display:none">
+        <div id="popup_title" style="display:none" class="panels">
           <p id="popup_title_text">Default popup-title text... </p>
         </div>
         <!-- panel title text -->
-        <div id="panel_title" style="display:none">
+        <div id="panel_title" style="display:none" class="panels">
           <p id="panel_title_text">Default panel-title text... </p>
         </div>
         <!-- panel title story -->
-        <div id="panel_story" style="display:none">
+        <div id="panel_story" style="display:none" class="panels">
           <p id="panel_story_text">Default panel-story text... </p>
         </div>
         <!-- image url overlays -->
         <img id="panel_img" style="display:none" />
         <!-- scrolling text overlay -->
-        <div class="scroll-left" style="display:none">
+        <div id="scroller_div" class="scroll-left" style="display:none">
           <p id="scroller">Default scrolling story text... </p>
         </div>
         <!-- end text overlays -->

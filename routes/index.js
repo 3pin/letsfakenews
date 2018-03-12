@@ -149,8 +149,8 @@ router.get('/display', function(req, res) {
       // create an array of all the '_ids' in the collection
       var times = data;
       // pick a random entry with which to pick an '_id' entry from the array
-      var randomnumber = Math.floor(Math.random() * (times.length));
-      //var randomnumber = times.length-1
+      //var randomnumber = Math.floor(Math.random() * (times.length));
+      var randomnumber = times.length-1
       // pick a random '_id'
       var query = times[randomnumber];
       var id = query._id
@@ -191,8 +191,8 @@ router.get('/request_new_story', (req, res, next) => {
       // create an array of all the '_ids' in the collection
       var times = data;
       // pick a random entry with which to pick an '_id' entry from the array
-      var randomnumber = Math.floor(Math.random() * (times.length));
-      //var randomnumber = times.length-1
+      //var randomnumber = Math.floor(Math.random() * (times.length));
+      var randomnumber = times.length-1
       // pick a random '_id'
       var query = times[randomnumber];
       var id = query._id
