@@ -8,7 +8,7 @@ if (result.error) {
 
 // load in env constiables
 const port = process.env.PORT
-const uri = process.env.URI
+const uri = process.env.MONGODB_URI
 const mode = process.env.MODE
 
 let debug_startup = require('debug')('startup')
