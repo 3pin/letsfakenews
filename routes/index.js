@@ -97,11 +97,7 @@ router.post('/add_title_story', function(req, res) {
     // save to database - start by setting our internal DB variable
     var db = req.db;
     // Set our collection
-    if (process.env.MODE == 'dev') {
-      var collection = db.get('test_collection');
-    } else {
-      var collection = db.get('production_collection');
-    }
+    var collection = db.get(process.env.COLLECTION);
     // Submit to the DB
     collection.insert(jsonObj, function(err, result) {
       if (err) {
@@ -137,7 +133,8 @@ router.get('/display', function(req, res) {
   var db;
   var collection = {};
   db = req.db;
-  collection = db.get("test_collection");
+  // Set our collection
+  var collection = db.get(process.env.COLLECTION);
   // return an array with the list of all the '_id' in the test_collection
   collection.find({}, {
     fields: {
@@ -151,7 +148,7 @@ router.get('/display', function(req, res) {
       var times = data;
       // pick a random entry with which to pick an '_id' entry from the array
       //var randomnumber = Math.floor(Math.random() * (times.length));
-      var randomnumber = times.length-1
+      var randomnumber = times.length - 1
       // pick a random '_id'
       var query = times[randomnumber];
       var id = query._id
@@ -179,7 +176,8 @@ router.get('/request_new_story', (req, res, next) => {
   var db;
   var collection = {};
   db = req.db;
-  collection = db.get("test_collection");
+  // Set our collection
+  var collection = db.get(process.env.COLLECTION);
   // return an array with the list of all the '_id' in the test_collection
   collection.find({}, {
     fields: {
@@ -193,7 +191,7 @@ router.get('/request_new_story', (req, res, next) => {
       var times = data;
       // pick a random entry with which to pick an '_id' entry from the array
       //var randomnumber = Math.floor(Math.random() * (times.length));
-      var randomnumber = times.length-1
+      var randomnumber = times.length - 1
       // pick a random '_id'
       var query = times[randomnumber];
       var id = query._id
