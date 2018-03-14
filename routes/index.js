@@ -202,9 +202,6 @@ router.get('/request_new_story', (req, res, next) => {
         if (err) {
           debug_db(err)
         } else {
-          debug_db('///')
-          debug_db('///')
-          debug_db('///')
           debug_db(data)
           // parse and send data to client html display-page
           res.send(data);
