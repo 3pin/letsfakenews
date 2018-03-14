@@ -76,7 +76,6 @@
 
         // pass title/story text into innerHTML
         document.getElementById("popup_title_text").innerHTML = title;
-        document.getElementById("panel_title_text").innerHTML = title;
         document.getElementById("panel_story_text").innerHTML = story;
         document.getElementById("scroller").innerHTML = story;
 
@@ -101,7 +100,7 @@
         // load the first image-URL picture
         url_index = 0
         debug_display('loading the first image: ' + urls[url_index]);;
-        document.getElementById("panel_img").src = urls[url_index];
+        document.getElementById("image").src = urls[url_index];
       };
 
       // during playback report currenttime
@@ -112,27 +111,29 @@
           url_index++;
           if (url_index < urls.length) {
             debug_display('New url_index: ' + url_index)
-            document.getElementById("panel_img").src = urls[url_index];
+            document.getElementById("image").src = urls[url_index];
           }
         }
         if (currentTime <= popupStart) {
           $("#popup_title").hide()
-          $("#panel_img").hide()
+          $("#image").hide()
           $("#panel_story").hide()
           $("#panel_title").hide()
           //
           //this.currentTime = 7.0;
-          this.currentTime = 16.0;
+          //this.currentTime = 16.0;
           //
         } else if (currentTime >= popupStart && currentTime <= popupEnd) {
           $("#popup_title").show()
         } else if (currentTime >= imagesStart && currentTime <= imagesEnd) {
           // display main_titlein panel
-          $("#panel_img").show()
+          //$("#image_frame").show()
+          $("#image").show()
           $("#scroller_div").show()
         } else {
           $("#popup_title").hide()
-          $("#panel_img").hide()
+          $("#image_frame").hide()
+          $("#image").hide()
           $("#panel_story").hide()
           $("#panel_title").hide()
           $("#scroller_div").hide()
@@ -164,7 +165,6 @@
 
             // pass title/story text into innerHTML
             document.getElementById("popup_title_text").innerHTML = title;
-            document.getElementById("panel_title_text").innerHTML = title;
             document.getElementById("panel_story_text").innerHTML = story;
             document.getElementById("scroller").innerHTML = story;
 
@@ -189,7 +189,7 @@
             // load the first image-URL picture
             url_index = 0
             debug_display('loading the first image: ' + urls[url_index]);
-            document.getElementById("panel_img").src = urls[url_index];
+            document.getElementById("image").src = urls[url_index];
           };
 
           //restart video
@@ -212,8 +212,8 @@
     $(function() {
       $('#popup_title').click(function() {
         debug_setup('click')
-        screenfull.toggle($('#videoDiv')[0]);
-        //screenfull.toggle($('#videoBlock')[0]);
+        screenfull.toggle($('#videoPlayer')[0]);
+        //screenfull.toggle($('#videoContainer')[0]);
         //screenfull.toggle($('#videoPlayer')[0]);
         //screenfull.toggle($('#videoMessage')[0]);
       });
@@ -235,43 +235,40 @@
     });
   </script>
 
-  <!-- video region -->
-  <div id="videoDiv" class="panels">
+  <!-- video block... blue outline-colour -->
+  <div id="videoContainer" class="video_container">
 
-    <!-- video block -->
-    <div id="videoBlock">
-
-      <video id="videoPlayer"  width="100%" height="auto" preload="metadata" autoplay="true" muted controls="false" controls> video not supported
+    <video id="videoPlayer" class="video_player" preload="metadata" autoplay="true" muted controls="false" controls> video not supported
         <source src="/videos/aljazeera-desktop.m4v"></source>
         </video>
 
-      <!-- text overlays -->
-      <div id="videoMessage" class="panels">
-        <!-- popup title text -->
-        <div id="popup_title" style="display:none" class="panels">
-          <p id="popup_title_text">Default popup-title text... </p>
-        </div>
-        <!-- panel title text -->
-        <div id="panel_title" style="display:none" class="panels">
-          <p id="panel_title_text">Default panel-title text... </p>
-        </div>
-        <!-- panel title story -->
-        <div id="panel_story" style="display:none" class="panels">
-          <p id="panel_story_text">Default panel-story text... </p>
-        </div>
-        <!-- image url overlays -->
-        <img id="panel_img" style="display:none" />
-        <!-- scrolling text overlay -->
-        <div id="scroller_div" class="scroll-left" style="display:none">
-          <p id="scroller">Default scrolling story text... </p>
-        </div>
-        <!-- end text overlays -->
+    <!-- overlays -->
+    <div id="videoOverlays" class="video_overlays">
+
+      <!-- image frame outline -->
+      <div id="image_frame" style="display:none">
       </div>
 
-      <!-- end video block -->
+      <!-- popup title text -->
+      <div id="popup_title" style="display:none">
+        <p id="popup_title_text">Default popup-title text... </p>
+      </div>
+
+      <!-- panel title story -->
+      <div id="panel_story" style="display:none">
+        <p id="panel_story_text">Default panel-story text... </p>
+      </div>
+
+      <!-- image url overlays -->
+      <img id="image" style="display:none" />
+      <!-- scrolling text overlay -->
+      <div id="scroller_div" class="scroll-left" style="display:none">
+        <p id="scroller">Default scrolling story text... </p>
+      </div>
+      <!-- end overlays -->
     </div>
 
-    <!-- end video region -->
+    <!-- end video block -->
   </div>
 
 </body>

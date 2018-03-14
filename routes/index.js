@@ -133,6 +133,7 @@ router.post('/add_title_story', function(req, res) {
 
 // serve display page (pass it db-data)
 router.get('/display', function(req, res) {
+  debug_get('recvd /display /get request')
   var db;
   var collection = {};
   db = req.db;

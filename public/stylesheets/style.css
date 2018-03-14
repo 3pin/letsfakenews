@@ -1,161 +1,124 @@
 body {
+  /*
   margin: 0;
   padding: 0;
   border: 0;
   height: 100%;
-  width: 100%;
+  width: 100%;*/
+  font: Arial Black, sans-serif;
 }
 
-h1, .panels, .scroll-left {
-  font: 28px Arial Black, sans-serif;
+h1 {
+  font-size: 28px;
   font-weight: bold;
-  color: black;
 }
 
 p {
-  /*font-weight: normal;*/
+  font-size: 18px;
+  font-weight: normal;
 }
 
-#videoDiv {
-  /*
-  overflow: hidden;
+.landing {
+  position: relative;
+  text-align: left;
+  left: 20px;
+}
+
+.video_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* required
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;*/
+  /* For multi line centering:
+  flex-wrap: wrap;*/
+}
+
+.video_player {
+  height: auto;
+  vertical-align: middle;
+  width: 70%;
+}
+
+.video_overlays {
   position: absolute;
-  height: 100%;
-  width: 100%;
-  margin: auto;
-  */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* required
+  position: relative;*/
+}
+
+#popup_title {
+  text-align: center;
+  position: relative;
+  top: 190px;
+}
+
+#image_frame, #image {
+  border: 2px solid white;
+  background: green;
+  width: 35%;
+  height: 65%;
+  position: relative;
+  bottom: 70px;
+  left: 250px;
+  /*display: flex;
+  align-items: center;
+  justify-content: center;*/
+}
+
+#videoContainer {
   border: 2px solid blue;
-}
-
-#videoBlock {
-  /*
-  overflow: hidden;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  */
-  border: 2px solid green;
-  margin: auto;
 }
 
 #videoPlayer {
   border: 2px solid red;
-  min-width: 50%;
-  min-height: 50%;
-  text-align: center;
-}
-
-#panel_img {
-  position: absolute;
-  max-width: 514px;
-  text-align: left;
-  top: 8px;
-  left: 260px;
-  color: black;
-}
-
-#popup_title {
-  position: relative;
-  text-align: center;
-  vertical-align: middle;
-  bottom: 195px;
 }
 
 .scroll-left {
-  position: relative;
-  width: 100%;
-  height: 100px;
-  /*margin: 25px auto;*/
-  overflow: visible;
-  bottom: 215px;
+  /* marquee box outline */
   border: 1px solid #000;
   margin: 25px auto;
+  /* position */
+  position: relative;
+  width: 120%;
+  height: 90px;
+  top: 190px;
+  right: 220px;
+  /* text layout in marquee */
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .scroll-left p {
-  position: absolute;
   font-size: 48px;
   width: 100%;
   height: 100%;
   margin: 0;
   line-height: 100px;
   text-align: center;
-  /* Starting position */
-  transform: translateX(100%);
-  -moz-transform: translateX(100%);
-  -webkit-transform: translateX(100%);
+  /* Starting position
+  transform: translateX(100%);*/
   /* Apply animation to this element */
   animation: scroll-left 24s linear infinite;
-  -moz-animation: scroll-left 24s linear infinite;
-  -webkit-animation: scroll-left 24s linear infinite;
-}
-
-.scroll-left p:nth-child(1) {
-  /*animation: left-one 20s ease infinite;*/
-  animation: scroll-left 24s;
-}
-
-.scroll-left p:nth-child(2) {
-  animation: scroll-left 24s;
 }
 
 /* Move it (define the animation) */
-
-@keyframes left-one {
-  0% {
-    transform: translateX(100%);
-  }
-  50% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes left-two {
-  0% {
-    transform: translateX(100%);
-  }
-  50% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@-moz-keyframes scroll-left {
-  0% {
-    -moz-transform: translateX(100%);
-  }
-  100% {
-    -moz-transform: translateX(-100%);
-  }
-}
-
-@-webkit-keyframes scroll-left {
-  0% {
-    -webkit-transform: translateX(100%);
-  }
-  100% {
-    -webkit-transform: translateX(-100%);
-  }
-}
-
 @keyframes scroll-left {
   0% {
-    -moz-transform: translateX(100%);
-    /* Browser bug fix */
-    -webkit-transform: translateX(100%);
-    /* Browser bug fix */
-    transform: translateX(100%);
+    text-indent: 100%
   }
   100% {
-    -moz-transform: translateX(-100%);
-    /* Browser bug fix */
-    -webkit-transform: translateX(-100%);
-    /* Browser bug fix */
-    transform: translateX(-100%);
+    text-indent: -100%
   }
 }
