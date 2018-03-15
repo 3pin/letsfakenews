@@ -10,8 +10,8 @@ module.exports = {
     // data in... tags eg. ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
     var tags = pos;
     debug_module_parse('tags: ' + tags);
-    var text = input_text;
     debug_module_parse('boom');
+    var text = input_text;
 
     debug_module_parse("Input text to NLP_parse_words: " + text);
 
