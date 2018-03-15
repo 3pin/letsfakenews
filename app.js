@@ -1,9 +1,10 @@
-// check the env
+//log all system env variables
 //console.log(process.env);
+//
+// check the env
 var mode = process.env.NODE_ENV
 console.log('Environment: ' + mode)
 if (process.env.NODE_ENV !== 'production') {
-  // dev-module to load env variables
   const dotenv = require('dotenv')
   const result = dotenv.config()
   if (result.error) {
@@ -13,28 +14,27 @@ if (process.env.NODE_ENV !== 'production') {
 
 var port = process.env.PORT || 5000
 var uri = process.env.MONGODB_URI
-
-const debug_startup = require('debug')('startup')
+var debug_startup = require('debug')('startup')
 debug_startup('Port:' + port + ' mode:' + mode + ' db_uri:' + uri)
 
 // modules
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 // to connect to database
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk(uri);
+const mongo = require('mongodb');
+const monk = require('monk');
+const db = monk(uri);
 
 // routes
-var index = require('./routes/index');
+const index = require('./routes/index');
 
 // initialize
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

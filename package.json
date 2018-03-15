@@ -19,10 +19,10 @@
     "monk": "^4.0.0",
     "morgan": "~1.7.0",
     "screenfull": "^3.3.2",
-    "serve-favicon": "~2.3.2"
+    "serve-favicon": "~2.3.2",
+    "dotenv": "^5.0.0"
   },
   "devDependencies": {
-    "nodemon": "^1.14.12",
-    "dotenv": "^5.0.0"
+    "nodemon": "^1.14.12"
   }
 }
