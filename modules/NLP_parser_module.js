@@ -17,6 +17,7 @@ module.exports = {
 
     // parse according to pos-tags
     debug_module_parse('boom_02');
+    const pos = require('pos');
     var parsed_word_array = [];
     var words = new pos.Lexer().lex(text);
     var tagger = new pos.Tagger();
