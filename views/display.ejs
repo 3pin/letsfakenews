@@ -199,9 +199,6 @@
       });
     });
   </script>
-
-
-
 </head>
 
 <body>
@@ -209,7 +206,7 @@
   <script src="/screenfull/dist/screenfull.js"></script>
   <script>
     $(function() {
-      $('#popup_title').click(function() {
+      $('#btnFullscreen').click(function() {
         debug_setup('click')
         screenfull.toggle($('#videoPlayer')[0]);
         //screenfull.toggle($('#videoContainer')[0]);
@@ -234,10 +231,10 @@
     });
   </script>
 
-  <!-- video block... blue outline-colour  to mute add attr: muted controls="false"  -->
+  <!-- video block... blue outline-colour  to mute add attr: muted controls="true"  -->
   <div id="videoContainer" class="video_container">
 
-    <video id="videoPlayer" class="video_player" preload="metadata" autoplay="true" muted controls="true" controls> video not supported
+    <video id="videoPlayer" class="video_player" preload="metadata" autoplay="true" controls> video not supported
         <source src="/videos/aljazeera-desktop.m4v"></source>
         </video>
 
@@ -269,6 +266,11 @@
 
     <!-- end video block -->
   </div>
+
+  <!-- fullscreen toggle button -->
+  <p>
+    <button id="btnFullscreen" type="button">Fullscreen</button>
+  </p>
 
 </body>
 
