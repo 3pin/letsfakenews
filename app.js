@@ -1,4 +1,5 @@
 // check the env
+//console.log(process.env);
 var mode = process.env.NODE_ENV
 console.log('Environment: ' + mode)
 if (process.env.NODE_ENV !== 'production') {
@@ -10,7 +11,7 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-var port = process.env.PORT
+var port = process.env.PORT || 5000
 var uri = process.env.MONGODB_URI
 
 const debug_startup = require('debug')('startup')

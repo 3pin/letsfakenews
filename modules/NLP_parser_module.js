@@ -7,15 +7,13 @@ module.exports = {
     let debug_module_parse = require('debug')('module_parse')
     var uniqueArray = [];
 
-    // data input...
-    // tags eg. ["NN", "NNP", "NNPS", "NNS"]
+    // data in... tags eg. ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
     var tags = pos
-    console.log(tags)
+    console.log('tags: ' + tags)
     var text = input_text;
     debug_module_parse("Input text to NLP_parse_words: " + text);
 
-    // parse according to pos-tags ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
-    //var tags = ["NN", "NNP", "NNPS", "NNS"];
+    // parse according to pos-tags
     var pos = require('pos');
     var parsed_word_array = [];
     var words = new pos.Lexer().lex(text);
