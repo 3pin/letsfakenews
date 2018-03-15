@@ -2,13 +2,13 @@
 
 module.exports = {
 
-  NLP_parse_words: function(input_text, pos) {
+  NLP_parse_words: function(input_text, pos_tags) {
 
     let debug_module_parse = require('debug')('module_parse');
     var uniqueArray = [];
 
     // data in... tags eg. ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
-    var tags = pos;
+    var tags = pos_tags;
     debug_module_parse('tags: ' + tags);
     debug_module_parse('boom_01');
     var text = input_text;

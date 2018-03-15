@@ -72,8 +72,8 @@ router.post('/add_title_story', function(req, res) {
   var tags = ["NN", "NNP", "NNPS", "NNS"]
   debug_parse('test print before entering NLP_parser')
   parsed_sentence_array = NLP_parser_module.NLP_parse_words(story, tags)
-  for (let pos of parsed_sentence_array) {
-    debug_parse('pos: ' + pos)
+  for (let item of parsed_sentence_array) {
+    debug_parse('pos: ' + item)
   }
   //
   // search: fetch a URL for each NOUN
