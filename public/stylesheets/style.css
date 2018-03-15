@@ -18,6 +18,21 @@ p {
   font-weight: normal;
 }
 
+.textarea {
+  /*width: 300px;
+  height: 20px;*/
+  /*overflow: hidden;
+  overflow-wrap: break-word;
+  resize: none;*/
+}
+
+#banner_image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .landing {
   position: relative;
   text-align: left;

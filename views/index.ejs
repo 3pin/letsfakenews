@@ -3,16 +3,17 @@
 
 <head>
   <title>
-    Create: <%= tabtitle %>
+    Create:
+    <%= tabtitle %>
   </title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <script type="text/javascript">
-    function pagestate_ctrl(pagestate_in) {
-      var show_page = '#' + pagestate_in
-      var hide_page = 'div:not(#' + pagestate_in + ')'
-      $(show_page).show()
-      $(hide_page).hide()
+    function pagestate_ctrl(div_vis_in) {
+      var show_div = '#' + div_vis_in
+      var hide_div = 'div:not(#' + div_vis_in + ')'
+      $(show_div).show()
+      $(hide_div).hide()
       $("#banner_image").show()
     }
 
@@ -26,12 +27,28 @@
     var title
     var story
     $(document).ready(function() {
+      // disable RETURN key in text areas
+      document.getElementById('title').addEventListener('keydown', function(k) {
+        if (k.keyCode == 13) {
+          k.preventDefault();
+          return false;
+        }
+      });
+      document.getElementById('story').addEventListener('keydown', function(k) {
+        if (k.keyCode == 13) {
+          k.preventDefault();
+          return false;
+        }
+      });
       // function when data output from index-page
       $('#1').click(function() {
         if (mode == 'dev') {
           console.log('proceed button pressed')
         }
         pagestate_ctrl(2)
+        setTimeout(function() {
+          $('#title').focus();
+        }, 1);
         return false;
       });
       // function when data output from title-page
@@ -42,10 +59,14 @@
         }
         if ($('#title').val()) {
           title = $('#title').val()
+          title = title.trim()
           if (mode == 'dev') {
             console.log("This is the new title: " + title)
           }
           pagestate_ctrl(3)
+          setTimeout(function() {
+            $('#story').focus();
+          }, 1);
           return false;
         }
         //
@@ -63,6 +84,7 @@
         }
         if ($('#story').val()) {
           story = $('#story').val()
+          story = story.trim()
           //var server_title = $('form#story_form').serialize()
           if (mode == 'dev') {
             console.log("This is the new story: " + story)
@@ -113,6 +135,11 @@
 
 <body>
 
+  <!-- banner image -->
+  <div id="banner_image">
+    <img src="/images/fakenews_strip_01.jpg" />
+  </div>
+
   <h1 class="landing"><%= tabtitle %></h1>
 
   <!-- landing  -->
@@ -120,8 +147,8 @@
     <p>
       You're a journalist with a deadline but no news to report.
       <br/>
-      <br/>As we live in a time of fake-news & post-truth, why not fake a story?
-      <br/>Try to fool the Al-Jazeera news-room into broadcasting your fake-news-story!
+      <br/>As you live in a era of fake-news & post-truth, why not make up a story?
+      <br/>Try your best to fool the Al-Jazeera news-room into broadcasting your fake-news-story!
       <br/>
       <br/>Take care to maintain high journalistic standards, or you will be found out...
       <br/>Use capital letters appropriately... Be grammatically correct... No spelling errors!
@@ -133,7 +160,8 @@
   <div id="2" class="landing" style="display:none">
     <p>Input a 'title' of your story... 50 chars max</p>
     <form id="title_form" method="post">
-      <input id="title" <textarea name='titlearea' autocomplete="off" required placeholder="Title..." maxlength="50" rows="1" cols="50"></textarea>
+      <textarea id="title" name="titlearea" class="textarea" rows="1" cols="50" wrap="soft" maxlength="50" autocomplete="off" required placeholder="Title...">
+      </textarea>
       <br/>
       <button>SUBMIT</button>
     </form><br/>
@@ -143,7 +171,8 @@
   <div id="3" class="landing" style="display:none">
     <p>Input the 'phrases' of your story... 280 chars max</p>
     <form id="story_form">
-      <input id="story" <textarea name="storyarea" autocomplete="off" required placeholder="Story..." maxlength="280" rows="6" cols="50"></textarea>
+      <textarea id="story" name="storyarea" class="textarea" rows="6" cols="50" wrap="soft" maxlength="280" flex-wrap="wrap" autocomplete="off" required placeholder="Story...">
+      </textarea>
       <br/>
       <button>SUBMIT</button>
     </form><br/>

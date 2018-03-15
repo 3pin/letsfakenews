@@ -12,6 +12,7 @@ const router = express.Router();
 var NLP_parser_module = require('../modules/NLP_parser_module.js');
 //var image_search_module = require('../modules/image_search_module.js')
 var time_ops = require('../modules/time_ops.js');
+var expletives = ["poo", "poop", "piss", "shit", "willy", "willies", "dick", "dicks", "asshole", "assholes", "arsehole", "arseholes", "vagina", "vaginas", "boob", "boobs", "pussy", "pussys", "cunt", "cunts", "fuck", "shag"]
 
 // serve homepage / index
 router.get('/', (req, res, next) => {
@@ -34,7 +35,38 @@ router.post('/add_title_story', function(req, res) {
   // Get our form values. These rely on the "name" attributes
   title = req.body.title.toUpperCase();
   story = req.body.story;
-  debug_post('Title: ' + title + '\n' + 'Story: ' + story);
+  debug_post('Raw Title: ' + title + '\n' + 'Raw Story: ' + story);
+  //
+  /* remove bad words from title
+  var story_array = story.split(" ");
+  for (m = 0; m < story_array.length; m++) {
+    debug_parse(story_array[i])
+  }
+  var lower_story = story.toLowerCase();
+  var lower_story_array = lower_story.split(" ");
+  for (i = 0; i < story_array.length; i++) {
+    for (z = 0; z < expletives.length; z++) {
+      if (lower_story_array[i] == expletives[z]) {
+        debug_parse('a word match')
+        var word_length = expletives[z].length;
+        debug_parse('word_length: ' + word_length)
+        var replacement_word = "";
+        for (i = 0; i < word_length; i++) {
+          replacement_word = replacement_word.concat("-")
+        }
+        debug_parse('replacement_word: ' + replacement_word)
+        story_array[i] = replacement_word
+        return
+      }
+    }
+  }
+  var temp_story = ""
+  for (p = 0; p < story_array.length; p++) {
+    temp_story.concat(story_array[i])
+  }
+  story = temp_story
+  debug_post('Processed Story: ' + story); */
+
   //
   // parse: STORY downto NOUNS... save to an array... tags eg. ["NN", "NNP", "NNPS", "NNS"]
   var tags = ["NN", "NNP", "NNPS", "NNS"]
