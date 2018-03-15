@@ -5,13 +5,13 @@ if (result.error) {
   throw result.error
   //console.log(result.parsed)
 }
+let debug_startup = require('debug')('startup')
 
 // load in env constiables
+const mode = process.env.MODE
 const port = process.env.PORT
 const uri = process.env.MONGODB_URI
-const mode = process.env.MODE
-
-let debug_startup = require('debug')('startup')
+debug_startup('Port:' + port + ' mode:' + mode + ' db_uri:' + uri + ' db_collection:' + process.env.COLLECTION)
 
 // modules
 const express = require('express');
@@ -24,7 +24,7 @@ const bodyParser = require('body-parser');
 // to connect to database
 const mongo = require('mongodb');
 const monk = require('monk');
-const db = monk('localhost:27017/letsfakenews');
+const db = monk(uri);
 
 // routes
 const index = require('./routes/index');

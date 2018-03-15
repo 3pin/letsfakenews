@@ -1,10 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
-var NLP_parser_module = require('../modules/NLP_parser_module.js');
-//var image_search_module = require('../modules/image_search_module.js')
-var time_ops = require('../modules/time_ops.js');
-
 let debug_get = require('debug')('get');
 let debug_post = require('debug')('post');
 let debug_parse = require('debug')('parse');
@@ -12,6 +5,14 @@ let debug_search = require('debug')('search');
 let debug_save = require('debug')('save');
 let debug_db = require('debug')('db');
 let debug_refresh = require('debug')('refresh_display');
+
+const express = require('express');
+const router = express.Router();
+
+// load middle-ware modules
+var NLP_parser_module = require('../modules/NLP_parser_module.js');
+//var image_search_module = require('../modules/image_search_module.js')
+var time_ops = require('../modules/time_ops.js');
 
 // serve homepage / index
 router.get('/', (req, res, next) => {
@@ -37,7 +38,7 @@ router.post('/add_title_story', function(req, res) {
   debug_post('Title: ' + title + '\n' + 'Story: ' + story);
   //
   // parse: STORY downto NOUNS... save to an array... tags eg. ["NN", "NNP", "NNPS", "NNS"]
-  var tags = ["NNP", "NNPS", "NNS"]
+  var tags = ["NN", "NNP", "NNPS", "NNS"]
   parsed_sentence_array = NLP_parser_module.NLP_parse_words(story, tags)
   for (let pos of parsed_sentence_array) {
     debug_parse('pos: ' + pos)
@@ -76,7 +77,7 @@ router.post('/add_title_story', function(req, res) {
   async.map(parsed_sentence_array, operation, function(err, results) {
     urls = results
     for (i = 0; i < urls.length; i++) {
-      debug_save('Word:' + parsed_sentence_array[i] + ' - Url:' + urls[i])
+      debug_save('Word: ' + parsed_sentence_array[i] + ' --- Url: ' + urls[i])
     }
     //
     // create JSON obj with our data
@@ -91,19 +92,22 @@ router.post('/add_title_story', function(req, res) {
       //use square brackets to set the key to the value of the array element
       jsonObj.content[parsed_sentence_array[i]] = urls[i];
     }
+    debug_db('BOOM')
     var str = JSON.stringify(jsonObj, null, 2); // spacing level = 2
-    debug_save('jsonObj: ' + str)
+    debug_db('jsonObj: ' + str)
     //
-    // save to database - start by setting our internal DB variable
+    // save to database
+    //
+    // set our internal DB variable
     var db = req.db;
     // Set our collection
     var collection = db.get(process.env.COLLECTION);
     // Submit to the DB
     collection.insert(jsonObj, function(err, result) {
       if (err) {
-        console.log(err);
+        debug_db(err);
       } else {
-        debug_save('Document inserted to db successfully');
+        debug_db('Document inserted to db successfully');
       }
     });
     /*
