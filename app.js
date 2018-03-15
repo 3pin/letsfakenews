@@ -1,36 +1,39 @@
-// dev-module to load env constiables
-const dotenv = require('dotenv')
-const result = dotenv.config()
-if (result.error) {
-  throw result.error
-  //console.log(result.parsed)
+// check the env
+var mode = process.env.NODE_ENV
+console.log('Environment: ' + mode)
+if (process.env.NODE_ENV !== 'production') {
+  // dev-module to load env variables
+  const dotenv = require('dotenv')
+  const result = dotenv.config()
+  if (result.error) {
+    throw result.parsed
+  }
 }
-let debug_startup = require('debug')('startup')
 
-// load in env constiables
-const mode = process.env.MODE
-const port = process.env.PORT
-const uri = process.env.MONGODB_URI
-debug_startup('Port:' + port + ' mode:' + mode + ' db_uri:' + uri + ' db_collection:' + process.env.COLLECTION)
+var port = process.env.PORT
+var uri = process.env.MONGODB_URI
+
+const debug_startup = require('debug')('startup')
+debug_startup('Port:' + port + ' mode:' + mode + ' db_uri:' + uri)
 
 // modules
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
 // to connect to database
-const mongo = require('mongodb');
-const monk = require('monk');
-const db = monk(uri);
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk(uri);
 
 // routes
-const index = require('./routes/index');
+var index = require('./routes/index');
 
 // initialize
-const app = express();
+var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -40,7 +43,9 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(cookieParser());
 
 // condense the visible URL address in a client's browser
@@ -49,9 +54,9 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 //app.use('/scripts', express.static(__dirname + '/node_modules/'));
 
 // Make our db accessible to our router
-app.use(function(req,res,next){
-    req.db = db;
-    next();
+app.use(function(req, res, next) {
+  req.db = db;
+  next();
 });
 
 // define routes

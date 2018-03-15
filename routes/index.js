@@ -4,7 +4,6 @@ let debug_parse = require('debug')('parse');
 let debug_search = require('debug')('search');
 let debug_save = require('debug')('save');
 let debug_db = require('debug')('db');
-let debug_refresh = require('debug')('refresh_display');
 
 const express = require('express');
 const router = express.Router();
