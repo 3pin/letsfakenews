@@ -3,7 +3,6 @@
 module.exports = {
 
   NLP_parse_words: function(input_text, pos) {
-    const pos = require('pos');
 
     let debug_module_parse = require('debug')('module_parse');
     var uniqueArray = [];
