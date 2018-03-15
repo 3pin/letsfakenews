@@ -30,7 +30,7 @@ module.exports = {
       debug_module_parse('Word:' + word + ' - Tag:' + tag)
       for (let z of tags) {
         if (tag == z) {
-          console.log(tag + ':' + word)
+          debug_module_parse(tag + ':' + word)
           parsed_word_array.push(word);
         }
       }

@@ -77,10 +77,12 @@ router.post('/add_title_story', function(req, res) {
   }
   //
   // search: fetch a URL for each NOUN
-  var async = require('async');
+  const async = require('async');
+  debug_search('Boom_01')
   var operation = function(input_text, doneCallback) {
     var searchterm = input_text
     var searchterm_url_result
+    debug_search('Boom_02')
     const GoogleImages = require('google-images');
     var custom_search_engine_ID = process.env.CUSTOM_SEARCH_ENGINE_ID;
     var APIkey = process.env.CUSTOM_SEARCH_APIKEY;
@@ -91,6 +93,7 @@ router.post('/add_title_story', function(req, res) {
       safe: 'high',
       imgColorType: 'color'
     }
+    debug_search('Boom_03')
     client.search(searchterm, searchSettings).then(
       function(image_search_results) {
         var urlArray = []
