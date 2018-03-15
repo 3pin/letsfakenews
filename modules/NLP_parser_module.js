@@ -10,17 +10,19 @@ module.exports = {
     // data in... tags eg. ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
     var tags = pos;
     debug_module_parse('tags: ' + tags);
-    debug_module_parse('boom');
+    debug_module_parse('boom_01');
     var text = input_text;
 
     debug_module_parse("Input text to NLP_parse_words: " + text);
 
     // parse according to pos-tags
     var pos = require('pos');
+    debug_module_parse('boom_02');
     var parsed_word_array = [];
     var words = new pos.Lexer().lex(text);
     var tagger = new pos.Tagger();
     var taggedWords = tagger.tag(words);
+    debug_module_parse('boom_03');
     for (let value of taggedWords) {
       var taggedWord = value;
       var word = taggedWord[0];
