@@ -7,7 +7,7 @@ let debug_db = require('debug')('db');
 
 const express = require('express');
 const router = express.Router();
-const pos = require('pos');
+var pos = require('pos');
 
 // load middle-ware modules
 var NLP_parser_module = require('../modules/NLP_parser_module.js');
