@@ -86,14 +86,15 @@ router.post('/add_title_story', function(req, res) {
     const GoogleImages = require('google-images');
     var custom_search_engine_ID = process.env.CUSTOM_SEARCH_ENGINE_ID;
     var APIkey = process.env.CUSTOM_SEARCH_APIKEY;
+    debug_search('Boom_03')
     const client = new GoogleImages(custom_search_engine_ID, APIkey);
+    debug_search('Boom_04')
     var searchSettings = {
       searchType: 'image',
       size: 'xlarge',
       safe: 'high',
       imgColorType: 'color'
     }
-    debug_search('Boom_03')
     client.search(searchterm, searchSettings).then(
       function(image_search_results) {
         var urlArray = []
