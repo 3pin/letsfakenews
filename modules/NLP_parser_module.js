@@ -3,6 +3,7 @@
 module.exports = {
 
   NLP_parse_words: function(input_text, pos) {
+    const pos = require('pos');
 
     let debug_module_parse = require('debug')('module_parse');
     var uniqueArray = [];
@@ -16,7 +17,6 @@ module.exports = {
     debug_module_parse("Input text to NLP_parse_words: " + text);
 
     // parse according to pos-tags
-    var pos = require('pos');
     debug_module_parse('boom_02');
     var parsed_word_array = [];
     var words = new pos.Lexer().lex(text);
