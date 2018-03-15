@@ -16,6 +16,7 @@
     "dotenv": "^5.0.0",
     "ejs": "^2.5.7",
     "express": "~4.14.1",
+    "google-images": "^2.1.0",
     "mongodb": "^2.2.25",
     "monk": "^4.0.0",
     "morgan": "~1.7.0",
