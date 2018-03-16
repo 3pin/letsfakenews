@@ -3,24 +3,28 @@ html, body {
 }
 
 h1 {
-  font-size: 28px;
-  font-weight: bold;
-}
-
-p.landing {
-  font-size: 18px;
-  font-weight: normal;
-}
-
-p.popup_title {
   font-size: 48px;
   font-weight: bold;
 }
 
-.landing {
+.header {
   position: relative;
   text-align: left;
+  font-size: 48px;
+  font-weight: bold;
   left: 20px;
+}
+.landing {
+  font-size: 32px;
+  font-weight: normal;
+  position: relative;
+  text-align: left;
+  left: 20px
+}
+
+.popup_title {
+  font-size: 48px;
+  font-weight: bold;
 }
 
 #banner_image {
@@ -28,6 +32,7 @@ p.popup_title {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 #button_div {
