@@ -8,6 +8,7 @@ h1 {
 }
 
 .button {
+  background: grey;
   padding: 10px;
   border-radius: 10px;
   width: 240px;
@@ -42,14 +43,6 @@ h1 {
 .popup_title {
   font-size: 48px;
   font-weight: bold;
-}
-
-#banner_image {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 }
 
 #button_div {
@@ -102,6 +95,23 @@ h1 {
   width: 100%;
   object-fit: contain;
 }
+
+#banner_image {
+  max-width: 100%;
+  height: auto;
+  /*display: inline-block;*/
+  position: relative;
+  overflow:hidden;
+  /*object-fit: contain;*/
+  /*
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  */
+}
+
 
 .scroll-left {
   /* colour outline */
