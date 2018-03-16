@@ -11,9 +11,18 @@
     function pagestate_ctrl(div_vis_in) {
       var show_div = '#' + div_vis_in
       var hide_div = 'div:not(#' + div_vis_in + ')'
-      $(show_div).show()
       $(hide_div).hide()
-      $("#banner_image").show()
+      $(inputs_container).show();
+      $(banner_image_frame).show();
+      $(show_div).show()
+      if (mode == 'development') {
+        console.log('pagestate val in: ' + div_vis_in)
+      }
+      if (div_vis_in == 1) {
+        //$("#banner_image_frame").show()
+      } else {
+        //$("#banner_image_frame").hide()
+      }
     }
 
     function pagestate_alloff() {
@@ -33,6 +42,7 @@
         url: '/mode',
         success: function(response) {
           mode = response
+          pagestate_ctrl(1)
           console.log('client_mode: ' + mode)
         },
         error: function(request, textStatus, errorThrown) {
@@ -140,14 +150,16 @@
 <body>
 
   <!-- banner image -->
-  <div id="banner_image">
-    <img src="/images/fakenews_strip_01.jpg" />
+  <div id="banner_image_frame">
+    <img id="banner_image" src="/images/fakenews_strip_01.jpg" />
   </div>
+
+  <div id="inputs_container">
 
     <h1 class="public_header">Lets Fake News</h1>
 
     <!-- landing  -->
-    <div id="1" class="public_body">
+    <div id="1" class="public_body" style="display:none">
       <p>
         You're a journalist with a deadline but no news to report.
         <br/>Fake-news... Post-truth... just make up a story!
@@ -187,6 +199,8 @@
       <p>Thank you for your fake-news-story</p>
       <button id="thankyou" name="thankyou" class="button">RETURN</button>
     </div>
+
+  </div>
 
 
 </body>

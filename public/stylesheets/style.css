@@ -23,14 +23,16 @@ h1 {
   font-size: 48px;
   font-weight: bold;
   left: 20px;
+  top: 140px;
 }
 
 .public_body {
+  position: relative;
   font-size: 36px;
   font-weight: normal;
-  position: relative;
   text-align: left;
-  left: 20px
+  left: 20px;
+  top: 120px;
 }
 
 .textarea {
@@ -96,13 +98,30 @@ h1 {
   object-fit: contain;
 }
 
-#banner_image {
-  max-width: 100%;
-  height: auto;
-  /*display: inline-block;*/
+#banner_image_frame {
+  /* colour outline
+  border: 2px solid green;
+  background: black;
+  */
   position: relative;
-  overflow:hidden;
-  margin: auto;
+  /*display: flex;*/
+  width: 100%;
+  height: auto;
+}
+
+#banner_image {
+  /*
+  border: 2px solid black;
+  background: green;
+  max-width: 100%;
+  max-height: 5%;
+  display: inline-block;
+  */
+  position: absolute;
+  width: 100%;
+  height: auto;
+  /*overflow: hidden;
+  margin: auto;*/
   /*object-fit: contain;*/
   /*
   position: relative;
@@ -112,7 +131,6 @@ h1 {
   width: 100%;
   */
 }
-
 
 .scroll-left {
   /* colour outline */
@@ -129,6 +147,8 @@ h1 {
   overflow: hidden;
   white-space: nowrap;
   box-sizing: border-box;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
 }
 
 .scroll-left p {
@@ -147,6 +167,7 @@ h1 {
 }
 
 /* Move it (define the animation) */
+
 @keyframes scroll-left {
   0% {
     text-indent: 100%
