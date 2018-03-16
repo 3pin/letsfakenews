@@ -5,8 +5,11 @@ let debug_search = require('debug')('search');
 let debug_save = require('debug')('save');
 let debug_db = require('debug')('db');
 
+//var mode = process.env.NODE_ENV;
+
 const express = require('express');
 const router = express.Router();
+const client_mode = process.env.CLIENT_DEBUG_MODE
 
 // load middle-ware modules
 var NLP_parser_module = require('../modules/NLP_parser_module.js');
@@ -18,9 +21,15 @@ var expletives = ["poo", "poop", "piss", "shit", "willy", "willies", "dick", "di
 router.get('/', (req, res, next) => {
   debug_get('/GET msg to index page')
   res.render('index', {
-    tabtitle: "LetsFakeNews"
+    tabtitle: "LetsFakeNews:Input"
   });
   //res.send(process.env.MODE);
+});
+
+// serve mode-data to a client
+router.get('/mode', (req, res, next) => {
+  debug_get('/GET mode msg')
+  res.send(client_mode);
 });
 
 // receive title-story info from homepage
@@ -69,7 +78,7 @@ router.post('/add_title_story', function(req, res) {
 
   //
   // parse: STORY downto NOUNS... save to an array... tags eg. ["NN", "NNP", "NNPS", "NNS"]
-  var tags = ["NN", "NNP", "NNPS", "NNS"]
+  var tags = ["NNP", "NNPS", "NNS"]
   debug_parse('test print before entering NLP_parser')
   parsed_sentence_array = NLP_parser_module.NLP_parse_words(story, tags)
   for (let item of parsed_sentence_array) {
@@ -78,23 +87,18 @@ router.post('/add_title_story', function(req, res) {
   //
   // search: fetch a URL for each NOUN
   const async = require('async');
-  debug_search('Boom_01')
   var operation = function(input_text, doneCallback) {
     var searchterm = input_text
     var searchterm_url_result
-    debug_search('Boom_02')
     var custom_search_engine_ID = process.env.CUSTOM_SEARCH_ENGINE_ID;
     var APIkey = process.env.CUSTOM_SEARCH_APIKEY;
     const GoogleImages = require('google-images');
     const client = new GoogleImages(custom_search_engine_ID, APIkey);
-    debug_search('Boom_03')
     var searchSettings = {
       searchType: 'image',
       size: 'xlarge',
-      safe: 'high',
-      imgColorType: 'color'
+      safe: 'high'
     }
-    debug_search('Boom_04')
     client.search(searchterm, searchSettings).then(
       function(image_search_results) {
         var urlArray = []
@@ -128,12 +132,10 @@ router.post('/add_title_story', function(req, res) {
       //use square brackets to set the key to the value of the array element
       jsonObj.content[parsed_sentence_array[i]] = urls[i];
     }
-    debug_db('BOOM')
     var str = JSON.stringify(jsonObj, null, 2); // spacing level = 2
     debug_db('jsonObj: ' + str)
     //
     // save to database
-    //
     // set our internal DB variable
     var db = req.db;
     // Set our collection
@@ -146,24 +148,6 @@ router.post('/add_title_story', function(req, res) {
         debug_db('Document inserted to db successfully');
       }
     });
-    /*
-    collection.insert({
-      "title": title,
-      "story": story,
-      "content": [parsed_sentence_array, urls]
-      //"results": how to save the array of tersm:URLS into the database???
-    }, function(err, doc) {
-      if (err) {
-        // If it failed, return error
-        res.send("There was a problem adding to the database.");
-      } else {
-        // If it saved
-        res.send("Saved to the database.");
-        // And forward to success page
-        //res.render('index', {title: 'Lets Fake News'});
-      }
-    });
-    */
   });
 });
 
@@ -202,7 +186,7 @@ router.get('/display', function(req, res) {
           // parse and send data to client html display-page
           res.render('display', {
             data: data,
-            tabtitle: "Display: LetsFakeNews"
+            tabtitle: "LetsFakeNews:Display"
           });
         }
       });

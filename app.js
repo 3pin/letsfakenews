@@ -12,10 +12,12 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-var port = process.env.PORT || 5000
-var uri = process.env.MONGODB_URI
+const client_mode = process.env.CLIENT_DEBUG_MODE
+const port = process.env.PORT || 5000
+const uri = process.env.MONGODB_URI
+
 var debug_startup = require('debug')('startup')
-debug_startup('Port:' + port + ' mode:' + mode + ' db_uri:' + uri)
+debug_startup('Port:' + port + ' mode:' + mode + + ' client_mode:' + client_mode + ' db_uri:' + uri)
 
 // modules
 const express = require('express');

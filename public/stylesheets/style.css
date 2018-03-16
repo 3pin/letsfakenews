@@ -1,10 +1,4 @@
-body {
-  /*
-  margin: 0;
-  padding: 0;
-  border: 0;
-  height: 100%;
-  width: 100%;*/
+html, body {
   font: Arial Black, sans-serif;
 }
 
@@ -13,17 +7,20 @@ h1 {
   font-weight: bold;
 }
 
-p {
+p.landing {
   font-size: 18px;
   font-weight: normal;
 }
 
-.textarea {
-  /*width: 300px;
-  height: 20px;*/
-  /*overflow: hidden;
-  overflow-wrap: break-word;
-  resize: none;*/
+p.popup_title {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.landing {
+  position: relative;
+  text-align: left;
+  left: 20px;
 }
 
 #banner_image {
@@ -33,82 +30,68 @@ p {
   justify-content: center;
 }
 
-.landing {
+#button_div {
   position: relative;
-  text-align: left;
-  left: 20px;
-}
-
-.video_container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* required
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;*/
-  /* For multi line centering:
-  flex-wrap: wrap;*/
-}
-
-.video_player {
-  height: auto;
-  vertical-align: middle;
-  width: 70%;
-}
-
-.video_overlays {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* required
-  position: relative;*/
-}
-
-#popup_title {
-  text-align: center;
-  position: relative;
-  top: 190px;
-}
-
-#image_frame, #image {
-  border: 2px solid white;
-  background: green;
-  width: 35%;
-  height: 65%;
-  position: relative;
-  bottom: 70px;
-  left: 250px;
-  /*display: flex;
-  align-items: center;
-  justify-content: center;*/
 }
 
 #videoContainer {
+  /* colour outline */
+  /*
   border: 2px solid blue;
+  */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 #videoPlayer {
+  /* colour outline */
+  /*
   border: 2px solid red;
+  */
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+#popup_title {
+  font-size: 40px;
+  position: absolute;
+  bottom: 12%;
+}
+
+#image_frame {
+  /* colour outline */
+  /*
+  border: 2px solid white;
+  background: white;
+  */
+  position: absolute;
+  top: 8%;
+  left: 2%;
+  width: 54%;
+  height: 62%;
+}
+
+#image {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 .scroll-left {
-  /* marquee box outline */
-  border: 1px solid #000;
+  /* colour outline */
+  /*
+  border: 1px solid white;
+  */
   margin: 25px auto;
-  /* position */
-  position: relative;
-  width: 120%;
+  /* location */
+  position: absolute;
+  bottom: 12%;
+  width: 100%;
   height: 90px;
-  top: 190px;
-  right: 220px;
   /* text layout in marquee */
   overflow: hidden;
   white-space: nowrap;
@@ -116,16 +99,18 @@ p {
 }
 
 .scroll-left p {
-  font-size: 48px;
-  width: 100%;
+  font-size: 46px;
+  width: 110%;
   height: 100%;
-  margin: 0;
   line-height: 100px;
+  margin: 0;
   text-align: center;
-  /* Starting position
-  transform: translateX(100%);*/
+  /* Starting position */
+  /*
+  transform: translateX(100%);
+  */
   /* Apply animation to this element */
-  animation: scroll-left 24s linear infinite;
+  animation: scroll-left 23.5s linear infinite;
 }
 
 /* Move it (define the animation) */
@@ -134,6 +119,15 @@ p {
     text-indent: 100%
   }
   100% {
-    text-indent: -100%
+    text-indent: -200%
+  }
+}
+
+@keyframes scroll-left-alt {
+  0% {
+    translateX: 100%
+  }
+  100% {
+    translateX: -100%
   }
 }

@@ -13,32 +13,27 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- load functions -->
   <script type="text/javascript">
-    function pagestate_ctrl(pagestate_in) {
-      var show_page = '#' + pagestate_in
-      var hide_page = 'div:not(#' + pagestate_in + ')'
-      $(show_page).show()
-      $(hide_page).hide()
-      $("#banner_image").show()
-    }
-
-    function pagestate_alloff() {
-      $('div:not(#0)').hide()
-      $("#banner_image").show()
-    }
-
     function timedRefresh(timeoutPeriod) {
       setTimeout("location.reload(true);", timeoutPeriod);
     }
   </script>
   <!-- load documentReady jQuery methods -->
   <script>
+    // ENV mode for console.logging
+    var mode
     $(document).ready(function() {
-
-      localStorage.debug = 'process:debug_datain;debug_setup'
-      debug_datain = debug('process:debug_datain');
-      debug_setup = debug('process:debug_setup');
-      debug_display = debug('process:debug_display');
-
+      //Submit request for systems ENV-mode:
+      $.ajax({
+        type: 'GET',
+        url: '/mode',
+        success: function(response) {
+          mode = response
+          console.log('client_mode: ' + mode)
+        },
+        error: function(request, textStatus, errorThrown) {
+          alert('Failure');
+        }
+      });
       // array to store the image-URLS
       var urls = []
       // array to stores a time-marker per image-URL
@@ -50,144 +45,157 @@
       // display-duration for each image-url in the array
       var pic_duration;
       // define time-regions for pop-up-title, text-display, image-display
-      var popupStart = 6.23;
-      var popupEnd = 11.21;
+      var popupStart = 6.2;
+      var popupEnd = 11.3;
       // time-period during which popup-title is displayed
       var popup_duration = popupEnd - popupStart;
-      var imagesStart = 17.13;
-      var imagesEnd = 41.11;
+      var imagesStart = 17.6;
+      var imagesEnd = 41.1;
       // time-period during which images/story are displayed
       var image_duration = imagesEnd - imagesStart;
+      // current video playback time
+      var currentTime
 
       // on startup metadata save vid_duration
       var vid = document.getElementById("videoPlayer");
       vid.onloadedmetadata = function() {
-        debug_setup('First Page Visit');
-
-        var mode = 'dev'; // otherwise set mode = 'prod'
+        if (mode == 'development') {
+          console.log('First Page Visit');
+        }
         // parse returned JSON from database
         var data = <%-JSON.stringify(data)%>;
-        debug_datain(data);
+        if (mode == 'development') {
+          console.log(data);
+        }
         var title = data.title;
         var story = data.story;
         var content = data.content;
-        debug_datain("Title:" + title + '\n' + 'Story:' + story)
-
+        if (mode == 'development') {
+          console.log("Title:" + title + '\n' + 'Story:' + story);
+        }
         // pass title/story text into innerHTML
         document.getElementById("popup_title_text").innerHTML = title;
-        document.getElementById("panel_story_text").innerHTML = story;
         document.getElementById("scroller").innerHTML = story;
-
         // load all image-urls into an array
         for (var key in content) {
           urls.push(content[key]);
-          debug_datain(content[key]);
+          if (mode == 'development') {
+            console.log(content[key]);
+          }
         }
-
         // calculate durations/periods
         pic_duration = image_duration / urls.length;
         vid_duration = vid.duration;
-        debug_setup("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
-
+        if (mode == 'development') {
+          console.log("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
+        }
         // populate the marker-array with durations/periods/timecodes
         for (i = 1; i <= urls.length; i++) {
           markers.push(imagesStart + pic_duration * i);
-          debug_setup('marker: ' + markers[i - 1]);
+          if (mode == 'development') {
+            console.log('marker: ' + markers[i - 1]);
+          }
         }
-        debug_setup('No of image: ' + urls.length);
-
+        if (mode == 'development') {
+          console.log('No of image: ' + urls.length);
+        }
         // load the first image-URL picture
         url_index = 0
-        debug_display('loading the first image: ' + urls[url_index]);;
+        if (mode == 'development') {
+          console.log('loading the first image: ' + urls[url_index]);
+        }
         document.getElementById("image").src = urls[url_index];
       };
 
       // during playback report currenttime
       $("#videoPlayer").on("timeupdate", function(event) {
-        debug_display('currentTime: ' + this.currentTime)
-        var currentTime = this.currentTime;
+        if (mode == 'development') {
+          console.log('currentTime: ' + this.currentTime);
+        }
+        currentTime = this.currentTime;
         if (currentTime >= markers[url_index]) {
           url_index++;
           if (url_index < urls.length) {
-            debug_display('New url_index: ' + url_index)
+            if (mode == 'development') {
+              console.log('New url_index: ' + url_index);
+            }
             document.getElementById("image").src = urls[url_index];
           }
         }
         if (currentTime <= popupStart) {
-          $("#popup_title").hide()
-          $("#image").hide()
-          $("#panel_story").hide()
-          $("#panel_title").hide()
-          //
+          //jump to time during DEV mode
           //this.currentTime = 7.0;
           //this.currentTime = 16.0;
-          //
         } else if (currentTime >= popupStart && currentTime <= popupEnd) {
           $("#popup_title").show()
         } else if (currentTime >= imagesStart && currentTime <= imagesEnd) {
-          // display main_titlein panel
-          //$("#image_frame").show()
+          $("#image_frame").show()
           $("#image").show()
           $("#scroller_div").show()
         } else {
           $("#popup_title").hide()
           $("#image_frame").hide()
           $("#image").hide()
-          $("#panel_story").hide()
           $("#panel_title").hide()
           $("#scroller_div").hide()
         }
       });
-
       // detect when video-playback complete.. if true request new-story db-data
       $("#videoPlayer").on("ended", function(event) {
-        debug_display('video ended... seeking new db-data ')
+        if (mode == 'development') {
+          console.log('video ended... seeking new db-data ');
+        }
         //location.reload(true);
         //window.location.reload(true);
         $.get("request_new_story", function(data, status) {
-          debug_setup('Refreshed Page');
-          debug_datain(data);
-
+          if (mode == 'development') {
+            console.log('Refreshed Page');
+            console.log(data);
+          }
           // on-re-start metadata save vid_duration
           var vid = document.getElementById('videoPlayer');
           vid.onloadedmetadata = function() {
-
             //reset arrays
             urls = []
             markers = []
-
             // parse in data
             title = data.title;
             story = data.story;
             content = data.content;
-            debug_datain("New title:" + title + '\n' + 'New story:' + story)
-
+            if (mode == 'development') {
+              console.log("New title:" + title + '\n' + 'New story:' + story);
+            }
             // pass title/story text into innerHTML
             document.getElementById("popup_title_text").innerHTML = title;
-            document.getElementById("panel_story_text").innerHTML = story;
             document.getElementById("scroller").innerHTML = story;
-
             // load all image-urls into an array
             for (var key in content) {
               urls.push(content[key]);
-              debug_datain(content[key]);
+              if (mode == 'development') {
+                console.log(content[key]);
+              }
             }
-
             // calculate durations/periods
             pic_duration = image_duration / urls.length;
             vid_duration = vid.duration;
-            debug_setup("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
-
+            if (mode == 'development') {
+              console.log("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
+            }
             // populate the marker-array with durations/periods/timecodes
             for (i = 1; i <= urls.length; i++) {
               markers.push(imagesStart + pic_duration * i);
-              debug_setup('marker: ' + markers[i - 1]);
+              if (mode == 'development') {
+                console.log('marker: ' + markers[i - 1]);
+              }
             }
-            debug_setup('No of image: ' + urls.length);
-
+            if (mode == 'development') {
+              console.log('No of image: ' + urls.length);
+            }
             // load the first image-URL picture
             url_index = 0
-            debug_display('loading the first image: ' + urls[url_index]);
+            if (mode == 'development') {
+              console.log('loading the first image: ' + urls[url_index]);
+            }
             document.getElementById("image").src = urls[url_index];
           };
 
@@ -207,8 +215,10 @@
   <script>
     $(function() {
       $('#btnFullscreen').click(function() {
-        debug_setup('click')
-        screenfull.toggle($('#videoPlayer')[0]);
+        if (mode == 'development') {
+          console.log('click');
+        }
+        screenfull.toggle($('#videoContainer')[0]);
         //screenfull.toggle($('#videoContainer')[0]);
         //screenfull.toggle($('#videoPlayer')[0]);
         //screenfull.toggle($('#videoMessage')[0]);
@@ -232,45 +242,38 @@
   </script>
 
   <!-- video block... blue outline-colour  to mute add attr: muted controls="true"  -->
-  <div id="videoContainer" class="video_container">
+  <div id="videoContainer" class="parent">
 
-    <video id="videoPlayer" class="video_player" preload="metadata" autoplay="true" controls> video not supported
+    <video id="videoPlayer" preload="metadata" autoplay="true" controls> video not supported
         <source src="/videos/aljazeera-desktop.m4v"></source>
         </video>
 
-    <!-- overlays -->
-    <div id="videoOverlays" class="video_overlays">
+    <!-- popup title text -->
+    <div id="popup_title" style="display:none">
+      <p id="popup_title_text">Default popup-title text... </p>
+    </div>
 
-      <!-- image frame outline -->
-      <div id="image_frame" style="display:none">
-      </div>
-
-      <!-- popup title text -->
-      <div id="popup_title" style="display:none">
-        <p id="popup_title_text">Default popup-title text... </p>
-      </div>
-
-      <!-- panel title story -->
-      <div id="panel_story" style="display:none">
-        <p id="panel_story_text">Default panel-story text... </p>
-      </div>
-
+    <!-- image frame outline -->
+    <div id="image_frame" style="display:none">
       <!-- image url overlays -->
       <img id="image" style="display:none" />
-      <!-- scrolling text overlay -->
-      <div id="scroller_div" class="scroll-left" style="display:none">
-        <p id="scroller">Default scrolling story text... </p>
-      </div>
-      <!-- end overlays -->
     </div>
+
+    <!-- scrolling text overlay -->
+    <div id="scroller_div" class="scroll-left" style="display:none">
+      <p id="scroller">Default scrolling story text... </p>
+    </div>
+
 
     <!-- end video block -->
   </div>
 
   <!-- fullscreen toggle button -->
-  <p>
-    <button id="btnFullscreen" type="button">Fullscreen</button>
-  </p>
+  <div id="button_div">
+    <p>
+      <button id="btnFullscreen" type="button">Fullscreen</button>
+    </p>
+  </div>
 
 </body>
 

@@ -3,7 +3,6 @@
 
 <head>
   <title>
-    Create:
     <%= tabtitle %>
   </title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
@@ -23,10 +22,23 @@
     }
   </script>
   <script>
-    var mode = 'dev' // otherwise set mode = 'prod'
+    // ENV mode for console.logging
+    var mode
     var title
     var story
     $(document).ready(function() {
+      //Submit request for systems ENV-mode:
+      $.ajax({
+        type: 'GET',
+        url: '/mode',
+        success: function(response) {
+          mode = response
+          console.log('client_mode: ' + mode)
+        },
+        error: function(request, textStatus, errorThrown) {
+          alert('Failure');
+        }
+      });
       // disable RETURN key in text areas
       document.getElementById('title').addEventListener('keydown', function(k) {
         if (k.keyCode == 13) {
@@ -42,52 +54,52 @@
       });
       // function when data output from index-page
       $('#1').click(function() {
-        if (mode == 'dev') {
+        if (mode == 'development') {
           console.log('proceed button pressed')
         }
         pagestate_ctrl(2)
         setTimeout(function() {
-          $('#title').focus();
+          $('#story').focus();
         }, 1);
         return false;
       });
       // function when data output from title-page
       $('#2').submit(function(e) {
         e.preventDefault();
-        if (mode == 'dev') {
-          console.log('title submitted')
+        if (mode == 'development') {
+          console.log('story submitted')
         }
-        if ($('#title').val()) {
-          title = $('#title').val()
-          title = title.trim()
-          if (mode == 'dev') {
-            console.log("This is the new title: " + title)
+        if ($('#story').val()) {
+          story = $('#story').val()
+          story = story.trim()
+          if (mode == 'development') {
+            console.log("This is the new story: " + story)
           }
           pagestate_ctrl(3)
           setTimeout(function() {
-            $('#story').focus();
+            $('#title').focus();
           }, 1);
           return false;
         }
         //
         else {
-          if (mode == 'dev') {
-            console.log("You have not entered a valid title yet")
+          if (mode == 'development') {
+            console.log("You have not entered a valid story yet")
           }
         }
       });
       // function when data output from story-page
       $('#3').submit(function(e) {
         //e.preventDefault();
-        if (mode == 'dev') {
-          console.log('story submitted')
+        if (mode == 'development') {
+          console.log('title submitted')
         }
-        if ($('#story').val()) {
-          story = $('#story').val()
-          story = story.trim()
+        if ($('#title').val()) {
+          title = $('#title').val()
+          title = title.trim()
           //var server_title = $('form#story_form').serialize()
-          if (mode == 'dev') {
-            console.log("This is the new story: " + story)
+          if (mode == 'development') {
+            console.log("This is the new title: " + title)
           }
           //Submit the form via Ajax POST request:
           $.ajax({
@@ -99,28 +111,20 @@
               story: story
             }),
             dataType: 'JSON'
-            /*
-            success: function(response) {
-              alert('Success');
-            },
-            error: function(request, textStatus, errorThrown) {
-              alert('Failure');
-            }
-            */
           });
           pagestate_ctrl(4)
           return false;
         }
         //
         else {
-          if (mode == 'dev') {
+          if (mode == 'development') {
             console.log("You have not entered a valid story yet")
           }
         }
       });
       // function when data output from thankyou-page
       $('#4').click(function() {
-        if (mode == 'dev') {
+        if (mode == 'development') {
           console.log('return button pressed on thankyou-page')
         }
         $('#story').val("");
@@ -140,38 +144,38 @@
     <img src="/images/fakenews_strip_01.jpg" />
   </div>
 
-  <h1 class="landing"><%= tabtitle %></h1>
+  <h1 class="landing">Lets Fake News</h1>
 
   <!-- landing  -->
   <div id="1" class="landing">
     <p>
       You're a journalist with a deadline but no news to report.
+      <br/>Fake-news... Post-truth... why not make up a story?
       <br/>
-      <br/>As you live in a era of fake-news & post-truth, why not make up a story?
-      <br/>Try your best to fool the Al-Jazeera news-room into broadcasting your fake-news-story!
+      <br/>Try your best to trick the Al-Jazeera news-room into broadcasting your fake-news-story!
+      <br/>For them to believe, you must take maintain high journalistic standards...
       <br/>
-      <br/>Take care to maintain high journalistic standards, or you will be found out...
-      <br/>Use capital letters appropriately... Be grammatically correct... No spelling errors!
+      <br/>So use capital letters appropriately... be grammatically correct... and no spelling errors!
     </p>
     <button id="gototitle" name="gototitle" class="float-left submit-button">PROCEED</button>
   </div>
 
-  <!-- title_input  -->
+  <!-- story_input  -->
   <div id="2" class="landing" style="display:none">
-    <p>Input a 'title' of your story... 50 chars max</p>
-    <form id="title_form" method="post">
-      <textarea id="title" name="titlearea" class="textarea" rows="1" cols="50" wrap="soft" maxlength="50" autocomplete="off" required placeholder="Title...">
-      </textarea>
+    <p>Input the 'phrases' of your story... 280 chars max</p>
+    <form id="story_form">
+      <textarea id="story" name="storyarea" class="textarea" rows="6" cols="50" wrap="soft" maxlength="280" flex-wrap="wrap" autocomplete="off" required placeholder="Story...">
+        </textarea>
       <br/>
       <button>SUBMIT</button>
     </form><br/>
   </div>
 
-  <!-- story_input  -->
+  <!-- title_input  -->
   <div id="3" class="landing" style="display:none">
-    <p>Input the 'phrases' of your story... 280 chars max</p>
-    <form id="story_form">
-      <textarea id="story" name="storyarea" class="textarea" rows="6" cols="50" wrap="soft" maxlength="280" flex-wrap="wrap" autocomplete="off" required placeholder="Story...">
+    <p>Input a 'title' of your story... 40 chars max</p>
+    <form id="title_form" method="post">
+      <textarea id="title" name="titlearea" class="textarea" rows="1" cols="50" wrap="soft" maxlength="40" autocomplete="off" required placeholder="Title...">
       </textarea>
       <br/>
       <button>SUBMIT</button>
