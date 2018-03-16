@@ -102,6 +102,7 @@ h1 {
   /*display: inline-block;*/
   position: relative;
   overflow:hidden;
+  margin: auto;
   /*object-fit: contain;*/
   /*
   position: relative;
