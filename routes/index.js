@@ -17,6 +17,11 @@ var NLP_parser_module = require('../modules/NLP_parser_module.js');
 var time_ops = require('../modules/time_ops.js');
 var expletives = ["poo", "poop", "piss", "shit", "willy", "willies", "dick", "dicks", "asshole", "assholes", "arsehole", "arseholes", "vagina", "vaginas", "boob", "boobs", "pussy", "pussys", "cunt", "cunts", "fuck", "shag"]
 
+// array of the entry_times of each database entry
+var db_entry_times
+// db entry to read
+var entry_to_read = 0;
+
 // serve homepage / index
 router.get('/', (req, res, next) => {
   debug_get('/GET msg to index page')
@@ -146,6 +151,20 @@ router.post('/add_title_story', function(req, res) {
         debug_db(err);
       } else {
         debug_db('Document inserted to db successfully');
+        //
+        // return an array with the list of all the '_id' in the test_collection
+        collection.find({}, {
+          fields: {
+            _id: 1
+          }
+        }, function(err, data) {
+          if (err) {
+            debug_db(err);
+          } else {
+            //increment the db_entry to read for next time around
+            entry_to_read = data.length - 1;
+          }
+        });
       }
     });
   });
@@ -169,13 +188,21 @@ router.get('/display', function(req, res) {
       debug_db(err);
     } else {
       // create an array of all the '_ids' in the collection
-      var times = data;
+      db_entry_times = data;
+      debug_db('About to read entry:' + entry_to_read + ' of:' + db_entry_times.length)
+      /*
       // pick a random entry with which to pick an '_id' entry from the array
-      var randomnumber = Math.floor(Math.random() * (times.length));
-      //var randomnumber = times.length - 1
-      // pick a random '_id'
-      var query = times[randomnumber];
+      var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
+      entry_to_read = randomnumber
+      */
+      var query = db_entry_times[entry_to_read];
       var id = query._id
+      //increment the db_entry to read for next time around
+      if (entry_to_read < db_entry_times.length - 1) {
+        entry_to_read++
+      } else {
+        entry_to_read = 0;
+      }
       // return the randomly-picked JSON from the db
       collection.findOne({
         _id: id
@@ -212,13 +239,21 @@ router.get('/request_new_story', (req, res, next) => {
       debug_db(err);
     } else {
       // create an array of all the '_ids' in the collection
-      var times = data;
+      db_entry_times = data;
+      debug_db('About to read entry:' + entry_to_read + ' of:' + db_entry_times.length)
+      /*
       // pick a random entry with which to pick an '_id' entry from the array
-      var randomnumber = Math.floor(Math.random() * (times.length));
-      //var randomnumber = times.length - 1
-      // pick a random '_id'
-      var query = times[randomnumber];
+      var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
+      entry_to_read = randomnumber
+      */
+      var query = db_entry_times[entry_to_read];
       var id = query._id
+      //increment the db_entry to read for next time around
+      if (entry_to_read < db_entry_times.length - 1) {
+        entry_to_read++
+      } else {
+        entry_to_read = 0;
+      }
       // return the randomly-picked JSON from the db
       collection.findOne({
         _id: id
@@ -226,7 +261,7 @@ router.get('/request_new_story', (req, res, next) => {
         if (err) {
           debug_db(err)
         } else {
-          debug_db(data)
+          debug_db(data.title)
           // parse and send data to client html display-page
           res.send(data);
         }
