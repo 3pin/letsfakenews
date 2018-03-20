@@ -219,19 +219,21 @@ router.get('/display', function(req, res) {
       // create an array of all the '_ids' in the collection
       db_entry_times = data;
       debug_db('About to read entry:' + entry_to_read + ' of:' + db_entry_times.length)
-      /*
+
       // pick a random entry with which to pick an '_id' entry from the array
       var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
       entry_to_read = randomnumber
-      */
+
       var query = db_entry_times[entry_to_read];
       var id = query._id
+      /*
       //increment the db_entry to read for next time around
       if (entry_to_read < db_entry_times.length - 1) {
         entry_to_read++
       } else {
         entry_to_read = 0;
       }
+      */
       // return the randomly-picked JSON from the db
       collection.findOne({
         _id: id
@@ -270,19 +272,14 @@ router.get('/request_new_story', (req, res, next) => {
       // create an array of all the '_ids' in the collection
       db_entry_times = data;
       debug_db('About to read entry:' + entry_to_read + ' of:' + db_entry_times.length)
-      /*
+
       // pick a random entry with which to pick an '_id' entry from the array
       var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
       entry_to_read = randomnumber
-      */
+
       var query = db_entry_times[entry_to_read];
       var id = query._id
       //increment the db_entry to read for next time around
-      if (entry_to_read < db_entry_times.length - 1) {
-        entry_to_read++
-      } else {
-        entry_to_read = 0;
-      }
       // return the randomly-picked JSON from the db
       collection.findOne({
         _id: id

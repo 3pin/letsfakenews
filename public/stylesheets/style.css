@@ -164,7 +164,7 @@ h1 {
   transform: translateX(100%);
   */
   /* Apply animation to this element  23.5s */
-  animation: scroll-left 23.5s linear infinite;
+  animation: scroll-left 24s linear infinite;
 }
 
 /* Move it (define the animation) */
