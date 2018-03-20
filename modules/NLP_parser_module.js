@@ -9,34 +9,58 @@ module.exports = {
 
     // data in... tags eg. ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
     var tags = pos_tags;
-    debug_module_parse('tags: ' + tags);
-    var text = input_text;
+    debug_module_parse('Tags: ' + tags + '\n');
+    var text = input_text
 
-    debug_module_parse("Input text to NLP_parse_words: " + text);
+    // simple NLP pos-tagger
+    const pos = require('pos');
 
     // parse according to pos-tags
-    const pos = require('pos');
     var parsed_word_array = [];
     var words = new pos.Lexer().lex(text);
     var tagger = new pos.Tagger();
+
+    //populate an array with key:values for postag:word
     var taggedWords = tagger.tag(words);
-    for (let value of taggedWords) {
-      var taggedWord = value;
+
+    // setup empty arrays to store parsed... index_in_story:word
+    var final_indexes = [];
+    var final_words = [];
+    for (i = 0; i < taggedWords.length; i++) {
+      var taggedWord = taggedWords[i];
       var word = taggedWord[0];
       var tag = taggedWord[1];
-      debug_module_parse('Word:' + word + ' - Tag:' + tag)
+      //debug_module_parse('Word:' + word + ' - Tag:' + tag)
       for (let z of tags) {
         if (tag == z) {
           debug_module_parse(tag + ':' + word)
-          parsed_word_array.push(word);
+          final_indexes.push(i);
+          final_words.push(word);
         }
       }
     }
-    uniqueArray = parsed_word_array.filter(function(item, pos) {
-      return parsed_word_array.indexOf(item) == pos;
+
+    //combine compound-nouns
+    var output_word = [];
+    output_word.push(final_words[0])
+    for (i = 1; i < final_indexes.length; i++) {
+      if (final_indexes[i - 1] + 1 == final_indexes[i]) {
+        output_word[output_word.length - 1] = output_word[output_word.length - 1] + "-" + final_words[i]
+      } else {
+        output_word.push(final_words[i])
+      }
+    }
+
+    for (i = 0; i < output_word.length; i++) {
+      debug_module_parse('Compounded-Output: ' + output_word[i])
+    }
+
+    //the returned array of unique nouns extraced from the pos:tagger
+    var uniqueArray = output_word.filter(function(item, pos) {
+      return output_word.indexOf(item) == pos;
     })
     for (let unique_word of uniqueArray) {
-      debug_module_parse('unique_word: ' + unique_word);
+      debug_module_parse('Unique-Words: ' + unique_word);
     }
     return uniqueArray
   },
@@ -52,11 +76,11 @@ module.exports = {
     debug_module_parse("Input text: " + text)
 
     // handle un-finished ends on the input-string
-    var lastChar = text.charAt(text.length-1)
+    var lastChar = text.charAt(text.length - 1)
     if (lastChar === " ") {
-      text = text.substring(0, text.length-1)
+      text = text.substring(0, text.length - 1)
     }
-    if (lastChar !== "." || lastChar !== "!" || lastChar !== "?" ) {
+    if (lastChar !== "." || lastChar !== "!" || lastChar !== "?") {
       text = text + "."
     }
 

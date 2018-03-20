@@ -12,6 +12,7 @@
     "async": "^2.6.0",
     "body-parser": "~1.16.0",
     "cookie-parser": "~1.4.3",
+    "corenlp": "^1.4.2",
     "debug": "^2.6.9",
     "dotenv": "^5.0.0",
     "ejs": "^2.5.7",
