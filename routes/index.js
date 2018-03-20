@@ -101,7 +101,6 @@ router.post('/add_title_story', function(req, res) {
     const client = new GoogleImages(custom_search_engine_ID, APIkey);
     var searchSettings = {
       searchType: 'image',
-      size: 'xlarge',
       safe: 'high'
     }
     client.search(searchterm, searchSettings).then(
