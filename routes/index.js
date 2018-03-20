@@ -169,6 +169,36 @@ router.post('/add_title_story', function(req, res) {
   });
 });
 
+// receive title-story info from homepage
+router.post('/add_feedback', function(req, res) {
+  //
+  //variables to be set and later saved to a
+  var feedback;
+  //
+  // Get our form values. These rely on the "name" attributes
+  feedback = req.body.feedback;
+  debug_post('Raw feedback: ' + feedback);
+  //
+  // save to database
+  // create JSON obj with our data
+  var jsonObj = {}
+  jsonObj.time = time_ops.current_time().datetime
+  jsonObj.fedback = feedback
+  // set our internal DB variable
+  var db = req.db;
+  // Set our collection
+  debug_db(process.env.FEEDBACK);
+  var collection = db.get(process.env.FEEDBACK);
+  // Submit to the DB
+  collection.insert(jsonObj, function(err, result) {
+    if (err) {
+      debug_db(err);
+    } else {
+      debug_db('Feedback inserted to db successfully');
+    }
+  });
+});
+
 // serve display page (pass it db-data)
 router.get('/display', function(req, res) {
   debug_get('recvd /display /get request')

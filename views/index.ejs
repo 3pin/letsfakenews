@@ -35,6 +35,7 @@
     var mode
     var title
     var story
+    var feedback
     $(document).ready(function() {
       //Submit request for systems ENV-mode:
       $.ajax({
@@ -133,15 +134,56 @@
         }
       });
       // function when data output from thankyou-page
-      $('#4').click(function() {
+      $('#Goto_Start').click(function() {
         if (mode == 'development') {
-          console.log('return button pressed on thankyou-page')
+          console.log('Goto_Start button pressed on thankyou-page')
         }
         $('#story').val("");
         $('#title').val("");
         pagestate_ctrl(1)
         return false;
       });
+      // function when data output from thankyou-page
+      $('#Goto_Feedback').click(function() {
+        if (mode == 'development') {
+          console.log('Goto_Feedback button pressed on thankyou-page')
+        }
+        pagestate_ctrl(5)
+        return false;
+      });
+      // function when data output from feedback-page
+      $('#5').submit(function(e) {
+        e.preventDefault();
+        if (mode == 'development') {
+          console.log('Feedback submitted')
+        }
+        if ($('#feedback').val()) {
+          feedback = $('#feedback').val()
+          feedback = feedback.trim()
+          if (mode == 'development') {
+            console.log("This is the feedback: " + feedback)
+          }
+          //Submit the form via Ajax POST request:
+          $.ajax({
+            type: 'POST',
+            url: '/add_feedback',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              feedback: feedback
+            }),
+            dataType: 'JSON'
+          });
+          pagestate_ctrl(4)
+          return false;
+        }
+        //
+        else {
+          if (mode == 'development') {
+            console.log("You have not entered valid feedback yet")
+          }
+        }
+      });
+
     });
   </script>
 
@@ -196,8 +238,24 @@
 
     <!-- thankyou  -->
     <div id="4" class="public_body" style="display:none">
-      <p>Thank you for your fake-news-story</p>
-      <button id="thankyou" name="thankyou" class="button">RETURN</button>
+      <p>Thank you for your fake-news-story.
+        <br/>Feel free to leave feedback or start again.
+      </p>
+      <button id="Goto_Start" name="thankyou" class="button">RESTART</button>
+      <br/>
+      <button id="Goto_Feedback" name="feedback" class="button">FEEDBACK</button>
+
+    </div>
+
+    <!-- feedback_input  -->
+    <div id="5" class="public_body" style="display:none">
+      <p>Leave feedback for the artist/designers... 280 chars max</p>
+      <form id="feedback_form">
+        <textarea id="feedback" name="feedbackarea" class="textarea" rows="6" cols="30" wrap="soft" maxlength="280" flex-wrap="wrap" autocomplete="off" required placeholder="Story...">
+        </textarea>
+        <br/>
+        <button class="button">SUBMIT</button>
+      </form><br/>
     </div>
 
   </div>
