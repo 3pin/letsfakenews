@@ -148,8 +148,8 @@ h1 {
   overflow: hidden;
   white-space: nowrap;
   box-sizing: border-box;
-  padding-left: 1.5em;
-  padding-right: 1.5em;
+  padding-left: 2em;
+  padding-right: 2em;
 }
 
 .scroll-left p {
@@ -163,8 +163,8 @@ h1 {
   /*
   transform: translateX(100%);
   */
-  /* Apply animation to this element */
-  animation: scroll-left 23.5s linear infinite;
+  /* Apply animation to this element  23.5s */
+  animation: scroll-left 20s linear infinite;
 }
 
 /* Move it (define the animation) */
