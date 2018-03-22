@@ -63,7 +63,7 @@
           return false;
         }
       });
-      // function when data output from index-page
+      // index-page
       $('#1').click(function() {
         if (mode == 'development') {
           console.log('proceed button pressed')
@@ -74,7 +74,7 @@
         }, 1);
         return false;
       });
-      // function when data output from title-page
+      // submission from story page
       $('#2').submit(function(e) {
         e.preventDefault();
         if (mode == 'development') {
@@ -99,7 +99,7 @@
           }
         }
       });
-      // function when data output from story-page
+      // submission from title-page
       $('#3').submit(function(e) {
         //e.preventDefault();
         if (mode == 'development') {
@@ -133,7 +133,7 @@
           }
         }
       });
-      // function when data output from thankyou-page
+      // goto index-page
       $('#Goto_Start').click(function() {
         if (mode == 'development') {
           console.log('Goto_Start button pressed on thankyou-page')
@@ -143,7 +143,7 @@
         pagestate_ctrl(2)
         return false;
       });
-      // function when data output from thankyou-page
+      // goto feedback-page
       $('#Goto_Feedback').click(function() {
         if (mode == 'development') {
           console.log('Goto_Feedback button pressed on thankyou-page')
@@ -151,7 +151,7 @@
         pagestate_ctrl(5)
         return false;
       });
-      // function when data output from feedback-page
+      // submission from feedback-page
       $('#5').submit(function(e) {
         e.preventDefault();
         if (mode == 'development') {
@@ -227,9 +227,9 @@
 
     <!-- title_input  -->
     <div id="3" class="public_body" style="display:none">
-      <p>Input a 'title' of your story... 40 chars max</p>
+      <p>Input a 'title' of your story... 30 chars max</p>
       <form id="title_form" method="post">
-        <textarea id="title" name="titlearea" class="textarea" rows="1" cols="30" wrap="soft" maxlength="40" autocomplete="off" required placeholder="Title...">
+        <textarea id="title" name="titlearea" class="textarea" rows="1" cols="30" wrap="soft" maxlength="30" autocomplete="off" required placeholder="Title...">
       </textarea>
         <br/>
         <button class="button">SUBMIT</button>
