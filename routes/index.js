@@ -15,17 +15,15 @@ const client_mode = process.env.CLIENT_DEBUG_MODE
 var NLP_parser_module = require('../modules/NLP_parser_module.js');
 //var image_search_module = require('../modules/image_search_module.js')
 var time_ops = require('../modules/time_ops.js');
-var expletives = ["poo", "poop", "piss", "shit", "willy", "willies", "dick", "dicks", "asshole", "assholes", "arsehole", "arseholes", "vagina", "vaginas", "boob", "boobs", "pussy", "pussys", "cunt", "cunts", "fuck", "shag"]
 
 //read-mode, new_story || random_story
-var db_mode = 'random_story';
+var db_mode = 'new_story';
 // array of the entry_times of each database entry
 var db_entry_times;
 // db entry to read
 var entry_to_read;
 // newest_entry_read
 var newest_entry_read = 0;
-
 
 // serve homepage / index
 router.get('/', (req, res, next) => {
@@ -57,6 +55,7 @@ router.post('/add_title_story', function(req, res) {
   debug_post('Raw Title: ' + title + '\n' + 'Raw Story: ' + story);
   //
   /* remove bad words from title
+  var expletives = ["poo", "poop", "piss", "shit", "willy", "willies", "dick", "dicks", "asshole", "assholes", "arsehole", "arseholes", "vagina", "vaginas", "boob", "boobs", "pussy", "pussys", "cunt", "cunts", "fuck", "shag"]
   var story_array = story.split(" ");
   for (m = 0; m < story_array.length; m++) {
     debug_parse(story_array[i])
@@ -141,7 +140,10 @@ router.post('/add_title_story', function(req, res) {
     }
     var str = JSON.stringify(jsonObj, null, 2); // spacing level = 2
     debug_db('jsonObj: ' + str)
-    //
+    // set our internal DB variable
+    var db = req.db;
+    // Set our collection
+    var collection = db.get(process.env.COLLECTION);
     // save to database
     collection.insert(jsonObj, function(err, result) {
       if (err) {
@@ -149,9 +151,8 @@ router.post('/add_title_story', function(req, res) {
       } else {
         debug_db('Document inserted to db successfully');
         db_mode = 'new_story';
-        debug_db('Mode switch: ' + db_mode)
+        debug_db('Mode switch: ' + db_mode);
         //
-        /*
         // return an array with the list of all the '_id' in the test_collection
         collection.find({}, {
           fields: {
@@ -161,12 +162,10 @@ router.post('/add_title_story', function(req, res) {
           if (err) {
             debug_db(err);
           } else {
-            debug_db('Total number of db_entries now:' + db_entry_times.length)
-            //increment the db_entry to read for next time around
-            //entry_to_read = data.length;
+            db_entry_times = data;
+            debug_db('Total number of db_entries now: ' + db_entry_times.length)
           }
         });
-        */
       }
     });
   });
@@ -221,19 +220,22 @@ router.get('/display', function(req, res) {
       db_entry_times = data;
       //check mode
       if (db_mode == 'new_story') {
-        newest_entry_read++;
+        debug_db('Using mode: ' + db_mode)
+        newest_entry_read = db_entry_times.length-1;
         entry_to_read = newest_entry_read;
-        if (entry_to_read == db_entry_times.length) {
+        if (entry_to_read == db_entry_times.length-1) {
           db_mode = 'random_story'
           debug_db('Mode switch: ' + db_mode)
-          newest_entry_read = db_entry_times.length;
+          //newest_entry_read = db_entry_times.length-1;
         }
       } else if (db_mode == 'random_story') {
+        debug_db('Using mode: ' + db_mode)
         // pick a random entry with which to pick an '_id' entry from the array
         var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
         entry_to_read = randomnumber
       }
-      debug_db('About to read entry:' + entry_to_read + ' of:' + db_entry_times.length)
+      var display_num = entry_to_read+1
+      debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
       var query = db_entry_times[entry_to_read];
       var id = query._id
       /*
@@ -282,19 +284,22 @@ router.get('/request_new_story', (req, res, next) => {
       db_entry_times = data;
       //check mode
       if (db_mode == 'new_story') {
+        debug_db('Using mode: ' + db_mode)
         newest_entry_read++;
         entry_to_read = newest_entry_read;
-        if (entry_to_read == db_entry_times.length) {
+        if (entry_to_read == db_entry_times.length-1) {
           db_mode = 'random_story'
           debug_db('Mode switch: ' + db_mode)
-          newest_entry_read = db_entry_times.length;
+          //newest_entry_read = db_entry_times.length-1;
         }
       } else if (db_mode == 'random_story') {
+        debug_db('Using mode: ' + db_mode)
         // pick a random entry with which to pick an '_id' entry from the array
         var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
         entry_to_read = randomnumber
       }
-      debug_db('About to read entry:' + entry_to_read + ' of:' + db_entry_times.length)
+      var display_num = entry_to_read+1
+      debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
       var query = db_entry_times[entry_to_read];
       var id = query._id
       //increment the db_entry to read for next time around

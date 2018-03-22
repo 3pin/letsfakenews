@@ -23,7 +23,7 @@ module.exports = {
       var taggedWord = taggedWords[i];
       var word = taggedWord[0];
       var tag = taggedWord[1];
-      debug_module_parse('Word:' + word + ' - Tag:' + tag)
+      //debug_module_parse('Word:' + word + ' - Tag:' + tag)
       for (let z of tags) {
         if (tag == z) {
           debug_module_parse(tag + ':' + word)
