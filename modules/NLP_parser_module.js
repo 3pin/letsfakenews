@@ -2,66 +2,54 @@
 
 module.exports = {
 
-  NLP_parse_words: function(input_text, pos_tags) {
-
+  NLP_parse_words: function(input_text) {
     let debug_module_parse = require('debug')('module_parse');
     var uniqueArray = [];
-
     // data in... tags eg. ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
-    var tags = pos_tags;
-    debug_module_parse('Tags: ' + tags + '\n');
+    var tags = ["NN", "NNP", "NNPS", "NNS"];
     var text = input_text
-
+    //
     // simple NLP pos-tagger
     const pos = require('pos');
-
-    // parse according to pos-tags
-    var parsed_word_array = [];
-    var words = new pos.Lexer().lex(text);
     var tagger = new pos.Tagger();
-
+    //process input text
+    var words = new pos.Lexer().lex(text);
     //populate an array with key:values for postag:word
     var taggedWords = tagger.tag(words);
-
     // setup empty arrays to store parsed... index_in_story:word
-    var final_indexes = [];
-    var final_words = [];
+    var output_indexes = [];
+    var output_words = [];
     for (i = 0; i < taggedWords.length; i++) {
       var taggedWord = taggedWords[i];
       var word = taggedWord[0];
       var tag = taggedWord[1];
-      //debug_module_parse('Word:' + word + ' - Tag:' + tag)
+      debug_module_parse('Word:' + word + ' - Tag:' + tag)
       for (let z of tags) {
         if (tag == z) {
           debug_module_parse(tag + ':' + word)
-          final_indexes.push(i);
-          final_words.push(word);
+          output_indexes.push(i);
+          output_words.push(word);
         }
       }
     }
-
+    //
     //combine compound-nouns
     var output_word = [];
-    output_word.push(final_words[0])
-    for (i = 1; i < final_indexes.length; i++) {
-      if (final_indexes[i - 1] + 1 == final_indexes[i]) {
-        output_word[output_word.length - 1] = output_word[output_word.length - 1] + "-" + final_words[i]
+    output_word.push(output_words[0])
+    for (i = 1; i < output_indexes.length; i++) {
+      if (output_indexes[i - 1] + 1 == output_indexes[i]) {
+        output_word[output_word.length - 1] = output_word[output_word.length - 1] + "-" + output_words[i]
       } else {
-        output_word.push(final_words[i])
+        output_word.push(output_words[i])
       }
     }
-
     for (i = 0; i < output_word.length; i++) {
       debug_module_parse('Compounded-Output: ' + output_word[i])
     }
-
     //the returned array of unique nouns extraced from the pos:tagger
     var uniqueArray = output_word.filter(function(item, pos) {
       return output_word.indexOf(item) == pos;
     })
-    for (let unique_word of uniqueArray) {
-      debug_module_parse('Unique-Words: ' + unique_word);
-    }
     return uniqueArray
   },
 

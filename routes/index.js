@@ -17,10 +17,15 @@ var NLP_parser_module = require('../modules/NLP_parser_module.js');
 var time_ops = require('../modules/time_ops.js');
 var expletives = ["poo", "poop", "piss", "shit", "willy", "willies", "dick", "dicks", "asshole", "assholes", "arsehole", "arseholes", "vagina", "vaginas", "boob", "boobs", "pussy", "pussys", "cunt", "cunts", "fuck", "shag"]
 
+//read-mode, new_story || random_story
+var db_mode = 'random_story';
 // array of the entry_times of each database entry
-var db_entry_times
+var db_entry_times;
 // db entry to read
-var entry_to_read = 0;
+var entry_to_read;
+// newest_entry_read
+var newest_entry_read = 0;
+
 
 // serve homepage / index
 router.get('/', (req, res, next) => {
@@ -79,13 +84,11 @@ router.post('/add_title_story', function(req, res) {
     temp_story.concat(story_array[i])
   }
   story = temp_story
-  debug_post('Processed Story: ' + story); */
-
+  debug_post('Processed Story: ' + story);
+  */
   //
-  // parse: STORY downto NOUNS... save to an array... tags eg. ["NN", "NNP", "NNPS", "NNS"]
-  var tags = ["NN", "NNP", "NNPS", "NNS"]
   debug_parse('test print before entering NLP_parser')
-  parsed_sentence_array = NLP_parser_module.NLP_parse_words(story, tags)
+  parsed_sentence_array = NLP_parser_module.NLP_parse_words(story)
   for (let item of parsed_sentence_array) {
     debug_parse('pos: ' + item)
   }
@@ -140,17 +143,15 @@ router.post('/add_title_story', function(req, res) {
     debug_db('jsonObj: ' + str)
     //
     // save to database
-    // set our internal DB variable
-    var db = req.db;
-    // Set our collection
-    var collection = db.get(process.env.COLLECTION);
-    // Submit to the DB
     collection.insert(jsonObj, function(err, result) {
       if (err) {
         debug_db(err);
       } else {
         debug_db('Document inserted to db successfully');
+        db_mode = 'new_story';
+        debug_db('Mode switch: ' + db_mode)
         //
+        /*
         // return an array with the list of all the '_id' in the test_collection
         collection.find({}, {
           fields: {
@@ -160,10 +161,12 @@ router.post('/add_title_story', function(req, res) {
           if (err) {
             debug_db(err);
           } else {
+            debug_db('Total number of db_entries now:' + db_entry_times.length)
             //increment the db_entry to read for next time around
-            entry_to_read = data.length - 1;
+            //entry_to_read = data.length;
           }
         });
+        */
       }
     });
   });
@@ -187,7 +190,6 @@ router.post('/add_feedback', function(req, res) {
   // set our internal DB variable
   var db = req.db;
   // Set our collection
-  debug_db(process.env.FEEDBACK);
   var collection = db.get(process.env.FEEDBACK);
   // Submit to the DB
   collection.insert(jsonObj, function(err, result) {
@@ -202,9 +204,8 @@ router.post('/add_feedback', function(req, res) {
 // serve display page (pass it db-data)
 router.get('/display', function(req, res) {
   debug_get('recvd /display /get request')
-  var db;
-  var collection = {};
-  db = req.db;
+  // set our internal DB variable
+  var db = req.db;
   // Set our collection
   var collection = db.get(process.env.COLLECTION);
   // return an array with the list of all the '_id' in the test_collection
@@ -218,12 +219,21 @@ router.get('/display', function(req, res) {
     } else {
       // create an array of all the '_ids' in the collection
       db_entry_times = data;
+      //check mode
+      if (db_mode == 'new_story') {
+        newest_entry_read++;
+        entry_to_read = newest_entry_read;
+        if (entry_to_read == db_entry_times.length) {
+          db_mode = 'random_story'
+          debug_db('Mode switch: ' + db_mode)
+          newest_entry_read = db_entry_times.length;
+        }
+      } else if (db_mode == 'random_story') {
+        // pick a random entry with which to pick an '_id' entry from the array
+        var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
+        entry_to_read = randomnumber
+      }
       debug_db('About to read entry:' + entry_to_read + ' of:' + db_entry_times.length)
-
-      // pick a random entry with which to pick an '_id' entry from the array
-      var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
-      entry_to_read = randomnumber
-
       var query = db_entry_times[entry_to_read];
       var id = query._id
       /*
@@ -255,9 +265,8 @@ router.get('/display', function(req, res) {
 // serve new_story to displaypage (pass it db-data)
 router.get('/request_new_story', (req, res, next) => {
   debug_get('/GET request_new_story')
-  var db;
-  var collection = {};
-  db = req.db;
+  // set our internal DB variable
+  var db = req.db;
   // Set our collection
   var collection = db.get(process.env.COLLECTION);
   // return an array with the list of all the '_id' in the test_collection
@@ -271,12 +280,21 @@ router.get('/request_new_story', (req, res, next) => {
     } else {
       // create an array of all the '_ids' in the collection
       db_entry_times = data;
+      //check mode
+      if (db_mode == 'new_story') {
+        newest_entry_read++;
+        entry_to_read = newest_entry_read;
+        if (entry_to_read == db_entry_times.length) {
+          db_mode = 'random_story'
+          debug_db('Mode switch: ' + db_mode)
+          newest_entry_read = db_entry_times.length;
+        }
+      } else if (db_mode == 'random_story') {
+        // pick a random entry with which to pick an '_id' entry from the array
+        var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
+        entry_to_read = randomnumber
+      }
       debug_db('About to read entry:' + entry_to_read + ' of:' + db_entry_times.length)
-
-      // pick a random entry with which to pick an '_id' entry from the array
-      var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
-      entry_to_read = randomnumber
-
       var query = db_entry_times[entry_to_read];
       var id = query._id
       //increment the db_entry to read for next time around
