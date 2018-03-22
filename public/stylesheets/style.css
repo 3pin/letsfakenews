@@ -84,7 +84,7 @@ h1 {
 #popup_title {
   font-size: 40px;
   position: absolute;
-  bottom: 12.5%;
+  bottom: 12.6%;
 }
 
 #image_frame {
@@ -149,7 +149,7 @@ h1 {
   margin: 25px auto;
   /* location */
   position: absolute;
-  bottom: 12.5%;
+  bottom: 12.6%;
   width: 100%;
   height: 90px;
   /* text layout in marquee */
@@ -172,7 +172,7 @@ h1 {
   transform: translateX(100%);
   */
   /* Apply animation to this element  23.5s */
-  animation: scroll-left 26s linear infinite;
+  animation: scroll-left 24s linear infinite;
 }
 
 /* Move it (define the animation) */
