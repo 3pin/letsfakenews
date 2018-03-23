@@ -5,7 +5,6 @@ let debug_search = require('debug')('search');
 let debug_save = require('debug')('save');
 let debug_db = require('debug')('db');
 
-//var mode = process.env.NODE_ENV;
 const express = require('express');
 const router = express.Router();
 const client_mode = process.env.CLIENT_DEBUG_MODE
