@@ -115,7 +115,8 @@ router.post('/add_title_story', function(req, res) {
             urlArray.push(item.url)
           }
         }
-        searchterm_url_result = searchterm + ': ' + urlArray[0]
+        var num_of_result = Math.floor(Math.random() * 10);
+        searchterm_url_result = searchterm + ': ' + urlArray[num_of_result]
         debug_search(searchterm_url_result) // print the URL of the first image returned via image-search
         return doneCallback(null, urlArray[0]); // pass through full results
       })
