@@ -6,7 +6,6 @@ let debug_save = require('debug')('save');
 let debug_db = require('debug')('db');
 
 //var mode = process.env.NODE_ENV;
-
 const express = require('express');
 const router = express.Router();
 const client_mode = process.env.CLIENT_DEBUG_MODE
@@ -115,9 +114,9 @@ router.post('/add_title_story', function(req, res) {
             urlArray.push(item.url)
           }
         }
-        var num_of_result = Math.floor(Math.random() * 10);
+        var num_of_result = Math.floor(Math.random() * urlArray.length);
         searchterm_url_result = searchterm + ': ' + urlArray[num_of_result]
-        debug_search(searchterm_url_result) // print the URL of the first image returned via image-search
+        debug_search('No of result: ' + num_of_result + ' ' + searchterm_url_result) // print the URL of the first image returned via image-search
         return doneCallback(null, urlArray[0]); // pass through full results
       })
   }
