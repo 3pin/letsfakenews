@@ -141,6 +141,9 @@
         $('#story').val("");
         $('#title').val("");
         pagestate_ctrl(2)
+        setTimeout(function() {
+          $('#story').focus();
+        }, 1);
         return false;
       });
       // goto feedback-page

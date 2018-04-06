@@ -7,7 +7,7 @@ module.exports = {
     var uniqueArray = [];
     // data in... tags eg. ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
     var tags = ["NN", "NNP", "NNPS", "NNS"];
-    var text = input_text
+    var text = input_text.toLowerCase();
     //
     // simple NLP pos-tagger
     const pos = require('pos');
@@ -30,6 +30,13 @@ module.exports = {
           output_indexes.push(i);
           output_words.push(word);
         }
+      }
+    }
+    //
+    //convert 'cormac' to 'kormac'
+    for (i = 0; i < output_words.length; i++) {
+      if (output_words[i] == "cormac" || output_words[i] == "kormac" || output_words[i] == "korm" || output_words[i] == "corm" || output_words[i] == "cormac's" || output_words[i] == "kormac's" || output_words[i] == "korm's" || output_words[i] == "corm's") {
+        output_words[i] = "DJ-Kormac";
       }
     }
     //

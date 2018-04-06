@@ -38,7 +38,7 @@ router.get('/mode', (req, res, next) => {
   res.send(client_mode);
 });
 
-// receive title-story info from homepage
+// receive title-story
 router.post('/add_title_story', function(req, res) {
   //
   //variables to be set and later saved to a
@@ -113,10 +113,11 @@ router.post('/add_title_story', function(req, res) {
             urlArray.push(item.url)
           }
         }
-        var num_of_result = Math.floor(Math.random() * urlArray.length);
+        //var num_of_result = Math.floor(Math.random() * urlArray.length);
+        var num_of_result = Math.floor(Math.random() * 10);
         searchterm_url_result = searchterm + ': ' + urlArray[num_of_result]
         debug_search('No of result: ' + num_of_result + ' ' + searchterm_url_result) // print the URL of the first image returned via image-search
-        return doneCallback(null, urlArray[0]); // pass through full results
+        return doneCallback(null, urlArray[num_of_result]); // pass through full results
       })
   }
   async.map(parsed_sentence_array, operation, function(err, results) {
@@ -170,7 +171,7 @@ router.post('/add_title_story', function(req, res) {
   });
 });
 
-// receive title-story info from homepage
+// receive feedback
 router.post('/add_feedback', function(req, res) {
   //
   //variables to be set and later saved to a
