@@ -23,7 +23,7 @@ var entry_to_read;
 // newest_entry_read
 var newest_entry_read = 0;
 
-// serve homepage / index
+// serve homepage /index
 router.get('/', (req, res, next) => {
   debug_get('/GET msg to index page')
   res.render('index', {
@@ -38,7 +38,7 @@ router.get('/mode', (req, res, next) => {
   res.send(client_mode);
 });
 
-// receive title-story info from homepage
+// receive title-story info
 router.post('/add_title_story', function(req, res) {
   //
   //variables to be set and later saved to a
@@ -51,38 +51,6 @@ router.post('/add_title_story', function(req, res) {
   title = req.body.title.toUpperCase();
   story = req.body.story;
   debug_post('Raw Title: ' + title + '\n' + 'Raw Story: ' + story);
-  //
-  /* remove bad words from title
-  var expletives = ["poo", "poop", "piss", "shit", "willy", "willies", "dick", "dicks", "asshole", "assholes", "arsehole", "arseholes", "vagina", "vaginas", "boob", "boobs", "pussy", "pussys", "cunt", "cunts", "fuck", "shag"]
-  var story_array = story.split(" ");
-  for (m = 0; m < story_array.length; m++) {
-    debug_parse(story_array[i])
-  }
-  var lower_story = story.toLowerCase();
-  var lower_story_array = lower_story.split(" ");
-  for (i = 0; i < story_array.length; i++) {
-    for (z = 0; z < expletives.length; z++) {
-      if (lower_story_array[i] == expletives[z]) {
-        debug_parse('a word match')
-        var word_length = expletives[z].length;
-        debug_parse('word_length: ' + word_length)
-        var replacement_word = "";
-        for (i = 0; i < word_length; i++) {
-          replacement_word = replacement_word.concat("-")
-        }
-        debug_parse('replacement_word: ' + replacement_word)
-        story_array[i] = replacement_word
-        return
-      }
-    }
-  }
-  var temp_story = ""
-  for (p = 0; p < story_array.length; p++) {
-    temp_story.concat(story_array[i])
-  }
-  story = temp_story
-  debug_post('Processed Story: ' + story);
-  */
   //
   debug_parse('test print before entering NLP_parser')
   parsed_sentence_array = NLP_parser_module.NLP_parse_words(story)
@@ -116,7 +84,7 @@ router.post('/add_title_story', function(req, res) {
         var num_of_result = Math.floor(Math.random() * urlArray.length);
         searchterm_url_result = searchterm + ': ' + urlArray[num_of_result]
         debug_search('No of result: ' + num_of_result + ' ' + searchterm_url_result) // print the URL of the first image returned via image-search
-        return doneCallback(null, urlArray[0]); // pass through full results
+        return doneCallback(null, urlArray[num_of_result]); // pass through full results
       })
   }
   async.map(parsed_sentence_array, operation, function(err, results) {
@@ -170,7 +138,7 @@ router.post('/add_title_story', function(req, res) {
   });
 });
 
-// receive title-story info from homepage
+// receive title-story info
 router.post('/add_feedback', function(req, res) {
   //
   //variables to be set and later saved to a
@@ -220,9 +188,9 @@ router.get('/display', function(req, res) {
       //check mode
       if (db_mode == 'new_story') {
         debug_db('Using mode: ' + db_mode)
-        newest_entry_read = db_entry_times.length-1;
+        newest_entry_read = db_entry_times.length - 1;
         entry_to_read = newest_entry_read;
-        if (entry_to_read == db_entry_times.length-1) {
+        if (entry_to_read == db_entry_times.length - 1) {
           db_mode = 'random_story'
           debug_db('Mode switch: ' + db_mode)
           //newest_entry_read = db_entry_times.length-1;
@@ -233,7 +201,7 @@ router.get('/display', function(req, res) {
         var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
         entry_to_read = randomnumber
       }
-      var display_num = entry_to_read+1
+      var display_num = entry_to_read + 1
       debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
       var query = db_entry_times[entry_to_read];
       var id = query._id
@@ -286,7 +254,7 @@ router.get('/request_new_story', (req, res, next) => {
         debug_db('Using mode: ' + db_mode)
         newest_entry_read++;
         entry_to_read = newest_entry_read;
-        if (entry_to_read == db_entry_times.length-1) {
+        if (entry_to_read == db_entry_times.length - 1) {
           db_mode = 'random_story'
           debug_db('Mode switch: ' + db_mode)
           //newest_entry_read = db_entry_times.length-1;
@@ -297,7 +265,7 @@ router.get('/request_new_story', (req, res, next) => {
         var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
         entry_to_read = randomnumber
       }
-      var display_num = entry_to_read+1
+      var display_num = entry_to_read + 1
       debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
       var query = db_entry_times[entry_to_read];
       var id = query._id
