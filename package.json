@@ -23,7 +23,9 @@
     "morgan": "~1.7.0",
     "pos": "^0.4.2",
     "screenfull": "^3.3.2",
-    "serve-favicon": "~2.3.2"
+    "serve-favicon": "~2.3.2",
+    "http-auth": "^3.2.3",
+    "htdigest": "^2.2.3"
   },
   "devDependencies": {
     "nodemon": "^1.14.12"
