@@ -4,10 +4,19 @@ let debug_parse = require('debug')('parse');
 let debug_search = require('debug')('search');
 let debug_save = require('debug')('save');
 let debug_db = require('debug')('db');
+var debug_startup = require('debug')('startup')
+
+const mode = process.env.NODE_ENV
+const client_mode = process.env.CLIENT_DEBUG_MODE
+const port = process.env.PORT || 5000
+const uri = process.env.MONGODB_URI
+const db_collection = process.env.COLLECTION
+const db_feedback = process.env.FEEDBACK
+
+debug_startup('Port:' + port + ' mode:' + mode + ' client_mode:' + client_mode + ' db_uri:' + uri + ' db_collection: ' + db_collection + ' db_feedback: ' + db_feedback)
 
 const express = require('express');
 const router = express.Router();
-const client_mode = process.env.CLIENT_DEBUG_MODE
 
 // load middle-ware modules
 var NLP_parser_module = require('../modules/NLP_parser_module.js');

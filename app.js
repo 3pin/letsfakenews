@@ -2,8 +2,6 @@
 //console.log(process.env);
 //
 // check the env
-var mode = process.env.NODE_ENV
-console.log('Environment: ' + mode)
 if (process.env.NODE_ENV !== 'production') {
   const dotenv = require('dotenv')
   const result = dotenv.config()
@@ -11,13 +9,6 @@ if (process.env.NODE_ENV !== 'production') {
     throw result.parsed
   }
 }
-
-const client_mode = process.env.CLIENT_DEBUG_MODE
-const port = process.env.PORT || 5000
-const uri = process.env.MONGODB_URI
-
-var debug_startup = require('debug')('startup')
-debug_startup('Port:' + port + ' mode:' + mode + ' client_mode:' + client_mode + ' db_uri:' + uri)
 
 // modules
 const express = require('express');
@@ -28,6 +19,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 // to connect to database
+const uri = process.env.MONGODB_URI
 const mongo = require('mongodb');
 const monk = require('monk');
 const db = monk(uri);
@@ -38,9 +30,20 @@ const index = require('./routes/index');
 // initialize
 const app = express();
 
+//setup authorization
+var auth = require("http-auth");
+var digest = auth.digest({
+  realm: "Private area",
+  file: __dirname + "/htpasswd",
+  authType: "digest"
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+//use authorization
+app.use(auth.connect(digest))
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
