@@ -37,13 +37,21 @@ var digest = auth.digest({
   file: __dirname + "/htpasswd",
   authType: "digest"
 });
+//use authorization
+app.use(function(req, res, next) {
+  if ('/display' === req.path) {
+    (auth.connect(digest))(req, res, next)
+  } else {
+    next()
+  }
+})
+/*
+app.use(auth.connect(digest))
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-//use authorization
-app.use(auth.connect(digest))
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
