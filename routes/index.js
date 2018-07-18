@@ -15,8 +15,8 @@ const db_feedback = process.env.FEEDBACK
 
 debug_startup('Port:' + port + ' mode:' + mode + ' client_mode:' + client_mode + ' db_uri:' + uri + ' db_collection: ' + db_collection + ' db_feedback: ' + db_feedback)
 
-function middleware_test(req, res, next) {
-  console.log('middleware_test: display requested')
+function middleware_auth(req, res, next) {
+  console.log('middleware_auth: this page requires authentification')
   return next()
 }
 
