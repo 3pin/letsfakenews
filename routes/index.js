@@ -15,6 +15,11 @@ const db_feedback = process.env.FEEDBACK
 
 debug_startup('Port:' + port + ' mode:' + mode + ' client_mode:' + client_mode + ' db_uri:' + uri + ' db_collection: ' + db_collection + ' db_feedback: ' + db_feedback)
 
+function middleware_test(req, res, next) {
+  console.log('middleware_test: display requested')
+  return next()
+}
+
 const express = require('express');
 const router = express.Router();
 
@@ -33,7 +38,7 @@ var entry_to_read;
 var newest_entry_read = 0;
 
 // serve homepage /index
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
   debug_get('/GET msg to index page')
   res.render('index', {
     tabtitle: "LetsFakeNews:Input"
@@ -42,13 +47,138 @@ router.get('/', (req, res, next) => {
 });
 
 // serve mode-data to a client
-router.get('/mode', (req, res, next) => {
+router.get('/mode', (req, res) => {
   debug_get('/GET mode msg')
   res.send(client_mode);
 });
 
+// serve new_story to displaypage (pass it db-data)
+router.get('/request_new_story', (req, res) => {
+  debug_get('/GET request_new_story')
+  // set our internal DB variable
+  var db = req.db;
+  // Set our collection
+  var collection = db.get(process.env.COLLECTION);
+  // return an array with the list of all the '_id' in the test_collection
+  collection.find({}, {
+    fields: {
+      _id: 1
+    }
+  }, function(err, data) {
+    if (err) {
+      debug_db(err);
+    } else {
+      // create an array of all the '_ids' in the collection
+      db_entry_times = data;
+      //check mode
+      if (db_mode == 'new_story') {
+        debug_db('Using mode: ' + db_mode)
+        newest_entry_read++;
+        entry_to_read = newest_entry_read;
+        if (entry_to_read == db_entry_times.length - 1) {
+          db_mode = 'random_story'
+          debug_db('Mode switch: ' + db_mode)
+          //newest_entry_read = db_entry_times.length-1;
+        }
+      } else if (db_mode == 'random_story') {
+        debug_db('Using mode: ' + db_mode)
+        // pick a random entry with which to pick an '_id' entry from the array
+        var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
+        entry_to_read = randomnumber
+      }
+      var display_num = entry_to_read + 1
+      debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
+      var query = db_entry_times[entry_to_read];
+      var id = query._id
+      //increment the db_entry to read for next time around
+      // return the randomly-picked JSON from the db
+      collection.findOne({
+        _id: id
+      }, function(err, data) {
+        if (err) {
+          debug_db(err)
+        } else {
+          debug_db(data.title)
+          // parse and send data to client html display-page
+          res.send(data);
+        }
+      });
+    }
+  });
+  /*
+  res.render('index', {
+    tabtitle: "LetsFakeNews"
+  });
+  */
+  //res.send(process.env.MODE);
+});
+
+// serve display page (pass it db-data)
+router.get('/display', middleware_test, (req, res) => {
+  debug_get('recvd /display /get request')
+  // set our internal DB variable
+  var db = req.db;
+  // Set our collection
+  var collection = db.get(process.env.COLLECTION);
+  // return an array with the list of all the '_id' in the test_collection
+  collection.find({}, {
+    fields: {
+      _id: 1
+    }
+  }, function(err, data) {
+    if (err) {
+      debug_db(err);
+    } else {
+      // create an array of all the '_ids' in the collection
+      db_entry_times = data;
+      //check mode
+      if (db_mode == 'new_story') {
+        debug_db('Using mode: ' + db_mode)
+        newest_entry_read = db_entry_times.length - 1;
+        entry_to_read = newest_entry_read;
+        if (entry_to_read == db_entry_times.length - 1) {
+          db_mode = 'random_story'
+          debug_db('Mode switch: ' + db_mode)
+          //newest_entry_read = db_entry_times.length-1;
+        }
+      } else if (db_mode == 'random_story') {
+        debug_db('Using mode: ' + db_mode)
+        // pick a random entry with which to pick an '_id' entry from the array
+        var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
+        entry_to_read = randomnumber
+      }
+      var display_num = entry_to_read + 1
+      debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
+      var query = db_entry_times[entry_to_read];
+      var id = query._id
+      /*
+      //increment the db_entry to read for next time around
+      if (entry_to_read < db_entry_times.length - 1) {
+        entry_to_read++
+      } else {
+        entry_to_read = 0;
+      }
+      */
+      // return the randomly-picked JSON from the db
+      collection.findOne({
+        _id: id
+      }, function(err, data) {
+        if (err) {
+          debug_db(err)
+        } else {
+          // parse and send data to client html display-page
+          res.render('display', {
+            data: data,
+            tabtitle: "LetsFakeNews:Display"
+          });
+        }
+      });
+    }
+  });
+});
+
 // receive title-story info
-router.post('/add_title_story', function(req, res) {
+router.post('/add_title_story', (req, res) => {
   //
   //variables to be set and later saved to a
   var title;
@@ -148,7 +278,7 @@ router.post('/add_title_story', function(req, res) {
 });
 
 // receive title-story info
-router.post('/add_feedback', function(req, res) {
+router.post('/add_feedback', (req, res) => {
   //
   //variables to be set and later saved to a
   var feedback;
@@ -174,131 +304,6 @@ router.post('/add_feedback', function(req, res) {
       debug_db('Feedback inserted to db successfully');
     }
   });
-});
-
-// serve display page (pass it db-data)
-router.get('/display', function(req, res) {
-  debug_get('recvd /display /get request')
-  // set our internal DB variable
-  var db = req.db;
-  // Set our collection
-  var collection = db.get(process.env.COLLECTION);
-  // return an array with the list of all the '_id' in the test_collection
-  collection.find({}, {
-    fields: {
-      _id: 1
-    }
-  }, function(err, data) {
-    if (err) {
-      debug_db(err);
-    } else {
-      // create an array of all the '_ids' in the collection
-      db_entry_times = data;
-      //check mode
-      if (db_mode == 'new_story') {
-        debug_db('Using mode: ' + db_mode)
-        newest_entry_read = db_entry_times.length - 1;
-        entry_to_read = newest_entry_read;
-        if (entry_to_read == db_entry_times.length - 1) {
-          db_mode = 'random_story'
-          debug_db('Mode switch: ' + db_mode)
-          //newest_entry_read = db_entry_times.length-1;
-        }
-      } else if (db_mode == 'random_story') {
-        debug_db('Using mode: ' + db_mode)
-        // pick a random entry with which to pick an '_id' entry from the array
-        var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
-        entry_to_read = randomnumber
-      }
-      var display_num = entry_to_read + 1
-      debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
-      var query = db_entry_times[entry_to_read];
-      var id = query._id
-      /*
-      //increment the db_entry to read for next time around
-      if (entry_to_read < db_entry_times.length - 1) {
-        entry_to_read++
-      } else {
-        entry_to_read = 0;
-      }
-      */
-      // return the randomly-picked JSON from the db
-      collection.findOne({
-        _id: id
-      }, function(err, data) {
-        if (err) {
-          debug_db(err)
-        } else {
-          // parse and send data to client html display-page
-          res.render('display', {
-            data: data,
-            tabtitle: "LetsFakeNews:Display"
-          });
-        }
-      });
-    }
-  });
-});
-
-// serve new_story to displaypage (pass it db-data)
-router.get('/request_new_story', (req, res, next) => {
-  debug_get('/GET request_new_story')
-  // set our internal DB variable
-  var db = req.db;
-  // Set our collection
-  var collection = db.get(process.env.COLLECTION);
-  // return an array with the list of all the '_id' in the test_collection
-  collection.find({}, {
-    fields: {
-      _id: 1
-    }
-  }, function(err, data) {
-    if (err) {
-      debug_db(err);
-    } else {
-      // create an array of all the '_ids' in the collection
-      db_entry_times = data;
-      //check mode
-      if (db_mode == 'new_story') {
-        debug_db('Using mode: ' + db_mode)
-        newest_entry_read++;
-        entry_to_read = newest_entry_read;
-        if (entry_to_read == db_entry_times.length - 1) {
-          db_mode = 'random_story'
-          debug_db('Mode switch: ' + db_mode)
-          //newest_entry_read = db_entry_times.length-1;
-        }
-      } else if (db_mode == 'random_story') {
-        debug_db('Using mode: ' + db_mode)
-        // pick a random entry with which to pick an '_id' entry from the array
-        var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
-        entry_to_read = randomnumber
-      }
-      var display_num = entry_to_read + 1
-      debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
-      var query = db_entry_times[entry_to_read];
-      var id = query._id
-      //increment the db_entry to read for next time around
-      // return the randomly-picked JSON from the db
-      collection.findOne({
-        _id: id
-      }, function(err, data) {
-        if (err) {
-          debug_db(err)
-        } else {
-          debug_db(data.title)
-          // parse and send data to client html display-page
-          res.send(data);
-        }
-      });
-    }
-  });
-  /*
-  res.render('index', {
-    tabtitle: "LetsFakeNews"
-  });
-  */
-  //res.send(process.env.MODE);
 });
 
 module.exports = router;
