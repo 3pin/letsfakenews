@@ -114,7 +114,7 @@ router.get('/request_new_story', (req, res) => {
 });
 
 // serve display page (pass it db-data)
-router.get('/display', middleware_test, (req, res) => {
+router.get('/display', middleware_auth, (req, res) => {
   debug_get('recvd /display /get request')
   // set our internal DB variable
   var db = req.db;
