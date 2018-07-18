@@ -15,18 +15,25 @@ const db_feedback = process.env.FEEDBACK
 
 debug_startup('Port:' + port + ' mode:' + mode + ' client_mode:' + client_mode + ' db_uri:' + uri + ' db_collection: ' + db_collection + ' db_feedback: ' + db_feedback)
 
-function middleware_auth(req, res, next) {
-  console.log('middleware_auth: this page requires authentification')
-  return next()
-}
-
-const express = require('express');
-const router = express.Router();
-
 // load middle-ware modules
 var NLP_parser_module = require('../modules/NLP_parser_module.js');
 //var image_search_module = require('../modules/image_search_module.js')
 var time_ops = require('../modules/time_ops.js');
+// authorization
+var auth = require("http-auth");
+var digest = auth.digest({
+  realm: "Private area",
+  file: "./htpasswd",
+  authType: "digest"
+});
+function middleware_auth(req, res, next) {
+  //console.log('middleware_auth: this page requires authentification')
+  (auth.connect(digest))(req, res, next);
+  //return next()
+}
+
+const express = require('express');
+const router = express.Router();
 
 //read-mode, new_story || random_story
 var db_mode = 'new_story';
