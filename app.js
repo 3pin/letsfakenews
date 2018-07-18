@@ -41,6 +41,8 @@ var digest = auth.digest({
 app.use(function(req, res, next) {
   if ('/display' === req.path) {
     (auth.connect(digest))(req, res, next)
+  } else if ('/display/' === req.path) {
+    (auth.connect(digest))(req, res, next)
   } else {
     next()
   }
