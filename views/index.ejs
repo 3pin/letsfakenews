@@ -11,6 +11,8 @@
   <script type="text/javascript" src="/javascripts/debug_browserify.js"></script>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- Local CSS to override some bootstrap methods -->
+  <link rel='stylesheet' href='/stylesheets/index.css'>
   <!-- jQuery library -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- Latest compiled JavaScript -->
@@ -219,7 +221,7 @@
         <br/><br/>Try to trick the Al-Jazeera news-room into broadcasting your fake story, then wait to see if it appears on-screen. To write believeable fake-news, maintain journalistic standards... correct spelling, capitalisation etc.
       </p>
       <br/>
-      <button id="gototitle" type="button" class="btn btn-default">PROCEED</button>
+      <button id="gototitle" type="button" class="btn btn-default btn-responsive">Proceed</button>
     </div>
     <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
   </div>
@@ -235,13 +237,13 @@
       <form id="story_form" class="form-horizontal">
         <div class="form-group">
           <label class="control-label " for="pwd"></label>
-          <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+          <div contentEditable="true" word-break="break-word" class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
             <input class="form-control" id="story" type="text">
           </div>
         </div>
         <div class="form-group">
           <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default btn-responsive">Submit</button>
           </div>
         </div>
       </form>
@@ -266,7 +268,7 @@
         </div>
         <div class="form-group">
           <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default btn-responsive">Submit</button>
           </div>
         </div>
       </form>
@@ -284,7 +286,7 @@
       <p>Feel free to leave feedback for the team, or if your story failed to meet the grade then try again.</p>
       <button id="Goto_Start" name="thankyou" type="submit" class="btn btn-default">Restart</button>
       <br/><br/>
-      <button id="Goto_Feedback" name="feedback" type="submit" class="btn btn-default">Feedback</button>
+      <button id="Goto_Feedback" name="feedback" type="submit" class="btn btn-default btn-responsive">Feedback</button>
     </div>
     <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
   </div>
@@ -305,7 +307,7 @@
         </div>
         <div class="form-group">
           <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default btn-responsive">Submit</button>
           </div>
         </div>
       </form>
