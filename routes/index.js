@@ -4,7 +4,7 @@ let debug_parse = require('debug')('parse');
 let debug_search = require('debug')('search');
 let debug_save = require('debug')('save');
 let debug_db = require('debug')('db');
-var debug_startup = require('debug')('startup')
+let debug_startup = require('debug')('startup')
 
 const mode = process.env.NODE_ENV
 const client_mode = process.env.CLIENT_DEBUG_MODE
