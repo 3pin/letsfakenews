@@ -1,19 +1,14 @@
-let debug_get = require('debug')('get');
-let debug_post = require('debug')('post');
-let debug_parse = require('debug')('parse');
-let debug_search = require('debug')('search');
-let debug_save = require('debug')('save');
-let debug_db = require('debug')('db');
-let debug_startup = require('debug')('startup')
-
+/*
 const mode = process.env.NODE_ENV
 const client_mode = process.env.CLIENT_DEBUG_MODE
 const port = process.env.PORT || 5000
 const uri = process.env.MONGODB_URI
 const db_collection = process.env.COLLECTION
 const db_feedback = process.env.FEEDBACK
+*/
 
-debug_startup('Port:' + port + ' mode:' + mode + ' client_mode:' + client_mode + ' db_uri:' + uri + ' db_collection: ' + db_collection + ' db_feedback: ' + db_feedback)
+var debug = require('debug')('index')
+debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' client_mode:' + process.env.CLIENT_DEBUG_MODE + ' db_uri:' + process.env.MONGODB_URI + ' db_collection: ' + process.env.COLLECTION + ' db_feedback: ' + process.env.FEEDBACK)
 
 // load middle-ware modules
 var NLP_parser_module = require('../modules/NLP_parser_module.js');
@@ -46,7 +41,7 @@ var newest_entry_read = 0;
 
 // serve homepage /index
 router.get('/', (req, res) => {
-  debug_get('/GET msg to index page')
+  debug('/GET msg to index page')
   res.render('index', {
     tabtitle: "LetsFakeNews:Input"
   });
@@ -55,13 +50,13 @@ router.get('/', (req, res) => {
 
 // serve mode-data to a client
 router.get('/mode', (req, res) => {
-  debug_get('/GET mode msg')
-  res.send(client_mode);
+  debug('/GET mode msg')
+  res.send(process.env.CLIENT_DEBUG_MODE);
 });
 
 // serve new_story to displaypage (pass it db-data)
 router.get('/request_new_story', (req, res) => {
-  debug_get('/GET request_new_story')
+  debug('/GET request_new_story')
   // set our internal DB variable
   var db = req.db;
   // Set our collection
@@ -73,28 +68,28 @@ router.get('/request_new_story', (req, res) => {
     }
   }, function(err, data) {
     if (err) {
-      debug_db(err);
+      debug(err);
     } else {
       // create an array of all the '_ids' in the collection
       db_entry_times = data;
       //check mode
       if (db_mode == 'new_story') {
-        debug_db('Using mode: ' + db_mode)
+        debug('Using mode: ' + db_mode)
         newest_entry_read++;
         entry_to_read = newest_entry_read;
         if (entry_to_read == db_entry_times.length - 1) {
           db_mode = 'random_story'
-          debug_db('Mode switch: ' + db_mode)
+          debug('Mode switch: ' + db_mode)
           //newest_entry_read = db_entry_times.length-1;
         }
       } else if (db_mode == 'random_story') {
-        debug_db('Using mode: ' + db_mode)
+        debug('Using mode: ' + db_mode)
         // pick a random entry with which to pick an '_id' entry from the array
         var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
         entry_to_read = randomnumber
       }
       var display_num = entry_to_read + 1
-      debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
+      debug('About to read entry:' + display_num + ' of:' + db_entry_times.length)
       var query = db_entry_times[entry_to_read];
       var id = query._id
       //increment the db_entry to read for next time around
@@ -103,9 +98,9 @@ router.get('/request_new_story', (req, res) => {
         _id: id
       }, function(err, data) {
         if (err) {
-          debug_db(err)
+          debug(err)
         } else {
-          debug_db(data.title)
+          debug(data.title)
           // parse and send data to client html display-page
           res.send(data);
         }
@@ -122,7 +117,7 @@ router.get('/request_new_story', (req, res) => {
 
 // serve display page (pass it db-data)
 router.get('/display', middleware_auth, (req, res) => {
-  debug_get('recvd /display /get request')
+  debug('recvd /display /get request')
   // set our internal DB variable
   var db = req.db;
   // Set our collection
@@ -134,28 +129,28 @@ router.get('/display', middleware_auth, (req, res) => {
     }
   }, function(err, data) {
     if (err) {
-      debug_db(err);
+      debug(err);
     } else {
       // create an array of all the '_ids' in the collection
       db_entry_times = data;
       //check mode
       if (db_mode == 'new_story') {
-        debug_db('Using mode: ' + db_mode)
+        debug('Using mode: ' + db_mode)
         newest_entry_read = db_entry_times.length - 1;
         entry_to_read = newest_entry_read;
         if (entry_to_read == db_entry_times.length - 1) {
           db_mode = 'random_story'
-          debug_db('Mode switch: ' + db_mode)
+          debug('Mode switch: ' + db_mode)
           //newest_entry_read = db_entry_times.length-1;
         }
       } else if (db_mode == 'random_story') {
-        debug_db('Using mode: ' + db_mode)
+        debug('Using mode: ' + db_mode)
         // pick a random entry with which to pick an '_id' entry from the array
         var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
         entry_to_read = randomnumber
       }
       var display_num = entry_to_read + 1
-      debug_db('About to read entry:' + display_num + ' of:' + db_entry_times.length)
+      debug('About to read entry:' + display_num + ' of:' + db_entry_times.length)
       var query = db_entry_times[entry_to_read];
       var id = query._id
       /*
@@ -171,7 +166,7 @@ router.get('/display', middleware_auth, (req, res) => {
         _id: id
       }, function(err, data) {
         if (err) {
-          debug_db(err)
+          debug(err)
         } else {
           // parse and send data to client html display-page
           res.render('display', {
@@ -196,12 +191,12 @@ router.post('/add_title_story', (req, res) => {
   // Get our form values. These rely on the "name" attributes
   title = req.body.title.toUpperCase();
   story = req.body.story;
-  debug_post('Raw Title: ' + title + '\n' + 'Raw Story: ' + story);
+  debug('Raw Title: ' + title + '\n' + 'Raw Story: ' + story);
   //
-  debug_parse('test print before entering NLP_parser')
+  debug('test print before entering NLP_parser')
   parsed_sentence_array = NLP_parser_module.NLP_parse_words(story)
   for (let item of parsed_sentence_array) {
-    debug_parse('pos: ' + item)
+    debug('pos: ' + item)
   }
   //
   // search: fetch a URL for each NOUN
@@ -229,14 +224,14 @@ router.post('/add_title_story', (req, res) => {
         }
         var num_of_result = Math.floor(Math.random() * urlArray.length);
         searchterm_url_result = searchterm + ': ' + urlArray[num_of_result]
-        debug_search('No of result: ' + num_of_result + ' ' + searchterm_url_result) // print the URL of the first image returned via image-search
+        debug('No of result: ' + num_of_result + ' ' + searchterm_url_result) // print the URL of the first image returned via image-search
         return doneCallback(null, urlArray[num_of_result]); // pass through full results
       })
   }
   async.map(parsed_sentence_array, operation, function(err, results) {
     urls = results
     for (i = 0; i < urls.length; i++) {
-      debug_save('Word: ' + parsed_sentence_array[i] + ' --- Url: ' + urls[i])
+      debug('Word: ' + parsed_sentence_array[i] + ' --- Url: ' + urls[i])
     }
     //
     // create JSON obj with our data
@@ -252,7 +247,7 @@ router.post('/add_title_story', (req, res) => {
       jsonObj.content[parsed_sentence_array[i]] = urls[i];
     }
     var str = JSON.stringify(jsonObj, null, 2); // spacing level = 2
-    debug_db('jsonObj: ' + str)
+    debug('jsonObj: ' + str)
     // set our internal DB variable
     var db = req.db;
     // Set our collection
@@ -260,11 +255,11 @@ router.post('/add_title_story', (req, res) => {
     // save to database
     collection.insert(jsonObj, function(err, result) {
       if (err) {
-        debug_db(err);
+        debug(err);
       } else {
-        debug_db('Document inserted to db successfully');
+        debug('Document inserted to db successfully');
         db_mode = 'new_story';
-        debug_db('Mode switch: ' + db_mode);
+        debug('Mode switch: ' + db_mode);
         //
         // return an array with the list of all the '_id' in the test_collection
         collection.find({}, {
@@ -273,10 +268,10 @@ router.post('/add_title_story', (req, res) => {
           }
         }, function(err, data) {
           if (err) {
-            debug_db(err);
+            debug(err);
           } else {
             db_entry_times = data;
-            debug_db('Total number of db_entries now: ' + db_entry_times.length)
+            debug('Total number of db_entries now: ' + db_entry_times.length)
           }
         });
       }
@@ -292,7 +287,7 @@ router.post('/add_feedback', (req, res) => {
   //
   // Get our form values. These rely on the "name" attributes
   feedback = req.body.feedback;
-  debug_post('Raw feedback: ' + feedback);
+  debug('Raw feedback: ' + feedback);
   //
   // save to database
   // create JSON obj with our data
@@ -306,9 +301,9 @@ router.post('/add_feedback', (req, res) => {
   // Submit to the DB
   collection.insert(jsonObj, function(err, result) {
     if (err) {
-      debug_db(err);
+      debug(err);
     } else {
-      debug_db('Feedback inserted to db successfully');
+      debug('Feedback inserted to db successfully');
     }
   });
 });
