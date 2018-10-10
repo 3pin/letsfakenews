@@ -6,28 +6,33 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "test": "mocha test",
+    "test_all": "mocha ./test --recursive",
+    "test_route_greeting": "mocha ./test/story.test.js"
   },
   "dependencies": {
-    "async": "^2.6.0",
-    "body-parser": "~1.16.0",
+    "async": "^2.6.1",
+    "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
-    "corenlp": "^1.4.2",
-    "debug": "^2.6.9",
-    "dotenv": "^5.0.0",
-    "ejs": "^2.5.7",
-    "express": "~4.14.1",
+    "corenlp": "^1.4.3",
+    "dotenv": "^6.1.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
     "google-images": "^2.1.0",
-    "mongodb": "^2.2.25",
-    "monk": "^4.0.0",
-    "morgan": "~1.7.0",
-    "pos": "^0.4.2",
-    "screenfull": "^3.3.2",
-    "serve-favicon": "~2.3.2",
+    "htdigest": "^2.2.3",
     "http-auth": "^3.2.3",
-    "htdigest": "^2.2.3"
+    "mongodb": "^3.1.7",
+    "monk": "^6.0.6",
+    "morgan": "^1.9.1",
+    "pos": "^0.4.2",
+    "screenfull": "^3.3.3",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
-    "nodemon": "^1.14.12"
+    "chai": "^4.2.0",
+    "debug": "^4.1.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.4"
   }
 }

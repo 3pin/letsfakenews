@@ -1,10 +1,14 @@
 //log all system env variables
 //console.log(process.env);
 //
+var debug = require('debug')('startup')
+
 // check the env
 if (process.env.NODE_ENV !== 'production') {
   const dotenv = require('dotenv')
-  const result = dotenv.config()
+  var path = require('path');
+  var dotEnvPath = path.resolve('./.env');
+  const result = dotenv.config({ path: dotEnvPath})
   if (result.error) {
     throw result.parsed
   }
@@ -12,23 +16,22 @@ if (process.env.NODE_ENV !== 'production') {
 
 // modules
 const express = require('express');
-const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 // to connect to database
-const uri = process.env.MONGODB_URI
 const mongo = require('mongodb');
 const monk = require('monk');
-const db = monk(uri);
+const db = monk(process.env.MONGODB_URI);
 
 // routes
 const index = require('./routes/index');
 
 // initialize
 const app = express();
+debug('App Name: ' + process.env.npm_package_name)
 
 /*
 //setup authorization

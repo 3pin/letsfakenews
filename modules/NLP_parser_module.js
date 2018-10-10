@@ -1,9 +1,9 @@
 //a module to ingest text and filter/parse it per-sentence down to required Pos-tags
-
+var debug = require('debug')('NLP_parser_module')
 module.exports = {
 
   NLP_parse_words: function(input_text) {
-    let debug_module_parse = require('debug')('module_parse');
+    //let debug_module_parse = require('debug')('module_parse');
     var uniqueArray = [];
     // data in... tags eg. ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
     var tags = ["NN", "NNP", "NNPS", "NNS"];
@@ -26,7 +26,7 @@ module.exports = {
       //debug_module_parse('Word:' + word + ' - Tag:' + tag)
       for (let z of tags) {
         if (tag == z) {
-          debug_module_parse(tag + ':' + word)
+          debug(tag + ':' + word)
           output_indexes.push(i);
           output_words.push(word);
         }
@@ -44,7 +44,7 @@ module.exports = {
       }
     }
     for (i = 0; i < output_word.length; i++) {
-      debug_module_parse('Compounded-Output: ' + output_word[i])
+      debug('Compounded-Output: ' + output_word[i])
     }
     //the returned array of unique nouns extraced from the pos:tagger
     var uniqueArray = output_word.filter(function(item, pos) {
@@ -55,7 +55,7 @@ module.exports = {
 
   NLP_parse_phrases: function(input_text) {
 
-    let debug_module_parse = require('debug')('module_parse')
+    //let debug_module_parse = require('debug')('module_parse')
 
     var parsed_sentence_array = []
 
