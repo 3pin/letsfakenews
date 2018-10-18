@@ -1,22 +1,13 @@
-/*
-const mode = process.env.NODE_ENV
-const client_mode = process.env.CLIENT_DEBUG_MODE
-const port = process.env.PORT || 5000
-const uri = process.env.MONGODB_URI
-const db_collection = process.env.COLLECTION
-const db_feedback = process.env.FEEDBACK
-*/
-
-var debug = require('debug')('index')
+const debug = require('debug')('index')
 debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' client_mode:' + process.env.CLIENT_DEBUG_MODE + ' db_uri:' + process.env.MONGODB_URI + ' db_collection: ' + process.env.COLLECTION + ' db_feedback: ' + process.env.FEEDBACK)
 
 // load middle-ware modules
-var NLP_parser_module = require('../modules/NLP_parser_module.js');
+const NLP_parser_module = require('../modules/NLP_parser_module.js');
 //var image_search_module = require('../modules/image_search_module.js')
-var time_ops = require('../modules/time_ops.js');
+const time_ops = require('../modules/time_ops.js');
 // authorization
-var auth = require("http-auth");
-var digest = auth.digest({
+const auth = require("http-auth");
+const digest = auth.digest({
   realm: "Private area",
   file: "./htpasswd",
   authType: "digest"
@@ -26,18 +17,17 @@ function middleware_auth(req, res, next) {
   (auth.connect(digest))(req, res, next);
   //return next()
 }
-
 const express = require('express');
 const router = express.Router();
 
 //read-mode, new_story || random_story
-var db_mode = 'new_story';
+let db_mode = 'new_story';
 // array of the entry_times of each database entry
-var db_entry_times;
+let db_entry_times;
 // db entry to read
-var entry_to_read;
+let entry_to_read;
 // newest_entry_read
-var newest_entry_read = 0;
+let newest_entry_read = 0;
 
 // serve homepage /index
 router.get('/', (req, res) => {
@@ -58,9 +48,9 @@ router.get('/mode', (req, res) => {
 router.get('/request_new_story', (req, res) => {
   debug('/GET request_new_story')
   // set our internal DB variable
-  var db = req.db;
+  let db = req.db;
   // Set our collection
-  var collection = db.get(process.env.COLLECTION);
+  const collection = db.get(process.env.COLLECTION);
   // return an array with the list of all the '_id' in the test_collection
   collection.find({}, {
     fields: {
@@ -85,13 +75,13 @@ router.get('/request_new_story', (req, res) => {
       } else if (db_mode == 'random_story') {
         debug('Using mode: ' + db_mode)
         // pick a random entry with which to pick an '_id' entry from the array
-        var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
+        let randomnumber = Math.floor(Math.random() * (db_entry_times.length));
         entry_to_read = randomnumber
       }
-      var display_num = entry_to_read + 1
+      let display_num = entry_to_read + 1
       debug('About to read entry:' + display_num + ' of:' + db_entry_times.length)
-      var query = db_entry_times[entry_to_read];
-      var id = query._id
+      let query = db_entry_times[entry_to_read];
+      let id = query._id
       //increment the db_entry to read for next time around
       // return the randomly-picked JSON from the db
       collection.findOne({
@@ -119,9 +109,9 @@ router.get('/request_new_story', (req, res) => {
 router.get('/display', middleware_auth, (req, res) => {
   debug('recvd /display /get request')
   // set our internal DB variable
-  var db = req.db;
+  let db = req.db;
   // Set our collection
-  var collection = db.get(process.env.COLLECTION);
+  const collection = db.get(process.env.COLLECTION);
   // return an array with the list of all the '_id' in the test_collection
   collection.find({}, {
     fields: {
@@ -146,13 +136,13 @@ router.get('/display', middleware_auth, (req, res) => {
       } else if (db_mode == 'random_story') {
         debug('Using mode: ' + db_mode)
         // pick a random entry with which to pick an '_id' entry from the array
-        var randomnumber = Math.floor(Math.random() * (db_entry_times.length));
+        let randomnumber = Math.floor(Math.random() * (db_entry_times.length));
         entry_to_read = randomnumber
       }
-      var display_num = entry_to_read + 1
+      let display_num = entry_to_read + 1
       debug('About to read entry:' + display_num + ' of:' + db_entry_times.length)
-      var query = db_entry_times[entry_to_read];
-      var id = query._id
+      let query = db_entry_times[entry_to_read];
+      let id = query._id
       /*
       //increment the db_entry to read for next time around
       if (entry_to_read < db_entry_times.length - 1) {
@@ -183,10 +173,10 @@ router.get('/display', middleware_auth, (req, res) => {
 router.post('/add_title_story', (req, res) => {
   //
   //variables to be set and later saved to a
-  var title;
-  var story;
-  var parsed_sentence_array;
-  var urls = [];
+  let title;
+  let story;
+  let parsed_sentence_array;
+  let urls = [];
   //
   // Get our form values. These rely on the "name" attributes
   title = req.body.title.toUpperCase();
@@ -201,32 +191,34 @@ router.post('/add_title_story', (req, res) => {
   //
   // search: fetch a URL for each NOUN
   const async = require('async');
-  var operation = function(input_text, doneCallback) {
-    var searchterm = input_text
-    var searchterm_url_result
-    var custom_search_engine_ID = process.env.CUSTOM_SEARCH_ENGINE_ID;
-    var APIkey = process.env.CUSTOM_SEARCH_APIKEY;
+  let operation = function(input_text, doneCallback) {
+    let searchterm = input_text
+    let searchterm_url_result
+    const custom_search_engine_ID = process.env.CUSTOM_SEARCH_ENGINE_ID;
+    const APIkey = process.env.CUSTOM_SEARCH_APIKEY;
     const GoogleImages = require('google-images');
     const client = new GoogleImages(custom_search_engine_ID, APIkey);
-    var searchSettings = {
+    let searchSettings = {
       searchType: 'image',
       safe: 'high'
     }
     client.search(searchterm, searchSettings).then(
-      function(image_search_results) {
-        var urlArray = []
-        //console.log(print_results)
-        for (let value of image_search_results) {
-          var item = value;
+      function(results) {
+        debug(results)
+        let urlArray = []
+        for (let value of results) {
+          let item = value;
           if (item.url) {
             urlArray.push(item.url)
           }
         }
-        var num_of_result = Math.floor(Math.random() * urlArray.length);
+        let num_of_result = Math.floor(Math.random() * urlArray.length);
         searchterm_url_result = searchterm + ': ' + urlArray[num_of_result]
         debug('No of result: ' + num_of_result + ' ' + searchterm_url_result) // print the URL of the first image returned via image-search
         return doneCallback(null, urlArray[num_of_result]); // pass through full results
-      })
+      }, function(err){
+        debug(err)
+      });
   }
   async.map(parsed_sentence_array, operation, function(err, results) {
     urls = results
@@ -235,23 +227,23 @@ router.post('/add_title_story', (req, res) => {
     }
     //
     // create JSON obj with our data
-    var jsonObj = {}
+    let jsonObj = {}
     jsonObj.time = time_ops.current_time().datetime
     jsonObj.title = title
     jsonObj.story = story
     jsonObj.content = {}
-    for (var i = 0; i < parsed_sentence_array.length; i++) {
+    for (let i = 0; i < parsed_sentence_array.length; i++) {
       //set the keys and values
       //avoid dot notation for the key in this case
       //use square brackets to set the key to the value of the array element
       jsonObj.content[parsed_sentence_array[i]] = urls[i];
     }
-    var str = JSON.stringify(jsonObj, null, 2); // spacing level = 2
+    let str = JSON.stringify(jsonObj, null, 2); // spacing level = 2
     debug('jsonObj: ' + str)
     // set our internal DB variable
-    var db = req.db;
+    let db = req.db;
     // Set our collection
-    var collection = db.get(process.env.COLLECTION);
+    const collection = db.get(process.env.COLLECTION);
     // save to database
     collection.insert(jsonObj, function(err, result) {
       if (err) {
@@ -282,22 +274,19 @@ router.post('/add_title_story', (req, res) => {
 // receive title-story info
 router.post('/add_feedback', (req, res) => {
   //
-  //variables to be set and later saved to a
-  var feedback;
-  //
   // Get our form values. These rely on the "name" attributes
-  feedback = req.body.feedback;
+  let feedback = req.body.feedback;
   debug('Raw feedback: ' + feedback);
   //
   // save to database
   // create JSON obj with our data
-  var jsonObj = {}
+  let jsonObj = {}
   jsonObj.time = time_ops.current_time().datetime
   jsonObj.fedback = feedback
   // set our internal DB variable
-  var db = req.db;
+  let db = req.db;
   // Set our collection
-  var collection = db.get(process.env.FEEDBACK);
+  const collection = db.get(process.env.FEEDBACK);
   // Submit to the DB
   collection.insert(jsonObj, function(err, result) {
     if (err) {
