@@ -1,9 +1,9 @@
+/* customisation */
+
 .form-responsive {
   font-size: 100%;
   padding: 1% 4%;
 }
-
-/* responsive button size */
 
 .btn-responsive {
   font-size: 100%;
@@ -12,7 +12,7 @@
 
 .footer {
   position: fixed;
-  height: 10%;
+  height: 11%;
   bottom: 0;
   width: 100%;
   align: center;

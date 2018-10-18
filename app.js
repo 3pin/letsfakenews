@@ -1,18 +1,7 @@
 //log all system env variables
 //console.log(process.env);
 //
-var debug = require('debug')('startup')
-
-// check the env
-if (process.env.NODE_ENV !== 'production') {
-  const dotenv = require('dotenv')
-  var path = require('path');
-  var dotEnvPath = path.resolve('./.env');
-  const result = dotenv.config({ path: dotEnvPath})
-  if (result.error) {
-    throw result.parsed
-  }
-}
+const debug = require('debug')('startup')
 
 // modules
 const express = require('express');
@@ -20,6 +9,17 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const path = require('path');
+
+// check the env
+if (process.env.NODE_ENV !== 'production') {
+  const dotenv = require('dotenv')
+  const dotEnvPath = path.resolve('./.env');
+  const result = dotenv.config({ path: dotEnvPath})
+  if (result.error) {
+    throw result.parsed
+  }
+}
 
 // to connect to database
 const mongo = require('mongodb');
