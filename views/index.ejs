@@ -133,7 +133,7 @@
             url: '/add_title_story',
             contentType: 'application/json',
             data: JSON.stringify({
-              title: title,
+              title: title.toUpperCase(),
               story: story
             }),
             dataType: 'JSON'
