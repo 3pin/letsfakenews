@@ -1,3 +1,3 @@
 // Require all .js test files to run all tests recursively
-require('./story.test');
-//require('./*.test');
+//require('./imagesearch_module.test');
+require('./*.test');

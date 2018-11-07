@@ -9,7 +9,13 @@
     "dev": "nodemon ./bin/www",
     "test": "mocha test",
     "test_all": "mocha ./test --recursive",
-    "test_route_greeting": "mocha ./test/story.test.js"
+    "test_nlp": "mocha ./test/nlp_module.test.js",
+    "test_imagesearch": "mocha ./test/imagesearch_module.test.js",
+    "test_imagesearch_iterative": "mocha ./test/imagesearch_iterative_module.test.js",
+    "test_db": "mocha ./test/db_module.test.js",
+    "test_clientroute": "mocha ./test/clientroute_module.test.js",
+    "test_process_story": "mocha ./test/process_story_module.test.js",
+    "test_process_client": "mocha ./test/process_client_module.test.js"
   },
   "dependencies": {
     "async": "^2.6.1",
