@@ -1,10 +1,20 @@
-const debug = require('debug')('index')
-debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' client_mode:' + process.env.CLIENT_DEBUG_MODE + ' db_uri:' + process.env.MONGODB_URI + ' db_collection: ' + process.env.COLLECTION + ' db_feedback: ' + process.env.FEEDBACK)
+// check the env
+if (process.env.NODE_ENV !== 'production') {
+  const path = require('path');
+  const dotEnvPath = path.resolve('./.env');
+  const dotenv = require('dotenv')
+  const result = dotenv.config({ path: dotEnvPath})
+  if (result.error) {
+    throw result.parsed
+  }
+}
+
+var debug = require('debug')('index')
+debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' client_mode:' + process.env.CLIENT_DEBUG_MODE + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK)
 
 // load middle-ware modules
-const NLP_parser_module = require('../modules/NLP_parser_module.js');
-//var image_search_module = require('../modules/image_search_module.js')
 const time_ops = require('../modules/time_ops.js');
+
 // authorization
 const auth = require("http-auth");
 const digest = auth.digest({
@@ -12,6 +22,7 @@ const digest = auth.digest({
   file: "./htpasswd",
   authType: "digest"
 });
+
 function middleware_auth(req, res, next) {
   //console.log('middleware_auth: this page requires authentification')
   (auth.connect(digest))(req, res, next);
@@ -171,73 +182,13 @@ router.get('/display', middleware_auth, (req, res) => {
 
 // receive title-story info
 router.post('/add_title_story', (req, res) => {
-  //
-  //variables to be set and later saved to a
-  let title;
-  let story;
-  let parsed_sentence_array;
-  let urls = [];
-  //
-  // Get our form values. These rely on the "name" attributes
-  title = req.body.title.toUpperCase();
-  story = req.body.story;
-  debug('Raw Title: ' + title + '\n' + 'Raw Story: ' + story);
-  //
-  debug('test print before entering NLP_parser')
-  parsed_sentence_array = NLP_parser_module.NLP_parse_words(story)
-  for (let item of parsed_sentence_array) {
-    debug('pos: ' + item)
-  }
-  //
-  // search: fetch a URL for each NOUN
-  const async = require('async');
-  let operation = function(input_text, doneCallback) {
-    let searchterm = input_text
-    let searchterm_url_result
-    const custom_search_engine_ID = process.env.CUSTOM_SEARCH_ENGINE_ID;
-    const APIkey = process.env.CUSTOM_SEARCH_APIKEY;
-    const GoogleImages = require('google-images');
-    const client = new GoogleImages(custom_search_engine_ID, APIkey);
-    let searchSettings = {
-      searchType: 'image',
-      safe: 'high'
-    }
-    client.search(searchterm, searchSettings).then(
-      function(results) {
-        debug(results)
-        let urlArray = []
-        for (let value of results) {
-          let item = value;
-          if (item.url) {
-            urlArray.push(item.url)
-          }
-        }
-        let num_of_result = Math.floor(Math.random() * urlArray.length);
-        searchterm_url_result = searchterm + ': ' + urlArray[num_of_result]
-        debug('No of result: ' + num_of_result + ' ' + searchterm_url_result) // print the URL of the first image returned via image-search
-        return doneCallback(null, urlArray[num_of_result]); // pass through full results
-      }, function(err){
-        debug(err)
-      });
-  }
-  async.map(parsed_sentence_array, operation, function(err, results) {
-    urls = results
-    for (i = 0; i < urls.length; i++) {
-      debug('Word: ' + parsed_sentence_array[i] + ' --- Url: ' + urls[i])
-    }
-    //
-    // create JSON obj with our data
-    let jsonObj = {}
-    jsonObj.time = time_ops.current_time().datetime
-    jsonObj.title = title
-    jsonObj.story = story
-    jsonObj.content = {}
-    for (let i = 0; i < parsed_sentence_array.length; i++) {
-      //set the keys and values
-      //avoid dot notation for the key in this case
-      //use square brackets to set the key to the value of the array element
-      jsonObj.content[parsed_sentence_array[i]] = urls[i];
-    }
+  //variables to be set and later saved to a database
+  let client_JSON = req.body
+  //process JSON adding words & urls
+  const process_client_module = require('../modules/process_client_module.js');
+  process_client_module.process(client_JSON).then(function(result) {
+    //save JSON to database
+    let jsonObj = result
     let str = JSON.stringify(jsonObj, null, 2); // spacing level = 2
     debug('jsonObj: ' + str)
     // set our internal DB variable
@@ -268,7 +219,7 @@ router.post('/add_title_story', (req, res) => {
         });
       }
     });
-  });
+  }).catch(done)
 });
 
 // receive title-story info
