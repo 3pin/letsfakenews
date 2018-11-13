@@ -38,7 +38,7 @@
         markers.push(Math.round(imagesStart + pic_duration * i));
       }
       return {
-        urls:urls,
+        urls: urls,
         markers: markers
       }
     }
@@ -89,7 +89,7 @@
         let title = storydata(data).title;
         let story = storydata(data).story;
         document.getElementById("popup_title_text").innerHTML = title;
-        document.getElementById("scroller").innerHTML = story;
+        document.getElementById("scroller_text").innerHTML = story;
         urls = metadata(data,image_duration,imagesStart).urls
         markers = metadata(data,image_duration,imagesStart).markers
         // setup the first image
@@ -111,18 +111,22 @@
           }
         }
         //control interface visibility...
-        if (currentTime >= popupStart && currentTime <= popupEnd) {
+        if (currentTime <= popupStart) {
+          //jump to time during DEV mode
+          this.currentTime = 7.0;
+          //this.currentTime = 16.0;
+        } else if (currentTime >= popupStart && currentTime <= popupEnd) {
           $("#popup_title").show()
         } else if (currentTime >= imagesStart && currentTime <= imagesEnd) {
           $("#image_frame").show()
           $("#image").show()
-          $("#scroller_div").show()
+          $("#scroller").show()
         } else {
           $("#popup_title").hide()
           $("#image_frame").hide()
           $("#image").hide()
           $("#panel_title").hide()
-          $("#scroller_div").hide()
+          $("#scroller").hide()
         }
       });
 
@@ -145,7 +149,7 @@
             let title = storydata(data).title;
             let story = storydata(data).story;
             document.getElementById("popup_title_text").innerHTML = title;
-            document.getElementById("scroller").innerHTML = story;
+            document.getElementById("scroller_text").innerHTML = story;
             urls = metadata(data,image_duration,imagesStart).urls
             markers = metadata(data,image_duration,imagesStart).markers
             // setup the first image
@@ -194,32 +198,31 @@
     });
   </script>
 
-  <!-- video block... blue outline-colour  to mute add attr: muted controls="true"  -->
-  <div id="videoContainer" class="parent">
+  <!-- video block -->
+  <div id="videoContainer">
 
-    <video id="videoPlayer" preload="metadata" autoplay="true" controls> video not supported
+    <video id="videoPlayer" preload="metadata" autoplay="true" controls muted> video not supported
       <source src="/videos/aljazeera-desktop.m4v">
       </source>
     </video>
 
-    <!-- popup title text -->
+    <!-- popup title -->
     <div id="popup_title" style="display:none">
       <p id="popup_title_text">Default popup-title text... </p>
     </div>
 
-    <!-- image frame outline -->
+    <!-- image frame       -->
     <div id="image_frame" style="display:none">
-      <!-- image url overlays -->
+      <!-- image url overlays       -->
       <img id="image" style="display:none" />
     </div>
 
-    <!-- scrolling text overlay -->
-    <div id="scroller_div" class="scroll-left" style="display:none">
-      <p id="scroller">Default scrolling story text... </p>
+    <!-- scrolling text       -->
+    <div id="scroller" class="scroll-left" style="display:none">
+      <p id="scroller_text">Default scrolling story text... </p>
     </div>
 
 
-    <!-- end video block -->
   </div>
 
   <!-- fullscreen toggle button -->
