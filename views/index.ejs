@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>
@@ -208,90 +209,98 @@
     });
   </script>
 </head>
+
 <body>
-  <!-- banner image -->
-  <div class="header" id="banner_image_frame">
-    <img class="img-responsive" id="banner_image" src="/images/fakenews_strip_01.jpg">
-  </div>
-  <!-- setup row to contain main columns of main-content -->
-  <div class="row">
-    <!-- setup column as left blank-strip -->
-    <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
-    <!-- setup column as middle content-strip -->
-    <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
 
-      <!-- landing  -->
-      <div id="1">
-        <h3>Let's Fake News...</h3><br/>
-        <p>Pretend you're a journalist with a deadline but no news to report so you're going to fake it!
-          <br/><br/>Try to trick the Al-Jazeera news-room into broadcasting your fake story, then wait to see if it appears on the public screen.
-          <br/><br/>To ensure the news-room accept your story, be grammatically correct with spelling, capitalisation etc.
-        </p>
-        <br/>
-        <button id="gototitle" type="button" class="btn btn-primary btn-responsive">Proceed</button>
-      </div>
-      <!-- story_input  -->
-      <div id="2">
-        <h3>Write a story...</h3>
-        <form id="story_form" class="form-horizontal">
-          <div class="form-group">
-            <textarea id="story" class="form-control form-responsive" rows="4" maxlength="280" required placeholder="280 chars max..."></textarea>
-            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
-              <br/>
-              <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
-            </div>
-          </div>
-        </form>
-      </div>
-      <!-- title_input  -->
-      <div id="3">
-        <h3>Add a headline...</h3>
-        <form id="title_form" class="form-horizontal">
-          <div class="form-group">
-            <textarea id="title" class="form-control form-responsive" rows="1" maxlength="25" required placeholder="25 chars max..."></textarea>
-            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
-              <br/>
-              <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
-            </div>
-          </div>
-        </form>
-        <br/>
-      </div>
-      <!-- thankyou  -->
-      <div id="4">
-        <h3>Thank you...</h3><br/>
-        <p>Want to try again?</p>
-        <button id="Goto_Start" name="thankyou" type="submit" class="btn btn-primary btn-responsive">Restart</button>
-        <br/><br/>
-        <p>Leave us your feedback</p>
-        <button id="Goto_Feedback" name="feedback" type="submit" class="btn btn-primary btn-responsive">Feedback</button>
-      </div>
-      <!-- feedback_input  -->
-      <div id="5">
-        <h3>Leave your feedback...</h3><br/>
-        <form id="feedback_form" class="form-horizontal">
-          <div class="form-group">
-            <textarea id="feedback" class="form-control form-responsive" rows="4" maxlength="280" required placeholder="280 chars max..."></textarea>
-            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
-              <br/>
-              <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
-            </div>
-          </div>
-        </form>
-      </div>
+  <!-- bgd -->
+  <div class="bg" id="bg_frame">
+
+    <!-- header -->
+    <div id="header_frame">
+      <img class="img-responsive" id="header_image" src="/images/header.jpg">
     </div>
 
-    <!-- setup column as right blank-strip -->
-    <div class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+    <!-- row containing columns of content -->
+    <div class="row">
+      <br>
 
-    <!-- footer     -->
-    <div class="footer">
-      <hr>
-      <p><i>- The Factory of Thought -</i></p>
+      <!-- column as left blank-strip -->
+      <div id="left_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+
+      <!-- column as middle content-strip -->
+      <div id="middle_col" class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+        <!-- landing  -->
+        <div id="1">
+          <h3>Let's Fake News...</h3><br />
+          <p>Pretend you're a journalist with a deadline but no news to report so you're going to fake it!
+            <br /><br />Try to trick the Al-Jazeera news-room into broadcasting your fake story, then wait to see if it appears on the public screen.
+            <br /><br />To ensure the news-room accept your story, be grammatically correct with spelling, capitalisation etc.
+          </p>
+          <br />
+          <button id="gototitle" type="button" class="btn btn-primary btn-responsive">Proceed</button>
+        </div>
+        <!-- story_input  -->
+        <div id="2">
+          <h3>Write a story...</h3>
+          <form id="story_form" class="form-horizontal">
+            <div class="form-group">
+              <textarea id="story" class="form-control form-responsive" rows="4" maxlength="280" required placeholder="280 chars max..."></textarea>
+              <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+                <br />
+                <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- title_input  -->
+        <div id="3">
+          <h3>Add a headline...</h3>
+          <form id="title_form" class="form-horizontal">
+            <div class="form-group">
+              <textarea id="title" class="form-control form-responsive" rows="1" maxlength="25" required placeholder="25 chars max..."></textarea>
+              <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+                <br />
+                <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+              </div>
+            </div>
+          </form>
+          <br />
+        </div>
+        <!-- thankyou  -->
+        <div id="4">
+          <h3>Thank you...</h3><br />
+          <p>Want to try again?</p>
+          <button id="Goto_Start" name="thankyou" type="submit" class="btn btn-primary btn-responsive">Restart</button>
+          <br /><br />
+          <p>Leave us your feedback</p>
+          <button id="Goto_Feedback" name="feedback" type="submit" class="btn btn-primary btn-responsive">Feedback</button>
+        </div>
+        <!-- feedback_input  -->
+        <div id="5">
+          <h3>Leave your feedback...</h3><br />
+          <form id="feedback_form" class="form-horizontal">
+            <div class="form-group">
+              <textarea id="feedback" class="form-control form-responsive" rows="4" maxlength="280" required placeholder="280 chars max..."></textarea>
+              <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+                <br />
+                <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- column as right blank-strip -->
+      <div id="right_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+
+    </div>
+
+    <!-- footer -->
+    <div class="footer" id="footer_frame">
+      <img class="img-responsive" id="footer_image" src="/images/footer.jpg">
     </div>
 
   </div>
-
 </body>
 
 </html>
