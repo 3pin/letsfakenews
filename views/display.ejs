@@ -13,8 +13,34 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- load functions -->
   <script type="text/javascript">
-    function timedRefresh(timeoutPeriod) {
-      setTimeout("location.reload(true);", timeoutPeriod);
+    //load storydata
+    function storydata(data) {
+      // load title/story
+      let title = data.title;
+      let story = data.story;
+      return {
+        title: title,
+        story: story
+      }
+    }
+    // process multimedia metadata
+    function metadata(data, image_duration, imagesStart) {
+      // load imge_URLS
+      let image_locations = data.urls;
+      let urls = []
+      for (var url in image_locations) {
+        urls.push(image_locations[url]);
+      }
+      // calculate multimedia metadata
+      let pic_duration = Math.round(image_duration / urls.length);
+      let markers = []
+      for (i = 1; i <= urls.length; i++) {
+        markers.push(Math.round(imagesStart + pic_duration * i));
+      }
+      return {
+        urls:urls,
+        markers: markers
+      }
     }
   </script>
   <!-- load documentReady jQuery methods -->
@@ -34,85 +60,47 @@
           console.log('client_mode not reported')
         }
       });
+      // define time-regions for pop-up-title, text-display, image-display
+      var popupStart = 6.2;
+      var popupEnd = 11.3;
+      var popup_duration = popupEnd - popupStart;
+      var imagesStart = 17.6;
+      var imagesEnd = 41.1;
+      var image_duration = imagesEnd - imagesStart;
+      // object to hold data fetched from database
+      var data
       // array to store the image-URLS
       var urls = []
       // array to stores a time-marker per image-URL
       var markers = []
       //array index for currently-displayed image from url-array
       var url_index;
-      // length of video
-      var vid_duration;
-      // display-duration for each image-url in the array
-      var pic_duration;
-      // define time-regions for pop-up-title, text-display, image-display
-      var popupStart = 6.2;
-      var popupEnd = 11.3;
-      // time-period during which popup-title is displayed
-      var popup_duration = popupEnd - popupStart;
-      var imagesStart = 17.6;
-      var imagesEnd = 41.1;
-      // time-period during which images/story are displayed
-      var image_duration = imagesEnd - imagesStart;
-      // current video playback time
-      var currentTime
-
-      // on startup metadata save vid_duration
+      // video object defined on startup
       var vid = document.getElementById("videoPlayer");
+
+      // on loadup...
       vid.onloadedmetadata = function() {
-        if (mode == 'development') {
-          console.log('First Page Visit');
-        }
         // parse returned JSON from database
-        var data = <%-JSON.stringify(data)%>;
+        data = <%-JSON.stringify(data)%>;
         if (mode == 'development') {
           console.log(data);
         }
-        var title = data.title;
-        var story = data.story;
-        var content = data.content;
-        if (mode == 'development') {
-          console.log("Title:" + title + '\n' + 'Story:' + story);
-        }
-        // pass title/story text into innerHTML
+        // pass title/story to HTML
+        let title = storydata(data).title;
+        let story = storydata(data).story;
         document.getElementById("popup_title_text").innerHTML = title;
         document.getElementById("scroller").innerHTML = story;
-        // load all image-urls into an array
-        for (var key in content) {
-          urls.push(content[key]);
-          if (mode == 'development') {
-            console.log(content[key]);
-          }
-        }
-        // calculate durations/periods
-        pic_duration = image_duration / urls.length;
-        vid_duration = vid.duration;
-        if (mode == 'development') {
-          console.log("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
-        }
-        // populate the marker-array with durations/periods/timecodes
-        for (i = 1; i <= urls.length; i++) {
-          markers.push(imagesStart + pic_duration * i);
-          if (mode == 'development') {
-            console.log('marker: ' + markers[i - 1]);
-          }
-        }
-        if (mode == 'development') {
-          console.log('No of image: ' + urls.length);
-        }
-        // load the first image-URL picture
+        urls = metadata(data,image_duration,imagesStart).urls
+        markers = metadata(data,image_duration,imagesStart).markers
+        // setup the first image
         url_index = 0
-        if (mode == 'development') {
-          console.log('loading the first image: ' + urls[url_index]);
-        }
         document.getElementById("image").src = urls[url_index];
       };
 
-      // during playback report currenttime
+      // during playback...
       $("#videoPlayer").on("timeupdate", function(event) {
-        if (mode == 'development') {
-          console.log('currentTime: ' + this.currentTime);
-        }
-        currentTime = this.currentTime;
+        let currentTime = this.currentTime;
+        // multimedia according to markers...
         if (currentTime >= markers[url_index]) {
           url_index++;
           if (url_index < urls.length) {
@@ -122,11 +110,8 @@
             document.getElementById("image").src = urls[url_index];
           }
         }
-        if (currentTime <= popupStart) {
-          //jump to time during DEV mode
-          //this.currentTime = 7.0;
-          //this.currentTime = 16.0;
-        } else if (currentTime >= popupStart && currentTime <= popupEnd) {
+        //control interface visibility...
+        if (currentTime >= popupStart && currentTime <= popupEnd) {
           $("#popup_title").show()
         } else if (currentTime >= imagesStart && currentTime <= imagesEnd) {
           $("#image_frame").show()
@@ -140,7 +125,8 @@
           $("#scroller_div").hide()
         }
       });
-      // detect when video-playback complete.. if true request new-story db-data
+
+      // on re-loadup...
       $("#videoPlayer").on("ended", function(event) {
         if (mode == 'development') {
           console.log('video ended... seeking new db-data ');
@@ -152,59 +138,26 @@
             console.log('Refreshed Page');
             console.log(data);
           }
-          // on-re-start metadata save vid_duration
+          // on-re-start reload metadata
           var vid = document.getElementById('videoPlayer');
           vid.onloadedmetadata = function() {
-            //reset arrays
-            urls = []
-            markers = []
-            // parse in data
-            title = data.title;
-            story = data.story;
-            content = data.content;
-            if (mode == 'development') {
-              console.log("New title:" + title + '\n' + 'New story:' + story);
-            }
-            // pass title/story text into innerHTML
+            // pass title/story to HTML
+            let title = storydata(data).title;
+            let story = storydata(data).story;
             document.getElementById("popup_title_text").innerHTML = title;
             document.getElementById("scroller").innerHTML = story;
-            // load all image-urls into an array
-            for (var key in content) {
-              urls.push(content[key]);
-              if (mode == 'development') {
-                console.log(content[key]);
-              }
-            }
-            // calculate durations/periods
-            pic_duration = image_duration / urls.length;
-            vid_duration = vid.duration;
-            if (mode == 'development') {
-              console.log("Meta data loaded... video_duration:" + vid_duration + ' pic_duration:' + pic_duration);
-            }
-            // populate the marker-array with durations/periods/timecodes
-            for (i = 1; i <= urls.length; i++) {
-              markers.push(imagesStart + pic_duration * i);
-              if (mode == 'development') {
-                console.log('marker: ' + markers[i - 1]);
-              }
-            }
-            if (mode == 'development') {
-              console.log('No of image: ' + urls.length);
-            }
-            // load the first image-URL picture
+            urls = metadata(data,image_duration,imagesStart).urls
+            markers = metadata(data,image_duration,imagesStart).markers
+            // setup the first image
             url_index = 0
-            if (mode == 'development') {
-              console.log('loading the first image: ' + urls[url_index]);
-            }
             document.getElementById("image").src = urls[url_index];
           };
-
-          //restart video
+          // restart video
           vid.currentTime = 0;
           vid.load();
-
         });
       });
+
     });
   </script>
 </head>
@@ -245,8 +198,9 @@
   <div id="videoContainer" class="parent">
 
     <video id="videoPlayer" preload="metadata" autoplay="true" controls> video not supported
-        <source src="/videos/aljazeera-desktop.m4v"></source>
-        </video>
+      <source src="/videos/aljazeera-desktop.m4v">
+      </source>
+    </video>
 
     <!-- popup title text -->
     <div id="popup_title" style="display:none">

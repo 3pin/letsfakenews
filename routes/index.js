@@ -2,13 +2,10 @@
 if (process.env.NODE_ENV !== 'production') {
   const path = require('path');
   const dotEnvPath = path.resolve('./.env');
-  const dotenv = require('dotenv')
-  const result = dotenv.config({ path: dotEnvPath})
-  if (result.error) {
-    throw result.parsed
-  }
+  require('dotenv').config({
+    path: dotEnvPath
+  });
 }
-
 var debug = require('debug')('index')
 debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' client_mode:' + process.env.CLIENT_DEBUG_MODE + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK)
 
@@ -203,7 +200,16 @@ router.post('/add_title_story', (req, res) => {
         debug('Document inserted to db successfully');
         db_mode = 'new_story';
         debug('Mode switch: ' + db_mode);
-        //
+        // return no of entries in database
+        collection.count({}, {}, function(err, data) {
+          if (err) {
+            debug(err);
+          } else {
+            let no_db_entries = data;
+            debug('Total number of db_entries now: ' + no_db_entries)
+          }
+        });
+        /*
         // return an array with the list of all the '_id' in the test_collection
         collection.find({}, {
           fields: {
@@ -217,6 +223,7 @@ router.post('/add_title_story', (req, res) => {
             debug('Total number of db_entries now: ' + db_entry_times.length)
           }
         });
+        */
       }
     });
   }).catch(done)
