@@ -1,12 +1,12 @@
-/*
+
 //load .env variables
 const path = require('path');
 const dotEnvPath = path.resolve('./.env');
 require('dotenv').config({
   path: dotEnvPath
 });
-*/
 
+/*
 // check the env
 if (process.env.NODE_ENV !== 'production') {
   const path = require('path');
@@ -17,6 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
     throw result.parsed
   }
 }
+*/
 
 // load assertion library
 const chai = require('chai'),

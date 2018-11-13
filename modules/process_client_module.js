@@ -7,6 +7,7 @@ const time_ops = require('../modules/time_ops.js');
 module.exports = {
 
   process: function(client_JSON) {
+    debug(client_JSON)
     client_JSON.time = time_ops.current_time().datetime
     return new Promise(function(resolve, reject) {
       nlp_module.parse_nouns(client_JSON.story).then(function(words) {
