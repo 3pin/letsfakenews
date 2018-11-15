@@ -13,7 +13,7 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- load functions -->
   <script type="text/javascript">
-    //load storydata
+    // load storydata
     function storydata(data) {
       // load title/story
       let title = data.title;
@@ -48,7 +48,7 @@
     // ENV mode for console.logging
     var mode
     $(document).ready(function() {
-      //Submit request for systems ENV-mode:
+      // Submit request for systems ENV-mode:
       $.ajax({
         type: 'GET',
         url: '/mode',
@@ -73,7 +73,7 @@
       var urls = []
       // array to stores a time-marker per image-URL
       var markers = []
-      //array index for currently-displayed image from url-array
+      // array index for currently-displayed image from url-array
       var url_index;
       // video object defined on startup
       var vid = document.getElementById("videoPlayer");
@@ -110,11 +110,13 @@
             document.getElementById("image").src = urls[url_index];
           }
         }
-        //control interface visibility...
+        // control interface visibility...
         if (currentTime <= popupStart) {
-          //jump to time during DEV mode
-          this.currentTime = 7.0;
-          //this.currentTime = 16.0;
+          // times to jump to time during DEVELOPMENT
+          if (mode == 'development') {
+            this.currentTime = 7.0;
+            //this.currentTime = 16.0;
+          }
         } else if (currentTime >= popupStart && currentTime <= popupEnd) {
           $("#popup_title").show()
         } else if (currentTime >= imagesStart && currentTime <= imagesEnd) {
