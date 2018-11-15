@@ -135,7 +135,13 @@
               title: title.toUpperCase(),
               story: story
             }),
-            dataType: 'JSON'
+            dataType: 'JSON',
+            success: function(response) {
+              console.log(response)
+            },
+            error: function(err) {
+              console.log(err)
+            }
           });
           pagestate_ctrl(4)
           return false;
