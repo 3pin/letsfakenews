@@ -4,9 +4,8 @@ finds the first returned image from google-image-search
 prints the searchterm & URL
 saves as an entry to a JSON file */
 
-// debug printing
-const debug = require('debug')('imagesearch_module')
 // setup
+const debug = require('debug')('imagesearch_module')
 const GoogleImages = require('google-images');
 const client = new GoogleImages(process.env.CUSTOM_SEARCH_ENGINE_ID, process.env.CUSTOM_SEARCH_APIKEY);
 const searchSettings = {
