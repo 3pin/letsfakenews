@@ -1,49 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="utf-8">
   <title>
     <%= tabtitle %>
   </title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- load debug script -->
+  <script type="text/javascript" src="/javascripts/debug_browserify.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- Local CSS to override some bootstrap methods -->
+  <link rel='stylesheet' href='/stylesheets/index.css'>
+  <!-- jQuery library -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <!-- state-control module -->
   <script type="text/javascript">
     function pagestate_ctrl(div_vis_in) {
-      var show_div = '#' + div_vis_in
-      var hide_div = 'div:not(#' + div_vis_in + ')'
-      $(hide_div).hide()
-      $(inputs_container).show();
-      $(banner_image_frame).show();
-      $(show_div).show()
+      let show_div = '#' + div_vis_in
+      let hide_div = 'div:not(#' + div_vis_in + ')'
       if (mode == 'development') {
-        console.log('pagestate val in: ' + div_vis_in)
+        console.log('pagestate val: ' + div_vis_in)
+        console.log('show_div: ' + show_div)
+        console.log('hide_div: ' + hide_div)
       }
-      if (div_vis_in == 1) {
-        //$("#banner_image_frame").show()
-      } else {
-        //$("#banner_image_frame").hide()
+      let i;
+      for (i = 1; i < 6; i++) {
+        if (i == div_vis_in) {
+          $('#' + i).show()
+        } else {
+          $('#' + i).hide()
+        }
       }
     }
 
     function pagestate_alloff() {
       $('div:not(#0)').hide()
-      $("#banner_image").show()
+      $("#banner_image_frame").show()
+      $("#footer_image_frame").show()
     }
   </script>
+  <!-- jQuery -->
   <script>
-    // ENV mode for console.logging
-    var mode
-    var title
-    var story
-    var feedback
+    const viewportmeta = document.querySelector('meta[name="viewport"]');
+    let mode    // expect mode=='ENV for logging
+    let title
+    let story
+    let feedback
     $(document).ready(function() {
-      //Submit request for systems ENV-mode:
+      // Submit request for systems ENV-mode:
       $.ajax({
         type: 'GET',
         url: '/mode',
         success: function(response) {
           mode = response
           pagestate_ctrl(1)
+          $('call_viewport').attr('content', 'width=device-width, initial-scale=1');
           console.log('client_mode: ' + mode)
         },
         error: function(request, textStatus, errorThrown) {
@@ -108,7 +123,6 @@
         if ($('#title').val()) {
           title = $('#title').val()
           title = title.trim()
-          //var server_title = $('form#story_form').serialize()
           if (mode == 'development') {
             console.log("This is the new title: " + title)
           }
@@ -118,10 +132,16 @@
             url: '/add_title_story',
             contentType: 'application/json',
             data: JSON.stringify({
-              title: title,
+              title: title.toUpperCase(),
               story: story
             }),
-            dataType: 'JSON'
+            dataType: 'JSON',
+            success: function(response) {
+              console.log(response)
+            },
+            error: function(err) {
+              console.log(err)
+            }
           });
           pagestate_ctrl(4)
           return false;
@@ -133,7 +153,7 @@
           }
         }
       });
-      // goto index-page
+      // goto story-page
       $('#Goto_Start').click(function() {
         if (mode == 'development') {
           console.log('Goto_Start button pressed on thankyou-page')
@@ -141,6 +161,9 @@
         $('#story').val("");
         $('#title').val("");
         pagestate_ctrl(2)
+        setTimeout(function() {
+          $('#story').focus();
+        }, 1);
         return false;
       });
       // goto feedback-page
@@ -149,6 +172,9 @@
           console.log('Goto_Feedback button pressed on thankyou-page')
         }
         pagestate_ctrl(5)
+        setTimeout(function() {
+          $('#feedback').focus();
+        }, 1);
         return false;
       });
       // submission from feedback-page
@@ -186,82 +212,99 @@
 
     });
   </script>
-
 </head>
 
 <body>
 
-  <!-- banner image -->
-  <div id="banner_image_frame">
-    <img id="banner_image" src="/images/fakenews_strip_01.jpg" />
+  <!-- bgd -->
+  <div class="bg" id="bg_frame">
+
+    <!-- header -->
+    <div id="header_frame">
+      <img class="img-responsive" id="header_image" src="/images/header.jpg">
+    </div>
+
+    <!-- row containing columns of content -->
+    <div class="row">
+      <br>
+
+      <!-- column as left blank-strip -->
+      <div id="left_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+
+      <!-- column as middle content-strip -->
+      <div id="middle_col" class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+        <!-- landing  -->
+        <div id="1">
+          <h3>Let's Fake News...</h3><br />
+          <p>Pretend you're a journalist with a deadline but no news to report so you're going to fake it!
+            Try to trick the Al-Jazeera news-room into broadcasting your fake story, then wait to see if it appears on the public screen.
+            To ensure the news-room accept your story, be grammatically correct with spelling, capitalisation etc.
+          </p>
+          <br />
+          <button id="gototitle" type="button" class="btn btn-primary btn-responsive">Proceed</button>
+        </div>
+        <!-- story_input  -->
+        <div id="2">
+          <h3>Write a story...</h3>
+          <form id="story_form" class="form-horizontal">
+            <div class="form-group">
+              <textarea id="story" class="form-control form-responsive" rows="4" maxlength="280" required placeholder="280 chars max..."></textarea>
+              <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+                <br />
+                <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- title_input  -->
+        <div id="3">
+          <h3>Add a headline...</h3>
+          <form id="title_form" class="form-horizontal">
+            <div class="form-group">
+              <textarea id="title" class="form-control form-responsive" rows="1" maxlength="25" required placeholder="25 chars max..."></textarea>
+              <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+                <br />
+                <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+              </div>
+            </div>
+          </form>
+          <br />
+        </div>
+        <!-- thankyou  -->
+        <div id="4">
+          <h3>Thank you...</h3><br />
+          <p>Want to try again?</p>
+          <button id="Goto_Start" name="thankyou" type="submit" class="btn btn-primary btn-responsive">Restart</button>
+          <br /><br />
+          <p>Leave us your feedback</p>
+          <button id="Goto_Feedback" name="feedback" type="submit" class="btn btn-primary btn-responsive">Feedback</button>
+        </div>
+        <!-- feedback_input  -->
+        <div id="5">
+          <h3>Leave your feedback...</h3><br />
+          <form id="feedback_form" class="form-horizontal">
+            <div class="form-group">
+              <textarea id="feedback" class="form-control form-responsive" rows="4" maxlength="280" required placeholder="280 chars max..."></textarea>
+              <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+                <br />
+                <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- column as right blank-strip -->
+      <div id="right_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
+
+    </div>
+
+    <!-- footer -->
+    <div class="footer" id="footer_frame">
+      <img class="img-responsive" id="footer_image" src="/images/footer.jpg">
+    </div>
+
   </div>
-
-  <div id="inputs_container">
-
-    <h1 class="public_header">Lets Fake News</h1>
-
-    <!-- landing  -->
-    <div id="1" class="public_body" style="display:none">
-      <p>
-        You're a journalist with a deadline but no news to report.
-        <br/>Fake-news... Post-truth... just make up a story!
-        <br/>
-        <br/>Trick the Al-Jazeera news-room into broadcasting your fake-news-story.
-        <br/>For them to believe, maintain high journalistic standards...
-        <br/>
-        <br/>Use capitals appropriately... Be grammatically correct... No spelling errors!
-      </p>
-      <button id="gototitle" class="button" name="gototitle">PROCEED</button>
-    </div>
-
-    <!-- story_input  -->
-    <div id="2" class="public_body" style="display:none">
-      <p>Input the 'phrases' of your story... 280 chars max</p>
-      <form id="story_form">
-        <textarea id="story" name="storyarea" class="textarea" rows="6" cols="30" wrap="soft" maxlength="280" flex-wrap="wrap" autocomplete="off" required placeholder="Story...">
-        </textarea>
-        <br/>
-        <button class="button">SUBMIT</button>
-      </form><br/>
-    </div>
-
-    <!-- title_input  -->
-    <div id="3" class="public_body" style="display:none">
-      <p>Input a 'title' of your story... 30 chars max</p>
-      <form id="title_form" method="post">
-        <textarea id="title" name="titlearea" class="textarea" rows="1" cols="30" wrap="soft" maxlength="30" autocomplete="off" required placeholder="Title...">
-      </textarea>
-        <br/>
-        <button class="button">SUBMIT</button>
-      </form><br/>
-    </div>
-
-    <!-- thankyou  -->
-    <div id="4" class="public_body" style="display:none">
-      <p>Thank you for your fake-news-story.
-        <br/>Feel free to leave feedback or start again.
-      </p>
-      <button id="Goto_Start" name="thankyou" class="button">RESTART</button>
-      <br/>
-      <br/>
-      <button id="Goto_Feedback" name="feedback" class="button_wide">LEAVE FEEDBACK</button>
-
-    </div>
-
-    <!-- feedback_input  -->
-    <div id="5" class="public_body" style="display:none">
-      <p>Leave feedback for the artist/designers... 280 chars max</p>
-      <form id="feedback_form">
-        <textarea id="feedback" name="feedbackarea" class="textarea" rows="6" cols="30" wrap="soft" maxlength="280" flex-wrap="wrap" autocomplete="off" required placeholder="Story...">
-        </textarea>
-        <br/>
-        <button class="button">SUBMIT</button>
-      </form><br/>
-    </div>
-
-  </div>
-
-
 </body>
 
 </html>
