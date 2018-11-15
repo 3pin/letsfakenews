@@ -1,13 +1,6 @@
-// check the env
-if (process.env.NODE_ENV !== 'production') {
-  const path = require('path');
-  const dotEnvPath = path.resolve('./.env');
-  const dotenv = require('dotenv')
-  const result = dotenv.config({ path: dotEnvPath})
-  if (result.error) {
-    throw result.parsed
-  }
-}
+// load the ENVIRONMENT variables
+require('dotenv').config();
+const debug = require('debug')('tests')
 
 // load assertion library
 const chai = require('chai'),
@@ -17,7 +10,7 @@ const chai = require('chai'),
 // load async for use in tests
 const async = require('async');
 
-const imagesearch_iterative_module = require('../modules/imagesearch_iterative_module.js');
+const imagesearch_iterative_module = require('../../modules/imagesearch_iterative_module.js');
 
 describe('iterative-url-search of the google-API', function() {
   it('should match each noun-from-array with an image-URL...', (done) => {
@@ -26,7 +19,7 @@ describe('iterative-url-search of the google-API', function() {
     imagesearch_iterative_module.iterative_url_search(words).then(result => {
       expect(result).to.be.an('array');
     }).catch(function(error) {
-      console.log("Failed!", error);
+      debug("Failed!", error);
     }).finally(done)
   })
 });
