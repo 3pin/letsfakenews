@@ -1,4 +1,5 @@
-// debug printing
+// functions for how stories are fetched from the database... random/stepwise etc
+
 const debug = require('debug')('db_fetch_mode')
 
 // pick next entry

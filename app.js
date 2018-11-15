@@ -1,34 +1,25 @@
-//log all system env variables
-//console.log(process.env);
-//
-const debug = require('debug')('startup')
+// the main module of the app
 
-// modules
+// load the ENVIRONMENT variables
+require('dotenv').config();
+const debug = require('debug')('app')
+if (process.env.NODE_ENV !== 'production') {
+  debug('App Mode: ' + process.env.NODE_ENV);
+  //debug(process.env);   // log all system env variables
+}
+
 const express = require('express');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const path = require('path');
-
-// check the env
-if (process.env.NODE_ENV !== 'production') {
-  const dotenv = require('dotenv')
-  const dotEnvPath = path.resolve('./.env');
-  const result = dotenv.config({ path: dotEnvPath})
-  if (result.error) {
-    throw result.parsed
-  }
-}
-
 // to connect to database
 const mongo = require('mongodb');
 const monk = require('monk');
 const db = monk(process.env.MONGODB_URI);
-
 // routes
 const index = require('./routes/index');
-
 // initialize
 const app = express();
 debug('App Name: ' + process.env.npm_package_name)
