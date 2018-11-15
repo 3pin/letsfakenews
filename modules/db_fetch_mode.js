@@ -1,15 +1,5 @@
 // debug printing
 const debug = require('debug')('db_fetch_mode')
-/*
-//read-mode, new_story || random_story
-var db_mode = 'old_story';
-// create an array of db_entries sorted by datetime (ie. _id)
-var ordered_ids = []
-// id_to_read from above array
-var id_to_read = 0;
-// actual id
-var id
-*/
 
 // pick next entry
 function next_entry(array_of_ids, id_to_read) {

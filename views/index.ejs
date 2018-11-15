@@ -20,14 +20,14 @@
   <!-- state-control module -->
   <script type="text/javascript">
     function pagestate_ctrl(div_vis_in) {
-      var show_div = '#' + div_vis_in
-      var hide_div = 'div:not(#' + div_vis_in + ')'
+      let show_div = '#' + div_vis_in
+      let hide_div = 'div:not(#' + div_vis_in + ')'
       if (mode == 'development') {
         console.log('pagestate val: ' + div_vis_in)
         console.log('show_div: ' + show_div)
         console.log('hide_div: ' + hide_div)
       }
-      var i;
+      let i;
       for (i = 1; i < 6; i++) {
         if (i == div_vis_in) {
           $('#' + i).show()
@@ -45,14 +45,13 @@
   </script>
   <!-- jQuery -->
   <script>
-    // ENV mode for console.logging
-    var mode
-    var title
-    var story
-    var feedback
-    var viewportmeta = document.querySelector('meta[name="viewport"]');
+    const viewportmeta = document.querySelector('meta[name="viewport"]');
+    let mode    // expect mode=='ENV for logging
+    let title
+    let story
+    let feedback
     $(document).ready(function() {
-      //Submit request for systems ENV-mode:
+      // Submit request for systems ENV-mode:
       $.ajax({
         type: 'GET',
         url: '/mode',
@@ -124,7 +123,6 @@
         if ($('#title').val()) {
           title = $('#title').val()
           title = title.trim()
-          //var server_title = $('form#story_form').serialize()
           if (mode == 'development') {
             console.log("This is the new title: " + title)
           }
