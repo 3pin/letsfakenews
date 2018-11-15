@@ -1,3 +1,5 @@
+// process roundtrip taking client-JSON, processing word via NLP, listing image-urls via Google-API, returning db-JSON 
+
 const debug = require('debug')('process_client_module')
 const nlp_module = require('../modules/nlp_module.js');
 const imagesearch_iterative_module = require('../modules/imagesearch_iterative_module.js');
