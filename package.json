@@ -1,6 +1,7 @@
 {
   "author": "Leon McCarthy",
-  "name": "letsfakenews",
+  "name": "Letsfakenews",
+  "website:" "https://factoryofthought.com/#letsfakenews",
   "license": "GPL-3.0",
   "version": "0.0.1",
   "private": true,
