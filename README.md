@@ -1,15 +1,13 @@
-Lets Fake News: web-app
+LetsFakeNews: a realtime fake-news generator
 //
-In Development...
+This is an interactive multimedia installation for public settings, based upon second-screening via a mobile-first web-app.
 //
-The first web-interface asks a client for a title and then series of phrases that make up a 'fake-news' report.
-The server (run locally @ localhost:5000)
-  parses the story down to its nouns
-  runs a google-image-search per noun with resulting URLS
-  saves the title, story, nouns:URLS to database
+The client's mobile-first web-interface allows a fake-news report to be submitted by first asking for a story and then a title. This second-screen client-service is accessed remotely @ letsfakenews.herokuapp.com
 //
-The second web-interface (@ route /display) is continuously picking entries from the database and with that info and a saved movie-file of a news-report.
-  renders the opening title (title)
-  composites scrolling-text (story) over the movie-file
-  composites relevant images (URLs) when the matching text scrolls onto screen
-To run the /display in fullscreen click on the region where you see the pop-up title appear
+Displaying fake-news stories must be done on chrome/firefox/opera browsers ONLY in fullscreen.
+For clients (password protected), the fullscreen display-service is accessed @ letsfakenews.herokuapp.com/display
+//
+To see the installation in action at the Kulturhuset Gallery in Stockholm in early 2018 goto: https://vimeo.com/262024124
+//
+To contact the designers and see more work goto:
+https://www.thefactoryofthought.com
