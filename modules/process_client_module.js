@@ -1,5 +1,4 @@
-var debug = require('debug')('process_client_module')
-
+const debug = require('debug')('process_client_module')
 const nlp_module = require('../modules/nlp_module.js');
 const imagesearch_iterative_module = require('../modules/imagesearch_iterative_module.js');
 const time_ops = require('../modules/time_ops.js');

@@ -1,4 +1,4 @@
-// check the env
+g// check the env
 if (process.env.NODE_ENV !== 'production') {
   const path = require('path');
   const dotEnvPath = path.resolve('./.env');
@@ -6,27 +6,23 @@ if (process.env.NODE_ENV !== 'production') {
     path: dotEnvPath
   });
 }
-var debug = require('debug')('index')
-debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' client_mode:' + process.env.CLIENT_DEBUG_MODE + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK)
-
-// load middle-ware modules
-const time_ops = require('../modules/time_ops.js');
-
-// authorization
+const debug = require('debug')('index')
 const auth = require("http-auth");
 const digest = auth.digest({
   realm: "Private area",
   file: "./htpasswd",
   authType: "digest"
 });
-
+const express = require('express');
+const router = express.Router();
+const time_ops = require('../modules/time_ops.js');
 function middleware_auth(req, res, next) {
   //console.log('middleware_auth: this page requires authentification')
   (auth.connect(digest))(req, res, next);
   //return next()
 }
-const express = require('express');
-const router = express.Router();
+
+debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' client_mode:' + process.env.CLIENT_DEBUG_MODE + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK)
 
 //declare the db-read-mode: old_story || new_story
 let db_mode = 'old_story';
@@ -122,26 +118,22 @@ router.get('/request_new_story', (req, res) => {
 
 // receive title-story info
 router.post('/add_title_story', (req, res) => {
-  //variables to be set and later saved to a database
   let client_JSON = req.body
+  debug('client_JSON: ' + client_JSON)
   //process JSON adding words & urls
   const process_client_module = require('../modules/process_client_module.js');
   process_client_module.process(client_JSON).then(function(result) {
+    let str = JSON.stringify(result, null, 2);
+    debug('jsonOBJ returned from processing: ' + str)
     //save JSON to database
-    let jsonObj = result
-    let str = JSON.stringify(jsonObj, null, 2); // spacing level = 2
-    debug('jsonObj: ' + str)
-    // set our internal DB variable
     let db = req.db;
-    // Set our collection
     let collection = db.get(process.env.COLLECTION);
-    // save to database
-    collection.insert(jsonObj, function(err, result) {
+    collection.insert(result, function(err, result) {
       if (err) {
         debug(err);
       } else {
         debug('Document inserted to db successfully');
-        // add the  just-saved JSON-stories _id to the sorted-array... fetch it from db via its title
+        // add the just-saved JSON's _id then add it to the sorted-array-of-ids...
         collection.findOne({
           title: result.title
         }, function(err, data) {
@@ -150,7 +142,7 @@ router.post('/add_title_story', (req, res) => {
           } else {
             let newest_id = data._id
             ordered_ids.push(newest_id)
-            //if there is no new_story currently being read then offset the db_index to fetch from for next time around
+            //if there is no new_story currently being read then offset the index-to-fetch-from for next-time-around
             if (db_mode == 'old_story') {
               db_mode = 'new_story';
               debug('Switched db_fetch_mode to: ' + db_mode);
@@ -159,7 +151,7 @@ router.post('/add_title_story', (req, res) => {
                 if (err) {
                   debug(err);
                 } else {
-                  //offset - 1... as it will get incremented in the next_story function
+                  // offset-1 as it will get incremented in the next_story function anyway
                   id_to_read = data - 1
                 }
               });
