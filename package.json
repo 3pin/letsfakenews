@@ -7,13 +7,13 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "test": "mocha test",
-    "test_all": "mocha ./test --recursive",
-    "test_nlp": "mocha ./test/nlp_module.test.js",
-    "test_imagesearch": "mocha ./test/imagesearch_module.test.js",
-    "test_imagesearch_iterative": "mocha ./test/imagesearch_iterative_module.test.js",
-    "test_process_story": "mocha ./test/process_story_module.test.js",
-    "test_process_client": "mocha ./test/process_client_module.test.js"
+    "test_nlp": "mocha ./test/modules/nlp_module.test.js",
+    "test_imagesearch": "mocha ./test/modules/imagesearch_module.test.js",
+    "test_imagesearch_iterative": "mocha ./test/modules/imagesearch_iterative_module.test.js",
+    "test_process_story": "mocha ./test/modules/process_story_module.test.js",
+    "test_process_client": "mocha ./test/modules/process_client_module.test.js",
+    "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js",
+    "test_all": "mocha ./test --recursive"
   },
   "dependencies": {
     "async": "^2.6.1",
