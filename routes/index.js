@@ -1,11 +1,5 @@
-g// check the env
-if (process.env.NODE_ENV !== 'production') {
-  const path = require('path');
-  const dotEnvPath = path.resolve('./.env');
-  require('dotenv').config({
-    path: dotEnvPath
-  });
-}
+// public routes into the app
+
 const debug = require('debug')('index')
 const auth = require("http-auth");
 const digest = auth.digest({
@@ -22,7 +16,7 @@ function middleware_auth(req, res, next) {
   //return next()
 }
 
-debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' client_mode:' + process.env.CLIENT_DEBUG_MODE + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK)
+debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK)
 
 //declare the db-read-mode: old_story || new_story
 let db_mode = 'old_story';
@@ -45,7 +39,7 @@ router.get('/', (req, res) => {
 // serve mode-data to a client
 router.get('/mode', (req, res) => {
   debug('/GET mode msg')
-  res.send(process.env.CLIENT_DEBUG_MODE);
+  res.send(process.env.NODE_ENV);
 });
 
 // serve story to display-page on startup
@@ -133,6 +127,7 @@ router.post('/add_title_story', (req, res) => {
         debug(err);
       } else {
         debug('Document inserted to db successfully');
+        debug(result);
         // add the just-saved JSON's _id then add it to the sorted-array-of-ids...
         collection.findOne({
           title: result.title
@@ -158,9 +153,11 @@ router.post('/add_title_story', (req, res) => {
             }
           }
         });
+        // AJAX handshake back to client
+        //res.send(result);
       }
     });
-  }).catch(done)
+  })
 });
 
 // receive title-story info

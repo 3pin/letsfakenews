@@ -1,4 +1,5 @@
 //a module to ingest text and filter/parse it per-sentence down to required Pos-tags
+
 const debug = require('debug')('nlp_module')
 
 module.exports = {
