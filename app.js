@@ -1,50 +1,48 @@
-//log all system env variables
-//console.log(process.env);
-//
-// check the env
-var mode = process.env.NODE_ENV
-console.log('Environment: ' + mode)
+// the main module of the app
+
+// load the ENVIRONMENT variables
+require('dotenv').config();
+const debug = require('debug')('app')
 if (process.env.NODE_ENV !== 'production') {
-  const dotenv = require('dotenv')
-  const result = dotenv.config()
-  if (result.error) {
-    throw result.parsed
-  }
+  debug('App Mode: ' + process.env.NODE_ENV);
+  //debug(process.env);   // log all system env variables
 }
 
-const client_mode = process.env.CLIENT_DEBUG_MODE
-const port = process.env.PORT || 5000
-const uri = process.env.MONGODB_URI
-
-var debug_startup = require('debug')('startup')
-debug_startup('Port:' + port + ' mode:' + mode + ' client_mode:' + client_mode + ' db_uri:' + uri)
-
-// modules
 const express = require('express');
-const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
+const path = require('path');
 // to connect to database
 const mongo = require('mongodb');
 const monk = require('monk');
-const db = monk(uri);
-
+const db = monk(process.env.MONGODB_URI);
 // routes
 const index = require('./routes/index');
-
 // initialize
 const app = express();
+debug('App Name: ' + process.env.npm_package_name)
+
+/*
+//setup authorization
+var auth = require("http-auth");
+var digest = auth.digest({
+  realm: "Private area",
+  file: __dirname + "/htpasswd",
+  authType: "digest"
+});
+//use authorization
+app.use(auth.connect(digest))
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+// uncomment after placing your favicon in /public
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
