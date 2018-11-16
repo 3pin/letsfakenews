@@ -2,8 +2,8 @@
 
 'use strict';
 const debug = require('debug')('process_client_module')
-const nlp_module = require('../modules/nlp_module.js');
-const imagesearch_iterative_module = require('../modules/imagesearch_iterative_module.js');
+const nlp = require('../modules/nlp.js');
+const imagesearch_iterative = require('../modules/imagesearch_iterative.js');
 const time_ops = require('../modules/time_ops.js');
 
 module.exports = {
@@ -15,9 +15,9 @@ module.exports = {
     return new Promise(function(resolve, reject) {
       time_ops.current_time(today).then((result) => {
         client_JSON.time = result.time
-        nlp_module.parse_nouns(client_JSON.story).then((words) => {
+        nlp.parse_nouns(client_JSON.story).then((words) => {
           client_JSON.words = words
-          imagesearch_iterative_module.iterative_url_search(words).then((urls) => {
+          imagesearch_iterative.iterative_url_search(words).then((urls) => {
             client_JSON.urls = urls
             resolve(client_JSON)
           });
