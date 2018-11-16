@@ -9,18 +9,16 @@ const chai = require('chai'),
 
 const process_story_module = require('../../modules/process_story_module.js');
 
-describe('When story(string) recevied... story-processed to [words] then [urls]', function() {
+describe('When story(string) recevied... story-processed to [words] then [urls]', () => {
 
   it('from story... parse nouns -> fetch urls', (done) => {
     let story = "Pump up the volume"
-    process_story_module.process(story).then(function(result) {
+    process_story_module.process(story).then((result) => {
       expect(result).to.be.an('array');
       done()
-    }, function(err) {
-      console.log(err)
     }).catch(function(err) {
-      console.log("Failed!", err);
+      debug("Failed!", err);
     })
   })
-  
+
 });
