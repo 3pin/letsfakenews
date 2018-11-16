@@ -2,7 +2,8 @@
 takes a searchterm
 finds the first returned image from google-image-search
 prints the searchterm & URL
-saves as an entry to a JSON file */
+saves as an entry to a JSON file
+*/
 
 const debug = require('debug')('imagesearch_iterative_module')
 const GoogleImages = require('google-images');
@@ -11,7 +12,6 @@ const searchSettings = {
   searchType: 'image',
   safe: 'high'
 }
-
 const imagesearch_module = require('../modules/imagesearch_module.js');
 
 module.exports = {

@@ -12,8 +12,6 @@ function random_entry(array_of_ids) {
     id: id
   }
 }
-module.exports.random_entry = random_entry;
-
 // pick next entry
 function next_entry(array_of_ids, id_to_read) {
   debug('entered db_fetch_mode: ' + id_to_read)
@@ -35,4 +33,5 @@ function next_entry(array_of_ids, id_to_read) {
     id_to_read: id_to_read
   }
 }
+module.exports.random_entry = random_entry;
 module.exports.next_entry = next_entry;
