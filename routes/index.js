@@ -116,26 +116,27 @@ router.get('/request_new_story', (req, res) => {
 router.post('/add_title_story', (req, res) => {
   let client_JSON = req.body
   debug('client_JSON: ' + client_JSON)
-  //process JSON adding words & urls
-  const process_client_module = require('../modules/process_client_module.js');
-  process_client_module.process(client_JSON).then((result) => {
+  //process JSON... add NLP_words & matching urls
+  const process_client_story = require('../modules/process_client_story.js');
+  process_client_story.process(client_JSON).then((result) => {
+    /*
     let str = JSON.stringify(result, null, 2);
     debug('jsonOBJ returned from processing: ' + str)
-    //save JSON to database
-    let db = req.db;
-    let collection = db.get(process.env.COLLECTION);
+    */
+    //save to db
+    let collection = req.db.get(process.env.COLLECTION);
     collection.insert(result, function(err, result) {
       if (err) {
-        debug(err);
+        debug('err: ' + err);
       } else {
         debug('Document inserted to db successfully');
         res.send('Document inserted to db successfully');
-        // add the just-saved JSON's _id then add it to the sorted-array-of-ids...
+        // feth the just-saved JSON's _id to add to the sorted-array-of-ids...
         collection.findOne({
           title: result.title
         }, function(err, data) {
           if (err) {
-            debug(err)
+            debug('err: ' + err)
           } else {
             let newest_id = data._id
             ordered_ids.push(newest_id)
@@ -146,7 +147,7 @@ router.post('/add_title_story', (req, res) => {
               // return no of entries in database
               collection.count({}, {}, function(err, data) {
                 if (err) {
-                  debug(err);
+                  debug('err: ' + err);
                 } else {
                   // offset-1 as it will get incremented in the next_story function anyway
                   id_to_read = data - 1
@@ -156,6 +157,8 @@ router.post('/add_title_story', (req, res) => {
           }
         });
       }
+    }).catch((err) => {
+      debug("Err: ", err);
     });
   });
 });
@@ -165,28 +168,22 @@ router.post('/add_feedback', (req, res) => {
   // Get our form values. These rely on the "name" attributes
   let feedback = req.body.feedback;
   debug('Raw feedback: ' + feedback);
-  // create JSON that will be saved to DB
-  let jsonObj = {}
-  jsonObj.feedback = feedback
-  let today = new Date();
-  time_ops.current_time(today).then((result) => {
-    jsonObj.time = result.time
-    // set our internal DB variable
-    let db = req.db;
-    // Set our collection
-    let collection = db.get(process.env.FEEDBACK);
+  const process_client_feedback = require('../modules/process_client_feedback.js');
+  process_client_feedback.process(feedback).then((result) => {
+    debug(result)
     // Save to the DB
-    collection.insert(jsonObj, function(err, result) {
+    let collection = req.db.get(process.env.FEEDBACK);
+    collection.insert(result, function(err, result) {
       if (err) {
         debug(err);
       } else {
         debug('Feedback inserted to db successfully');
         res.send('Feedback inserted to db successfully');
       }
+    }).catch((err) => {
+      debug("Err: ", err);
     });
-  }).catch((err) => {
-    debug("Err: ", err);
-  });
+  })
 });
 
 module.exports = router;

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for db_fetch_mode.js</title>
+    <title>Code coverage report for imagesearch.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="index.html">All files</a> db_fetch_mode.js
+      <a href="index.html">All files</a> imagesearch.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">89.47% </span>
+        <span class="strong">94.44% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>17/19</span>
+        <span class='fraction'>17/18</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">50% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>1/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">75% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>2/2</span>
+        <span class='fraction'>3/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">89.47% </span>
+        <span class="strong">94.44% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>17/19</span>
+        <span class='fraction'>17/18</span>
       </div>
     </div>
     <p class="quiet">
@@ -83,17 +83,11 @@
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -101,62 +95,77 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-yes">70x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// functions for how stories are fetched from the database... random/stepwise etc
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* a module that...
+takes a searchterm
+finds the first returned image from google-image-search
+prints the searchterm &amp; URL
+saves as an entry to a JSON file */
 &nbsp;
-const debug = require('debug')('db_fetch_mode')
+'use strict';
+const debug = require('debug')('imagesearch')
+const GoogleImages = require('google-images');
+const client = new GoogleImages(process.env.CUSTOM_SEARCH_ENGINE_ID, process.env.CUSTOM_SEARCH_APIKEY);
+const searchSettings = {
+  searchType: 'image',
+  safe: 'high'
+}
 &nbsp;
-// pick a random entry with which to pick an '_id' entry from the array
-function random_entry(array_of_ids) {
-  let randomnumber = Math.floor(Math.random() * (array_of_ids.length));
-  let entry_to_read = randomnumber
-  let id = array_of_ids[entry_to_read];
-  debug('About to read entry _id: ' + id)
-  return {
-    id: id
+module.exports = {
+&nbsp;
+  //find an image-url to match a noun
+  single_url_search: function(input_text) {
+    return new Promise(function(resolve, reject) {
+      let searchterm = input_text
+      debug(searchterm)
+      client.search(searchterm, searchSettings).then((result) =&gt; {
+        let urlArray = []
+        for (let value of result) {
+          let item = value;
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (item.url) {
+            urlArray.push(item.url)
+          }
+        }
+        let num_of_result = Math.floor(Math.random() * urlArray.length);
+        debug(urlArray[num_of_result])
+        resolve(urlArray[num_of_result])
+      }).catch(<span class="fstat-no" title="function not covered" >fu</span>nction(error) {
+<span class="cstat-no" title="statement not covered" >        debug("Failed!", error);</span>
+      });
+    });
   }
-}
-// pick next entry
-function next_entry(array_of_ids, id_to_read) {
-  debug('entered db_fetch_mode: ' + id_to_read)
-  id_to_read++;
-  let db_mode
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (id_to_read &gt; array_of_ids.length) {
-    id_to_read = 1
-    db_mode = 'old_story'
-    debug(db_mode)
-  } else {
-<span class="cstat-no" title="statement not covered" >    db_mode = 'new_story'</span>
-<span class="cstat-no" title="statement not covered" >    debug(db_mode)</span>
-  }
-  let id = array_of_ids[id_to_read - 1];
-  debug('About to read entry _id: ' + id)
-  return {
-    id: id,
-    db_mode: db_mode,
-    id_to_read: id_to_read
-  }
-}
-module.exports.random_entry = random_entry;
-module.exports.next_entry = next_entry;
+&nbsp;
+};
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
