@@ -1,6 +1,5 @@
 LetsFakeNews: a realtime fake-news generator
 <br/>
-<br/>
 This is an interactive multimedia installation for public settings, based upon second-screening via a mobile-first web-app.
 <br/>
 <br/>
@@ -12,7 +11,6 @@ For clients (password protected), the fullscreen display-service is accessed @ l
 <br/>
 <br/>
 To see the installation in action at the Kulturhuset Gallery in Stockholm in early 2018 goto: https://vimeo.com/262024124
-<br/>
 <br/>
 To contact the designer and/or see more work goto:
 https://www.thefactoryofthought.com
