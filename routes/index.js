@@ -116,7 +116,7 @@ router.post('/add_title_story', (req, res) => {
   debug('client_JSON: ' + client_JSON)
   //process JSON adding words & urls
   const process_client_module = require('../modules/process_client_module.js');
-  process_client_module.process(client_JSON).then(function(result) {
+  process_client_module.process(client_JSON).then((result) => {
     let str = JSON.stringify(result, null, 2);
     debug('jsonOBJ returned from processing: ' + str)
     //save JSON to database
@@ -156,7 +156,7 @@ router.post('/add_title_story', (req, res) => {
         });
       }
     });
-  })
+  });
 });
 
 // receive title-story info

@@ -12,11 +12,11 @@ const async = require('async');
 
 const imagesearch_iterative_module = require('../../modules/imagesearch_iterative_module.js');
 
-describe('iterative-url-search of the google-API', function() {
+describe('iterative-url-search of the google-API', () => {
   it('should match each noun-from-array with an image-URL...', (done) => {
     let words = ['Pump','volume']
     //let input_array = ['cat', 'dog']
-    imagesearch_iterative_module.iterative_url_search(words).then(result => {
+    imagesearch_iterative_module.iterative_url_search(words).then((result) => {
       expect(result).to.be.an('array');
     }).catch(function(error) {
       debug("Failed!", error);

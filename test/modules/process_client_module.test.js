@@ -9,15 +9,16 @@ const chai = require('chai'),
 
 const process_client_module = require('../../modules/process_client_module.js');
 
-describe('When story(JSON) recevied... story-processed to [words] to [urls] then JSON', function() {
+describe('When story(JSON) recevied... story-processed to [words] to [urls] then JSON', () => {
   it('from client-JSON parse nouns -> fetch urls -> calc currenttime -> add client-JSON', (done) => {
     let client_JSON = {
       "title": "MUSIC",
       "story": "Pump up the volume"
-    }
-    process_client_module.process(client_JSON).then(function(result) {
-      expect(client_JSON).to.have.property('urls')
-      done()
-    }).catch(done)
-  })
+    };
+    process_client_module.process(client_JSON).then((result) => {
+      debug(result);
+      expect(client_JSON).to.have.property('urls');
+      done();
+    });
+  });
 });
