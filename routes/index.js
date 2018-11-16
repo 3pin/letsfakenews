@@ -47,10 +47,8 @@ router.get('/mode', (req, res) => {
 // serve story to display-page on startup
 router.get('/display', middleware_auth, (req, res) => {
   debug('recvd /display /get request')
-  // declare db
-  let db = req.db;
   // declare db-collection
-  let collection = db.get(process.env.COLLECTION);
+  let collection = req.db.get(process.env.COLLECTION);
   // populate the array of [entries by ascending timestamp] then pick the first entry
   collection.find({}, {
     sort: {
@@ -86,10 +84,8 @@ router.get('/display', middleware_auth, (req, res) => {
 // serve story to displaypage when-previous-story-finished
 router.get('/request_new_story', (req, res) => {
   debug('/GET request_new_story')
-  // set our internal DB variable
-  let db = req.db;
   // Set our collection
-  let collection = db.get(process.env.COLLECTION);
+  let collection = req.db.get(process.env.COLLECTION);
   // calculate what the id of the next story is and any necessary changes fo db_mode
   const db_fetch_mode = require('../modules/db_fetch_mode.js');
   if (db_mode == 'old_story') {
