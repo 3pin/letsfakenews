@@ -4,7 +4,7 @@
 
 'use strict';
 
-const debug = require('debug')('time_ops_module')
+const debug = require('debug')('time_ops')
 
 module.exports = {
 

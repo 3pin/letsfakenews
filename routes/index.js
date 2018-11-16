@@ -1,5 +1,6 @@
 // public routes into the app
 
+'use strict';
 const debug = require('debug')('index')
 const auth = require("http-auth");
 const digest = auth.digest({
@@ -10,6 +11,7 @@ const digest = auth.digest({
 const express = require('express');
 const router = express.Router();
 const time_ops = require('../modules/time_ops.js');
+
 function middleware_auth(req, res, next) {
   //console.log('middleware_auth: this page requires authentification')
   (auth.connect(digest))(req, res, next);
@@ -160,28 +162,30 @@ router.post('/add_title_story', (req, res) => {
 
 // receive title-story info
 router.post('/add_feedback', (req, res) => {
-  //
   // Get our form values. These rely on the "name" attributes
   let feedback = req.body.feedback;
   debug('Raw feedback: ' + feedback);
-  //
-  // save to database
-  // create JSON obj with our data
+  // create JSON that will be saved to DB
   let jsonObj = {}
-  jsonObj.time = time_ops.current_time().datetime
-  jsonObj.fedback = feedback
-  // set our internal DB variable
-  let db = req.db;
-  // Set our collection
-  let collection = db.get(process.env.FEEDBACK);
-  // Submit to the DB
-  collection.insert(jsonObj, function(err, result) {
-    if (err) {
-      debug(err);
-    } else {
-      debug('Feedback inserted to db successfully');
-      res.send('Feedback inserted to db successfully');
-    }
+  jsonObj.feedback = feedback
+  let today = new Date();
+  time_ops.current_time(today).then((result) => {
+    jsonObj.time = result.time
+    // set our internal DB variable
+    let db = req.db;
+    // Set our collection
+    let collection = db.get(process.env.FEEDBACK);
+    // Save to the DB
+    collection.insert(jsonObj, function(err, result) {
+      if (err) {
+        debug(err);
+      } else {
+        debug('Feedback inserted to db successfully');
+        res.send('Feedback inserted to db successfully');
+      }
+    });
+  }).catch((err) => {
+    debug("Err: ", err);
   });
 });
 
