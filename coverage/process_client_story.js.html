@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for db_fetch_mode.js</title>
+    <title>Code coverage report for process_client_story.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="index.html">All files</a> db_fetch_mode.js
+      <a href="index.html">All files</a> process_client_story.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">89.47% </span>
+        <span class="strong">93.33% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>17/19</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>1/2</span>
+        <span class='fraction'>14/15</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
-        <span class="quiet">Functions</span>
-        <span class='fraction'>2/2</span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">89.47% </span>
+        <span class="strong">83.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">93.33% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>17/19</span>
+        <span class='fraction'>14/15</span>
       </div>
     </div>
     <p class="quiet">
@@ -77,86 +77,68 @@
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a>
-<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L32'></a><a href='#L32'>32</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// functions for how stories are fetched from the database... random/stepwise etc
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// process roundtrip taking client-JSON, processing word via NLP, listing image-urls via Google-API, returning db-JSON
 &nbsp;
-const debug = require('debug')('db_fetch_mode')
+'use strict';
+const debug = require('debug')('process_client_module')
+const nlp = require('../modules/nlp.js');
+const imagesearch_iterative = require('../modules/imagesearch_iterative.js');
+const time_ops = require('../modules/time_ops.js');
 &nbsp;
-// pick a random entry with which to pick an '_id' entry from the array
-function random_entry(array_of_ids) {
-  let randomnumber = Math.floor(Math.random() * (array_of_ids.length));
-  let entry_to_read = randomnumber
-  let id = array_of_ids[entry_to_read];
-  debug('About to read entry _id: ' + id)
-  return {
-    id: id
+module.exports = {
+&nbsp;
+  process: function(client_JSON) {
+    //debug(client_JSON)
+    var today = new Date();
+    //client_JSON.time = time_ops.current_time(today).datetime
+    return new Promise(function(resolve, reject) {
+      time_ops.current_time(today).then((result) =&gt; {
+        client_JSON.time = result.time
+        nlp.parse_nouns(client_JSON.story).then((words) =&gt; {
+          client_JSON.words = words
+          imagesearch_iterative.iterative_url_search(words).then((urls) =&gt; {
+            client_JSON.urls = urls
+            resolve(client_JSON)
+          });
+        });
+      }).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
+<span class="cstat-no" title="statement not covered" >        debug("Err: ", err);</span>
+      });
+    });
   }
+&nbsp;
 }
-// pick next entry
-function next_entry(array_of_ids, id_to_read) {
-  debug('entered db_fetch_mode: ' + id_to_read)
-  id_to_read++;
-  let db_mode
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (id_to_read &gt; array_of_ids.length) {
-    id_to_read = 1
-    db_mode = 'old_story'
-    debug(db_mode)
-  } else {
-<span class="cstat-no" title="statement not covered" >    db_mode = 'new_story'</span>
-<span class="cstat-no" title="statement not covered" >    debug(db_mode)</span>
-  }
-  let id = array_of_ids[id_to_read - 1];
-  debug('About to read entry _id: ' + id)
-  return {
-    id: id,
-    db_mode: db_mode,
-    id_to_read: id_to_read
-  }
-}
-module.exports.random_entry = random_entry;
-module.exports.next_entry = next_entry;
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
