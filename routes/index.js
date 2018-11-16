@@ -127,7 +127,6 @@ router.post('/add_title_story', (req, res) => {
         debug(err);
       } else {
         debug('Document inserted to db successfully');
-        debug(result);
         res.send('Document inserted to db successfully');
         // add the just-saved JSON's _id then add it to the sorted-array-of-ids...
         collection.findOne({
@@ -181,6 +180,7 @@ router.post('/add_feedback', (req, res) => {
       debug(err);
     } else {
       debug('Feedback inserted to db successfully');
+      res.send('Feedback inserted to db successfully');
     }
   });
 });
