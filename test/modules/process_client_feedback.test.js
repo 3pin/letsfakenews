@@ -13,11 +13,10 @@ const process_client_feedback = require('../../modules/process_client_feedback.j
 
 describe('testing function to prepare JSON obj for submission to db as feedback...', () => {
   it('should take a string, create timestamp => return in a jsonOBJ', (done) => {
-    process_client_feedback.process('great').then(result) => {
+    process_client_feedback.process('great').then((result) => {
       debug(result);
       expect(result.feedback).to.equal('great');
       done();
-    }
-  })
-
+    });
+  });
 });
