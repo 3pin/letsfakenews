@@ -14,7 +14,9 @@
     "test_process_story": "mocha ./test/modules/process_story_module.test.js",
     "test_process_client": "mocha ./test/modules/process_client_module.test.js",
     "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js",
-    "test_all": "mocha ./test --recursive"
+    "test_all": "mocha ./test --recursive",
+    "test_coverage_text": "nyc --reporter=text mocha ./test --recursive",
+    "test_coverage_html": "nyc --reporter=html mocha ./test --recursive"
   },
   "dependencies": {
     "async": "^2.6.1",
@@ -30,6 +32,7 @@
     "mongodb": "^3.1.7",
     "monk": "^6.0.6",
     "morgan": "^1.9.1",
+    "nyc": "^13.1.0",
     "pos": "^0.4.2",
     "screenfull": "^3.3.3",
     "serve-favicon": "^2.5.0"
