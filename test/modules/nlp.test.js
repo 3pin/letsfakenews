@@ -1,3 +1,5 @@
+'use strict';
+
 // load the ENVIRONMENT variables
 require('dotenv').config();
 const debug = require('debug')('tests')
@@ -7,18 +9,18 @@ const chai = require('chai'),
   expect = chai.expect,
   should = chai.should();
 
-const nlp_module = require('../../modules/nlp_module.js');
+const nlp = require('../../modules/nlp.js');
 
 describe('When a new fakenewsreport (story) is received...', () => {
 
   it('should NLP the story(string) to an array of nouns...', (done) => {
-    nlp_module.parse_nouns('The cat ran under the bus').then(result => {
+    nlp.parse_nouns('The cat ran under the bus').then(result => {
       expect(result).to.be.an('array');
     }).finally(done);
   })
 
   it('should NLP the story(string) to an array of nouns PER phrase...', (done) => {
-    nlp_module.parse_phrases('The cat ran under the bus. It was hurt').then((result) => {
+    nlp.parse_phrases('The cat ran under the bus. It was hurt').then((result) => {
       expect(result).to.be.an('array');
     }).finally(done);
   })

@@ -1,3 +1,5 @@
+'use strict';
+
 // load the ENVIRONMENT variables
 require('dotenv').config();
 const debug = require('debug')('tests')
@@ -10,13 +12,13 @@ const chai = require('chai'),
 // load async for use in tests
 const async = require('async');
 
-const imagesearch_iterative_module = require('../../modules/imagesearch_iterative_module.js');
+const imagesearch_iterative = require('../../modules/imagesearch_iterative.js');
 
 describe('iterative-url-search of the google-API', () => {
   it('should match each noun-from-array with an image-URL...', (done) => {
     let words = ['Pump','volume']
     //let input_array = ['cat', 'dog']
-    imagesearch_iterative_module.iterative_url_search(words).then((result) => {
+    imagesearch_iterative.iterative_url_search(words).then((result) => {
       expect(result).to.be.an('array');
     }).catch(function(error) {
       debug("Failed!", error);

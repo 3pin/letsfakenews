@@ -1,4 +1,5 @@
 // the main module of the app
+'use strict';
 
 // load the ENVIRONMENT variables
 require('dotenv').config();
