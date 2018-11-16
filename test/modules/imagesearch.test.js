@@ -1,3 +1,5 @@
+'use strict';
+
 // load the ENVIRONMENT variables
 require('dotenv').config();
 const debug = require('debug')('tests')
@@ -10,12 +12,12 @@ const chai = require('chai'),
 // load async for use in tests
 const async = require('async');
 
-const imagesearch_module = require('../../modules/imagesearch_module.js');
+const imagesearch = require('../../modules/imagesearch.js');
 
 //test .then Promise
 describe('single-url-search of the google-API', () => {
   it('should fetch an imageURL-string for a noun...', (done) => {
-    imagesearch_module.single_url_search('cat').then((result) => {
+    imagesearch.single_url_search('cat').then((result) => {
       expect(result).to.be.a('string');
     }).finally(done);
   });

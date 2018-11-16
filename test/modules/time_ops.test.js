@@ -1,3 +1,5 @@
+'use strict';
+
 // load the ENVIRONMENT variables
 require('dotenv').config();
 const debug = require('debug')('tests')

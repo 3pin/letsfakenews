@@ -5,7 +5,7 @@ prints the searchterm & URL
 saves as an entry to a JSON file */
 
 'use strict';
-const debug = require('debug')('imagesearch_module')
+const debug = require('debug')('imagesearch')
 const GoogleImages = require('google-images');
 const client = new GoogleImages(process.env.CUSTOM_SEARCH_ENGINE_ID, process.env.CUSTOM_SEARCH_APIKEY);
 const searchSettings = {

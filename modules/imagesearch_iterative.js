@@ -6,14 +6,14 @@ saves as an entry to a JSON file
 */
 
 'use strict';
-const debug = require('debug')('imagesearch_iterative_module')
+const debug = require('debug')('imagesearch_iterative')
 const GoogleImages = require('google-images');
 const client = new GoogleImages(process.env.CUSTOM_SEARCH_ENGINE_ID, process.env.CUSTOM_SEARCH_APIKEY);
 const searchSettings = {
   searchType: 'image',
   safe: 'high'
 }
-const imagesearch_module = require('../modules/imagesearch_module.js');
+const imagesearch = require('../modules/imagesearch.js');
 
 module.exports = {
 
@@ -21,7 +21,7 @@ module.exports = {
   iterative_url_search: function(input_array) {
     let array = input_array
     return new Promise((resolve, reject) => {
-      var promises = array.map(imagesearch_module.single_url_search)
+      var promises = array.map(imagesearch.single_url_search)
       Promise.all(promises).then((result) => {
           resolve(result)
         }).catch((error) => {
