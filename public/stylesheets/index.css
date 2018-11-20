@@ -15,7 +15,11 @@
 }
 
 #left_col, #right_col, #middle_col {
-  /*align-items: center;*/
+  align-items: center;
+}
+
+.section {
+  display: none;
 }
 
 .bg {

@@ -215,26 +215,20 @@
 </head>
 
 <body>
-
-  <!-- bgd -->
+  <!-- container -->
   <div class="bg" id="bg_frame">
-
     <!-- header -->
-    <div id="header_frame">
+    <header id="header_frame">
       <img class="img-responsive" id="header_image" src="/images/header.jpg">
-    </div>
-
+    </header>
     <!-- row containing columns of content -->
-    <div class="row">
-      <br>
-
+    <main class="row"><br>
       <!-- column as left blank-strip -->
-      <div id="left_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
-
+      <aside id="left_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></aside>
       <!-- column as middle content-strip -->
-      <div id="middle_col" class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+      <article id="middle_col" class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
         <!-- landing  -->
-        <div id="1">
+        <section class="section" id="1">
           <h3>Let's Fake News...</h3><br />
           <p>Pretend you're a journalist with a deadline but no news to report so you're going to fake it!
             Try to trick the Al-Jazeera news-room into broadcasting your fake story, then wait to see if it appears on the public screen.
@@ -242,9 +236,9 @@
           </p>
           <br />
           <button id="gototitle" type="button" class="btn btn-primary btn-responsive">Proceed</button>
-        </div>
+        </section>
         <!-- story_input  -->
-        <div id="2">
+        <section class="section" id="2">
           <h3>Write a story...</h3>
           <form id="story_form" class="form-horizontal">
             <div class="form-group">
@@ -255,9 +249,9 @@
               </div>
             </div>
           </form>
-        </div>
+        </section>
         <!-- title_input  -->
-        <div id="3">
+        <section class="section" id="3">
           <h3>Add a headline...</h3>
           <form id="title_form" class="form-horizontal">
             <div class="form-group">
@@ -269,18 +263,18 @@
             </div>
           </form>
           <br />
-        </div>
+        </section>
         <!-- thankyou  -->
-        <div id="4">
+        <section class="section" id="4">
           <h3>Thank you...</h3><br />
           <p>Want to try again?</p>
           <button id="Goto_Start" name="thankyou" type="submit" class="btn btn-primary btn-responsive">Restart</button>
           <br /><br />
           <p>Leave us your feedback</p>
           <button id="Goto_Feedback" name="feedback" type="submit" class="btn btn-primary btn-responsive">Feedback</button>
-        </div>
+        </section>
         <!-- feedback_input  -->
-        <div id="5">
+        <section class="section" id="5">
           <h3>Leave your feedback...</h3><br />
           <form id="feedback_form" class="form-horizontal">
             <div class="form-group">
@@ -291,19 +285,15 @@
               </div>
             </div>
           </form>
-        </div>
-      </div>
-
+        </section>
+      </article>
       <!-- column as right blank-strip -->
-      <div id="right_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></div>
-
-    </div>
-
+      <aside id="right_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></aside>
+    </main>
     <!-- footer -->
-    <div class="footer" id="footer_frame">
+    <footer class="footer" id="footer_frame">
       <img class="img-responsive" id="footer_image" src="/images/footer.jpg">
-    </div>
-
+    </footer>
   </div>
 </body>
 
