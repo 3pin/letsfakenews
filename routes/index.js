@@ -58,6 +58,7 @@ router.get('/display', middleware_auth, (req, res) => {
     if (err) {
       debug(err);
     } else {
+      let object
       for (object in data) {
         ordered_ids.push(data[object]._id)
       }
