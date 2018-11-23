@@ -9,5 +9,4 @@ npm-debug.log
 tmp
 .DS_Store
 database
-htpasswd
 routes/index_old.js
