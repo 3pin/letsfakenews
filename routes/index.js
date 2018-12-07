@@ -44,6 +44,17 @@ router.get('/mode', (req, res) => {
   res.send(process.env.NODE_ENV);
 });
 
+/* GET db stories */
+router.get('/database', (req, res) => {
+  let collection = req.db.get(process.env.COLLECTION);
+  collection.find({}, {}, function(e, docs) {
+    res.render('database', {
+      tabtitle: "LetsFakeNews:database",
+      stories: docs
+    });
+  });
+});
+
 // serve story to display-page on startup
 router.get('/display', middleware_auth, (req, res) => {
   debug('recvd /display /get request')
@@ -110,54 +121,44 @@ router.get('/request_new_story', (req, res) => {
 });
 
 // receive title-story info
-router.post('/add_title_story', (req, res) => {
+router.post('/add_title_story', (req, res, next) => {
   let client_JSON = req.body
   debug('client_JSON: ' + client_JSON)
   //process JSON... add NLP_words & matching urls
   const process_client_story = require('../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
-    /*
-    let str = JSON.stringify(result, null, 2);
-    debug('jsonOBJ returned from processing: ' + str)
-    */
     //save to db
     let collection = req.db.get(process.env.COLLECTION);
-    collection.insert(result, function(err, result) {
-      if (err) {
-        debug('err: ' + err);
-      } else {
-        debug('Document inserted to db successfully');
-        res.send('Document inserted to db successfully');
-        // feth the just-saved JSON's _id to add to the sorted-array-of-ids...
-        collection.findOne({
-          title: result.title
-        }, function(err, data) {
-          if (err) {
-            debug('err: ' + err)
-          } else {
-            let newest_id = data._id
-            ordered_ids.push(newest_id)
-            //if there is no new_story currently being read then offset the index-to-fetch-from for next-time-around
-            if (db_mode == 'old_story') {
-              db_mode = 'new_story';
-              debug('Switched db_fetch_mode to: ' + db_mode);
-              // return no of entries in database
-              collection.count({}, {}, function(err, data) {
-                if (err) {
-                  debug('err: ' + err);
-                } else {
-                  // offset-1 as it will get incremented in the next_story function anyway
-                  id_to_read = data - 1
-                }
-              });
-            }
-          }
-        });
-      }
-    }).catch((err) => {
-      debug("Err: ", err);
+    collection.insert(result).then((output) => {
+      debug('Document inserted to db successfully');
+      //next();
+      //res.send('Document inserted to db successfully');
+      // fetch the just-saved JSON's _id to add to the sorted-array-of-ids...
+      collection.findOne({
+        title: output.title
+      }).then((data) => {
+        let newest_id = data._id
+        ordered_ids.push(newest_id)
+        //if there is no new_story currently being read then offset the index-to-fetch-from for next-time-around
+        if (db_mode == 'old_story') {
+          db_mode = 'new_story';
+          debug('Switched db_fetch_mode to: ' + db_mode);
+          // return no of entries in database
+          collection.count({}, {}).then((response) => {
+            // offset-1 as it will get incremented in the next_story function anyway
+            id_to_read = response - 1
+          }).then(() => {
+            next();
+          })
+        }
+      });
     });
+  }).catch((err) => {
+    debug("Err: ", err);
   });
+}, (req, res) => {
+  /* refresh db stories */
+  res.redirect('/database');
 });
 
 // receive title-story info

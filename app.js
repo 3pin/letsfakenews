@@ -26,15 +26,16 @@ const app = express();
 debug('App Name: ' + process.env.npm_package_name)
 
 /*
-//setup authorization
-var auth = require("http-auth");
-var digest = auth.digest({
-  realm: "Private area",
-  file: __dirname + "/htpasswd",
-  authType: "digest"
-});
-//use authorization
-app.use(auth.connect(digest))
+var refreshDB = function (req, res, next) {
+  let collection = req.db.get(process.env.COLLECTION);
+  collection.find({}, {}, function(e, docs) {
+    res.render('database', {
+      stories: docs
+    });
+  });
+  next()
+}
+app.use(refreshDB)
 */
 
 // view engine setup
