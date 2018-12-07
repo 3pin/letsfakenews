@@ -67,7 +67,23 @@
       });
       // Button-delete handler:
       $("table#stories").on("click", ".remove", function () {
-        $(this).closest('tr').remove();
+        if (confirm("Click OK to delete row?")) {
+          let data = $(this).closest('tr').find("td:nth-child(3)").text()
+          console.log('output: ' + data)
+          data = data.replace(/^\s+|\s+$/g, '');
+          console.log('output: ' + data)
+          $(this).closest('tr').remove();
+          // Submit request for systems ENV-mode:
+          $.ajax({
+            type: 'DELETE',
+            url: '/delete',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              data: data
+            }),
+            dataType: 'JSON'
+          });
+        }
       });
     });
   </script>
@@ -89,12 +105,10 @@
         <h1>LetsFakeNews Database</h1>
         <table id="stories" class="table table-dark table-striped">
           <thead class="thead-dark">
-            <tr>
-              <th>#</th>
-              <th>Title</th>
-              <th>Story</th>
-              <th>Delete</th>
-            </tr>
+            <th id="#">#</th>
+            <th id="Title">Title</th>
+            <th id="Story">Story</th>
+            <th id="Delete">Delete</th>
           </thead>
           <tbody>
             <% stories.forEach((entry,index) => { %>

@@ -1,6 +1,11 @@
 // public routes into the app
 
 'use strict';
+
+var app = require('express')();
+var http = require('http').Server(app)
+var io = require('socket.io')(http)
+
 const debug = require('debug')('index')
 const auth = require("http-auth");
 const digest = auth.digest({
@@ -42,6 +47,22 @@ router.get('/', (req, res) => {
 router.get('/mode', (req, res) => {
   debug('/GET mode msg')
   res.send(process.env.NODE_ENV);
+});
+
+router.delete('/delete', (req, res) => {
+  let query = {
+    story: req.body.data
+  };
+  debug(query)
+  let collection = req.db.get(process.env.COLLECTION);
+  collection.remove(query).then((err, docs) => {
+    if (err) {
+      debug('error');
+      //debug(err);
+    }
+    //debug(docs.result.n + " document(s) deleted");
+    res.send("document(s) deleted");
+  });
 });
 
 /* GET db stories */
@@ -158,7 +179,14 @@ router.post('/add_title_story', (req, res, next) => {
   });
 }, (req, res) => {
   /* refresh db stories */
-  res.redirect('/database');
+  let collection = req.db.get(process.env.COLLECTION);
+  collection.find({}, {}, function(e, docs) {
+    debug(docs)
+    res.render('database', {
+      tabtitle: "LetsFakeNews:database",
+      stories: docs
+    });
+  });
 });
 
 // receive title-story info
@@ -181,7 +209,7 @@ router.post('/add_feedback', (req, res) => {
     }).catch((err) => {
       debug("Err: ", err);
     });
-  })
+  });
 });
 
 module.exports = router;
