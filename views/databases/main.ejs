@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>
+    <%= tabtitle %>
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- load debug script -->
+  <script type="text/javascript" src="/javascripts/debug_browserify.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- Local CSS to override some bootstrap methods -->
+  <link rel='stylesheet' href='/stylesheets/index.css'>
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <!-- state-control module -->
+  <script type="text/javascript">
+    function pagestate_ctrl(div_vis_in) {
+      let show_div = '#' + div_vis_in
+      let hide_div = 'div:not(#' + div_vis_in + ')'
+      if (mode == 'development') {
+        console.log('pagestate val: ' + div_vis_in)
+        console.log('show_div: ' + show_div)
+        console.log('hide_div: ' + hide_div)
+      }
+      let i;
+      for (i = 1; i < 6; i++) {
+        if (i == div_vis_in) {
+          $('#' + i).show()
+        } else {
+          $('#' + i).hide()
+        }
+      }
+    }
+
+    function pagestate_alloff() {
+      $('div:not(#0)').hide()
+      $("#banner_image_frame").show()
+      $("#footer_image_frame").show()
+    }
+  </script>
+  <!-- jQuery -->
+  <script>
+    const viewportmeta = document.querySelector('meta[name="viewport"]');
+    let mode // expect mode=='ENV for logging
+    let title
+    let story
+    let feedback
+    $(document).ready(function() {
+      // Submit request for systems ENV-mode:
+      $.ajax({
+        type: 'GET',
+        url: '/mode',
+        success: function(response) {
+          mode = response
+          pagestate_ctrl(1)
+          $('call_viewport').attr('content', 'width=device-width, initial-scale=1');
+          console.log('client_mode: ' + mode)
+        },
+        error: function(request, textStatus, errorThrown) {
+          console.log('client_mode not reported')
+        }
+      });
+      // Button-delete handler:
+      $("table#stories").on("click", ".remove", function () {
+        if (confirm("Click OK to delete row?")) {
+          let data = $(this).closest('tr').find("td:nth-child(3)").text()
+          data = data.replace(/^\s+|\s+$/g, '');
+          console.log('Selected to delete: ' + data)
+          $(this).closest('tr').remove();
+          // Submit request for systems ENV-mode:
+          $.ajax({
+            type: 'DELETE',
+            url: '/databases',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              data: data
+            }),
+            dataType: 'JSON'
+          });
+        }
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <!-- header -->
+  <header id="header_frame">
+    <img class="img-responsive" id="header_image" src="/images/header.jpg">
+  </header>
+  <!-- row containing columns of content -->
+  <main class="row"><br>
+    <!-- column as left blank-strip -->
+    <aside id="left_col" class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></aside>
+    <!-- column as middle content-strip -->
+    <article id="middle_col" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+      <!-- db list of stories  -->
+      <section class="section" id="1">
+        <h1>LetsFakeNews Database</h1>
+        <table id="stories" class="table table-dark table-striped">
+          <thead class="thead-dark">
+            <th id="#">#</th>
+            <th id="Title">Title</th>
+            <th id="Story">Story</th>
+            <th id="Delete">Delete</th>
+          </thead>
+          <tbody>
+            <% stories.forEach((entry,index) => { %>
+            <tr>
+              <% entry._id %>
+              <td>
+                <%= index+1 %>
+              </td>
+              <td>
+                <%= entry.title %>
+              </td>
+              <td>
+                <%= entry.story %>
+              </td>
+              <td>
+                <button title="remove" type="button" class="btn btn-danger remove show_tip">
+                </button>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </section>
+    </article>
+    <!-- column as right blank-strip -->
+    <aside id="right_col" class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></aside>
+  </main>
+</body>
+
+</html>

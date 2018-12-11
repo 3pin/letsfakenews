@@ -66,17 +66,16 @@
         }
       });
       // Button-delete handler:
-      $("table#stories").on("click", ".remove", function () {
+      $("table#feedback").on("click", ".remove", function () {
         if (confirm("Click OK to delete row?")) {
           let data = $(this).closest('tr').find("td:nth-child(3)").text()
-          console.log('output: ' + data)
           data = data.replace(/^\s+|\s+$/g, '');
-          console.log('output: ' + data)
+          console.log('Selected to delete: ' + data)
           $(this).closest('tr').remove();
           // Submit request for systems ENV-mode:
           $.ajax({
             type: 'DELETE',
-            url: '/delete',
+            url: '/databases',
             contentType: 'application/json',
             data: JSON.stringify({
               data: data
@@ -100,32 +99,23 @@
     <aside id="left_col" class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></aside>
     <!-- column as middle content-strip -->
     <article id="middle_col" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-      <!-- db list of stories  -->
+      <!-- db list of feedback  -->
       <section class="section" id="1">
         <h1>LetsFakeNews Database</h1>
-        <table id="stories" class="table table-dark table-striped">
+        <table id="feedback" class="table table-dark table-striped">
           <thead class="thead-dark">
             <th id="#">#</th>
-            <th id="Title">Title</th>
-            <th id="Story">Story</th>
-            <th id="Delete">Delete</th>
+            <th id="Feedback">Feedback</th>
           </thead>
           <tbody>
-            <% stories.forEach((entry,index) => { %>
+            <% feedback.forEach((entry,index) => { %>
             <tr>
               <% entry._id %>
               <td>
                 <%= index+1 %>
               </td>
               <td>
-                <%= entry.title %>
-              </td>
-              <td>
-                <%= entry.story %>
-              </td>
-              <td>
-                <button title="remove" type="button" class="btn btn-danger remove show_tip">
-                </button>
+                <%= entry.feedback %>
               </td>
             </tr>
             <% }) %>

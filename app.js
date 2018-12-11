@@ -19,24 +19,31 @@ const path = require('path');
 const mongo = require('mongodb');
 const monk = require('monk');
 const db = monk(process.env.MONGODB_URI);
+// auth
+const auth = require("http-auth");
+const digest = auth.digest({
+  realm: "Private area",
+  file: "./htpasswd",
+  authType: "digest"
+});
+function middleware_auth(req, res, next) {
+  //console.log('middleware_auth: this page requires authentification')
+  (auth.connect(digest))(req, res, next);
+  //return next()
+}
+
+var db_mode = 'old_story'; //declare the db-read-mode: old_story || new_story
+var ordered_ids = [] // create an array of db_entries sorted by datetime (ie. _id)
+var id_to_read = 0; // id_to_read from above array
+var id // next id to use to fetch a story from db
+
 // routes
-const index = require('./routes/index');
+const routes = require('./routes');
+//const users = require('./routes/users');
+
 // initialize
 const app = express();
 debug('App Name: ' + process.env.npm_package_name)
-
-/*
-var refreshDB = function (req, res, next) {
-  let collection = req.db.get(process.env.COLLECTION);
-  collection.find({}, {}, function(e, docs) {
-    res.render('database', {
-      stories: docs
-    });
-  });
-  next()
-}
-app.use(refreshDB)
-*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -62,8 +69,10 @@ app.use(function(req, res, next) {
   next();
 });
 
-// define routes
-app.use('/', index);
+/* define routes */
+//app.use('/', index);
+app.use('/', routes);
+//app.use('/', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -81,5 +90,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK);
 
 module.exports = app;

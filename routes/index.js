@@ -1,148 +1,31 @@
-// public routes into the app
-
 'use strict';
-
-var app = require('express')();
-var http = require('http').Server(app)
-var io = require('socket.io')(http)
-
 const debug = require('debug')('index')
-const auth = require("http-auth");
-const digest = auth.digest({
-  realm: "Private area",
-  file: "./htpasswd",
-  authType: "digest"
-});
-const express = require('express');
-const router = express.Router();
-const time_ops = require('../modules/time_ops.js');
 
-function middleware_auth(req, res, next) {
-  //console.log('middleware_auth: this page requires authentification')
-  (auth.connect(digest))(req, res, next);
-  //return next()
-}
+const routes = require('express').Router();
 
-debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK)
+const databases = require('./databases');
+routes.use('/databases', databases);
 
-//declare the db-read-mode: old_story || new_story
-let db_mode = 'old_story';
-// create an array of db_entries sorted by datetime (ie. _id)
-let ordered_ids = []
-// id_to_read from above array
-let id_to_read = 0;
-// next id to use to fetch a story from db
-let id
+const displays = require('./displays');
+routes.use('/displays', displays);
 
 // serve homepage /index
-router.get('/', (req, res) => {
+routes.get('/', (req, res) => {
   debug('/GET msg to index page')
-  res.render('index', {
-    tabtitle: "LetsFakeNews:Input"
+  res.render('users', {
+    tabtitle: "LetsFakeNews:Users"
   });
-  //res.send(process.env.MODE);
 });
 
-// serve mode-data to a client
-router.get('/mode', (req, res) => {
+// serve mode-data to client
+routes.get('/mode', (req, res) => {
   debug('/GET mode msg')
   res.send(process.env.NODE_ENV);
 });
 
-router.delete('/delete', (req, res) => {
-  let query = {
-    story: req.body.data
-  };
-  debug(query)
-  let collection = req.db.get(process.env.COLLECTION);
-  collection.remove(query).then((err, docs) => {
-    if (err) {
-      debug('error');
-      //debug(err);
-    }
-    //debug(docs.result.n + " document(s) deleted");
-    res.send("document(s) deleted");
-  });
-});
-
-/* GET db stories */
-router.get('/database', (req, res) => {
-  let collection = req.db.get(process.env.COLLECTION);
-  collection.find({}, {}, function(e, docs) {
-    res.render('database', {
-      tabtitle: "LetsFakeNews:database",
-      stories: docs
-    });
-  });
-});
-
-// serve story to display-page on startup
-router.get('/display', middleware_auth, (req, res) => {
-  debug('recvd /display /get request')
-  // declare db-collection
-  let collection = req.db.get(process.env.COLLECTION);
-  // populate the array of [entries by ascending timestamp] then pick the first entry
-  collection.find({}, {
-    sort: {
-      _id: 1
-    }
-  }, function(err, data) {
-    if (err) {
-      debug(err);
-    } else {
-      let object
-      for (object in data) {
-        ordered_ids.push(data[object]._id)
-      }
-      // calculate what the id of the randomly-chosen story is
-      const db_fetch_mode = require('../modules/db_fetch_mode.js');
-      id = db_fetch_mode.random_entry(ordered_ids).id
-      // fetch that randomly-chosen story-OBJ and pass to display-client
-      collection.findOne({
-        _id: id
-      }, function(err, data) {
-        if (err) {
-          debug(err)
-        } else {
-          res.render('display', {
-            data: data,
-            tabtitle: "LetsFakeNews:Display"
-          });
-        }
-      });
-    }
-  });
-});
-
-// serve story to displaypage when-previous-story-finished
-router.get('/request_new_story', (req, res) => {
-  debug('/GET request_new_story')
-  // Set our collection
-  let collection = req.db.get(process.env.COLLECTION);
-  // calculate what the id of the next story is and any necessary changes fo db_mode
-  const db_fetch_mode = require('../modules/db_fetch_mode.js');
-  if (db_mode == 'old_story') {
-    // calculate what the id of the randomly-chosen story is
-    id = db_fetch_mode.random_entry(ordered_ids).id
-  } else {
-    id = db_fetch_mode.next_entry(ordered_ids, id_to_read).id
-    db_mode = db_fetch_mode.next_entry(ordered_ids, id_to_read).db_mode
-    id_to_read = db_fetch_mode.next_entry(ordered_ids, id_to_read).id_to_read
-  }
-  // return the JSON from db
-  collection.findOne({
-    _id: id
-  }, function(err, data) {
-    if (err) {
-      debug(err)
-    } else {
-      res.send(data);
-    }
-  });
-});
 
 // receive title-story info
-router.post('/add_title_story', (req, res, next) => {
+routes.post('/add_title_story', (req, res, next) => {
   let client_JSON = req.body
   debug('client_JSON: ' + client_JSON)
   //process JSON... add NLP_words & matching urls
@@ -179,6 +62,7 @@ router.post('/add_title_story', (req, res, next) => {
   });
 }, (req, res) => {
   /* refresh db stories */
+  /*
   let collection = req.db.get(process.env.COLLECTION);
   collection.find({}, {}, function(e, docs) {
     debug(docs)
@@ -187,10 +71,11 @@ router.post('/add_title_story', (req, res, next) => {
       stories: docs
     });
   });
+  */
 });
 
 // receive title-story info
-router.post('/add_feedback', (req, res) => {
+routes.post('/add_feedback', (req, res) => {
   // Get our form values. These rely on the "name" attributes
   let feedback = req.body.feedback;
   debug('Raw feedback: ' + feedback);
@@ -212,4 +97,16 @@ router.post('/add_feedback', (req, res) => {
   });
 });
 
-module.exports = router;
+/* view the db */
+routes.get('/database', (req, res) => {
+  debug(process.env.COLLECTION)
+  let collection = req.db.get(process.env.COLLECTION);
+  collection.find({}, {}, function(e, docs) {
+    res.render('database', {
+      tabtitle: "LetsFakeNews:database",
+      stories: docs
+    });
+  });
+});
+
+module.exports = routes;
