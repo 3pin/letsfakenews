@@ -31,7 +31,6 @@
     "google-images": "^2.1.0",
     "htdigest": "^2.2.3",
     "http-auth": "^3.2.3",
-    "mongodb": "^3.1.10",
     "monk": "^6.0.6",
     "morgan": "^1.9.1",
     "pos": "^0.4.2",

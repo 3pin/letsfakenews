@@ -4,6 +4,7 @@ const debug = require('debug')('db_fetch_mode')
 
 // pick a random entry with which to pick an '_id' entry from the array
 function random_entry(array_of_ids) {
+  debug('entered db_fetch_mode(rand_entry)')
   let randomnumber = Math.floor(Math.random() * (array_of_ids.length));
   let entry_to_read = randomnumber
   let id = array_of_ids[entry_to_read];
@@ -14,7 +15,7 @@ function random_entry(array_of_ids) {
 }
 // pick next entry
 function next_entry(array_of_ids, id_to_read) {
-  debug('entered db_fetch_mode: ' + id_to_read)
+  debug('entered db_fetch_mode(next_entry): ' + id_to_read)
   id_to_read++;
   let db_mode
   if (id_to_read > array_of_ids.length) {

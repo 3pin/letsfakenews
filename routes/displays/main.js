@@ -17,18 +17,14 @@ function middleware_auth(req, res, next) {
 }
 
 module.exports = (req, res) => {
-  // create an array of db_entries sorted by datetime (ie. _id)
-  let ordered_ids = req.app.locals.ordered_ids;
-  // id_to_read from above array
-  let id_to_read = req.app.locals.id_to_read;
-  // next id to use to fetch a story from db
-  let id = req.app.locals.id;
+  // create an [db_entries] sorted by datetime (ie. _id)
+  let ordered_ids = [];
 
   // serve story to display-page on startup
   debug('entered route /GET /displays')
   // declare db-collection
   let collection = req.db.get(process.env.COLLECTION);
-  // populate the array of [entries by ascending timestamp] then pick the first entry
+  // populate [db_entries]
   collection.find({}, {
     sort: {
       _id: 1
@@ -39,11 +35,11 @@ module.exports = (req, res) => {
     } else {
       let object
       for (object in data) {
-        ordered_ids.push(data[object]._id)
+        req.app.locals.ordered_ids.push(data[object]._id)
       }
-      // calculate what the id of the randomly-chosen story is
+      // randomly chose a story and report its id
       const db_fetch_mode = require('../../modules/db_fetch_mode.js');
-      id = db_fetch_mode.random_entry(ordered_ids).id
+      let id = db_fetch_mode.random_entry(req.app.locals.ordered_ids).id
       // fetch that randomly-chosen story-OBJ and pass to display-client
       collection.findOne({
         _id: id

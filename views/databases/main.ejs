@@ -68,7 +68,7 @@
       // Button-delete handler:
       $("table#stories").on("click", ".remove", function () {
         if (confirm("Click OK to delete row?")) {
-          let data = $(this).closest('tr').find("td:nth-child(3)").text()
+          let data = $(this).closest('tr').find("td:first-child").text()
           data = data.replace(/^\s+|\s+$/g, '');
           console.log('Selected to delete: ' + data)
           $(this).closest('tr').remove();
@@ -80,7 +80,13 @@
             data: JSON.stringify({
               data: data
             }),
-            dataType: 'JSON'
+            dataType: 'JSON',
+            success: function(response) {
+              console.log('success')
+            },
+            error: function(errorThrown) {
+              console.log('failure: ' + errorThrown)
+            }
           });
         }
       });
@@ -104,6 +110,7 @@
         <h1>LetsFakeNews Database</h1>
         <table id="stories" class="table table-dark table-striped">
           <thead class="thead-dark">
+            <th id="_id" style="display:none;">_id</th>
             <th id="#">#</th>
             <th id="Title">Title</th>
             <th id="Story">Story</th>
@@ -112,12 +119,15 @@
           <tbody>
             <% stories.forEach((entry,index) => { %>
             <tr>
-              <% entry._id %>
+              <td style="display:none;">
+                <%= entry._id %>
+              </td>
               <td>
                 <%= index+1 %>
               </td>
               <td>
                 <%= entry.title %>
+                <%= console.log(entry.title) %>
               </td>
               <td>
                 <%= entry.story %>

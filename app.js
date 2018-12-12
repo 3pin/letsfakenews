@@ -15,8 +15,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const path = require('path');
-// to connect to database
-const mongo = require('mongodb');
+/* to connect to database */
 const monk = require('monk');
 const db = monk(process.env.MONGODB_URI);
 // auth
