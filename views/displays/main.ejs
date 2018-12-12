@@ -139,9 +139,9 @@
         }
         //location.reload(true);
         //window.location.reload(true);
-        $.get("request_new_story", function(data, status) {
+        $.get("displays/request_new_story", function(data, status) {
           if (mode == 'development') {
-            console.log('Refreshed Page');
+            console.log('Requested to Restart Page');
             console.log(data);
           }
           // on-re-start reload metadata

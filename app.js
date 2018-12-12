@@ -32,11 +32,6 @@ function middleware_auth(req, res, next) {
   //return next()
 }
 
-var db_mode = 'old_story'; //declare the db-read-mode: old_story || new_story
-var ordered_ids = [] // create an array of db_entries sorted by datetime (ie. _id)
-var id_to_read = 0; // id_to_read from above array
-var id // next id to use to fetch a story from db
-
 // routes
 const routes = require('./routes');
 //const users = require('./routes/users');
@@ -44,6 +39,14 @@ const routes = require('./routes');
 // initialize
 const app = express();
 debug('App Name: ' + process.env.npm_package_name)
+//declare the db-read-mode: old_story || new_story
+app.locals.db_mode = 'old_story';
+// create an array of db_entries sorted by datetime (ie. _id)
+app.locals.ordered_ids = [];
+// id_to_read from above array
+app.locals.id_to_read = 0;
+// next id to use to fetch a story from db
+app.locals.id;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -20,7 +20,7 @@ function middleware_auth(req, res, next) {
 
 databases.get('/', middleware_auth, main);
 databases.delete('/', remove);
-databases.get('/feedback', middleware_auth, feedback);
+databases.get('/feedback', feedback);
 
 
 module.exports = databases;

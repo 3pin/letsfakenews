@@ -1,8 +1,9 @@
 'use strict';
+const debug = require('debug')('displays_index')
 
 const displays = require('express').Router();
-
 const main = require('./main');
+const request_new_story = require('./request_new_story');
 
 const auth = require("http-auth");
 const digest = auth.digest({
@@ -17,5 +18,6 @@ function middleware_auth(req, res, next) {
 }
 
 displays.get('/', middleware_auth, main);
+displays.get('/request_new_story', request_new_story);
 
 module.exports = displays;

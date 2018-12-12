@@ -1,5 +1,4 @@
 'use strict';
-
 const debug = require('debug')('index_feedback')
 
 module.exports = (req, res) => {

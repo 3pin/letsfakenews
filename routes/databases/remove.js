@@ -16,6 +16,7 @@ function middleware_auth(req, res, next) {
 }
 
 module.exports = (req, res) => {
+  debug('entered route /DELETE /databases')
   /* delete a db entry */
   let query = {
     story: req.body.data
