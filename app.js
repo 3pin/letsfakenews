@@ -39,9 +39,7 @@ const routes = require('./routes');
 const app = express();
 debug('App Name: ' + process.env.npm_package_name)
 //declare the db-read-mode: old_story || new_story
-app.locals.db_mode = 'old_story';
-// create an array of db_entries sorted by datetime (ie. _id)
-app.locals.ordered_ids = [];
+app.locals.db_mode = 'new_story';
 // id_to_read from above array
 app.locals.id_to_read = 0;
 

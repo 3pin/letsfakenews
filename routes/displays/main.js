@@ -14,39 +14,52 @@ function middleware_auth(req, res, next) {
   //return next()
 }
 
+// serve story to display-page on startup
 module.exports = (req, res) => {
-  // serve story to display-page on startup
   debug('entered route /GET /displays')
-  // declare db-collection
+  // populate an array of _id's
+  let db_ids = [];
+  //_id to read from db
+  let id;
   let collection = req.db.get(process.env.COLLECTION);
-  // populate [db_entries] for the first time... then randomly choosing from it
-  collection.find({}, {sort: {_id: 1}}, function(err, docs) {
-    if (err) {
-      debug(err);
-    } else {
-      let object
-      for (object in docs) {
-        req.app.locals.ordered_ids.push(docs[object]._id)
-        debug('db _id: ' + docs[object]._id + ' title: ' + docs[object].title);
-      }
-      debug('db_entries length: ' + req.app.locals.ordered_ids.length);
-      // randomly chose a story... report its id
-      const db_fetch_mode = require('../../modules/db_fetch_mode.js');
-      let _id = db_fetch_mode.random_entry(req.app.locals.ordered_ids).id
-      debug('db id_to_read: ' + _id);
-      // fetch that randomly-chosen story-OBJ and pass to display-client
-      collection.findOne({
-        _id: _id
-      }, function(err, docs) {
-        if (err) {
-          debug(err)
-        } else {
-          res.render('displays/main', {
-            data: docs,
-            tabtitle: "LetsFakeNews:Display"
-          });
-        }
-      });
+
+  //load ordered-stories from db
+  collection.find({}, {
+    sort: {
+      _id: 1
     }
+  }, (err, docs) => {
+    let object
+    for (object in docs) {
+      db_ids.push(docs[object]._id);
+      debug('[db_ids] _id: ' + docs[object]._id);
+    }
+
+    // choose the first story in db... report its id
+    let db_fetch_mode = require('../../modules/db_fetch_mode.js');
+    let obj = db_fetch_mode.next_entry(db_ids,0);
+    id = obj.id;
+    debug('id to read from db: ' + id);
+    // set global vars for next-sequential-time-around
+    req.app.locals.db_mode = obj.db_mode;
+    req.app.locals.id_to_read = obj.id_to_read;
+    debug('Updating 4nextime: ' + req.app.locals.db_mode + ' ' + req.app.locals.id_to_read)
+
+    // fetch that randomly-chosen obj and pass to display-client
+    collection.findOne({
+      _id: id
+    }, (err, docs) => {
+      debug(JSON.stringify(docs));
+      res.render('displays/main', {
+        data: docs,
+        tabtitle: "LetsFakeNews:Display"
+      });
+    }).catch((err) => {
+      debug("Err: ", err);
+    });
+
+  }).catch((err) => {
+    debug("Err: ", err);
   });
+
 }

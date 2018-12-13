@@ -80,6 +80,7 @@
 
       // on loadup...
       vid.onloadedmetadata = function() {
+    
         // parse returned JSON from database
         data = <%-JSON.stringify(data)%>;
         if (mode == 'development') {
@@ -114,8 +115,8 @@
         if (currentTime <= popupStart) {
           // times to jump to time during DEVELOPMENT
           if (mode == 'development') {
-            this.currentTime = 7.0;
-            //this.currentTime = 16.0;
+            //this.currentTime = 7.0;
+            this.currentTime = 16.0;
           }
         } else if (currentTime >= popupStart && currentTime <= popupEnd) {
           $("#popup_title").show()

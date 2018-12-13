@@ -35,7 +35,11 @@ module.exports = (req, res) => {
   }).then(() => {
     // print out the new shortened db
     debug('resending database to client');
-    collection.find({}, {}, function(err, docs) {
+    collection.find({}, {
+      sort: {
+        _id: 1
+      }
+    }, (err, docs) => {
       if (err) {
         debug(err);
       } else {
@@ -44,18 +48,8 @@ module.exports = (req, res) => {
           debug('db remaining _id: ' + docs[object]._id + ' title: ' + docs[object].title);
         }
       }
-    });
+    })
   }).then(() => {
-    // need to now reorder the [db_entries] array without the removed entry
-    debug('removing & re-ordering [db-entries]');
-    debug('array length before: '+ req.app.locals.ordered_ids.length)
-    req.app.locals.ordered_ids.splice(req.app.locals.ordered_ids.indexOf(req.body.data), 1);
-    debug('array length after: '+ req.app.locals.ordered_ids.length)
-    // print out db-entries array
-    let item
-    for (item in req.app.locals.ordered_ids) {
-      debug(req.app.locals.ordered_ids[item]);
-    }
     // step back new-story-id-to-read incase a new story is about to be read during the removal-action
     if (req.app.locals.id_to_read > 0) {
       debug('id_to_read before: ' + req.app.locals.id_to_read)
@@ -66,4 +60,4 @@ module.exports = (req, res) => {
   }).catch((err) => {
     debug("Err: ", err);
   });
-};
+}

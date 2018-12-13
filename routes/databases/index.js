@@ -18,7 +18,7 @@ function middleware_auth(req, res, next) {
   //return next()
 }
 
-databases.get('/', main);
+databases.get('/', middleware_auth, main);
 databases.delete('/', remove);
 databases.get('/feedback', feedback);
 
