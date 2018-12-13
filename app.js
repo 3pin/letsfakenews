@@ -44,8 +44,6 @@ app.locals.db_mode = 'old_story';
 app.locals.ordered_ids = [];
 // id_to_read from above array
 app.locals.id_to_read = 0;
-// next id to use to fetch a story from db
-app.locals.id;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -46,7 +46,7 @@
   <!-- jQuery -->
   <script>
     const viewportmeta = document.querySelector('meta[name="viewport"]');
-    let mode // expect mode=='ENV for logging
+    let mode // for non-production debugging
     let title
     let story
     let feedback
@@ -127,7 +127,6 @@
               </td>
               <td>
                 <%= entry.title %>
-                <%= console.log(entry.title) %>
               </td>
               <td>
                 <%= entry.story %>

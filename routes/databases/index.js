@@ -1,7 +1,7 @@
 'use strict';
+const debug = require('debug')('databases_index')
 
 const databases = require('express').Router();
-
 const main = require('./main');
 const remove = require('./remove');
 const feedback = require('./feedback');
@@ -18,7 +18,7 @@ function middleware_auth(req, res, next) {
   //return next()
 }
 
-databases.get('/', middleware_auth, main);
+databases.get('/', main);
 databases.delete('/', remove);
 databases.get('/feedback', feedback);
 
