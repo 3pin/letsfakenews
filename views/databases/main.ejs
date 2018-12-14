@@ -71,7 +71,7 @@
           let data = $(this).closest('tr').find("td:first-child").text()
           data = data.replace(/^\s+|\s+$/g, '');
           console.log('Selected to delete: ' + data)
-          $(this).closest('tr').remove();
+          //$(this).closest('tr').remove();
           // Submit request for systems ENV-mode:
           $.ajax({
             type: 'DELETE',
@@ -82,7 +82,7 @@
             }),
             dataType: 'JSON',
             success: function(response) {
-              console.log('success')
+              console.log('success');
             },
             error: function(errorThrown) {
               console.log('failure: ' + errorThrown)
@@ -95,6 +95,7 @@
 </head>
 
 <body>
+
   <!-- header -->
   <header id="header_frame">
     <img class="img-responsive" id="header_image" src="/images/header.jpg">
@@ -117,18 +118,23 @@
             <th id="Delete">Delete</th>
           </thead>
           <tbody>
+            <% console.log('Entered') %>
             <% stories.forEach((entry,index) => { %>
             <tr>
               <td style="display:none;">
+                <% console.log(entry._id) %>
                 <%= entry._id %>
               </td>
               <td>
+                <% console.log(index+1) %>
                 <%= index+1 %>
               </td>
               <td>
+                <% console.log(entry.title) %>
                 <%= entry.title %>
               </td>
               <td>
+                <% console.log(entry.story) %>
                 <%= entry.story %>
               </td>
               <td>
@@ -145,5 +151,4 @@
     <aside id="right_col" class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></aside>
   </main>
 </body>
-
 </html>

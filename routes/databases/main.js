@@ -1,10 +1,10 @@
 'use strict';
 const debug = require('debug')('databases_main')
 
-// populate an array of _id's
-let db_ids = [];
-
 module.exports = (req, res) => {
+  // populate an array of _id's
+  let db_ids = [];
+
   debug('entered route /GET /databases')
   let collection = req.db.get(process.env.COLLECTION);
   //load ordered-stories from db
