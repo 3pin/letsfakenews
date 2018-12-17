@@ -83,9 +83,10 @@
             dataType: 'JSON',
             success: function(response) {
               console.log('success');
+              location.reload(response);
             },
             error: function(errorThrown) {
-              console.log('failure: ' + errorThrown)
+              console.log('failure' + errorThrown);
             }
           });
         }
@@ -119,6 +120,7 @@
           </thead>
           <tbody>
             <% console.log('Entered') %>
+            <% console.log(stories) %>
             <% stories.forEach((entry,index) => { %>
             <tr>
               <td style="display:none;">

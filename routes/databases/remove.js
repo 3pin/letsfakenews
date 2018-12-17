@@ -8,7 +8,7 @@ module.exports = (req, res) => {
   let db_ids = [];
   let collection = req.db.get(process.env.COLLECTION);
   /* delete a db entry */
-  debug('entered route /DELETE /databases to delete: ' + req.body.data)
+  debug('entered route /DELETE /databases to delete');
   let query = {
     _id: req.body.data
   };
@@ -43,10 +43,7 @@ module.exports = (req, res) => {
         debug('[db_ids] _id: ' + docs[object]._id);
       }
       debug('[db_ids] total_length: ' + db_ids.length);
-      //res.send('Done...')
-      debug(JSON.stringify(docs));
-      res.render('databases/main', {
-        tabtitle: "LetsFakeNews:db_main_refreshed",
+      res.json({
         stories: docs
       });
     });
