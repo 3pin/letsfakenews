@@ -15,22 +15,12 @@ const displays = require('./displays');
 /* this router's routes */
 routes.get('/', main);
 routes.get('/mode', mode);
+/* this router's endpoints */
 routes.post('/add_title_story', add_title_story);
 routes.post('/add_feedback', add_feedback);
-/* other deeper routes */
+
+/* route in other routers */
 routes.use('/databases', databases);
 routes.use('/displays', displays);
-/* view the db
-routes.get('/database', (req, res) => {
-  debug(process.env.COLLECTION)
-  let collection = req.db.get(process.env.COLLECTION);
-  collection.find({}, {}, function(e, docs) {
-    res.render('database', {
-      tabtitle: "LetsFakeNews:database",
-      stories: docs
-    });
-  });
-});
-*/
 
 module.exports = routes;

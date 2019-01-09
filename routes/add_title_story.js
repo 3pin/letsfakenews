@@ -1,11 +1,11 @@
 'use strict';
 
-const debug = require('debug')('index_add')
+const debug = require('debug')('main_story')
 
 module.exports = (req, res, next) => {
   // receive title-story info
   let client_JSON = req.body
-  debug('client_JSON: ' + client_JSON)
+  debug(client_JSON)
   //process JSON... add NLP_words & matching urls
   const process_client_story = require('../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
@@ -32,7 +32,7 @@ module.exports = (req, res, next) => {
   });
 }, (req, res) => {
   /* refresh db stories */
-  debug('This could would refresh the admin-frontend')
+  debug('This could refresh the admin-frontend')
   /*
   let collection = req.db.get(process.env.COLLECTION);
   collection.find({}, {}, function(e, docs) {

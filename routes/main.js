@@ -1,11 +1,11 @@
 'use strict';
 
-const debug = require('debug')('index_main')
+const debug = require('debug')('main')
 
 module.exports = (req, res) => {
   // serve homepage
   debug('/GET msg to index page')
-  res.render('users', {
+  res.render('main', {
     tabtitle: "LetsFakeNews:Users"
   });
 }

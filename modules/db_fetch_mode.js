@@ -1,6 +1,6 @@
 // functions for how stories are fetched from the database... random/stepwise etc
 
-const debug = require('debug')('db_fetch_mode')
+const debug = require('debug')('module_db_fetch_mode')
 
 // pick a random entry with which to pick an '_id' entry from the array
 function random_entry(array_of_ids) {
@@ -21,8 +21,8 @@ function next_entry(array_of_ids, id_to_read) {
   let _id, db_mode;
   id_to_read = parseInt(id_to_read);
   debug('entered db_fetch_mode(next_entry)... array_length:' + array_of_ids.length + ' id_to_read:' + id_to_read)
-  if (id_to_read == array_of_ids.length - 1) {
-    _id = array_of_ids[id_to_read];
+  if (id_to_read == array_of_ids.length) {
+    _id = array_of_ids[0];
     db_mode = 'random_story';
   } else {
     _id = array_of_ids[id_to_read];

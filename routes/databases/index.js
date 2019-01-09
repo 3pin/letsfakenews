@@ -18,9 +18,10 @@ function middleware_auth(req, res, next) {
   //return next()
 }
 
+/* this router's routes */
 databases.get('/', middleware_auth, main);
-databases.delete('/', remove);
 databases.get('/feedback', feedback);
-
+/* this router's endpoints */
+databases.delete('/', remove);
 
 module.exports = databases;

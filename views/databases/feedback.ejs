@@ -12,7 +12,7 @@
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <!-- Local CSS to override some bootstrap methods -->
-  <link rel='stylesheet' href='/stylesheets/index.css'>
+  <link rel='stylesheet' href='/stylesheets/main.css'>
   <!-- jQuery library -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- Latest compiled JavaScript -->
@@ -88,7 +88,7 @@
   </script>
 </head>
 
-<body>
+<body class="bg" id="bg_frame">
   <!-- header -->
   <header id="header_frame">
     <img class="img-responsive" id="header_image" src="/images/header.jpg">
@@ -101,11 +101,11 @@
     <article id="middle_col" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
       <!-- db list of feedback  -->
       <section class="section" id="1">
-        <h1>LetsFakeNews Database</h1>
-        <table id="feedback" class="table table-dark table-striped">
+        <h1>Database: Feedback</h1>
+        <table id="feedback" class="table table-bordered" style="background-color: white">
           <thead class="thead-dark">
-            <th id="#">#</th>
-            <th id="Feedback">Feedback</th>
+            <th id="#" style="width:5%">#</th>
+            <th id="Feedback" style="width:95%">Feedback</th>
           </thead>
           <tbody>
             <% feedback.forEach((entry,index) => { %>

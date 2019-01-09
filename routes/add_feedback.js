@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('index_feedback')
+const debug = require('debug')('main_feedback')
 
 module.exports = (req, res) => {
   // receive title-story info

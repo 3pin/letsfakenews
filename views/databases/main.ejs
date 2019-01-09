@@ -12,7 +12,7 @@
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <!-- Local CSS to override some bootstrap methods -->
-  <link rel='stylesheet' href='/stylesheets/index.css'>
+  <link rel='stylesheet' href='/stylesheets/main.css'>
   <!-- jQuery library -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- Latest compiled JavaScript -->
@@ -95,8 +95,7 @@
   </script>
 </head>
 
-<body>
-
+<body class="bg" id="bg_frame">
   <!-- header -->
   <header id="header_frame">
     <img class="img-responsive" id="header_image" src="/images/header.jpg">
@@ -109,14 +108,14 @@
     <article id="middle_col" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
       <!-- db list of stories  -->
       <section class="section" id="1">
-        <h1>LetsFakeNews Database</h1>
-        <table id="stories" class="table table-dark table-striped">
+        <h1>Database: Stories</h1>
+        <table id="stories" class="table table-bordered" style="background-color: white">
           <thead class="thead-dark">
             <th id="_id" style="display:none;">_id</th>
-            <th id="#">#</th>
-            <th id="Title">Title</th>
-            <th id="Story">Story</th>
-            <th id="Delete">Delete</th>
+            <th id="#" style="width:5%">#</th>
+            <th id="Title" style="width:15%">Title</th>
+            <th id="Story" style="width:75%">Story</th>
+            <th id="Delete" style="width:5%">Delete</th>
           </thead>
           <tbody>
             <% console.log('Entered') %>
@@ -153,4 +152,5 @@
     <aside id="right_col" class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></aside>
   </main>
 </body>
+
 </html>

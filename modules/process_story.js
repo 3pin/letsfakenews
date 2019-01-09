@@ -1,7 +1,7 @@
 // process roundtrip taking story, processing words via NLP, listing image-urls via Google-API, returning array of urls
 
 'use strict';
-const debug = require('debug')('process_story')
+const debug = require('debug')('module_story')
 const nlp = require('../modules/nlp.js');
 const imagesearch_iterative = require('../modules/imagesearch_iterative.js');
 
