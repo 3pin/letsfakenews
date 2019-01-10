@@ -3,6 +3,7 @@
 const debug = require('debug')('main_story')
 
 module.exports = (req, res, next) => {
+  debug('/POST routes/add_title_story')
   // receive title-story info
   let client_JSON = req.body
   debug(client_JSON)

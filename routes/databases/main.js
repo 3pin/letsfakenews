@@ -5,7 +5,7 @@ module.exports = (req, res) => {
   // populate an array of _id's
   let db_ids = [];
 
-  debug('entered route /GET /databases')
+  debug('/GET routes/databases/main')
   let collection = req.db.get(process.env.COLLECTION);
   //load ordered-stories from db
   collection.find({}, {

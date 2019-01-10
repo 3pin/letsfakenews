@@ -1,4 +1,9 @@
-// process roundtrip taking story, processing words via NLP, listing image-urls via Google-API, returning array of urls
+/*
+receive a story as a string
+process story for nouns
+process nouns for URLs
+return urls
+*/
 
 'use strict';
 const debug = require('debug')('module_story')
@@ -10,9 +15,9 @@ module.exports = {
   process: function(input_story) {
     return new Promise(function(resolve, reject) {
       let story = input_story;
-      nlp.parse_nouns(story).then(result => {
-        imagesearch_iterative.iterative_url_search(result).then(result => {
-          resolve(result);
+      nlp.parse_nouns(story).then(nouns => {
+        imagesearch_iterative.iterative_url_search(nouns).then(urls => {
+          resolve(urls);
         })
       }).catch((err) => {
         debug("Err: ", err);

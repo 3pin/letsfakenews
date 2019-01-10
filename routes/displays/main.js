@@ -16,7 +16,7 @@ function middleware_auth(req, res, next) {
 
 // serve story to display-page on startup
 module.exports = (req, res) => {
-  debug('entered route /GET /displays')
+  debug('/GET routes/displays')
   // populate an array of _id's
   let db_ids = [];
   //_id to read from db

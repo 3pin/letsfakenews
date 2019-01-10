@@ -5,7 +5,7 @@ const debug = require('debug')('displays_request');
 
 module.exports = (req, res) => {
   // serve story to displaypage when-previous-story-finished
-  debug('entered route /GET /displays/request_new_story')
+  debug('/GET routes/displays/request_new_story')
   // populate an array of _id's
   let db_ids = [];
   //id to read from db

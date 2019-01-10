@@ -8,7 +8,7 @@ module.exports = (req, res) => {
   let db_ids = [];
   let collection = req.db.get(process.env.COLLECTION);
   /* delete a db entry */
-  debug('entered route /DELETE /databases to delete');
+  debug('/DELETE routes/databases/remove');
   let query = {
     _id: req.body.data
   };

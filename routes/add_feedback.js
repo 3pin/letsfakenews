@@ -2,7 +2,7 @@
 const debug = require('debug')('main_feedback')
 
 module.exports = (req, res) => {
-  // receive title-story info
+  debug('/POST routes/add_title_story')
   // Get our form values. These rely on the "name" attributes
   let feedback = req.body.feedback;
   debug('Raw feedback: ' + feedback);

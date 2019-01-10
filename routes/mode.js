@@ -4,6 +4,6 @@ const debug = require('debug')('main_mode')
 
 module.exports = (req, res) => {
   // serve mode-data to client
-  debug('/GET mode msg')
+  debug('/GET routes/mode')
   res.send(process.env.NODE_ENV);
 }
