@@ -2,6 +2,7 @@
 const debug = require('debug')('databases_main')
 
 module.exports = (req, res) => {
+
   // populate an array of _id's
   let db_ids = [];
 
@@ -24,4 +25,5 @@ module.exports = (req, res) => {
       stories: docs
     });
   });
+
 };

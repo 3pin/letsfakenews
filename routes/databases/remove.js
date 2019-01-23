@@ -43,9 +43,7 @@ module.exports = (req, res) => {
         debug('[db_ids] _id: ' + docs[object]._id);
       }
       debug('[db_ids] total_length: ' + db_ids.length);
-      res.json({
-        stories: docs
-      });
+      res.json({stories: docs});
     });
   }).catch((err) => {
     debug("Err: ", err);

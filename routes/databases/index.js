@@ -12,16 +12,15 @@ const digest = auth.digest({
   file: "./htpasswd",
   authType: "digest"
 });
+
 function middleware_auth(req, res, next) {
   //console.log('middleware_auth: this page requires authentification')
   (auth.connect(digest))(req, res, next);
-  //return next()
 }
 
 /* this router's routes */
 databases.get('/', middleware_auth, main);
-databases.get('/feedback', feedback);
-/* this router's endpoints */
 databases.delete('/', remove);
+databases.get('/feedback', feedback);
 
 module.exports = databases;

@@ -1,8 +1,9 @@
 'use strict';
+const debug = require('debug')('main_story');
+// tap into an sse event-bus
+const bus = require('../modules/eventbus');
 
-const debug = require('debug')('main_story')
-
-module.exports = (req, res, next) => {
+module.exports = (req, res) => {
   debug('/POST routes/add_title_story')
   // receive title-story info
   let client_JSON = req.body
@@ -26,22 +27,17 @@ module.exports = (req, res, next) => {
         })
       }
     }).then(() => {
-      next();
+      debug('Refresh the database-admin-frontend');
+      // print out the new shortened db
+      collection.find({}, {
+        sort: {
+          _id: 1
+        }
+      }, (err, docs) => {
+        bus.emit('message', {stories: docs});
+      });
     });
   }).catch((err) => {
     debug("Err: ", err);
   });
-}, (req, res) => {
-  /* refresh db stories */
-  debug('This could refresh the admin-frontend')
-  /*
-  let collection = req.db.get(process.env.COLLECTION);
-  collection.find({}, {}, function(e, docs) {
-    debug(docs)
-    res.render('database', {
-      tabtitle: "LetsFakeNews:database",
-      stories: docs
-    });
-  });
-  */
 }

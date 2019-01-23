@@ -17,82 +17,12 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <!-- state-control module -->
-  <script type="text/javascript">
-    function pagestate_ctrl(div_vis_in) {
-      let show_div = '#' + div_vis_in
-      let hide_div = 'div:not(#' + div_vis_in + ')'
-      if (mode == 'development') {
-        console.log('pagestate val: ' + div_vis_in)
-        console.log('show_div: ' + show_div)
-        console.log('hide_div: ' + hide_div)
-      }
-      let i;
-      for (i = 1; i < 6; i++) {
-        if (i == div_vis_in) {
-          $('#' + i).show()
-        } else {
-          $('#' + i).hide()
-        }
-      }
-    }
-
-    function pagestate_alloff() {
-      $('div:not(#0)').hide()
-      $("#banner_image_frame").show()
-      $("#footer_image_frame").show()
-    }
-  </script>
-  <!-- jQuery -->
-  <script>
-    const viewportmeta = document.querySelector('meta[name="viewport"]');
-    let mode // for non-production debugging
-    let title
-    let story
-    let feedback
-    $(document).ready(function() {
-      // Submit request for systems ENV-mode:
-      $.ajax({
-        type: 'GET',
-        url: '/mode',
-        success: function(response) {
-          mode = response
-          pagestate_ctrl(1)
-          $('call_viewport').attr('content', 'width=device-width, initial-scale=1');
-          console.log('client_mode: ' + mode)
-        },
-        error: function(request, textStatus, errorThrown) {
-          console.log('client_mode not reported')
-        }
-      });
-      // Button-delete handler:
-      $("table#stories").on("click", ".remove", function () {
-        if (confirm("Click OK to delete row?")) {
-          let data = $(this).closest('tr').find("td:first-child").text()
-          data = data.replace(/^\s+|\s+$/g, '');
-          console.log('Selected to delete: ' + data)
-          //$(this).closest('tr').remove();
-          // Submit request for systems ENV-mode:
-          $.ajax({
-            type: 'DELETE',
-            url: '/databases',
-            contentType: 'application/json',
-            data: JSON.stringify({
-              data: data
-            }),
-            dataType: 'JSON',
-            success: function(response) {
-              console.log('success');
-              location.reload(response);
-            },
-            error: function(errorThrown) {
-              console.log('failure' + errorThrown);
-            }
-          });
-        }
-      });
-    });
-  </script>
+  <!-- pagestate-control script -->
+  <script src="/javascripts/pagestate_control.js"></script>
+  <!-- SSE script -->
+  <script src="/javascripts/sse.js"></script>
+  <!-- jQuery-ops script-->
+  <script src="/javascripts/jquery_ops.js"></script>
 </head>
 
 <body class="bg" id="bg_frame">
@@ -118,24 +48,18 @@
             <th id="Delete" style="width:5%">Delete</th>
           </thead>
           <tbody>
-            <% console.log('Entered') %>
-            <% console.log(stories) %>
             <% stories.forEach((entry,index) => { %>
             <tr>
               <td style="display:none;">
-                <% console.log(entry._id) %>
                 <%= entry._id %>
               </td>
               <td>
-                <% console.log(index+1) %>
                 <%= index+1 %>
               </td>
               <td>
-                <% console.log(entry.title) %>
                 <%= entry.title %>
               </td>
               <td>
-                <% console.log(entry.story) %>
                 <%= entry.story %>
               </td>
               <td>
