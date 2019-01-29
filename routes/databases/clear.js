@@ -1,19 +1,17 @@
 'use strict';
 
-const debug = require('debug')('databases_remove')
+const debug = require('debug')('databases_clear')
 
 module.exports = (req, res) => {
   // populate an array of _id's
   let db_ids = [];
   let collection = req.db.get(process.env.COLLECTION);
   /* delete a db entry */
-  debug('/DELETE routes/databases/remove');
+  debug('/DELETE routes/databases/clear');
   let query = {
     _id: req.body.data
   };
-  collection.remove(query, {
-    multi: false
-  }).then((err, docs) => {
+  collection.drop().then((err, docs) => {
     if (err) {
       debug('error');
       //debug(err);
@@ -42,7 +40,9 @@ module.exports = (req, res) => {
         debug('[db_ids] _id: ' + docs[object]._id);
       }
       debug('[db_ids] total_length: ' + db_ids.length);
-      res.json({stories: docs});
+      res.json({
+        stories: docs
+      });
     });
   }).catch((err) => {
     debug("Err: ", err);

@@ -18,17 +18,36 @@ $(document).ready(function() {
       console.log('client_mode not reported')
     }
   });
-  // Button-delete handler:
+
+  // Button handler: stories-clear
+  $("table#operations").on("click", ".remove", function() {
+    console.log('clear button clicked');
+    if (confirm("OK to clear all stories from database?")) {
+      $.ajax({
+        type: 'DELETE',
+        url: '/databases/clear',
+        success: function(response) {
+          console.log('success');
+          location.reload(response);
+        },
+        error: function(errorThrown) {
+          console.log('failure' + errorThrown);
+        }
+      });
+    }
+  });
+
+  // Button handler: story-delete
   $("table#stories").on("click", ".remove", function() {
-    if (confirm("Click OK to delete row?")) {
+    console.log('remove button clicked');
+    if (confirm("OK to remove story from database?")) {
       let data = $(this).closest('tr').find("td:first-child").text()
       data = data.replace(/^\s+|\s+$/g, '');
       console.log('Selected to delete: ' + data)
       //$(this).closest('tr').remove();
-      // Submit request for systems ENV-mode:
       $.ajax({
         type: 'DELETE',
-        url: '/databases',
+        url: '/databases/remove',
         contentType: 'application/json',
         data: JSON.stringify({
           data: data
@@ -44,4 +63,5 @@ $(document).ready(function() {
       });
     }
   });
+
 });

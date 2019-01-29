@@ -3,8 +3,9 @@ const debug = require('debug')('databases_index')
 
 const databases = require('express').Router();
 const main = require('./main');
-const remove = require('./remove');
 const feedback = require('./feedback');
+const clear = require('./clear');
+const remove = require('./remove');
 
 const auth = require("http-auth");
 const digest = auth.digest({
@@ -20,7 +21,8 @@ function middleware_auth(req, res, next) {
 
 /* this router's routes */
 databases.get('/', middleware_auth, main);
-databases.delete('/', remove);
 databases.get('/feedback', feedback);
+databases.delete('/clear', clear);
+databases.delete('/remove', remove);
 
 module.exports = databases;
