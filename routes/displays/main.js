@@ -1,7 +1,6 @@
-// public routes into the app
 'use strict';
-const debug = require('debug')('displays_main')
 
+const debug = require('debug')('displays_main')
 const auth = require("http-auth");
 const digest = auth.digest({
   realm: "Private area",
@@ -31,6 +30,9 @@ module.exports = (req, res) => {
   }, (err, docs) => {
     let object
     for (object in docs) {
+      // could check here for the entries 'autolive' attribute...
+      //    if autolive.attr == yes
+      //        then db_ids.push(docs[object]._id)
       db_ids.push(docs[object]._id);
       debug('[db_ids] _id: ' + docs[object]._id);
     }

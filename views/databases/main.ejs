@@ -22,7 +22,7 @@
   <!-- SSE script -->
   <script src="/javascripts/sse.js"></script>
   <!-- jQuery-ops script-->
-  <script src="/javascripts/jquery_ops.js"></script>
+  <script src="/javascripts/jquery_ops_admin.js"></script>
 </head>
 
 <body class="bg" id="bg_frame">
@@ -48,22 +48,22 @@
           </thead>
           <tbody>
             <tr>
-              <td>Set stories to go autolive by default</td>
+              <td>Set new stories to go live automatically</td>
               <td>
-                <input title="autolive" type="checkbox" class="form-check-input" checked>
+                <input title="autolive" type="checkbox" class="form-check-input show_tip autolive">
               </td>
             </tr>
             <tr>
               <td>Refresh imagery for all stories</td>
               <td>
-                <button title="refresh" type="button" class="btn btn-primary show_tip">
+                <button title="refresh" type="button" class="btn btn-primary btn-sm show_tip refresh ">
                 </button>
               </td>
             </tr>
             <tr>
               <td>Clear all stories from database</td>
               <td>
-                <button title="clear" type="button" class="btn btn-danger remove show_tip">
+                <button title="clear" type="button" class="btn btn-danger btn-sm show_tip clear ">
                 </button>
               </td>
             </tr>
@@ -75,28 +75,33 @@
           <thead class="thead-dark">
             <th id="_id" style="display:none;">_id</th>
             <th id="#" style="width:5%">#</th>
-            <th id="Title" style="width:15%">Title</th>
+            <th id="Title" style="width:10%">Title</th>
             <th id="Story" style="width:75%">Story</th>
-            <th id="Delete" style="width:5%">Delete</th>
+            <th id="Remove" style="width:5%">Delete</th>
+            <th id="Live" style="width:5%">Live</th>
           </thead>
           <tbody>
             <% stories.forEach((entry,index) => { %>
             <tr>
-              <td style="display:none;">
+              <td class="_id" style="display:none;">
                 <%= entry._id %>
               </td>
-              <td>
+              <td class="#">
                 <%= index+1 %>
               </td>
-              <td>
+              <td class="Title">
                 <%= entry.title %>
               </td>
-              <td>
+              <td class="Story">
                 <%= entry.story %>
               </td>
-              <td>
-                <button title="remove" type="button" class="btn btn-danger remove show_tip">
+              <td class="Remove">
+                <button title="remove" type="button" class="btn btn-danger remove show_tip btn-sm">
                 </button>
+              </td>
+              <td class="Live">
+                <input title="live" type="checkbox" class="form-check-input submit" >
+                <%= entry.autolive %>
               </td>
             </tr>
             <% }) %>

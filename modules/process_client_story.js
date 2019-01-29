@@ -21,6 +21,8 @@ module.exports = {
       time_ops.current_time(today).then((result) => {
         // add current-time to the JSON
         client_JSON.time = result.time
+        //debug(req.app.locals.autolive);
+        //client_JSON.autolive = req.app.locals.autolive;
         nlp.parse_nouns(client_JSON.story).then((words) => {
           // add nouns to the JSON
           client_JSON.words = words

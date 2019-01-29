@@ -46,6 +46,7 @@ debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' 
 // module variables
 app.locals.db_mode = 'new_story'; // declare the db-read-mode: old_story || new_story
 app.locals.id_to_read = 0;        // id_to_read from above array
+app.locals.autolive;
 //=============================================================================
 // configuration
 app.set('views', path.join(__dirname, 'views'));

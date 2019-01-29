@@ -7,7 +7,8 @@ module.exports = (req, res) => {
   debug('/POST routes/add_title_story')
   // receive title-story info
   let client_JSON = req.body
-  debug(client_JSON)
+  client_JSON.autolive = req.app.locals.autolive;
+  debug(client_JSON);
   //process JSON... add NLP_words & matching urls
   const process_client_story = require('../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {

@@ -24,5 +24,11 @@ databases.get('/', middleware_auth, main);
 databases.get('/feedback', feedback);
 databases.delete('/clear', clear);
 databases.delete('/remove', remove);
+databases.post('/autolive', (req, res) => {
+  debug('autolive: ' + req.body.autolive);
+  req.app.locals.autolive = req.body.autolive;
+  debug('app.locals autolive: ' + req.app.locals.autolive);
+  res.send('All good');
+});
 
 module.exports = databases;
