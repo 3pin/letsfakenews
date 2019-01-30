@@ -27,6 +27,7 @@ module.exports = (req, res) => {
           debug('Switched mode to: ' + req.app.locals.db_mode);
         })
       }
+      res.send('Story inserted into database successfully');
     }).then(() => {
       debug('Refresh the database-admin-frontend');
       // print out the new shortened db

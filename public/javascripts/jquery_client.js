@@ -1,18 +1,19 @@
 const viewportmeta = document.querySelector('meta[name="viewport"]');
-let mode // expect mode=='ENV for logging
-let title
-let story
-let feedback
+let mode, // expect mode=='ENV for logging
+  title,
+  story,
+  feedback
 $(document).ready(function() {
   // Submit request for systems ENV-mode:
   $.ajax({
     type: 'GET',
     url: '/mode',
+    dataType: 'JSON',
     success: function(response) {
-      mode = response
-      pagestate_ctrl(1)
+      mode = response.mode;
+      pagestate_ctrl(1);
       $('call_viewport').attr('content', 'width=device-width, initial-scale=1');
-      console.log('client_mode: ' + mode)
+      console.log('client_mode: ' + mode);
     },
     error: function(request, textStatus, errorThrown) {
       console.log('client_mode not reported')
@@ -88,7 +89,7 @@ $(document).ready(function() {
           title: title.toUpperCase(),
           story: story
         }),
-        dataType: 'JSON',
+        dataType: 'text',
         success: function(response) {
           console.log(response)
         },
@@ -150,9 +151,15 @@ $(document).ready(function() {
         data: JSON.stringify({
           feedback: feedback
         }),
-        dataType: 'JSON'
+        dataType: 'text',
+        success: function(response) {
+          console.log(response)
+        },
+        error: function(err) {
+          console.log(err)
+        }
       });
-      pagestate_ctrl(4)
+      pagestate_ctrl(4);
       return false;
     }
     //

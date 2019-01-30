@@ -28,7 +28,7 @@ databases.post('/autolive', (req, res) => {
   debug('autolive: ' + req.body.autolive);
   req.app.locals.autolive = req.body.autolive;
   debug('app.locals autolive: ' + req.app.locals.autolive);
-  res.send('All good');
+  res.send('Autolive status set');
 });
 
 module.exports = databases;

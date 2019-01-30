@@ -1,59 +1,41 @@
 const viewportmeta = document.querySelector('meta[name="viewport"]');
-let mode // for non-production debugging
-let title
-let story
-let feedback
-$(document).ready(function() {
 
+let mode
+let autolive,
+  title,
+  story,
+  feedback
+
+$(document).ready(function() {
   // Submit request for systems ENV-mode:
   $.ajax({
     type: 'GET',
     url: '/mode',
+    dataType: 'JSON',
     success: function(response) {
-      mode = response
+      mode = response.mode;
+      autolive = response.autolive;
       pagestate_ctrl(1)
       $('call_viewport').attr('content', 'width=device-width, initial-scale=1');
-      console.log('client_mode: ' + mode)
-
+      console.log('client_mode: ' + mode);
+      console.log('autolive: ' + autolive);
       //check the status of the autolive-checkbox...
-      if (sessionStorage.getItem('autolive') == 'on') {
-        console.log("Autolive on");
+      if (autolive == 'on') {
         $('table#operations td .autolive').prop("checked", true);
-      } else if (sessionStorage.getItem('autolive') == 'off') {
-        console.log("Autolive off");
-        $('table#operations td .autolive').prop("checked", false);
-      } else if (sessionStorage.getItem('autolive') == null) {
-        console.log("Autolive off");
-        sessionStorage.setItem('autolive', 'off')
+      } else {
         $('table#operations td .autolive').prop("checked", false);
       }
     },
     error: function(request, textStatus, errorThrown) {
-      console.log('client_mode not reported')
+      console.log('client_mode and autolive-status not reported')
     }
   });
 
   // Checkbox handler: autolive on/off
   $("#operations").on("click", ".autolive", function() {
-
     if ($(this).is(':checked')) {
       console.log("Autolive on");
-      sessionStorage.setItem('autolive', 'on');
-      $.ajax({
-        type: 'POST',
-        url: '/databases/autolive',
-        contentType: 'application/json',
-        data: JSON.stringify({
-          autolive: sessionStorage.getItem('autolive')
-        }),
-        dataType: 'JSON',
-        success: function(response) {
-          console.log(response);
-        },
-        error: function(err) {
-          console.log(err);
-        }
-      });
+      autolive = 'on';
       /*
       $('#stories tbody tr').each(function() {
         $(this).children().find("input[type='checkbox']").prop("checked", true);
@@ -61,28 +43,28 @@ $(document).ready(function() {
       */
     } else {
       console.log("Autolive off");
-      sessionStorage.setItem('autolive', 'off');
-      $.ajax({
-        type: 'POST',
-        url: '/databases/autolive',
-        contentType: 'application/json',
-        data: JSON.stringify({
-          autolive: sessionStorage.getItem('autolive')
-        }),
-        dataType: 'JSON',
-        success: function(response) {
-          console.log(response);
-        },
-        error: function(err) {
-          console.log(err);
-        }
-      });
+      autolive = 'off';
       /*
       $('#stories tbody tr').each(function() {
         $(this).children().find("input[type='checkbox']").prop("checked", false);
       });
       */
     }
+    $.ajax({
+      type: 'POST',
+      url: '/databases/autolive',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        autolive: autolive
+      }),
+      dataType: 'text',
+      success: function(response) {
+        console.log(response);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
   });
 
   // Checkbox handler: refresh-images
@@ -112,12 +94,15 @@ $(document).ready(function() {
       $.ajax({
         type: 'DELETE',
         url: '/databases/clear',
+        dataType: 'JSON',
         success: function(response) {
           console.log('success');
           location.reload(response);
         },
         error: function(errorThrown) {
-          console.log('failure' + errorThrown);
+          console.log('error');
+          console.log(errorThrown);
+
         }
       });
     }
@@ -144,7 +129,8 @@ $(document).ready(function() {
           location.reload(response);
         },
         error: function(errorThrown) {
-          console.log('failure' + errorThrown);
+          console.log('error');
+          console.log(errorThrown);
         }
       });
     }
