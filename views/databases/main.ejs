@@ -100,7 +100,7 @@
                 </button>
               </td>
               <td class="Live">
-                <input title="live" type="checkbox" class="form-check-input submit" >
+                <input <%= entry.storylive ? "checked" : "" %> title="live" type="checkbox" class="form-check-input storylive" >
               </td>
             </tr>
             <% }) %>

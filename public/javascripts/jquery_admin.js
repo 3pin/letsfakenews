@@ -20,7 +20,7 @@ $(document).ready(function() {
       console.log('client_mode: ' + mode);
       console.log('autolive: ' + autolive);
       //check the status of the autolive-checkbox...
-      if (autolive == 'on') {
+      if (autolive == true) {
         $('table#operations td .autolive').prop("checked", true);
       } else {
         $('table#operations td .autolive').prop("checked", false);
@@ -35,7 +35,7 @@ $(document).ready(function() {
   $("#operations").on("click", ".autolive", function() {
     if ($(this).is(':checked')) {
       console.log("Autolive on");
-      autolive = 'on';
+      autolive = true;
       /*
       $('#stories tbody tr').each(function() {
         $(this).children().find("input[type='checkbox']").prop("checked", true);
@@ -43,7 +43,7 @@ $(document).ready(function() {
       */
     } else {
       console.log("Autolive off");
-      autolive = 'off';
+      autolive = false;
       /*
       $('#stories tbody tr').each(function() {
         $(this).children().find("input[type='checkbox']").prop("checked", false);
@@ -51,7 +51,7 @@ $(document).ready(function() {
       */
     }
     $.ajax({
-      type: 'POST',
+      type: 'PUT',
       url: '/databases/autolive',
       contentType: 'application/json',
       data: JSON.stringify({
@@ -134,6 +134,42 @@ $(document).ready(function() {
         }
       });
     }
+  });
+
+  // Button handler: storylive-status checkbox
+  $("table#stories").on("click", ".storylive", function() {
+    console.log('some stories autolive-checkbox was clicked');
+    let storylive;
+    if ($(this).is(':checked')) {
+      console.log("Storylive true");
+      storylive = true;
+    } else {
+      console.log("Storylive false");
+      storylive = false;
+    }
+
+    let data = $(this).closest('tr').find("td:first-child").text()
+    data = data.replace(/^\s+|\s+$/g, '');
+    console.log('Story _id to change storylive-status: ' + data)
+    //$(this).closest('tr').remove();
+    $.ajax({
+      type: 'PUT',
+      url: '/databases/storylive',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        id: data,
+        storylive: storylive
+      }),
+      dataType: 'JSON',
+      success: function(response) {
+        console.log('success');
+        location.reload(response);
+      },
+      error: function(errorThrown) {
+        console.log('error');
+        console.log(errorThrown);
+      }
+    });
   });
 
 });

@@ -3,8 +3,6 @@
 const debug = require('debug')('databases_remove')
 
 module.exports = (req, res) => {
-  // populate an array of _id's
-  let db_ids = [];
   let collection = req.db.get(process.env.COLLECTION);
   /* delete a db entry */
   debug('/DELETE routes/databases/remove');
@@ -36,6 +34,8 @@ module.exports = (req, res) => {
         _id: 1
       }
     }, (err, docs) => {
+      // populate an array of _id's
+      let db_ids = [];
       let object
       for (object in docs) {
         db_ids.push(docs[object]._id);
