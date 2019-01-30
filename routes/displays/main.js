@@ -37,10 +37,11 @@ module.exports = (req, res) => {
       debug('[db_ids] _id: ' + docs[object]._id);
     }
 
-    // choose the first story in db... report its id
+    // choose a story from the db... on startup db_mode is 'new_story' ie first story
     let db_fetch_mode = require('../../modules/db_fetch_mode.js');
     let obj = db_fetch_mode.next_entry(db_ids,0);
     id = obj.id;
+    // report the stories _id
     debug('id to read from db: ' + id);
     // set global vars for next-sequential-time-around
     req.app.locals.db_mode = obj.db_mode;
