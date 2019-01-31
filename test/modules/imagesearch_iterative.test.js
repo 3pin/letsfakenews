@@ -17,13 +17,12 @@ const imagesearch_iterative = require('../../modules/imagesearch_iterative.js');
 describe('iterative-url-search of the google-API', () => {
   it('should match each noun-from-array with an image-URL...', (done) => {
     let words = ['Pump','volume']
-    //let input_array = ['cat', 'dog']
     imagesearch_iterative.iterative_url_search(words).then((result) => {
       expect(result).to.be.an('array');
     }).catch(function(error) {
       debug("Failed!", error);
     }).finally(done)
-  })
+  });
 });
 
 /*

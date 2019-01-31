@@ -14,7 +14,7 @@ VBZ   Verb, present           ie. eats
 */
 
 "use strict";
-const debug = require('debug')('module_nlp');
+const debug = require('debug')('nlp');
 const tags = ["NN", "NNP", "NNPS", "NNS"];
 const pos = require('pos');
 

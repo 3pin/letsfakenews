@@ -6,7 +6,7 @@ return JSON
 */
 
 'use strict';
-const debug = require('debug')('module_client_story')
+const debug = require('debug')('client_story')
 const nlp = require('../modules/nlp.js');
 const imagesearch_iterative = require('../modules/imagesearch_iterative.js');
 const time_ops = require('../modules/time_ops.js');
@@ -21,8 +21,6 @@ module.exports = {
       time_ops.current_time(today).then((result) => {
         // add current-time to the JSON
         client_JSON.time = result.time
-        //debug(req.app.locals.autolive);
-        //client_JSON.autolive = req.app.locals.autolive;
         nlp.parse_nouns(client_JSON.story).then((words) => {
           // add nouns to the JSON
           client_JSON.words = words

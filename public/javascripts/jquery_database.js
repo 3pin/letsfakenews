@@ -64,12 +64,26 @@ $(document).ready(function() {
 
   // Checkbox handler: refresh-images
   $("table#operations").on("click", ".refresh", function() {
-    //
+    if (confirm("Sure you want to refresh all urls in database?")) {
+      $.ajax({
+        type: 'PUT',
+        url: '/databases/refresh',
+        dataType: 'text',
+        success: function(response) {
+          res.send('urls were refreshed');
+        },
+        error: function(errorThrown) {
+          if (mode == 'development') {
+            console.log(errorThrown);
+          }
+        }
+      });
+    }
   });
 
   // Button handler: stories-clear
   $("table#operations").on("click", ".clear", function() {
-    if (confirm("OK to clear all stories from database?")) {
+    if (confirm("Sure you want to clear all stories from database?")) {
       $.ajax({
         type: 'DELETE',
         url: '/databases/clear',
@@ -91,7 +105,7 @@ $(document).ready(function() {
 
   // Button handler: story-remove
   $("table#stories").on("click", ".remove", function() {
-    if (confirm("OK to remove story from database?")) {
+    if (confirm("Sure you want to remove this story from database?")) {
       let id = $(this).closest('tr').find("td:first-child").text()
       id = id.replace(/^\s+|\s+$/g, '');
       //$(this).closest('tr').remove();

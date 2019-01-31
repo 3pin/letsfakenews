@@ -1,6 +1,6 @@
 // functions for how stories are fetched from the database... random/stepwise etc
 
-const debug = require('debug')('module_db_fetch_mode')
+const debug = require('debug')('db_fetch_mode')
 
 // pick a random entry with which to pick an '_id' entry from the array
 function random_entry(array_of_ids) {

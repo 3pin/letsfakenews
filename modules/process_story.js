@@ -6,7 +6,7 @@ return urls
 */
 
 'use strict';
-const debug = require('debug')('module_story')
+const debug = require('debug')('story')
 const nlp = require('../modules/nlp.js');
 const imagesearch_iterative = require('../modules/imagesearch_iterative.js');
 

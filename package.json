@@ -18,7 +18,9 @@
     "test_time_ops": "mocha ./test/modules/time_ops.test.js",
     "test_process_client_story": "mocha ./test/modules/process_client_story.test.js",
     "test_process_client_feedback": "mocha ./test/modules/process_client_feedback.test.js",
-    "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js"
+    "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js",
+    "test_refresh_urls": "mocha ./test/modules/refresh_urls.test.js",
+    "test_refresh_urls_iterative": "mocha ./test/modules/refresh_urls_iterative.test.js"
   },
   "dependencies": {
     "async": "^2.6.1",

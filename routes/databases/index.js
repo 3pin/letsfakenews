@@ -8,6 +8,7 @@ const clear = require('./clear');
 const remove = require('./remove');
 const autolive = require('./autolive');
 const storylive = require('./storylive');
+const refresh = require('./refresh');
 
 const auth = require("http-auth");
 const digest = auth.digest({
@@ -28,5 +29,6 @@ databases.delete('/clear', clear);
 databases.delete('/remove', remove);
 databases.put('/autolive', autolive);
 databases.put('/storylive', storylive);
+databases.put('/refresh', refresh);
 
 module.exports = databases;

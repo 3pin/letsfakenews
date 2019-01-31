@@ -12,13 +12,11 @@ const chai = require('chai'),
 const nlp = require('../../modules/nlp.js');
 
 describe('When a new fakenewsreport (story) is received...', () => {
-
   it('should NLP the story(string) to an array of nouns...', (done) => {
     nlp.parse_nouns('The cat ran under the bus').then(result => {
       expect(result).to.be.an('array');
     }).finally(done);
   })
-
   it('should NLP the story(string) to an array of nouns PER phrase...', (done) => {
     nlp.parse_phrases('The cat ran under the bus. It was hurt').then((result) => {
       expect(result).to.be.an('array');

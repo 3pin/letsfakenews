@@ -19,7 +19,7 @@ describe('When story(JSON) recevied... story-processed to [words] to [urls] then
     };
     process_client_story.process(client_JSON).then((result) => {
       debug(result);
-      expect(client_JSON).to.have.property('urls');
+      expect(result).to.have.property('urls');
       done();
     });
   });
