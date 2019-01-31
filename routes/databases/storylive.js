@@ -1,17 +1,40 @@
 'use strict';
 
-const debug = require('debug')('databases_storylive')
+const debug = require('debug')('databases_storylive');
+
+function remove(array, element) {
+  const index = array.indexOf(element);
+  array.splice(index, 1);
+}
 
 module.exports = (req, res) => {
   let collection = req.db.get(process.env.COLLECTION);
-  /* delete a db entry */
+  /* update an entries display-checkbox */
   debug('/PUT routes/databases/storylive');
   debug('_id: ' + req.body.id);
   debug('storylive status: ' + req.body.storylive);
+  // if checkbox is true/false... add/remove from activelist
+  if (req.body.storylive == true) {
+    debug('storylive: true');
+    req.app.locals.activelist.push(req.body.id);
+    debug(req.app.locals.activelist);
+  } else {
+    debug('storylive: false');
+    req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body.id);
+    debug(req.app.locals.activelist);
+  }
   let query = {
     _id: req.body.id
   };
-  collection.update(query, {$set:{storylive:req.body.storylive}}, {upsert:true, multi:false}).then((err, docs) => {
+  //update database so the frontend continues to reflect status of the checbox
+  collection.update(query, {
+    $set: {
+      storylive: req.body.storylive
+    }
+  }, {
+    upsert: true,
+    multi: false
+  }).then((err, docs) => {
     if (err) {
       debug('error');
       debug(err);
@@ -20,7 +43,7 @@ module.exports = (req, res) => {
       debug(docs);
     }
   }).then(() => {
-    // print out the new shortened db
+    // return updated version of the db to the frontend admin page
     collection.find({}, {
       sort: {
         _id: 1
@@ -35,18 +58,10 @@ module.exports = (req, res) => {
       }
       debug('[db_ids] total_length: ' + db_ids.length);
       res.json({
-        stories: docs});
+        stories: docs
+      });
     });
-    /*
-    // step back new-story-id-to-read incase a new story is about to be read during the removal-action
-    if (req.app.locals.id_to_read > 0) {
-      debug('id_to_read before: ' + req.app.locals.id_to_read)
-      req.app.locals.id_to_read = (parseInt(req.app.locals.id_to_read) - 1).toString();
-      debug('id_to_read after: ' + req.app.locals.id_to_read)
-      debug('db_entries next new_story id_to_read: ' + req.app.locals.id_to_read);
-    }
-    */
   }).catch((err) => {
-    debug("Err: ", err);
+    debug(err);
   });
 }

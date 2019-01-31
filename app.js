@@ -44,9 +44,9 @@ debug('App Name: ' + process.env.npm_package_name)
 debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK);
 //=============================================================================
 // module variables
-app.locals.db_mode = 'new_story'; // declare the db-read-mode: old_story || new_story
-app.locals.id_to_read = 0;        // id_to_read from above array
+app.locals.entry_to_read = 0;        // id_to_read from above array
 app.locals.autolive = false;      // sets whether new-stories auto-display on main-screen or not
+app.locals.activelist = [];       // list of active stories for display
 //=============================================================================
 // configuration
 app.set('views', path.join(__dirname, 'views'));

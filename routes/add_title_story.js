@@ -16,27 +16,26 @@ module.exports = (req, res) => {
     let collection = req.db.get(process.env.COLLECTION);
     collection.insert(result).then((output) => {
       debug('Document inserted to db successfully');
-      //if a new_story is not currently being read, for next-time-around, set index-to-fetch-from to last-entry in array
-      if (req.app.locals.db_mode != 'new_story') {
-        req.app.locals.db_mode = 'new_story';
-        // return new no of entries in database
-        collection.count({}, {}).then((response) => {
-          // offset by '1' as it will get incremented in the next_story function anyway
-          req.app.locals.id_to_read = response - 1;
-          debug('db_entries next entry to read: ' + req.app.locals.id_to_read);
-          debug('Switched mode to: ' + req.app.locals.db_mode);
-        })
-      }
       res.send('Story inserted into database successfully');
     }).then(() => {
-      debug('Refresh the database-admin-frontend');
+      debug('Refreshing the database-admin-frontend');
       // print out the new shortened db
       collection.find({}, {
         sort: {
           _id: 1
         }
       }, (err, docs) => {
-        bus.emit('message', {stories: docs});
+        //if autolive is TRUE, then new-story should be auto added to activelist
+        if (req.app.locals.autolive == true) {
+          req.app.locals.activelist.push(docs[docs.length - 1]._id);
+          req.app.locals.entry_to_read = req.app.locals.activelist.length - 1;
+          debug(req.app.locals.activelist);
+          debug(req.app.locals.entry_to_read);
+        }
+        // tell eventbus about a new-story to trigger refresh of admin-frontend 
+        bus.emit('message', {
+          stories: docs
+        });
       });
     });
   }).catch((err) => {

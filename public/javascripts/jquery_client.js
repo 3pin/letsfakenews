@@ -13,10 +13,14 @@ $(document).ready(function() {
       mode = response.mode;
       pagestate_ctrl(1);
       $('call_viewport').attr('content', 'width=device-width, initial-scale=1');
-      console.log('client_mode: ' + mode);
+      if (mode == 'development') {
+        console.log('client_mode: ' + mode);
+      }
     },
     error: function(request, textStatus, errorThrown) {
-      console.log('client_mode not reported')
+      if (mode == 'development') {
+        console.log('client_mode not reported')
+      }
     }
   });
   // disable RETURN key in text areas
@@ -34,9 +38,6 @@ $(document).ready(function() {
   });
   // index-page
   $('#1').click(function() {
-    if (mode == 'development') {
-      console.log('proceed button pressed')
-    }
     pagestate_ctrl(2)
     setTimeout(function() {
       $('#story').focus();
@@ -46,15 +47,9 @@ $(document).ready(function() {
   // submission from story page
   $('#2').submit(function(e) {
     e.preventDefault();
-    if (mode == 'development') {
-      console.log('story submitted')
-    }
     if ($('#story').val()) {
       story = $('#story').val()
       story = story.trim()
-      if (mode == 'development') {
-        console.log("This is the new story: " + story)
-      }
       pagestate_ctrl(3)
       setTimeout(function() {
         $('#title').focus();
@@ -71,15 +66,9 @@ $(document).ready(function() {
   // submission from title-page
   $('#3').submit(function(e) {
     //e.preventDefault();
-    if (mode == 'development') {
-      console.log('title submitted')
-    }
     if ($('#title').val()) {
       title = $('#title').val()
       title = title.trim()
-      if (mode == 'development') {
-        console.log("This is the new title: " + title);
-      }
       //Submit the form via Ajax POST request:
       $.ajax({
         type: 'POST',
@@ -91,10 +80,14 @@ $(document).ready(function() {
         }),
         dataType: 'text',
         success: function(response) {
-          console.log(response)
+          if (mode == 'development') {
+            console.log(response)
+          }
         },
         error: function(err) {
-          console.log(err)
+          if (mode == 'development') {
+            console.log(err)
+          }
         }
       });
       pagestate_ctrl(4)
@@ -102,16 +95,11 @@ $(document).ready(function() {
     }
     //
     else {
-      if (mode == 'development') {
-        console.log("You have not entered a valid story yet")
-      }
+      console.log("You have not entered a valid story yet")
     }
   });
   // goto story-page
   $('#Goto_Start').click(function() {
-    if (mode == 'development') {
-      console.log('Goto_Start button pressed on thankyou-page')
-    }
     $('#story').val("");
     $('#title').val("");
     pagestate_ctrl(2)
@@ -122,9 +110,6 @@ $(document).ready(function() {
   });
   // goto feedback-page
   $('#Goto_Feedback').click(function() {
-    if (mode == 'development') {
-      console.log('Goto_Feedback button pressed on thankyou-page')
-    }
     pagestate_ctrl(5)
     setTimeout(function() {
       $('#feedback').focus();
@@ -134,15 +119,9 @@ $(document).ready(function() {
   // submission from feedback-page
   $('#5').submit(function(e) {
     e.preventDefault();
-    if (mode == 'development') {
-      console.log('Feedback submitted')
-    }
     if ($('#feedback').val()) {
       feedback = $('#feedback').val()
       feedback = feedback.trim()
-      if (mode == 'development') {
-        console.log("This is the feedback: " + feedback)
-      }
       //Submit the form via Ajax POST request:
       $.ajax({
         type: 'POST',
@@ -153,10 +132,14 @@ $(document).ready(function() {
         }),
         dataType: 'text',
         success: function(response) {
-          console.log(response)
+          if (mode == 'development') {
+            console.log(response)
+          }
         },
         error: function(err) {
-          console.log(err)
+          if (mode == 'development') {
+            console.log(err)
+          }
         }
       });
       pagestate_ctrl(4);
@@ -164,9 +147,7 @@ $(document).ready(function() {
     }
     //
     else {
-      if (mode == 'development') {
-        console.log("You have not entered valid feedback yet")
-      }
+      console.log("You have not entered valid feedback yet")
     }
   });
 

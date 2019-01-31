@@ -1,13 +1,20 @@
 'use strict';
 
-const debug = require('debug')('databases_remove')
+const debug = require('debug')('databases_remove');
+
+function remove(array, element) {
+  const index = array.indexOf(element);
+  array.splice(index, 1);
+}
 
 module.exports = (req, res) => {
   let collection = req.db.get(process.env.COLLECTION);
-  /* delete a db entry */
   debug('/DELETE routes/databases/remove');
+  // if entry was active... remove entry from activelist
+  req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body.id);
+  // delete the entry from db
   let query = {
-    _id: req.body.data
+    _id: req.body.id
   };
   collection.remove(query, {
     multi: false
@@ -18,14 +25,6 @@ module.exports = (req, res) => {
     } else {
       debug('no error');
       //debug(docs.result.n + " document(s) deleted");
-    }
-  }).then(() => {
-    // step back new-story-id-to-read incase a new story is about to be read during the removal-action
-    if (req.app.locals.id_to_read > 0) {
-      debug('id_to_read before: ' + req.app.locals.id_to_read)
-      req.app.locals.id_to_read = (parseInt(req.app.locals.id_to_read) - 1).toString();
-      debug('id_to_read after: ' + req.app.locals.id_to_read)
-      debug('db_entries next new_story id_to_read: ' + req.app.locals.id_to_read);
     }
   }).then(() => {
     // print out the new shortened db
@@ -43,7 +42,8 @@ module.exports = (req, res) => {
       }
       debug('[db_ids] total_length: ' + db_ids.length);
       res.json({
-        stories: docs});
+        stories: docs
+      });
     });
   }).catch((err) => {
     debug("Err: ", err);

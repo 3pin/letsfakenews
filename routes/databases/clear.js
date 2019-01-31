@@ -3,8 +3,6 @@
 const debug = require('debug')('databases_clear')
 
 module.exports = (req, res) => {
-  // populate an array of _id's
-  let db_ids = [];
   let collection = req.db.get(process.env.COLLECTION);
   /* delete a db entry */
   debug('/DELETE routes/databases/clear');
@@ -20,20 +18,14 @@ module.exports = (req, res) => {
       //debug(docs.result.n + " document(s) deleted");
     }
   }).then(() => {
-    // step back new-story-id-to-read incase a new story is about to be read during the removal-action
-    if (req.app.locals.id_to_read > 0) {
-      debug('id_to_read before: ' + req.app.locals.id_to_read)
-      req.app.locals.id_to_read = (parseInt(req.app.locals.id_to_read) - 1).toString();
-      debug('id_to_read after: ' + req.app.locals.id_to_read)
-      debug('db_entries next new_story id_to_read: ' + req.app.locals.id_to_read);
-    }
-  }).then(() => {
-    // print out the new shortened db
+    // return the empty db to the frontend
     collection.find({}, {
       sort: {
         _id: 1
       }
     }, (err, docs) => {
+      // populate an array of _id's
+      let db_ids = [];
       let object
       for (object in docs) {
         db_ids.push(docs[object]._id);
@@ -44,6 +36,11 @@ module.exports = (req, res) => {
         stories: docs
       });
     });
+  }).then(() => {
+    // empty the active activelist
+    // if entry was active... remove entry from activelist
+    req.app.locals.activelist = [];
+    req.app.locals.entry_to_read = 0;
   }).catch((err) => {
     debug("Err: ", err);
   });

@@ -7,62 +7,53 @@ const digest = auth.digest({
   file: "./htpasswd",
   authType: "digest"
 });
+// module variable to hold the id to read from the db
+let id;
 function middleware_auth(req, res, next) {
   //console.log('middleware_auth: this page requires authentification')
   (auth.connect(digest))(req, res, next);
   //return next()
 }
 
-// serve story to display-page on startup
 module.exports = (req, res) => {
   debug('/GET routes/displays')
-  // populate an array of _id's
-  let db_ids = [];
-  //_id to read from db
-  let id;
+  //load all stories (in order of _id) from db
   let collection = req.db.get(process.env.COLLECTION);
-
-  //load ordered-stories from db
-  collection.find({}, {
+  collection.find( {}, {
     sort: {
       _id: 1
     }
-  }, (err, docs) => {
+  }).then( (docs) => {
+    // populate the activelist[] with the active entries (ie storylive.atrr TRUE)
+    req.app.locals.activelist = [];
     let object
     for (object in docs) {
-      // could check here for the entries 'autolive' attribute...
-      //    if autolive.attr == yes
-      //        then db_ids.push(docs[object]._id)
-      db_ids.push(docs[object]._id);
-      debug('[db_ids] _id: ' + docs[object]._id);
+      if (docs[object].storylive == true) {
+        req.app.locals.activelist.push(docs[object]._id);
+      }
     }
-
-    // choose a story from the db... on startup db_mode is 'new_story' ie first story
+    debug(req.app.locals.activelist);
+  }).then( () => {
+    // choose an id from activelist[]...
     let db_fetch_mode = require('../../modules/db_fetch_mode.js');
-    let obj = db_fetch_mode.next_entry(db_ids,0);
+    let obj = db_fetch_mode.next_entry(req.app.locals.activelist, req.app.locals.entry_to_read);
     id = obj.id;
-    // report the stories _id
-    debug('id to read from db: ' + id);
+    debug('id to read from activelist: ' + id);
     // set global vars for next-sequential-time-around
-    req.app.locals.db_mode = obj.db_mode;
-    req.app.locals.id_to_read = obj.id_to_read;
-    debug('Updating 4nextime: ' + req.app.locals.db_mode + ' ' + req.app.locals.id_to_read)
-
-    // fetch that randomly-chosen obj and pass to display-client
+    req.app.locals.entry_to_read = obj.entry_to_read;
+  }).then(() => {
+    // use that id to fetch story from db
     collection.findOne({
       _id: id
-    }, (err, docs) => {
+    }).then( (docs) => {
       debug(JSON.stringify(docs));
+      // pass that story to display frontend
       res.render('displays/main', {
         data: docs,
         tabtitle: "LetsFakeNews:Display"
       });
-    }).catch((err) => {
-      debug("Err: ", err);
-    });
-
+    })
   }).catch((err) => {
-    debug("Err: ", err);
+    debug(err);
   });
-
 }

@@ -7,8 +7,6 @@
     <%= tabtitle %>
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- load debug script -->
-  <script type="text/javascript" src="/javascripts/debug_browserify.js"></script>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <!-- Local CSS to override some bootstrap methods -->
@@ -22,7 +20,7 @@
   <!-- SSE script -->
   <script src="/javascripts/sse.js"></script>
   <!-- jQuery script-->
-  <script src="/javascripts/jquery_admin.js"></script>
+  <script src="/javascripts/jquery_database.js"></script>
 </head>
 
 <body class="bg" id="bg_frame">
@@ -41,71 +39,76 @@
         <h1>ADMIN PANEL</h1>
 
         <h2>Operations</h2>
-        <table id="operations" class="table table-bordered" style="background-color: white">
-          <thead class="thead-dark">
-            <th id="Command" style="width:95%">Command</th>
-            <th id="Action" style="width:5%">Action</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Set new stories to go live automatically</td>
-              <td>
-                <input title="autolive" type="checkbox" class="form-check-input show_tip autolive">
-              </td>
-            </tr>
-            <tr>
-              <td>Refresh imagery for all stories</td>
-              <td>
-                <button title="refresh" type="button" class="btn btn-primary btn-sm show_tip refresh ">
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>Clear all stories from database</td>
-              <td>
-                <button title="clear" type="button" class="btn btn-danger btn-sm show_tip clear ">
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="panel panel-default">
+          <table id="operations" class="table table-bordered" style="background-color: white">
+            <thead class="thead-dark">
+              <th id="Command" style="width:95%">Command</th>
+              <th id="Action" style="width:5%">Action</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Set new stories to go live automatically</td>
+                <td>
+                  <input title="autolive" type="checkbox" class="form-check-input show_tip autolive">
+                </td>
+              </tr>
+              <tr>
+                <td>Refresh imagery for all stories</td>
+                <td>
+                  <button title="refresh" type="button" class="btn btn-primary btn-sm show_tip refresh ">
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>Clear all stories from database</td>
+                <td>
+                  <button title="clear" type="button" class="btn btn-danger btn-sm show_tip clear ">
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <h2>Stories</h2>
-        <table id="stories" class="table table-bordered" style="background-color: white">
-          <thead class="thead-dark">
-            <th id="_id" style="display:none;">_id</th>
-            <th id="#" style="width:5%">#</th>
-            <th id="Title" style="width:10%">Title</th>
-            <th id="Story" style="width:75%">Story</th>
-            <th id="Remove" style="width:5%">Delete</th>
-            <th id="Live" style="width:5%">Live</th>
-          </thead>
-          <tbody>
-            <% stories.forEach((entry,index) => { %>
-            <tr>
-              <td class="_id" style="display:none;">
-                <%= entry._id %>
-              </td>
-              <td class="#">
-                <%= index+1 %>
-              </td>
-              <td class="Title">
-                <%= entry.title %>
-              </td>
-              <td class="Story">
-                <%= entry.story %>
-              </td>
-              <td class="Remove">
-                <button title="remove" type="button" class="btn btn-danger remove show_tip btn-sm">
-                </button>
-              </td>
-              <td class="Live">
-                <input <%= entry.storylive ? "checked" : "" %> title="live" type="checkbox" class="form-check-input storylive" >
-              </td>
-            </tr>
-            <% }) %>
-          </tbody>
-        </table>
+        <div class="panel panel-default">
+          <table id="stories" class="table table-bordered" style="background-color: white">
+            <thead class="thead-dark">
+              <th id="_id" style="display:none;">_id</th>
+              <th id="#" style="width:5%">#</th>
+              <th id="Title" style="width:10%">Title</th>
+              <th id="Story" style="width:75%">Story</th>
+              <th id="Remove" style="width:5%">Delete</th>
+              <th id="Live" style="width:5%">Live</th>
+            </thead>
+            <tbody>
+              <% stories.forEach((entry,index) => { %>
+              <tr>
+                <td class="_id" style="display:none;">
+                  <%= entry._id %>
+                </td>
+                <td class="#">
+                  <%= index+1 %>
+                </td>
+                <td class="Title">
+                  <%= entry.title %>
+                </td>
+                <td class="Story">
+                  <%= entry.story %>
+                </td>
+                <td class="Remove">
+                  <button title="remove" type="button" class="btn btn-danger remove show_tip btn-sm">
+                  </button>
+                </td>
+                <td class="Live">
+                  <input <%=entry.storylive ? "checked" : "" %> title="live" type="checkbox" class="form-check-input storylive" >
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
       </section>
     </article>
     <!-- column as right blank-strip -->
