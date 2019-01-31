@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>
+    <%= tabtitle %>
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- load debug script -->
+  <script type="text/javascript" src="/javascripts/debug_browserify.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <!-- Local CSS to override some bootstrap methods -->
+  <link rel='stylesheet' href='/stylesheets/main.css'>
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <!-- pagestate-control module -->
+  <script src="/javascripts/pagestate_control.js"></script>
+  <!-- jQuery -->
+  <script src="/javascripts/jquery_client.js"></script>
+</head>
+
+<body class="bg" id="bg_frame">
+  <!-- header -->
+  <header id="header_frame">
+    <img class="img-responsive" id="header_image" src="/images/header.jpg">
+  </header>
+  <!-- row containing columns of content -->
+  <main class="row"><br>
+    <!-- column as left blank-strip -->
+    <aside id="left_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></aside>
+    <!-- column as middle content-strip -->
+    <article id="middle_col" class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+      <!-- landing  -->
+      <section class="section" id="1">
+        <h1>Let's Fake News</h1>
+        <h2>About...</h2>
+        <p>Pretend you're a journalist with a deadline but no news to report so you're going to fake it!
+          Try to trick the Al-Jazeera news-room into broadcasting your fake story, then wait to see if it appears on the public screen.
+          To ensure the news-room accept your story, be grammatically correct with spelling, capitalisation etc.
+        </p>
+        <br />
+        <button id="gototitle" type="button" class="btn btn-primary btn-responsive">Proceed</button>
+      </section>
+      <!-- story_input  -->
+      <section class="section" id="2">
+        <h1>Let's Fake News</h1>
+        <h2>Write a story...</h2>
+        <form id="story_form" class="form-horizontal">
+          <div class="form-group">
+            <textarea id="story" class="form-control form-responsive" rows="4" maxlength="280" required placeholder="280 chars max..."></textarea>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+              <br />
+              <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+            </div>
+          </div>
+        </form>
+      </section>
+      <!-- title_input  -->
+      <section class="section" id="3">
+        <h1>Let's Fake News</h1>
+        <h2>Add a headline...</h2>
+        <form id="title_form" class="form-horizontal">
+          <div class="form-group">
+            <textarea id="title" class="form-control form-responsive" rows="1" maxlength="25" required placeholder="25 chars max..."></textarea>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+              <br />
+              <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+            </div>
+          </div>
+        </form>
+        <br />
+      </section>
+      <!-- thankyou  -->
+      <section class="section" id="4">
+        <h1>Let's Fake News</h1>
+        <h2>Thank you...</h2><br />
+        <p>Want to try again?</p>
+        <button id="Goto_Start" name="thankyou" type="submit" class="btn btn-primary btn-responsive">Restart</button>
+        <br /><br />
+        <p>Leave us your feedback</p>
+        <button id="Goto_Feedback" name="feedback" type="submit" class="btn btn-primary btn-responsive">Feedback</button>
+      </section>
+      <!-- feedback_input  -->
+      <section class="section" id="5">
+        <h1>Let's Fake News</h1>
+        <h2>Leave your feedback...</h2>
+        <form id="feedback_form" class="form-horizontal">
+          <div class="form-group">
+            <textarea id="feedback" class="form-control form-responsive" rows="4" maxlength="280" required placeholder="280 chars max..."></textarea>
+            <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+              <br />
+              <button type="submit" class="btn btn-primary btn-responsive">Submit</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </article>
+    <!-- column as right blank-strip -->
+    <aside id="right_col" class="col-xs-1 col-sm-2 col-md-2 col-lg-2"></aside>
+  </main>
+  <!-- footer
+    <footer class="footer" id="footer_frame">
+      <img class="img-responsive" id="footer_image" src="/images/footer.jpg">
+    </footer> -->
+</body>
+
+</html>

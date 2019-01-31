@@ -9,4 +9,3 @@ npm-debug.log
 tmp
 .DS_Store
 database
-routes/index_old.js

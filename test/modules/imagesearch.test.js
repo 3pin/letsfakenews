@@ -11,7 +11,6 @@ const chai = require('chai'),
 
 // load async for use in tests
 const async = require('async');
-
 const imagesearch = require('../../modules/imagesearch.js');
 
 //test .then Promise

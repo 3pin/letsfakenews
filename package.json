@@ -18,7 +18,9 @@
     "test_time_ops": "mocha ./test/modules/time_ops.test.js",
     "test_process_client_story": "mocha ./test/modules/process_client_story.test.js",
     "test_process_client_feedback": "mocha ./test/modules/process_client_feedback.test.js",
-    "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js"
+    "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js",
+    "test_refresh_urls": "mocha ./test/modules/refresh_urls.test.js",
+    "test_refresh_urls_iterative": "mocha ./test/modules/refresh_urls_iterative.test.js"
   },
   "dependencies": {
     "async": "^2.6.1",
@@ -27,14 +29,15 @@
     "corenlp": "^1.4.3",
     "dotenv": "^6.1.0",
     "ejs": "^2.6.1",
+    "events": "^3.0.0",
     "express": "^4.16.4",
     "google-images": "^2.1.0",
     "htdigest": "^2.2.3",
     "http-auth": "^3.2.3",
-    "mongodb": "^3.1.10",
     "monk": "^6.0.6",
     "morgan": "^1.9.1",
     "pos": "^0.4.2",
+    "redis": "^2.8.0",
     "screenfull": "^3.3.3",
     "serve-favicon": "^2.5.0"
   },

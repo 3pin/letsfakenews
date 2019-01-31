@@ -1,0 +1,51 @@
+'use strict';
+
+const debug = require('debug')('databases_remove');
+
+function remove(array, element) {
+  const index = array.indexOf(element);
+  array.splice(index, 1);
+}
+
+module.exports = (req, res) => {
+  let collection = req.db.get(process.env.COLLECTION);
+  debug('/DELETE routes/databases/remove');
+  // if entry was active... remove entry from activelist
+  req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body.id);
+  // delete the entry from db
+  let query = {
+    _id: req.body.id
+  };
+  collection.remove(query, {
+    multi: false
+  }).then((err, docs) => {
+    if (err) {
+      debug('error');
+      //debug(err);
+    } else {
+      debug('no error');
+      //debug(docs.result.n + " document(s) deleted");
+    }
+  }).then(() => {
+    // print out the new shortened db
+    collection.find({}, {
+      sort: {
+        _id: 1
+      }
+    }, (err, docs) => {
+      // populate an array of _id's
+      let db_ids = [];
+      let object
+      for (object in docs) {
+        db_ids.push(docs[object]._id);
+        debug('[db_ids] _id: ' + docs[object]._id);
+      }
+      debug('[db_ids] total_length: ' + db_ids.length);
+      res.json({
+        stories: docs
+      });
+    });
+  }).catch((err) => {
+    debug("Err: ", err);
+  });
+}
