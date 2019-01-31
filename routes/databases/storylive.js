@@ -17,6 +17,10 @@ module.exports = (req, res) => {
   if (req.body.storylive == true) {
     debug('storylive: true');
     req.app.locals.activelist.push(req.body.id);
+    req.app.locals.entry_to_read = req.app.locals.activelist.length - 1;
+    req.app.locals.db_mode = 'next';
+    debug(req.app.locals.db_mode);
+    debug(req.app.locals.entry_to_read);
     debug(req.app.locals.activelist);
   } else {
     debug('storylive: false');

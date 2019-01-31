@@ -29,10 +29,11 @@ module.exports = (req, res) => {
         if (req.app.locals.autolive == true) {
           req.app.locals.activelist.push(docs[docs.length - 1]._id);
           req.app.locals.entry_to_read = req.app.locals.activelist.length - 1;
+          req.app.locals.db_mode = 'next';
           debug(req.app.locals.activelist);
           debug(req.app.locals.entry_to_read);
         }
-        // tell eventbus about a new-story to trigger refresh of admin-frontend 
+        // tell eventbus about a new-story to trigger refresh of admin-frontend
         bus.emit('message', {
           stories: docs
         });

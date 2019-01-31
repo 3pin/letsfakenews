@@ -13,12 +13,13 @@ function random_entry(array_of_ids) {
   debug('About to read entry _id: ' + id)
   return {
     id: id,
-    db_mode: 'rand_story'
+    db_mode: 'random',
+    entry_to_read: entry_to_read
   }
 }
 // pick next entry
 function next_entry(array_of_ids, entry_to_read) {
-  let _id, db_mode;
+  let id, db_mode;
   if (entry_to_read == null) {
     entry_to_read = 0;
     debug('set entry_to_read from NULL to 0');
@@ -26,16 +27,18 @@ function next_entry(array_of_ids, entry_to_read) {
   entry_to_read = parseInt(entry_to_read);
   debug('entered db_fetch_mode(next_entry)... array_length:' + array_of_ids.length + ' activelist_entry_to_read:' + entry_to_read)
   if (entry_to_read > array_of_ids.length-1 || entry_to_read < 0) {
-    _id = array_of_ids[0];
+    db_mode = 'random';
+    id = array_of_ids[0];
     entry_to_read = 1;
   } else {
-    _id = array_of_ids[entry_to_read];
+    db_mode = 'next';
+    id = array_of_ids[entry_to_read];
     entry_to_read++;
   }
-  debug('About to read entry _id: ' + _id);
+  debug('About to read entry id: ' + id);
   debug('db_mode for next time: ' + db_mode);
   return {
-    id: _id,
+    id: id,
     db_mode: db_mode,
     entry_to_read: entry_to_read
   }
