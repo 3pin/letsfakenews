@@ -70,7 +70,9 @@ $(document).ready(function() {
         url: '/databases/refresh',
         dataType: 'text',
         success: function(response) {
-          res.send('urls were refreshed');
+          if (mode == 'development') {
+            console.log(response);
+          }
         },
         error: function(errorThrown) {
           if (mode == 'development') {

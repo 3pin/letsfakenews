@@ -17,6 +17,8 @@ module.exports = (req, res) => {
     refresh_urls_iterative.process(docs).then((result) => {
       collection.drop();
       collection.insert(result);
+    }).then(() => {
+      res.send('Refresh of all images completed')
     });
   }).catch((err) => {
     debug("Err: ", err);
