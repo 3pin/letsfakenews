@@ -1,6 +1,7 @@
-
 if (!!window.EventSource) {
+  //
   console.log("Your browser supports SSE");
+  //
   const sse = new EventSource("/sse");
   // Handler for all events
   sse.onmessage = (event) => {
@@ -10,6 +11,11 @@ if (!!window.EventSource) {
     const obj = JSON.parse(event.data);
     location.reload(obj);
   });
-} else {
-  console.log("Your browser doesn't support SSE");
+  sse.addEventListener('error', function(e) {
+    if (e.readyState == EventSource.CLOSED) {
+      console.log(e);
+      // Connection was closed.
+    }
+  }, false);
+
 }

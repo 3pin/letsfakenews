@@ -34,7 +34,6 @@ module.exports = (req, res) => {
           debug(req.app.locals.entry_to_read);
         }
         // tell eventbus about a new-story to trigger refresh of admin-frontend
-        debug(req.app.locals.entry_to_read);
         bus.emit('message', {
           stories: docs
         });
