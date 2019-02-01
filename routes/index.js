@@ -35,8 +35,14 @@ debug('infinity: ' + infinity);
 */
 
 routes.get('/sse', (req, res) => {
-  req.setTimeout(0);
   debug('entered /sse route');
+  req.setTimeout(0);
+  res.set({
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  });
+  /*
   res.set({
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
@@ -44,6 +50,7 @@ routes.get('/sse', (req, res) => {
     'Keep-Alive': 'timeout=29000, max=10',
     'Retry-After': '28'
   });
+  */
   bus.on('message', (data) => {
     debug('SSE /message received');
     res.write(`event: message\n`);
