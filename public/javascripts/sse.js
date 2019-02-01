@@ -5,15 +5,21 @@ if (!!window.EventSource) {
   const sse = new EventSource("/sse");
   // Handler for all events
   sse.onmessage = (event) => {
-    //console.log(event);
+    if (mode == 'development') {
+      console.log(event);
+    }
   };
   sse.addEventListener('startup', event => {
     let obj1 = event.data;
-    console.log(obj1)
+    if (mode == 'development') {
+      console.log(obj1)
+    }
   });
   sse.addEventListener('test', event => {
     let obj2 = JSON.parse(event.data);
-    console.log(obj2)
+    if (mode == 'development') {
+      console.log(obj2)
+    }
   });
   sse.addEventListener('update', event => {
     /* security feature to listen to only trusted locations...
@@ -22,7 +28,9 @@ if (!!window.EventSource) {
       return;
     } */
     let story = JSON.parse(event.data);
-    console.log(story);
+    if (mode == 'development') {
+      console.log(story);
+    }
     //$("table#stories > tbody").html("");
     var rowCount = $('table#stories >tbody >tr').length + 1;
     makerow(story, rowCount);
