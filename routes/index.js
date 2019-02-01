@@ -28,6 +28,9 @@ routes.get('/sse', function(req, res){
   });
 });
 */
+//let infinity = Number.POSITIVE_INFINITY;
+let infinity = Number.MAX_VALUE;
+debug('infinity: '+ infinity);
 
 routes.get('/sse', (req, res) => {
   debug('entered /sse route');
@@ -40,7 +43,7 @@ routes.get('/sse', (req, res) => {
     debug('SSE /message received');
     //res.write(`data: message\n\n`);
 		res.write(`event: message\n`);
-    res.write('retry: 10000\n');
+    res.write('retry: ' + infinity + '\n');
 		res.write(`data: ${JSON.stringify(data)}\n\n`);
 	});
 });
