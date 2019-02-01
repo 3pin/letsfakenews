@@ -26,7 +26,7 @@
     "async": "^2.6.1",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
-    "corenlp": "^1.4.3",
+    "corenlp": "^1.5.0",
     "dotenv": "^6.1.0",
     "ejs": "^2.6.1",
     "events": "^3.0.0",
@@ -43,9 +43,9 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "debug": "^4.1.0",
+    "debug": "^4.1.1",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.18.9",
     "nyc": "^13.1.0"
   }
 }
