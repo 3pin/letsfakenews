@@ -45,19 +45,16 @@ routes.get('/sse', (req, res) => {
   res.connection.setTimeout(0);
   bus.on('message', (data) => {
     debug('SSE /message received');
-    //res.write('retry: 29000\n');
     res.write(`event: message\n`);
-    //res.write(`data: message\n\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   });
 });
-/*
+
 setInterval(function() {
   bus.emit("message", "test", {
     msg: "Emmitting an event before heroku 30sec timeout reached"
   });
 }, 29000)
-*/
 
 /* this router's routes */
 routes.get('/', main);
