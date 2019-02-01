@@ -35,24 +35,15 @@ debug('infinity: ' + infinity);
 */
 
 routes.get('/sse', (req, res) => {
-  debug('entered /sse route');
+  debug('someone subscribed to /sse route');
   req.setTimeout(0);
-  res.set({
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive'
-  });
-  /*
-  res.set({
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-    'Keep-Alive': 'timeout=29000, max=10',
-    'Retry-After': '28'
-  });
-  */
   bus.on('message', (data) => {
-    debug('SSE /message received');
+    debug('SSE message deteced on eventbus and will now be emmitted');
+    res.set({
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+    });
     res.write(`event: message\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
     res.write('retry: 28000\n');
