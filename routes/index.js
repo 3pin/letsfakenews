@@ -47,15 +47,14 @@ routes.get('/sse', (req, res) => {
     debug('SSE msg to be emmitted from eventbus');
     res.write(`event: test\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
-    res.write('retry: 28000\n');
+    //res.write('retry: 28000\n');
   });
   // process 'update' messages
   bus.on('update', (data) => {
     debug('SSE msg to be emmitted from eventbus');
     res.write(`event: update\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
-    res.write('retry: 28000\n');
-    //res.end;
+    //res.write('retry: 28000\n');
   });
   // send an eventbus test
   bus.emit("test", {
@@ -63,13 +62,12 @@ routes.get('/sse', (req, res) => {
   });
 
 });
-/*
+// setup a dummy event to keep the connection from timingout
 setInterval(function() {
-  bus.emit("update", "test", {
-    msg: "Emmitting null-event to cancel 30sec server-timeout"
+  bus.emit("test", {
+    msg: "Null-event emmitted to keep connection alive"
   });
 }, 29000)
-*/
 
 /* this router's routes */
 routes.get('/', main);
