@@ -1,3 +1,5 @@
+const debug = require('debug')('eventbus');
+
 const EventEmitter = require('events');
 const emitter = new EventEmitter();
 
