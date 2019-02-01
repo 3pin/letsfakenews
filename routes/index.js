@@ -48,6 +48,7 @@ routes.get('/sse', (req, res) => {
     debug('SSE /message received');
     res.write(`event: message\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
+    res.write('retry: 28000\n');
   });
 });
 

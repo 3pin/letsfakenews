@@ -8,6 +8,10 @@ if (!!window.EventSource) {
     //console.log(event);
   };
   sse.addEventListener('message', event => {
+    if (event.origin != "http://letsfakenews.herokuapp.com/" || event.origin != "http://localhost:5000/") {
+    alert("Origin was not from trusted source");
+    return;
+  }
     const obj = JSON.parse(event.data);
     location.reload(obj);
   });
