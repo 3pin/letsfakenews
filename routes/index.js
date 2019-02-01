@@ -14,21 +14,6 @@ const add_feedback = require('./add_feedback');
 const databases = require('./databases');
 const displays = require('./displays');
 
-/*
-routes.get('/sse', function(req, res){
-  res.set(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive'
-  });
-
-  Bus.on("message", function(event, data) {
-    debug('SSE event to be relayed');
-    res.write("event: " + String(event) + "\n" + "data: " + JSON.stringify(data) + "\n\n");
-  });
-});
-*/
-
 routes.get('/sse', (req, res) => {
   debug('a client subscribed to /sse endpoint');
   req.setTimeout(0);
