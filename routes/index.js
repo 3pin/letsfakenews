@@ -35,6 +35,7 @@ debug('infinity: ' + infinity);
 */
 
 routes.get('/sse', (req, res) => {
+  req.setTimeout(0);
   debug('entered /sse route');
   res.set({
     'Content-Type': 'text/event-stream',
@@ -43,7 +44,6 @@ routes.get('/sse', (req, res) => {
     'Keep-Alive': 'timeout=29000, max=10',
     'Retry-After': '28'
   });
-  res.connection.setTimeout(0);
   bus.on('message', (data) => {
     debug('SSE /message received');
     res.write(`event: message\n`);
@@ -51,11 +51,10 @@ routes.get('/sse', (req, res) => {
     res.write('retry: 28000\n');
   });
 });
-
 /*
 setInterval(function() {
   bus.emit("message", "test", {
-    msg: "Emmitting an event before heroku 30sec timeout reached"
+    msg: "Emmitting test-event before 30sec server-timeout reached"
   });
 }, 29000)
 */
