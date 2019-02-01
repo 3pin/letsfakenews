@@ -28,27 +28,36 @@ routes.get('/sse', function(req, res){
   });
 });
 */
-//let infinity = Number.POSITIVE_INFINITY;
+
+/*
 let infinity = Number.MAX_VALUE;
-debug('infinity: '+ infinity);
+debug('infinity: ' + infinity);
+*/
 
 routes.get('/sse', (req, res) => {
   debug('entered /sse route');
   res.set({
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive'
+    'Connection': 'keep-alive',
+    'Retry-After': '29'
   });
   res.connection.setTimeout(0);
   bus.on('message', (data) => {
     debug('SSE /message received');
+    //res.write('retry: 29000\n');
+    res.write(`event: message\n`);
     //res.write(`data: message\n\n`);
-		res.write(`event: message\n`);
-    res.write('retry: 29000\n');
-    //res.write('retry: ' + infinity + '\n');
-		res.write(`data: ${JSON.stringify(data)}\n\n`);
-	});
+    res.write(`data: ${JSON.stringify(data)}\n\n`);
+  });
 });
+/*
+setInterval(function() {
+  bus.emit("message", "test", {
+    msg: "Emmitting an event before heroku 30sec timeout reached"
+  });
+}, 29000)
+*/
 
 /* this router's routes */
 routes.get('/', main);
