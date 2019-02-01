@@ -39,11 +39,12 @@ routes.get('/sse', (req, res) => {
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive'
   });
+  res.connection.setTimeout(0);
   bus.on('message', (data) => {
     debug('SSE /message received');
     //res.write(`data: message\n\n`);
 		res.write(`event: message\n`);
-    res.write('retry: 5000\n');
+    res.write('retry: 29000\n');
     //res.write('retry: ' + infinity + '\n');
 		res.write(`data: ${JSON.stringify(data)}\n\n`);
 	});
