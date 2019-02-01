@@ -40,7 +40,7 @@ routes.get('/sse', (req, res) => {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
-    'Keep-Alive': 'timeout=28000, max=10',
+    'Keep-Alive': 'timeout=29000, max=10',
     'Retry-After': '28'
   });
   res.connection.setTimeout(0);
