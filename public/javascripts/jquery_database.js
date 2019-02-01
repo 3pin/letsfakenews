@@ -86,6 +86,7 @@ $(document).ready(function() {
   // Button handler: stories-clear
   $("table#operations").on("click", ".clear", function() {
     if (confirm("Sure you want to clear all stories from database?")) {
+      $("table#stories > tbody").html("")
       $.ajax({
         type: 'DELETE',
         url: '/databases/clear',
@@ -94,7 +95,7 @@ $(document).ready(function() {
           if (mode == 'development') {
             console.log('success');
           }
-          location.reload(response);
+          //location.reload(response);
         },
         error: function(errorThrown) {
           if (mode == 'development') {
@@ -110,7 +111,7 @@ $(document).ready(function() {
     if (confirm("Sure you want to remove this story from database?")) {
       let id = $(this).closest('tr').find("td:first-child").text()
       id = id.replace(/^\s+|\s+$/g, '');
-      //$(this).closest('tr').remove();
+      $(this).closest('tr').remove();
       $.ajax({
         type: 'DELETE',
         url: '/databases/remove',
@@ -123,7 +124,7 @@ $(document).ready(function() {
           if (mode == 'development') {
             console.log('success');
           }
-          location.reload(response);
+          //location.reload(response);
         },
         error: function(errorThrown) {
           if (mode == 'development') {
@@ -158,7 +159,7 @@ $(document).ready(function() {
         if (mode == 'development') {
           console.log('success');
         }
-        location.reload(response);
+        //location.reload(response);
       },
       error: function(errorThrown) {
         if (mode == 'development') {

@@ -21,9 +21,11 @@ if (!!window.EventSource) {
       alert("Origin was not from trusted local source");
       return;
     } */
-    let obj3 = JSON.parse(event.data);
-    console.log(obj3)
-    location.reload(obj3);
+    let story = JSON.parse(event.data);
+    console.log(story);
+    //$("table#stories > tbody").html("");
+    var rowCount = $('table#stories >tbody >tr').length + 1;
+    makerow(story, rowCount);
   });
   sse.addEventListener('error', function(e) {
     if (e.readyState == EventSource.CLOSED) {
