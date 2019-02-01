@@ -7,19 +7,23 @@ if (!!window.EventSource) {
   sse.onmessage = (event) => {
     //console.log(event);
   };
-  sse.addEventListener('message', event => {
-    /*
+  sse.addEventListener('startup', event => {
+    let obj1 = event.data;
+    console.log(obj1)
+  });
+  sse.addEventListener('test', event => {
+    let obj2 = JSON.parse(event.data);
+    console.log(obj2)
+  });
+  sse.addEventListener('update', event => {
+    /* security feature to listen to only trusted locations...
     if (event.origin != "http://localhost:5000") {
       alert("Origin was not from trusted local source");
       return;
-    }
-    if (event.origin != "http://letsfakenews.herokuapp.com") {
-      alert("Origin was not from trusted remote source");
-      return;
-    }
-    */
-    const obj = JSON.parse(event.data);
-    location.reload(obj);
+    } */
+    let obj3 = JSON.parse(event.data);
+    console.log(obj3)
+    location.reload(obj3);
   });
   sse.addEventListener('error', function(e) {
     if (e.readyState == EventSource.CLOSED) {
