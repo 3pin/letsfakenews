@@ -40,7 +40,8 @@ routes.get('/sse', (req, res) => {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
-    'Retry-After': '29'
+    'Keep-Alive': 'timeout=28000, max=10',
+    'Retry-After': '28'
   });
   res.connection.setTimeout(0);
   bus.on('message', (data) => {
@@ -50,11 +51,13 @@ routes.get('/sse', (req, res) => {
   });
 });
 
+/*
 setInterval(function() {
   bus.emit("message", "test", {
     msg: "Emmitting an event before heroku 30sec timeout reached"
   });
 }, 29000)
+*/
 
 /* this router's routes */
 routes.get('/', main);
