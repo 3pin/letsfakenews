@@ -5,9 +5,9 @@ const debug = require('debug')('sse');
 const bus = require('../modules/eventbus');
 
 /*
-// setup a dummy event to keep the connection from timing-out
+// setup a dummy admin-event to keep the connection from timing-out
 setInterval(function() {
-  bus.emit("keep_alive", {
+  bus.emit("admin", {
     msg: "Null-event emmitted to keep connection alive"
   });
   debug('emmitted an SSE keep-alive message');
@@ -25,8 +25,13 @@ module.exports = (req, res) => {
   // send a startup message
   res.write(`event: startup\n`);
   res.write(`data: Server received your /sse request\n\n`);
+  // a dummy event to keep the connection from timing-out
+  setInterval(function() {
+    res.write(`: SSE keep-alive msg\n`);
+    debug('emmitted an SSE keep-alive message');
+  }, 2000);
   //
-  // send a 'keep_alive' message
+  // send a 'admin' message
   bus.on('admin', (data) => {
     debug('SSE msg to be emmitted from eventbus');
     res.write(`event: admin\n`);
@@ -37,10 +42,5 @@ module.exports = (req, res) => {
     debug('SSE msg to be emmitted from eventbus');
     res.write(`event: message\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
-    // setup a dummy event to keep the connection from timing-out
-    setInterval(function() {
-      res.write(`: SSE keep-alive msg\n`);
-      debug('emmitted an SSE keep-alive message');
-    }, 2000);
   });
 }
