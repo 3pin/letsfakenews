@@ -17,9 +17,8 @@ function middleware_auth(req, res, next) {
   //return next()
 }
 
-/* this router's routes */
+/* this router */
 displays.get('/', middleware_auth, main);
-/* this router's endpoints */
 displays.get('/request_new_story', request_new_story);
 
 module.exports = displays;

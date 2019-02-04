@@ -22,7 +22,7 @@ function middleware_auth(req, res, next) {
   (auth.connect(digest))(req, res, next);
 }
 
-/* this router's routes */
+/* this router */
 databases.get('/', middleware_auth, main);
 databases.get('/feedback', feedback);
 databases.delete('/clear', clear);

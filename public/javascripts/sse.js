@@ -10,15 +10,15 @@ if (!!window.EventSource) {
     }
   };
   sse.addEventListener('startup', event => {
-    let obj1 = event.data;
+    let obj = event.data;
     if (mode == 'development') {
-      console.log(obj1)
+      console.log(obj)
     }
   });
-  sse.addEventListener('test', event => {
-    let obj2 = JSON.parse(event.data);
+  sse.addEventListener('keep_alive', event => {
+    let obj = JSON.parse(event.data);
     if (mode == 'development') {
-      console.log(obj2)
+      console.log(obj)
     }
   });
   sse.addEventListener('update', event => {
@@ -37,6 +37,7 @@ if (!!window.EventSource) {
   });
   sse.addEventListener('error', function(e) {
     if (e.readyState == EventSource.CLOSED) {
+      console.log('error...');
       console.log(e);
       // Connection was closed.
     }

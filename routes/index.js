@@ -1,67 +1,27 @@
 'use strict';
-const debug = require('debug')('index')
-// tap into an sse event-bus
-const bus = require('../modules/eventbus');
+const debug = require('debug')('index');
 
-/* this router */
+/* declare a new router */
 const routes = require('express').Router();
-/* this router's routes */
+
+/* routes */
 const main = require('./main');
+const sse = require('./sse');
 const mode = require('./mode');
 const add_title_story = require('./add_title_story');
 const add_feedback = require('./add_feedback');
-/* other deeper routes */
+/* other routes */
 const databases = require('./databases');
 const displays = require('./displays');
 
-routes.get('/sse', (req, res) => {
-  debug('a client subscribed to /sse endpoint');
-  req.setTimeout(0);
-  res.set({
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive'
-  });
-  // send a startup message
-  res.write(`event: startup\n`);
-  res.write(`data: Server received your /sse request\n\n`);
-  //res.write('retry: 28000\n');
-  //
-  // process 'test' messages
-  bus.on('test', (data) => {
-    debug('SSE msg to be emmitted from eventbus');
-    res.write(`event: test\n`);
-    res.write(`data: ${JSON.stringify(data)}\n\n`);
-    //res.write('retry: 28000\n');
-  });
-  // process 'update' messages
-  bus.on('update', (data) => {
-    debug('SSE msg to be emmitted from eventbus');
-    res.write(`event: update\n`);
-    res.write(`data: ${JSON.stringify(data)}\n\n`);
-    //res.write('retry: 28000\n');
-  });
-  // send an eventbus test
-  bus.emit("test", {
-    msg: "Eventbus test emmitted"
-  });
-
-});
-// setup a dummy event to keep the connection from timingout
-setInterval(function() {
-  bus.emit("test", {
-    msg: "Null-event emmitted to keep connection alive"
-  });
-}, 29000)
-
-/* this router's routes */
+/* this router */
 routes.get('/', main);
+routes.get('/sse', sse);
 routes.get('/mode', mode);
-/* this router's endpoints */
-routes.post('/add_feedback', add_feedback);
 routes.post('/add_title_story', add_title_story);
+routes.post('/add_feedback', add_feedback);
 
-/* route in other routers */
+/* other routers */
 routes.use('/databases', databases);
 routes.use('/displays', displays);
 
