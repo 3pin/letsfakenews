@@ -8,16 +8,15 @@
     <%= tabtitle %>
   </title>
   <!-- load debug script -->
-  <script type="text/javascript" src="/javascripts/debug_browserify.js"></script>
-  <!-- load jQuery -->
+  <!-- <script type="text/javascript" src="/javascripts/debug_browserify.js"></script> -->
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- jQuery methods -->
-  <script src="javascripts/jquery_display.js"></script>
+  <script async src="javascripts/jquery_display.js"></script>
   <script>
-    // ENV mode for console.logging
-  var mode
   $(document).ready(function() {
     // Submit request for systems ENV-mode:
+    var mode
     $.ajax({
       type: 'GET',
       url: '/mode',
