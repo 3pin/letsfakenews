@@ -15,13 +15,13 @@ if (!!window.EventSource) {
       console.log(obj)
     }
   });
-  sse.addEventListener('keep_alive', event => {
+  sse.addEventListener('admin', event => {
     let obj = JSON.parse(event.data);
     if (mode == 'development') {
       console.log(obj)
     }
   });
-  sse.addEventListener('update', event => {
+  sse.addEventListener('message', event => {
     /* security feature to listen to only trusted locations...
     if (event.origin != "http://localhost:5000") {
       alert("Origin was not from trusted local source");

@@ -37,7 +37,7 @@ module.exports = (req, res) => {
         bus.emit('update', {
           stories: docs[docs.length - 1]
         });
-        debug('Emitted SSE eventbus triggered by New_Story');
+        debug('SSE event triggered by New_Story');
       });
     });
   }).catch((err) => {
