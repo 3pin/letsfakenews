@@ -11,12 +11,31 @@ VBG   verb, gerund            ie. eating
 VBN   verb, past part         ie. eaten
 VBP   Verb, present           ie. eat
 VBZ   Verb, present           ie. eats
+Eg...
+[ 'It', 'PRP' ],
+[ 'is', 'VBZ' ],
+[ 'time', 'NN' ],
+[ 'for', 'IN' ],
+[ 'the', 'DT' ],
+[ 'Irish', 'JJ' ],
+[ 'to', 'TO' ],
+[ 'take', 'VB' ],
+[ 'no', 'DT' ],
+[ 'from', 'IN' ],
+[ 'the', 'DT' ],
+[ 'Scottish', 'NNP' ],
+[ '.', '.' ],
+[ 'They', 'PRP' ],
+[ 'can', 'MD' ],
+[ 'go', 'VB' ],
+[ 'themselves', 'PRP' ],
 */
 
 "use strict";
 const debug = require('debug')('nlp');
-const tags = ["NN", "NNP", "NNPS", "NNS"];
 const pos = require('pos');
+const tags = process.env.POS_TAGS.split(',');
+const illegal_words = process.env.ILLEGAL_WORDS.split(',');
 
 module.exports = {
 
@@ -24,16 +43,17 @@ module.exports = {
   parse_nouns: function(input_text) {
     return new Promise(function(resolve, reject) {
       let uniqueArray = [];
-      let text = input_text;
+      let text = input_text.toLowerCase();
       debug(text);
       // process input text into words
       let words = new pos.Lexer().lex(text);
       debug(words);
-      // remove illegal words
-
+      // filter-out illegal words
+      let legal_words = words.filter(e => !illegal_words.includes(e));
+      debug(legal_words);
       // populate an array with key:values for tag:word
       let tagger = new pos.Tagger();
-      let taggedWords = tagger.tag(words);
+      let taggedWords = tagger.tag(legal_words);
       debug(taggedWords)
       // setup empty arrays to store parsed... index_in_story:word
       let output_indexes = [];
