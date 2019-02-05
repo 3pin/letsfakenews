@@ -22,16 +22,18 @@ module.exports = (req, res) => {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
   });
-  // send a startup message
+  // send a startup & keepalive message
   res.write(`event: startup\n`);
-  res.write(`data: Server received your /sse request\n\n`);
+  res.write(`data: Server received your /sse request\n`);
   // a dummy event to keep the connection from timing-out
+  res.write(`: SSE keep-alive dummy-comment\n`);
+  //debug('Emmitted an SSE keep-alive comment');
   setInterval(function() {
-    res.write(`: SSE keep-alive dummy-comment\n`);
-    debug('Emmitted an SSE keep-alive comment');
-  }, 2000);
+    //res.write(`: SSE keep-alive dummy-comment\n`);
+    //debug('Emmitted an SSE keep-alive comment');
+  }, process.env.KEEPALIVE);
   //
-  // send a 'admin' message
+  // send an 'admin' message
   bus.on('admin', (data) => {
     debug('SSE msg to be emmitted from eventbus');
     res.write(`event: admin\n`);
