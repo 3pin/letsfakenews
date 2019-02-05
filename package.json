@@ -37,8 +37,6 @@
     "monk": "^6.0.6",
     "morgan": "^1.9.1",
     "pos": "^0.4.2",
-    "redis": "^2.8.0",
-    "screenfull": "^3.3.3",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
@@ -46,6 +44,6 @@
     "debug": "^4.1.1",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9",
-    "nyc": "^13.1.0"
+    "nyc": "^13.2.0"
   }
 }

@@ -9,10 +9,11 @@
   </title>
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <!-- jQuery methods -->
+  <!-- jQuery scripts -->
   <script src="javascripts/jquery_display.js"></script>
+  <!-- jQuery on DOM load -->
   <script>
-  $(document).ready(function() {
+    $(document).ready(function() {
     // Submit request for systems ENV-mode:
     var mode
     $.ajax({
@@ -135,69 +136,50 @@
         vid.load();
       });
     });
+    $('#btnFullscreen').click(function() {
+      let i = document.getElementById('videoContainer');
+      // go full-screen with cross-browser support
+      if (i.requestFullscreen) {
+        i.requestFullscreen();
+      } else if (i.webkitRequestFullscreen) {
+        i.webkitRequestFullscreen();
+      } else if (i.mozRequestFullScreen) {
+        i.mozRequestFullScreen();
+      } else if (i.msRequestFullscreen) {
+        i.msRequestFullscreen()
+      }
+    });
   });
   </script>
 </head>
 
 <body>
-  <!-- fullscreen scripts -->
-  <script src="/screenfull/dist/screenfull.js"></script>
-  <script>
-    $(function() {
-      $('#btnFullscreen').click(function() {
-        screenfull.toggle($('#videoContainer')[0]);
-      });
-
-      function fullscreenchange() {
-        var elem = screenfull.element;
-        $('#status').text('Is fullscreen: ' + screenfull.isFullscreen);
-        if (elem) {
-          $('#element').text('Element: ' + elem.localName + (elem.id ? '#' + elem.id : ''));
-        }
-        if (!screenfull.isFullscreen) {
-          $('#external-iframe').remove();
-          document.body.style.overflow = 'auto';
-        }
-      }
-      screenfull.on('change', fullscreenchange);
-      // Set the initial values
-      fullscreenchange();
-    });
-  </script>
-
-  <!-- video block -->
-  <div id="videoContainer">
-
-    <video id="videoPlayer" preload="metadata" autoplay="true" controls> video not supported
-      <source src="https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4">
-      </source>
-    </video>
-
-    <!-- popup title -->
-    <div id="popup_title" style="display:none">
-      <p id="popup_title_text">Default popup-title text... </p>
-    </div>
-
-    <!-- image frame       -->
-    <div id="image_frame" style="display:none">
-      <!-- image url overlays       -->
-      <img id="image" style="display:none" />
-    </div>
-
-    <!-- scrolling text       -->
-    <div id="scroller" class="scroll-left" style="display:none">
-      <p id="scroller_text">Default scrolling story text... </p>
-    </div>
-
-  </div>
-
   <!-- fullscreen toggle button -->
   <div id="button_div">
     <p>
       <button id="btnFullscreen" type="button">Fullscreen</button>
     </p>
   </div>
-
+  <!-- video block -->
+  <div id="videoContainer">
+    <video id="videoPlayer" preload="metadata" autoplay="true"> video not supported
+      <source src="https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4">
+      </source>
+    </video>
+    <!-- popup title -->
+    <div id="popup_title" style="display:none">
+      <p id="popup_title_text">Default popup-title text... </p>
+    </div>
+    <!-- image frame -->
+    <div id="image_frame" style="display:none">
+      <!-- image url overlays       -->
+      <img id="image" style="display:none" />
+    </div>
+    <!-- scrolling text -->
+    <div id="scroller" class="scroll-left" style="display:none">
+      <p id="scroller_text">Default scrolling story text... </p>
+    </div>
+  </div>
 </body>
 
 </html>
