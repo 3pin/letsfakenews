@@ -26,11 +26,9 @@ module.exports = (req, res) => {
   res.write(`event: startup\n`);
   res.write(`data: Server received your /sse request\n`);
   // a dummy event to keep the connection from timing-out
-  res.write(`: SSE keep-alive dummy-comment\n`);
-  //debug('Emmitted an SSE keep-alive comment');
   setInterval(function() {
-    //res.write(`: SSE keep-alive dummy-comment\n`);
-    //debug('Emmitted an SSE keep-alive comment');
+    res.write(`: SSE keep-alive dummy-comment\n`);
+    debug('Emmitted an SSE keep-alive comment');
   }, process.env.KEEPALIVE);
   //
   // send an 'admin' message
