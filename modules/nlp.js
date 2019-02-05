@@ -29,6 +29,8 @@ module.exports = {
       // process input text into words
       let words = new pos.Lexer().lex(text);
       debug(words);
+      // remove illegal words
+
       // populate an array with key:values for tag:word
       let tagger = new pos.Tagger();
       let taggedWords = tagger.tag(words);
