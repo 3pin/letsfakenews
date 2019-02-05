@@ -10,9 +10,9 @@
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <!-- jQuery scripts -->
-  <script src="javascripts/jquery_display.js"></script>
+  <script defer src="javascripts/jquery_display.js"></script>
   <!-- jQuery on DOM load -->
-  <script>
+  <script defer>
     $(document).ready(function() {
     // Submit request for systems ENV-mode:
     var mode
@@ -87,9 +87,9 @@
         // times to jump to time during DEVELOPMENT
         if (mode == 'development') {
           // jump to title
-          this.currentTime = 7.0;
+          //this.currentTime = 7.0;
           // jump to story
-          //this.currentTime = 16.0;
+          this.currentTime = 16.0;
         }
       } else if (currentTime >= popupStart && currentTime <= popupEnd) {
         $("#popup_title").show()
@@ -162,7 +162,7 @@
   </div>
   <!-- video block -->
   <div id="videoContainer">
-    <video id="videoPlayer" preload="metadata" autoplay="true"> video not supported
+    <video id="videoPlayer" preload="metadata" autoplay="true" controls> video not supported
       <source src="https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4">
       </source>
     </video>
