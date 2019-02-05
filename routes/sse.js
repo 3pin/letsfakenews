@@ -24,7 +24,7 @@ module.exports = (req, res) => {
   });
   // send a startup & keepalive message
   res.write(`event: startup\n`);
-  res.write(`data: Server received your /sse request\n`);
+  res.write(`data: Server received your /sse request\n\n`);
   // a dummy event to keep the connection from timing-out
   setInterval(function() {
     res.write(`: SSE keep-alive dummy-comment\n`);
@@ -39,6 +39,7 @@ module.exports = (req, res) => {
   });
   // send an 'update' message
   bus.on('update', (data) => {
+    debug(data);
     debug('SSE msg to be emmitted from eventbus');
     res.write(`event: message\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
