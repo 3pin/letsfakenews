@@ -18,7 +18,8 @@ function middleware_auth(req, res, next) {
 }
 
 /* this router */
-displays.get('/', middleware_auth, main);
+displays.get('/', main);
+//displays.get('/', middleware_auth, main);
 displays.get('/request_new_story', request_new_story);
 
 module.exports = displays;
