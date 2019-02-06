@@ -14,6 +14,24 @@
   <!-- jQuery on DOM load -->
   <script defer>
     $(document).ready(function() {
+    // define time-regions for pop-up-title, text-display, image-display
+      var popupStart = 6.2;
+      var popupEnd = 11.3;
+      var popup_duration = popupEnd - popupStart;
+      var imagesStart = 17.6;
+      var imagesEnd = 41.1;
+      var image_duration = imagesEnd - imagesStart;
+      // object to hold data fetched from database
+      var data
+      // array to store the image-URLS
+      var urls = []
+      // array to stores a time-marker per image-URL
+      var markers = []
+      // array index for currently-displayed image from url-array
+      var url_index;
+      // video object defined on startup
+      var vid = document.getElementById("videoPlayer");
+
     // Submit request for systems ENV-mode:
     var mode
     $.ajax({
@@ -24,6 +42,11 @@
         mode = response.mode
         if (mode == 'development') {
           console.log('client_mode: ' + mode);
+          console.log('showing video controls');
+        } else {
+          console.log('client_mode: ' + mode);
+          vid.removeAttribute('controls');
+          console.log('hiding video controls');
         }
       },
       error: function(request, textStatus, errorThrown) {
@@ -32,23 +55,6 @@
         }
       }
     });
-    // define time-regions for pop-up-title, text-display, image-display
-    var popupStart = 6.2;
-    var popupEnd = 11.3;
-    var popup_duration = popupEnd - popupStart;
-    var imagesStart = 17.6;
-    var imagesEnd = 41.1;
-    var image_duration = imagesEnd - imagesStart;
-    // object to hold data fetched from database
-    var data
-    // array to store the image-URLS
-    var urls = []
-    // array to stores a time-marker per image-URL
-    var markers = []
-    // array index for currently-displayed image from url-array
-    var url_index;
-    // video object defined on startup
-    var vid = document.getElementById("videoPlayer");
 
     // on loadup...
     vid.onloadedmetadata = function() {
@@ -89,7 +95,7 @@
           // jump to title
           //this.currentTime = 7.0;
           // jump to story
-          this.currentTime = 16.0;
+          //this.currentTime = 16.0;
         }
       } else if (currentTime >= popupStart && currentTime <= popupEnd) {
         $("#popup_title").show()
@@ -137,6 +143,7 @@
       });
     });
     $('#btnFullscreen').click(function() {
+      vid.play();
       let i = document.getElementById('videoContainer');
       // go full-screen with cross-browser support
       if (i.requestFullscreen) {
@@ -157,7 +164,7 @@
   <!-- fullscreen toggle button -->
   <div id="button_div">
     <p>
-      <button id="btnFullscreen" type="button">Fullscreen</button>
+      <button id="btnFullscreen" type="button">PLAY FULLSCREEN</button>
     </p>
   </div>
   <!-- video block -->
