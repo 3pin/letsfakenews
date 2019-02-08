@@ -16,11 +16,11 @@
   <!-- pagestate-control script -->
   <script defer src="/javascripts/pagestate_control.js"></script>
   <!-- stories table-row builder script-->
-  <script defer src="/javascripts/stories_row_builder.js"></script>
+  <script defer src="/javascripts/row_builder_story.js"></script>
   <!-- jQuery script-->
   <script defer src="/javascripts/jquery_database.js"></script>
   <!-- SSE script -->
-  <script defer src="/javascripts/sse.js"></script>
+  <script defer src="/javascripts/sse_story.js"></script>
 </head>
 
 <body class="bg" id="bg_frame">
@@ -34,14 +34,14 @@
     <aside id="left_col" class="col-xs-1 col-sm-1 col-md-1 col-lg-1"></aside>
     <!-- column as middle content-strip -->
     <article id="middle_col" class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-      
+
       <!-- db list of stories  -->
       <section class="section" id="1">
         <h1>ADMIN PANEL</h1>
 
         <h2>Operations</h2>
         <div class="panel panel-default">
-          <table id="operations" class="table table-bordered" style="background-color: white">
+          <table id="ops_stories" class="table table-bordered" style="background-color: white">
             <thead class="thead-dark">
               <th id="Command" style="width:95%">Command</th>
               <th id="Action" style="width:5%">Action</th>

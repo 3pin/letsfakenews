@@ -37,11 +37,18 @@ module.exports = (req, res) => {
     res.write(`event: admin\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   });
-  // send an 'update' message
-  bus.on('update', (data) => {
+  // send a 'story' message
+  bus.on('story', (data) => {
     debug(data);
-    debug('SSE msg to be emmitted from eventbus');
-    res.write(`event: message\n`);
+    debug('SSE story-msg to be emmitted from eventbus');
+    res.write(`event: story\n`);
+    res.write(`data: ${JSON.stringify(data)}\n\n`);
+  });
+  // send an 'feedback' message
+  bus.on('feedback', (data) => {
+    debug(data);
+    debug('SSE feedback-msg to be emmitted from eventbus');
+    res.write(`event: feedback\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);
   });
 }

@@ -19,7 +19,7 @@ if (window.EventSource !== undefined) {
       console.log(obj)
     }
   });
-  sse.addEventListener('message', event => {
+  sse.addEventListener('story', event => {
     /* security feature to listen to only trusted locations...
     if (event.origin != "http://localhost:5000") {
       alert("Origin was not from trusted local source");

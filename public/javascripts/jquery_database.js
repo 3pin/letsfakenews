@@ -1,10 +1,7 @@
-const viewportmeta = document.querySelector('meta[name="viewport"]');
 let mode
-let autolive,
-  title,
-  story,
-  feedback
-
+let autolive
+let title
+let story
 $(document).ready(function() {
   // Submit request for systems ENV-mode:
   $.ajax({
@@ -14,7 +11,7 @@ $(document).ready(function() {
     success: function(response) {
       mode = response.mode;
       autolive = response.autolive;
-      pagestate_ctrl(1)
+      pagestate_ctrl(1);
       $('call_viewport').attr('content', 'width=device-width, initial-scale=1');
       if (mode == 'development') {
         console.log('client_mode: ' + mode);
@@ -29,13 +26,13 @@ $(document).ready(function() {
     },
     error: function(request, textStatus, errorThrown) {
       if (mode == 'development') {
-        console.log('client_mode and autolive-status not reported')
+        console.log('client_mode and autolive-status not reported');
       }
     }
   });
 
   // Checkbox handler: autolive on/off
-  $("#operations").on("click", ".autolive", function() {
+  $("#ops_stories").on("click", ".autolive", function() {
     if ($(this).is(':checked')) {
       autolive = true;
     } else {
@@ -63,7 +60,7 @@ $(document).ready(function() {
   });
 
   // Checkbox handler: refresh-images
-  $("table#operations").on("click", ".refresh", function() {
+  $("table#ops_stories").on("click", ".refresh", function() {
     if (confirm("Sure you want to refresh all urls in database?")) {
       $.ajax({
         type: 'PUT',
@@ -84,14 +81,14 @@ $(document).ready(function() {
   });
 
   // Button handler: stories-clear
-  $("table#operations").on("click", ".clear", function() {
+  $("table#ops_stories").on("click", ".clear", function() {
     if (confirm("Sure you want to clear all stories from database?")) {
-      $("table#stories > tbody").html("")
       $.ajax({
         type: 'DELETE',
         url: '/databases/clear',
         dataType: 'JSON',
         success: function(response) {
+          $("table#stories > tbody").html("")
           if (mode == 'development') {
             console.log('success');
           }
