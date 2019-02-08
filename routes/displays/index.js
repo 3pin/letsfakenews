@@ -1,5 +1,4 @@
 'use strict';
-const debug = require('debug')('displays_index')
 
 const displays = require('express').Router();
 const main = require('./main');

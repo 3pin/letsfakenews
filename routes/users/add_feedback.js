@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('main_feedback')
+const debug = require('debug')('users/feedback')
 
 module.exports = (req, res) => {
   debug('/POST routes/add_title_story')

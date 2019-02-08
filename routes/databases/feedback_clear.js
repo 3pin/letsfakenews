@@ -1,11 +1,11 @@
 'use strict';
 
-const debug = require('debug')('databases/clear')
+const debug = require('debug')('databases/feedback_clear')
 
 module.exports = (req, res) => {
-  let collection = req.db.get(process.env.COLLECTION);
+  let collection = req.db.get(process.env.FEEDBACK);
   /* delete a db entry */
-  debug('/DELETE routes/databases/clear');
+  debug('/DELETE routes/databases/feedback_clear');
   let query = {
     _id: req.body.data
   };

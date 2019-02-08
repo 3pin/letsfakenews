@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('databases_main')
+const debug = require('debug')('databases/main')
 
 module.exports = (req, res) => {
   debug('/GET routes/databases/main')

@@ -1,8 +1,8 @@
 'use strict';
 
-const debug = require('debug')('sse');
+const debug = require('debug')('settings/sse');
 // tap into an sse event-bus
-const bus = require('../modules/eventbus');
+const bus = require('../../modules/eventbus');
 
 /*
 // setup a dummy admin-event to keep the connection from timing-out

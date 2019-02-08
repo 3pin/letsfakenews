@@ -1,7 +1,7 @@
 'use strict';
-const debug = require('debug')('main_story');
+const debug = require('debug')('users/story');
 // tap into an sse event-bus
-const bus = require('../modules/eventbus');
+const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/POST routes/add_title_story')
@@ -10,8 +10,9 @@ module.exports = (req, res) => {
   client_JSON.storylive = req.app.locals.autolive;
   debug(client_JSON);
   //process JSON... add NLP_words & matching urls
-  const process_client_story = require('../modules/process_client_story.js');
+  const process_client_story = require('../../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
+    debug('About to save to db');
     //save to db
     let collection = req.db.get(process.env.COLLECTION);
     collection.insert(result).then((output) => {

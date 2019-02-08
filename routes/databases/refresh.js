@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('databases_refresh');
+const debug = require('debug')('databases/refresh');
 const refresh_urls_iterative = require('../../modules/refresh_urls_iterative.js');
 
 module.exports = (req, res) => {

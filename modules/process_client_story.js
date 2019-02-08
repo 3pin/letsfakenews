@@ -6,7 +6,7 @@ return JSON
 */
 
 'use strict';
-const debug = require('debug')('client_story')
+const debug = require('debug')('process_story')
 const nlp = require('../modules/nlp.js');
 const imagesearch_iterative = require('../modules/imagesearch_iterative.js');
 const time_ops = require('../modules/time_ops.js');

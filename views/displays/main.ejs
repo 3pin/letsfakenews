@@ -9,8 +9,8 @@
   </title>
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-  <!-- jQuery scripts -->
-  <script defer src="javascripts/jquery_display.js"></script>
+  <!-- functions -->
+  <script defer src="javascripts/jquery_display_functions.js"></script>
   <!-- jQuery on DOM load -->
   <script defer>
     $(document).ready(function() {
@@ -36,7 +36,7 @@
     var mode
     $.ajax({
       type: 'GET',
-      url: '/mode',
+      url: '/settings/mode',
       dataType: 'JSON',
       success: function(response) {
         mode = response.mode
@@ -156,8 +156,7 @@
         i.msRequestFullscreen()
       }
     });
-  });
-  </script>
+  });</script>
 </head>
 
 <body>

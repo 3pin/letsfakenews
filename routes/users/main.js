@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('main')
+const debug = require('debug')('users/main')
 
 module.exports = (req, res) => {
   // serve homepage

@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('databases_storylive');
+const debug = require('debug')('databases/storylive');
 
 function remove(array, element) {
   const index = array.indexOf(element);

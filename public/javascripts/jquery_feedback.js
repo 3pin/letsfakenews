@@ -7,7 +7,7 @@ $(document).ready(function() {
   // Submit request for systems ENV-mode:
   $.ajax({
     type: 'GET',
-    url: '/mode',
+    url: '/settings/mode',
     dataType: 'JSON',
     success: function(response) {
       mode = response
@@ -19,23 +19,28 @@ $(document).ready(function() {
       console.log('client_mode not reported')
     }
   });
-  // Button-delete handler:
-  $("table#feedback").on("click", ".remove", function () {
-    if (confirm("Click OK to delete row?")) {
-      let data = $(this).closest('tr').find("td:nth-child(3)").text()
-      data = data.replace(/^\s+|\s+$/g, '');
-      console.log('Selected to delete: ' + data)
-      $(this).closest('tr').remove();
-      // Submit request for systems ENV-mode:
+
+  // Button handler: stories-clear
+  $("table#operations").on("click", ".clear", function() {
+    if (confirm("Sure you want to clear all stories from database?")) {
+      $("table#stories > tbody").html("")
       $.ajax({
         type: 'DELETE',
-        url: '/databases',
-        contentType: 'application/json',
-        data: JSON.stringify({
-          data: data
-        }),
-        dataType: 'JSON'
+        url: '/databases/feedback_clear',
+        dataType: 'JSON',
+        success: function(response) {
+          if (mode == 'development') {
+            console.log('success');
+          }
+          //location.reload(response);
+        },
+        error: function(errorThrown) {
+          if (mode == 'development') {
+            console.log(errorThrown);
+          }
+        }
       });
     }
   });
+
 });

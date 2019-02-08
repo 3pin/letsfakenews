@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('displays_main')
+const debug = require('debug')('displays/main')
 const auth = require("http-auth");
 const digest = auth.digest({
   realm: "Private area",

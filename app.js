@@ -35,8 +35,12 @@ function middleware_auth(req, res, next) {
   //return next()
 }
 //=============================================================================
-// routes file
-const routes = require('./routes');
+// routes structure
+const users = require('./routes/users');
+const databases = require('./routes/databases');
+const displays = require('./routes/displays');
+const settings = require('./routes/settings');
+
 //=============================================================================
 // initialize
 const app = express();
@@ -63,16 +67,19 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 // condense the visible URL address in a client's browser
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules')));
-//app.use('/scripts', express.static(__dirname + '/node_modules/'));
+//app.use(express.static(path.join(__dirname, 'node_modules')));
 // Make our db accessible to our router
 app.use(function(req, res, next) {
   req.db = db;
   next();
 });
 //=============================================================================
-// define routes
-app.use('/', routes);
+// define that all routes are within the 'routes' folder
+app.use('/', users);
+app.use('/databases', databases);
+app.use('/displays', displays);
+app.use('/settings', settings);
+
 //=============================================================================
 // Event Handlers
 /*

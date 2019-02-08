@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('databases_remove');
+const debug = require('debug')('databases/remove');
 
 function remove(array, element) {
   const index = array.indexOf(element);

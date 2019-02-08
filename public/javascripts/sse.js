@@ -1,5 +1,5 @@
 if (window.EventSource !== undefined) {
-  const sse = new EventSource("/sse");
+  const sse = new EventSource("/settings/sse");
   console.log("Your browser has requested to connect to SSE");
   // Handler for all events
   sse.onmessage = (event) => {

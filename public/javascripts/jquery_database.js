@@ -9,7 +9,7 @@ $(document).ready(function() {
   // Submit request for systems ENV-mode:
   $.ajax({
     type: 'GET',
-    url: '/mode',
+    url: '/settings/mode',
     dataType: 'JSON',
     success: function(response) {
       mode = response.mode;
