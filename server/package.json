@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
+    "client": "cd ../client && npm start",
     "test_coverage_text": "nyc --reporter=text mocha ./test --recursive",
     "test_coverage_html": "nyc --reporter=html mocha ./test --recursive",
     "test": "mocha ./test --recursive",
@@ -25,6 +26,7 @@
   "dependencies": {
     "async": "^2.6.1",
     "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
     "cookie-parser": "~1.4.3",
     "corenlp": "^1.5.0",
     "dotenv": "^6.1.0",

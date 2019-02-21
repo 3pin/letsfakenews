@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Module Dependencies
 const
   express = require('express'),
-  favicon = require('serve-favicon'),
+  //favicon = require('serve-favicon'),
   logger = require('morgan'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
@@ -59,37 +59,33 @@ app.set('view engine', 'ejs');
 //=============================================================================
 // middleware
 app.use(logger('dev'));
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico'))); // uncomment after placing your favicon in /public
+/*
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join('../client', 'public', 'favicon.ico')));
+*/
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
+
 // condense the visible URL address in a client's browser
-app.use(express.static(path.join(__dirname, 'public')));
-//app.use(express.static(path.join(__dirname, 'node_modules')));
+//app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join('../client', 'public')));
+
 // Make our db accessible to our router
 app.use(function(req, res, next) {
   req.db = db;
   next();
 });
 //=============================================================================
+
 // define that all routes are within the 'routes' folder
 app.use('/', users);
 app.use('/databases', databases);
 app.use('/displays', displays);
 app.use('/settings', settings);
 
-//=============================================================================
-// Event Handlers
-/*
-app.on('getRoot', renderHandlers.root);
-app.on('getLogin', renderHandlers.login);
-app.on('failedLogin', renderHandlers.failedLogin);
-app.on('getSignup', renderHandlers.signup);
-app.on('failedSignup', renderHandlers.failedSignup);
-app.on('getDashboard', renderHandlers.dashboard);
-*/
 //=============================================================================
 // Error Handlers
 // catch 404 and forward to error handler
