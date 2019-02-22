@@ -15,8 +15,8 @@ routes.post('/add_feedback', add_feedback);
 //
 //=============================================================================
 // API connections from React
-routes.get('/test/api/get', (req, res) => {
-  console.log('GET test received');
+routes.get('/hello_from_react', (req, res) => {
+  console.log('GET test from REACT received');
 
   res.send({ express: 'Hello From Express' });
 });
