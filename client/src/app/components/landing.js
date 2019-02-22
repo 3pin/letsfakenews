@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 
 export default class Landing extends React.Component {
   render() {
-    console.log(this.props)
     
     return (<div>
       <section className="section" id="1">
