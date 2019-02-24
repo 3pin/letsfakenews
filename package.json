@@ -24,10 +24,10 @@
     "test_refresh_urls_iterative": "mocha ./test/modules/refresh_urls_iterative.test.js"
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^2.6.2",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
-    "cookie-parser": "~1.4.3",
+    "cookie-parser": "^1.4.4",
     "corenlp": "^1.5.0",
     "dotenv": "^6.1.0",
     "ejs": "^2.6.1",
@@ -45,7 +45,7 @@
     "chai": "^4.2.0",
     "debug": "^4.1.1",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.9",
-    "nyc": "^13.2.0"
+    "nodemon": "^1.18.10",
+    "nyc": "^13.3.0"
   }
 }

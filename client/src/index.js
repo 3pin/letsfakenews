@@ -6,10 +6,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter} from 'react-router-dom';
 
-import LayoutLanding from './app/layouts/layout_landing';
+import Routes from './app/routes/landing';
 
 const App = () => (<BrowserRouter>
-  <LayoutLanding/>
+  <Routes/>
 </BrowserRouter>);
 
 ReactDOM.render(<App/>, document.getElementById('react'));
