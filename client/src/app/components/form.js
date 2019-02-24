@@ -1,41 +1,28 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+//import {Link} from 'react-router-dom';
 
-export default class Landing extends React.Component {
+import ButtonFrame from './button';
+
+export default class FormFrame extends React.Component {
   handleChange(e) {
-    //console.log(`form event: ${e.target.value}`);
-    this.props.handleChange(e.target.value);
+    //console.log(e.target.value);
+    const obj = {}
+    obj[this.props.subject] = e.target.value;
+    //console.log(obj)
+    this.props.handleChange(obj);
   }
-  handleSubmit(e) {
-    //console.log('Submit button clicked')
-    this.props.handleSubmit(this.props.subject);
-  };
+  //suppress submit if form-action came from the write_story-frame... only accept from write_title-frame
+  handleSubmit() {
+    if (this.props.handleSubmit) {
+      this.props.handleSubmit();
+    }
+  }
   render() {
     return (<div>
       <form>
         <div>
-          <textarea
-          className="form-control form-responsive" required="required" autoFocus="autoFocus"
-          rows={this.props.rows}
-          maxLength={this.props.length}
-          placeholder={`${this.props.length} chars max...`}
-          value={this.props.value}
-          onChange={this.handleChange.bind(this)}>
-          </textarea>
-
-          <br/>
-
-          <Link to={this.props.linkto}>
-            <button
-            type="button"
-            onClick={this.handleSubmit.bind(this)}
-            className="btn btn-primary btn-responsive"
-            >Submit
-            </button>
-          </Link>
-
-          <hr/>
-
+          <textarea className="form-control form-responsive" required="required" autoFocus="autoFocus" rows={this.props.rows} maxLength={this.props.length} placeholder={`${this.props.length} chars max...`} value={this.props.value} onChange={this.handleChange.bind(this)}></textarea>
+          <ButtonFrame linkto={this.props.linkto} buttonlabel={this.props.buttonlabel} handleSubmit={this.handleSubmit.bind(this)}/>
         </div>
       </form>
     </div>)

@@ -1,21 +1,22 @@
 import React from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 //
-import Write from './write';
-import Admin from './admin';
+import Landing from './landing';
+import Write from './write/index';
+import Admin from './admin/index';
+import Watch from './watch/index';
 //
 import Title from '../../app/components/title';
 import Links from '../../app/components/links';
-//
-import Landing from '../../app/pages/landing';
-import Watch from '../../app/pages/watch';
 
-export default class LayoutLanding extends React.Component {
+export default class IndexLanding extends React.Component {
 
   render() {
     return (<div>
       <Title title="Let's Fake News"/>
+      <hr/>
       <Links/>
+      <hr/>
       <Switch>
         <Route exact path="/" component={Landing}/>
         <Route path="/write" component={Write}/>

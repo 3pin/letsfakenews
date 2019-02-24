@@ -6,11 +6,11 @@ const bus = require('../../modules/eventbus');
 module.exports = (req, res) => {
   debug('/POST routes/add_feedback')
   // Get our form values. These rely on the "name" attributes
-  let feedback = req.body.feedback;
-  debug('Raw feedback: ' + feedback);
+  let client_JSON = req.body;
+  debug(client_JSON);
   const process_client_feedback = require('../../modules/process_client_feedback.js');
-  process_client_feedback.process(feedback).then((result) => {
-    debug(result)
+  process_client_feedback.process(client_JSON).then((result) => {
+    debug('About to save to db');
     // Save to the DB
     let collection = req.db.get(process.env.FEEDBACK);
     collection.insert(result).then((output) => {

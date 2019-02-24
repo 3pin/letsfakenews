@@ -7,13 +7,13 @@ const time_ops = require('../modules/time_ops.js');
 module.exports = {
 
   process: function(feedback) {
-    let feedbackJSON = {};
-    feedbackJSON.feedback = feedback;
+    //let feedbackJSON = {};
+    //feedbackJSON.feedback = feedback;
     return new Promise(function(resolve, reject) {
       let today = new Date();
       time_ops.current_time(today).then((result) => {
-        feedbackJSON.time = result.time;
-        resolve(feedbackJSON);
+        feedback.time = result.time;
+        resolve(feedback);
       }).catch((err) => {
         debug("Err: ", err);
       });

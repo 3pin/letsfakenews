@@ -1,9 +1,9 @@
 import React from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 
-import Admin from '../../app/pages/admin';
+import Admin from './admin';
 
-export default class LayoutAdmin extends React.Component {
+export default class IndexAdmin extends React.Component {
 
   render() {
     return (<div className="layout">
