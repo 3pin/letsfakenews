@@ -5,11 +5,9 @@ import ButtonFrame from './button';
 
 export default class FormFrame extends React.Component {
   handleChange(e) {
-    //console.log(e.target.value);
-    const obj = {}
-    obj[this.props.subject] = e.target.value;
-    //console.log(obj)
-    this.props.handleChange(obj);
+    //console.log(e);
+    //console.log(JSON.stringify(e));
+    this.props.handleChange(e.target.value);
   }
   //suppress submit if form-action came from the write_story-frame... only accept from write_title-frame
   handleSubmit() {
@@ -19,10 +17,24 @@ export default class FormFrame extends React.Component {
   }
   render() {
     return (<div>
-      <form>
+      <form onSubmit={this.handleSubmit.bind(this)}>
         <div>
-          <textarea className="form-control form-responsive" required="required" autoFocus="autoFocus" rows={this.props.rows} maxLength={this.props.length} placeholder={`${this.props.length} chars max...`} value={this.props.value} onChange={this.handleChange.bind(this)}></textarea>
-          <ButtonFrame linkto={this.props.linkto} buttonlabel={this.props.buttonlabel} handleSubmit={this.handleSubmit.bind(this)}/>
+          <textarea
+          ref={function(input) {if (input != null) {input.focus();}}}
+          className="form-control form-responsive"
+          required="required"
+          autoFocus
+          rows={this.props.rows}
+          maxLength={this.props.length}
+          placeholder={`${this.props.length} chars max...`}
+          value={this.props.value}
+          onChange={this.handleChange.bind(this)}>
+          </textarea>
+
+          <ButtonFrame
+          linkto={this.props.linkto}
+          buttonlabel={this.props.buttonlabel}
+          handleClick={this.handleSubmit.bind(this)}/>
         </div>
       </form>
     </div>)

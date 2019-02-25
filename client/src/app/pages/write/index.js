@@ -1,10 +1,8 @@
 import React from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 
-import WriteStory from './write_story';
-import WriteTitle from './write_title';
+import Writing from '../../../app/components/writing';
 import Thankyou from './write_thankyou';
-import WriteFeedback from './write_feedback';
 
 export default class LayoutWrite extends React.Component {
   constructor() {
@@ -17,26 +15,64 @@ export default class LayoutWrite extends React.Component {
       title: "",
       feedback: ""
     }
-    this._isMounted = false;
   }
   componentDidMount() {
-    this._isMounted = true;
-    this.callApi().then(res => console.log(res)).catch(err => console.log(err));
+    console.log('state...');
+    console.log(this.state);
+    console.log('props...');
+    console.log(this.props);
+    console.log('\n');
+    //if LocalStorage has values, pass them to this.state
+    this.hydrateStateWithLocalStorage();
+    // add event listener to save state to localStorage when user leaves/refreshes the page
+    window.addEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
+    // say hello into the backend server
+    this.callApi('/write').then(res => console.log(res)).catch(err => console.log(err));
   }
   componentWillUnmount() {
-    this._isMounted = false;
+    window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
+    // saves if component has a chance to unmount
+    this.saveStateToLocalStorage();
   }
-  callApi = async () => {
-    const response = await fetch('/hello_from_react');
+  saveStateToLocalStorage() {
+    // for every item in React state
+    for (let key in this.state) {
+      // save to localStorage
+      localStorage.setItem(key, JSON.stringify(this.state[key]));
+    }
+  }
+  hydrateStateWithLocalStorage() {
+    // for all items in state
+    for (let key in this.state) {
+      // if the key exists in localStorage
+      if (localStorage.hasOwnProperty(key)) {
+        // get the key's value from localStorage
+        let value = localStorage.getItem(key);
+        // parse the localStorage string and setState
+        try {
+          value = JSON.parse(value);
+          this.setState({[key]: value});
+        } catch (e) {
+          // handle empty string
+          this.setState({[key]: value});
+        }
+      }
+    }
+  }
+  callApi = async (endpoint) => {
+    const response = await fetch(endpoint);
     const body = await response.json();
     if (response.status !== 200)
       throw Error(body.message);
     return body;
   }
-  handleChange(e) {
+  handleChange(key, value) {
+    this.setState({[key]: value});
+    //const obj = {}
+    //obj[this.props.subject] = content;
     // update master state then send back to props to reflect change
     //console.log(e);
-    this.setState(JSON.parse(e));
+    //this.setState(JSON.parse(e));
   }
   handleNews = async () => {
     // send JSON to proxy server
@@ -54,6 +90,8 @@ export default class LayoutWrite extends React.Component {
     console.log(body);
     this.setState({story: ""});
     this.setState({title: ""});
+    console.log(this.state);
+    this.saveStateToLocalStorage();
   };
   handleFeedback = async () => {
     // send JSON to proxy server
@@ -69,15 +107,25 @@ export default class LayoutWrite extends React.Component {
     const body = await response.text();
     console.log(body);
     this.setState({feedback: ""});
+    console.log(this.state);
+    this.saveStateToLocalStorage();
   };
-
   render() {
     return (<div>
       <Switch>
-        <Route exact path="/write" render={(props) => <WriteStory linkto="/write/title" subject="story" value={this.state.story} handleChange={this.handleChange}/>}/>
-        <Route path="/write/title" render={() => <WriteTitle linkto="/write/thankyou" subject="title" value={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleNews}/>}/>
-        <Route path="/write/thankyou" component={Thankyou}/>
-        <Route path="/write/feedback" render={() => <WriteFeedback linkto="/write/thankyou" subject="feedback" value={this.state.feedback} handleChange={this.handleChange} handleSubmit={this.handleFeedback}/>}/>
+        <Route exact path="/write" render={() =>
+          <Writing title="Write a story..." desc="Make up a ridiculous fake-news story" subject="story" rows="4" length="280" value={this.state.story} handleChange={this.handleChange} linkto="/write_title"
+          />
+        }/>
+        <Route path="/write_title" render={() =>
+          <Writing title="Write a title..." desc="Make up a ridiculous title for your story" subject="title" rows="1" length="25" value={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleNews} linkto="/write_thankyou"
+          />
+        }/>
+        <Route path="/write_thankyou" component={Thankyou}/>
+        <Route path="/write_feedback" render={() =>
+          <Writing title="Write your feedback..." desc="Give us your response to writing & watching fake-news with us" subject="feedback" rows="4" length="280" value={this.state.feedback} handleChange={this.handleChange} handleSubmit={this.handleFeedback} linkto="/write_thankyou"
+          />
+        }/>
         <Redirect to="/write"/>
       </Switch>
     </div>)

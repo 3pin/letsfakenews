@@ -4,11 +4,17 @@
 const routes = require('express').Router();
 
 /* routes */
-const add_title_story = require('./add_title_story');
-const add_feedback = require('./add_feedback');
+const write = require('./users/index');
+const watch = require('./displays/index');
+const admin = require('./databases/index');
 
 //=============================================================================
 // REACT connections: from Landing
+roues.use('/write', write);
+roues.use('/watch', watch);
+roues.use('/admin', admin);
+
+/*
 routes.get('/write', (req, res) => {
   console.log('GET test from REACT received');
   res.send({ express: 'Hello /write' });
@@ -16,9 +22,6 @@ routes.get('/write', (req, res) => {
 // REACT connections: from Users
 routes.post('/add_title_story', add_title_story);
 routes.post('/add_feedback', add_feedback);
-// REACT connections: from Admin
-//
-// REACT connections: from Display
-//
+*/
 
 module.exports = routes;

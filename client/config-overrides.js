@@ -1,6 +1,6 @@
 module.exports = function override(config, env) {
   //do stuff with the webpack config...
-  devServer: {
+  devServer : {
     historyApiFallback: true
   }
   return config;

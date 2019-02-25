@@ -2,10 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 export default class ButtonFrameForm extends React.Component {
-  handleSubmit() {
+  handleClick() {
     //console.log('Button clicked')
-    if (this.props.handleSubmit) {
-      this.props.handleSubmit();
+    if (this.props.handleClick) {
+      this.props.handleClick();
     }
   };
   render() {
@@ -18,7 +18,9 @@ export default class ButtonFrameForm extends React.Component {
     return (<div>
       <p>{this.props.desc}</p>
       <Link to={this.props.linkto}>
-        <button type="button" onClick={this.handleSubmit.bind(this)} className="btn btn-primary btn-responsive">{buttonLabel}</button>
+        <button type="button"
+        onClick={this.handleClick.bind(this)}
+        className="btn btn-primary btn-responsive">{buttonLabel}</button>
       </Link>
     </div>)
   }
