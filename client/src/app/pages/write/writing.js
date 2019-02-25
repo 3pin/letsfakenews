@@ -1,9 +1,16 @@
 import React from 'react';
 
-import BannerFrame from './banner';
-import FormFrame from './form';
+import BannerFrame from '../../../app/components/banner';
+import FormFrame from '../../../app/components/form';
 
 export default class Story extends React.Component {
+  componentDidMount() {
+    console.log('state...');
+    console.log(this.state);
+    console.log('props...');
+    console.log(this.props);
+    console.log('\n');
+  }
   handleChange(value) {
     //console.log(e.target.value);
     let key = this.props.subject

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 
-import Writing from '../../../app/components/writing';
-import Thankyou from './write_thankyou';
+import Writing from './writing';
+import Thankyou from './thankyou';
 
 export default class LayoutWrite extends React.Component {
   constructor() {
@@ -114,16 +114,16 @@ export default class LayoutWrite extends React.Component {
     return (<div>
       <Switch>
         <Route exact path="/write" render={() =>
-          <Writing title="Write a story..." desc="Make up a ridiculous fake-news story" subject="story" rows="4" length="280" value={this.state.story} handleChange={this.handleChange} linkto="/write_title"
+          <Writing title="Write a story..." desc="Make up a ridiculous fake-news story" subject="story" rows="4" length="280" value={this.state.story} handleChange={this.handleChange} linkto="/write/title"
           />
         }/>
-        <Route path="/write_title" render={() =>
-          <Writing title="Write a title..." desc="Make up a ridiculous title for your story" subject="title" rows="1" length="25" value={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleNews} linkto="/write_thankyou"
+        <Route path="/write/title" render={() =>
+          <Writing title="Write a title..." desc="Make up a ridiculous title for your story" subject="title" rows="1" length="25" value={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleNews} linkto="/write/thankyou"
           />
         }/>
-        <Route path="/write_thankyou" component={Thankyou}/>
-        <Route path="/write_feedback" render={() =>
-          <Writing title="Write your feedback..." desc="Give us your response to writing & watching fake-news with us" subject="feedback" rows="4" length="280" value={this.state.feedback} handleChange={this.handleChange} handleSubmit={this.handleFeedback} linkto="/write_thankyou"
+        <Route path="/write/thankyou" component={Thankyou}/>
+        <Route path="/write/feedback" render={() =>
+          <Writing title="Write your feedback..." desc="Give us your response to writing & watching fake-news with us" subject="feedback" rows="4" length="280" value={this.state.feedback} handleChange={this.handleChange} handleSubmit={this.handleFeedback} linkto="/write/thankyou"
           />
         }/>
         <Redirect to="/write"/>

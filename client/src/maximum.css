@@ -91,7 +91,7 @@ code {
     font-weight: bold;
   }
 
-  body {
+  body .mr-auto {
     font-size: 16px;
   }
 }
@@ -108,7 +108,7 @@ code {
     font-weight: bold;
   }
 
-  body {
+  body .mr-auto {
     font-size: 16px;
   }
 }
@@ -125,7 +125,7 @@ code {
     font-weight: bold;
   }
 
-  body {
+  body .mr-auto {
     font-size: 18px;
   }
 }

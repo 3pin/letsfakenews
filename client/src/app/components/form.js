@@ -4,6 +4,13 @@ import React from 'react';
 import ButtonFrame from './button';
 
 export default class FormFrame extends React.Component {
+  componentDidMount() {
+    console.log('state...');
+    console.log(this.state);
+    console.log('props...');
+    console.log(this.props);
+    console.log('\n');
+  }
   handleChange(e) {
     //console.log(e);
     //console.log(JSON.stringify(e));

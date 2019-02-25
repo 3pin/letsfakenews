@@ -2,6 +2,13 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 export default class ButtonFrameForm extends React.Component {
+  componentDidMount() {
+    console.log('state...');
+    console.log(this.state);
+    console.log('props...');
+    console.log(this.props);
+    console.log('\n');
+  }
   handleClick() {
     //console.log('Button clicked')
     if (this.props.handleClick) {

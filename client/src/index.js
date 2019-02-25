@@ -1,6 +1,7 @@
 //import 'bootstrap-without-jquery';
 //import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
+//import './maximum.css';
+import './minimum.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
