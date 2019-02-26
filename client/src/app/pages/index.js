@@ -8,11 +8,12 @@ import Watch from './watch/index';
 //
 import NavFrame from '../../app/components/navframe';
 
-export default class IndexLanding extends React.Component {
+export default class Index extends React.Component {
+
   render() {
     return (<div>
       <br/>
-      <NavFrame title="Let's Fake News" links={["write","watch","admin"]}/>
+      <NavFrame title="Let's Fake News" links={["home","write", "watch", "admin"]}/>
       <br/>
       <Switch>
         <Route exact path="/" component={Landing}/>

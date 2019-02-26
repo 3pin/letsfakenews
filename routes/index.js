@@ -4,9 +4,9 @@
 const routes = require('express').Router();
 
 /* routes */
-const write = require('./users/index');
-const watch = require('./displays/index');
-const admin = require('./databases/index');
+const write = require('./write/index');
+const watch = require('./watch/index');
+const admin = require('./admin/index');
 
 //=============================================================================
 // REACT connections: from Landing

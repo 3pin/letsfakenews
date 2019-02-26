@@ -10,6 +10,8 @@ export default class Stories extends React.Component {
     return (<div>
       <BannerFrame desc={this.props.desc} title={this.props.title}/>
       <hr/>
+      <p>Feedback db goes here</p>
+
       <TableOps
       tHeaders={tHeaders}
       tButtons={["checkbox,", "blue", "red"]}

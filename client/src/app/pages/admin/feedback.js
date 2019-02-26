@@ -3,7 +3,7 @@ import React from 'react';
 export default class Admin extends React.Component {
   render() {
     return (<div>
-      <p>ADMIN frames go here</p>
+      <p>Feedback db goes here</p>
       <hr/>
     </div>)
   }

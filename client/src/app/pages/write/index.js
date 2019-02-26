@@ -1,10 +1,11 @@
 import React from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 
+import Landing from './landing';
 import Writing from './writing';
 import Thankyou from './thankyou';
 
-export default class LayoutWrite extends React.Component {
+export default class IndexWrite extends React.Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
@@ -16,18 +17,15 @@ export default class LayoutWrite extends React.Component {
       feedback: ""
     }
   }
+  componentWillMount() {
+    // say hello into the backend server
+    this.callApi('/write').then(res => console.log(res)).catch(err => console.log(err));
+  }
   componentDidMount() {
-    console.log('state...');
-    console.log(this.state);
-    console.log('props...');
-    console.log(this.props);
-    console.log('\n');
     //if LocalStorage has values, pass them to this.state
     this.hydrateStateWithLocalStorage();
     // add event listener to save state to localStorage when user leaves/refreshes the page
     window.addEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
-    // say hello into the backend server
-    this.callApi('/write').then(res => console.log(res)).catch(err => console.log(err));
   }
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
@@ -79,7 +77,7 @@ export default class LayoutWrite extends React.Component {
     const newsobj = {};
     newsobj.story = this.state.story;
     newsobj.title = this.state.title;
-    const response = await fetch('/add_title_story', {
+    const response = await fetch('/write/add_title_story', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -97,7 +95,7 @@ export default class LayoutWrite extends React.Component {
     // send JSON to proxy server
     const feedbackobj = {};
     feedbackobj.feedback = this.state.feedback;
-    const response = await fetch('/add_feedback', {
+    const response = await fetch('/write/add_feedback', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -113,19 +111,11 @@ export default class LayoutWrite extends React.Component {
   render() {
     return (<div>
       <Switch>
-        <Route exact path="/write" render={() =>
-          <Writing title="Write a story..." desc="Make up a ridiculous fake-news story" subject="story" rows="4" length="280" value={this.state.story} handleChange={this.handleChange} linkto="/write/title"
-          />
-        }/>
-        <Route path="/write/title" render={() =>
-          <Writing title="Write a title..." desc="Make up a ridiculous title for your story" subject="title" rows="1" length="25" value={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleNews} linkto="/write/thankyou"
-          />
-        }/>
+        <Route exact path="/write" component={Landing}/>
+        <Route path="/write/story" render={() => <Writing title="Write a story..." desc="Make up a ridiculous fake-news story" subject="story" rows="4" length="280" value={this.state.story} handleChange={this.handleChange} linkto="/write/title"/>}/>
+        <Route path="/write/title" render={() => <Writing title="Add a title..." desc="Make up a ridiculous title for your story" subject="title" rows="1" length="25" value={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleNews} linkto="/write/thankyou"/>}/>
         <Route path="/write/thankyou" component={Thankyou}/>
-        <Route path="/write/feedback" render={() =>
-          <Writing title="Write your feedback..." desc="Give us your response to writing & watching fake-news with us" subject="feedback" rows="4" length="280" value={this.state.feedback} handleChange={this.handleChange} handleSubmit={this.handleFeedback} linkto="/write/thankyou"
-          />
-        }/>
+        <Route path="/write/feedback" render={() => <Writing title="Give your feedback..." desc="Give us your response to writing & watching fake-news with us" subject="feedback" rows="4" length="280" value={this.state.feedback} handleChange={this.handleChange} handleSubmit={this.handleFeedback} linkto="/write/thankyou"/>}/>
         <Redirect to="/write"/>
       </Switch>
     </div>)

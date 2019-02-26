@@ -1,6 +1,8 @@
 'use strict';
 
-const databases = require('express').Router();
+/* declare a new router */
+const admin = require('express').Router();
+/* routes */
 const main = require('./main');
 const feedback = require('./feedback');
 const clear = require('./clear');
@@ -23,13 +25,20 @@ function middleware_auth(req, res, next) {
 }
 
 /* this router */
-databases.get('/', middleware_auth, main);
-databases.get('/feedback', feedback);
-databases.delete('/clear', clear);
-databases.delete('/feedback_clear', feedback_clear);
-databases.delete('/remove', remove);
-databases.put('/autolive', autolive);
-databases.put('/storylive', storylive);
-databases.put('/refresh', refresh);
+// REACT connections: from Landing
+admin.get('/', (req, res) => {
+  console.log('Hello from REACT /admin received');
+  res.send({ express: 'Hello /admin' });
+});
 
-module.exports = databases;
+admin.get('/admin/stories', middleware_auth, main);
+
+admin.get('/feedback', feedback);
+admin.delete('/clear', clear);
+admin.delete('/feedback_clear', feedback_clear);
+admin.delete('/remove', remove);
+admin.put('/autolive', autolive);
+admin.put('/storylive', storylive);
+admin.put('/refresh', refresh);
+
+module.exports = admin;

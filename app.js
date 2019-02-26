@@ -36,9 +36,9 @@ function middleware_auth(req, res, next) {
 }
 //=============================================================================
 // routes structure
-const users = require('./routes/users');
-const databases = require('./routes/databases');
-const displays = require('./routes/displays');
+const write = require('./routes/write');
+const admin = require('./routes/admin');
+const watch = require('./routes/watch');
 const settings = require('./routes/settings');
 
 //=============================================================================
@@ -81,9 +81,9 @@ app.use(function(req, res, next) {
 //=============================================================================
 
 // define that all routes are within the 'routes' folder
-app.use('/', users);
-app.use('/databases', databases);
-app.use('/displays', displays);
+app.use('/', write);
+app.use('/watch', watch);
+app.use('/admin', admin);
 app.use('/settings', settings);
 
 //=============================================================================

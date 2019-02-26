@@ -1,24 +1,23 @@
 'use strict';
 
 /* declare a new router */
-const routes = require('express').Router();
-
+const write = require('express').Router();
 /* routes */
 const add_title_story = require('./add_title_story');
 const add_feedback = require('./add_feedback');
 
 //=============================================================================
 // REACT connections: from Landing
-routes.get('/write', (req, res) => {
-  console.log('GET test from REACT received');
+write.get('/write', (req, res) => {
+  console.log('Hello from REACT /write received');
   res.send({ express: 'Hello /write' });
 });
 // REACT connections: from Users
-routes.post('/add_title_story', add_title_story);
-routes.post('/add_feedback', add_feedback);
+write.post('/write/add_title_story', add_title_story);
+write.post('/write/add_feedback', add_feedback);
 // REACT connections: from Admin
 //
 // REACT connections: from Display
 //
 
-module.exports = routes;
+module.exports = write;

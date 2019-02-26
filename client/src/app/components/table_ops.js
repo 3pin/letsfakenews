@@ -7,7 +7,7 @@ export default class TableOps extends React.Component {
   }
   render() {
     const TableHeaders = this.props.tHeaders;
-    console.log(TableHeaders);
+    //console.log(TableHeaders);
 
     //tHeadersObject_Test()
     const TableHeadersObject = TableHeaders.map((entry, i) => <th key={i} style={{

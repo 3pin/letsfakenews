@@ -5,14 +5,14 @@ import {LinkContainer} from "react-router-bootstrap";
 //
 export default class IndexLanding extends React.Component {
   render() {
-    console.log(this.props);
+    //console.log(this.props);
     const links = this.props.links;
     const linksFrame = links.map((entry, i) => <LinkContainer activeClassName="active" key={i} to={`/${entry}`}><Nav.Link>{entry}</Nav.Link></LinkContainer>);
 
     return (<div>
       <Navbar className="rounded" bg="light" variant="light" expand="md">
         <LinkContainer to={this.props.title}>
-          <a className="navbar-brand" href="/">{this.props.title}</a>
+          <a className="navbar-brand" href="/" onClick={(e)=>{e.preventDefault()}}>{this.props.title}</a>
         </LinkContainer>
         <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
         <Navbar.Collapse id="basic-navbar-nav">
