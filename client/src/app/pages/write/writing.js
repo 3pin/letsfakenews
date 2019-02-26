@@ -26,7 +26,7 @@ export default class Story extends React.Component {
   render() {
     return (<div>
       <section>
-        <BannerFrame title={this.props.title} desc={this.props.desc}/>
+        <BannerFrame hsize='h4' title={this.props.title} desc={this.props.desc}/>
         <hr/>
         <FormFrame rows={this.props.rows} length={this.props.length} linkto={this.props.linkto} value={this.props.value} handleChange={this.handleChange.bind(this)} handleSubmit={this.handleSubmit.bind(this)}/>
         <hr/>

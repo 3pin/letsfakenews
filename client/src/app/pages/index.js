@@ -6,15 +6,13 @@ import Write from './write/index';
 import Admin from './admin/index';
 import Watch from './watch/index';
 //
-import Title from '../../app/components/title';
-import NavFrame from '../../app/components/navlinks';
+import NavFrame from '../../app/components/navframe';
 
 export default class IndexLanding extends React.Component {
   render() {
     return (<div>
       <br/>
-      <Title/>
-      <NavFrame/>
+      <NavFrame title="Let's Fake News" links={["write","watch","admin"]}/>
       <br/>
       <Switch>
         <Route exact path="/" component={Landing}/>
