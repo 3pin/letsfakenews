@@ -1,18 +1,30 @@
 import React from 'react';
 
 export default class TableOps extends React.Component {
+  constructor() {
+    super();
+    this.state = {tOpsData: {}}
+  }
   componentDidMount() {
     //console.log(this.props);
     //console.log(this.props.tHeaders.one.style)
+    const {tOpsData} = this.props.tOpsData;
+    this.setState({ tOpsData });
+    console.log(this.state.tOpsData)
+
   }
   render() {
-    const TableHeaders = this.props.tHeaders;
-    //console.log(TableHeaders);
+    /*
+    const tButtons = this.props.tOpsData.tButtons;
+    const tHeaderSize = this.props.tOpsData.tButtons;
+    const tHeaders = this.props.tOpsData.tHeaders;
+    const tRows = this.props.tOpsData.tRows;
+    console.log(tHeaders);
+    */
 
     //tHeadersObject_Test()
-    const TableHeadersObject = TableHeaders.map((entry, i) => <th key={i} style={{
-        width: '50%'
-      }}>{entry}</th>)
+    const TableHeadersObject = this.props.tOpsData.map((entry, i) => <p key={i}>{entry.tButtons[0]}</p>)
+    //const TableHeadersObject = tOpsData.map((entry, i) => <th key={i} style={{'width:50%'}}>{entry}</th>)
 
     return (<div>
       <table className="table table-bordered" style={{
@@ -20,7 +32,7 @@ export default class TableOps extends React.Component {
         }}>
         <thead className="thead-dark">
           <tr>
-            {TableHeadersObject}
+          {TableHeadersObject}
           </tr>
         </thead>
         <tbody>

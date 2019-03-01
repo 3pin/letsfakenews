@@ -5,14 +5,10 @@ import FormFrame from '../../../app/components/form';
 
 export default class Story extends React.Component {
   componentDidMount() {
-    console.log('state...');
-    console.log(this.state);
-    console.log('props...');
+    //console.log(this.state);
     console.log(this.props);
-    console.log('\n');
   }
   handleChange(value) {
-    //console.log(e.target.value);
     let key = this.props.subject
     this.props.handleChange(key, value);
     // update localStorage
@@ -20,7 +16,7 @@ export default class Story extends React.Component {
   }
   handleSubmit() {
     if (this.props.handleSubmit) {
-      this.props.handleSubmit();
+      this.props.handleSubmit(this.props.apiEndPoint, this.props.entriesToSend);
     }
   }
   render() {

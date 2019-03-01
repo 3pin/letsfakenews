@@ -13,8 +13,8 @@ write.get('/write', (req, res) => {
   res.send({ express: 'Hello /write' });
 });
 // REACT connections: from Users
-write.post('/write/add_title_story', add_title_story);
-write.post('/write/add_feedback', add_feedback);
+write.post('/write/news', add_title_story);
+write.post('/write/feedback', add_feedback);
 // REACT connections: from Admin
 //
 // REACT connections: from Display

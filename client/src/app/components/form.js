@@ -5,15 +5,9 @@ import ButtonFrame from './button';
 
 export default class FormFrame extends React.Component {
   componentDidMount() {
-    console.log('state...');
-    console.log(this.state);
-    console.log('props...');
-    console.log(this.props);
-    console.log('\n');
+    //console.log(this.props);
   }
   handleChange(e) {
-    //console.log(e);
-    //console.log(JSON.stringify(e));
     this.props.handleChange(e.target.value);
   }
   //suppress submit if form-action came from the write_story-frame... only accept from write_title-frame

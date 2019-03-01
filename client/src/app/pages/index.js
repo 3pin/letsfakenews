@@ -17,7 +17,11 @@ export default class Index extends React.Component {
       <br/>
       <Switch>
         <Route exact path="/" component={Landing}/>
-        <Route path="/write" component={Write}/>
+        <Route path="/write" render={() =>
+          <Write
+          path="/write"/>
+        }
+        />
         <Route path="/admin" component={Admin}/>
         <Route path="/watch" component={Watch}/>
         <Redirect to="/"/>

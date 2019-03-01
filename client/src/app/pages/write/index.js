@@ -9,19 +9,18 @@ export default class IndexWrite extends React.Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
-    this.handleNews = this.handleNews.bind(this);
-    this.handleFeedback = this.handleFeedback.bind(this);
+    this.apiCall = this.apiCall.bind(this);
+    this.apiPost = this.apiPost.bind(this);
     this.state = {
       story: "",
       title: "",
       feedback: ""
     }
   }
-  componentWillMount() {
-    // say hello into the backend server
-    this.callApi('/write').then(res => console.log(res)).catch(err => console.log(err));
-  }
+  
   componentDidMount() {
+    // register with the backend server
+    this.apiCall(this.props.path).then(res => console.log(res)).catch(err => console.log(err));
     //if LocalStorage has values, pass them to this.state
     this.hydrateStateWithLocalStorage();
     // add event listener to save state to localStorage when user leaves/refreshes the page
@@ -57,13 +56,6 @@ export default class IndexWrite extends React.Component {
       }
     }
   }
-  callApi = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const body = await response.json();
-    if (response.status !== 200)
-      throw Error(body.message);
-    return body;
-  }
   handleChange(key, value) {
     this.setState({[key]: value});
     //const obj = {}
@@ -72,50 +64,78 @@ export default class IndexWrite extends React.Component {
     //console.log(e);
     //this.setState(JSON.parse(e));
   }
-  handleNews = async () => {
+  apiCall = async (apiEndPoint) => {
+    const response = await fetch(apiEndPoint);
+    const body = await response.json();
+    if (response.status !== 200)
+      throw Error(body.message);
+    return body;
+  }
+  apiPost = async (apiEndPoint, entriesToSend) => {
     // send JSON to proxy server
-    const newsobj = {};
-    newsobj.story = this.state.story;
-    newsobj.title = this.state.title;
-    const response = await fetch('/write/add_title_story', {
+    console.log(entriesToSend.length)
+    const data = {}
+    for (let item=0; item<entriesToSend.length; item++) {
+      data[entriesToSend[item]] = this.state[entriesToSend[item]]
+    }
+    const response = await fetch(apiEndPoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newsobj)
+      body: JSON.stringify(data)
     });
     const body = await response.text();
     console.log(body);
-    this.setState({story: ""});
-    this.setState({title: ""});
-    console.log(this.state);
+    for (let item=0; item<entriesToSend.length; item++) {
+      this.setState({ [entriesToSend[item]]: "" });
+    }
     this.saveStateToLocalStorage();
   };
-  handleFeedback = async () => {
-    // send JSON to proxy server
-    const feedbackobj = {};
-    feedbackobj.feedback = this.state.feedback;
-    const response = await fetch('/write/add_feedback', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(feedbackobj)
-    });
-    const body = await response.text();
-    console.log(body);
-    this.setState({feedback: ""});
-    console.log(this.state);
-    this.saveStateToLocalStorage();
-  };
+
   render() {
     return (<div>
       <Switch>
         <Route exact path="/write" component={Landing}/>
-        <Route path="/write/story" render={() => <Writing title="Write a story..." desc="Make up a ridiculous fake-news story" subject="story" rows="4" length="280" value={this.state.story} handleChange={this.handleChange} linkto="/write/title"/>}/>
-        <Route path="/write/title" render={() => <Writing title="Add a title..." desc="Make up a ridiculous title for your story" subject="title" rows="1" length="25" value={this.state.title} handleChange={this.handleChange} handleSubmit={this.handleNews} linkto="/write/thankyou"/>}/>
+        <Route path="/write/story" render={() =>
+          <Writing
+          title="Write a story..."
+          desc="Make up a ridiculous fake-news story"
+          subject="story"
+          rows="4" length="280"
+          value={this.state.story}
+          handleChange={this.handleChange}
+          linkto="/write/title"/>
+        }/>
+        <Route path="/write/title"
+        render={() =>
+          <Writing
+          title="Add a title..."
+          desc="Make up a ridiculous title for your story"
+          subject="title"
+          rows="1"
+          length="25"
+          value={this.state.title}
+          handleChange={this.handleChange}
+          handleSubmit={this.apiPost}
+          apiEndPoint="/write/news"
+          entriesToSend={["story","title"]}
+          linkto="/write/thankyou"/>
+        }/>
         <Route path="/write/thankyou" component={Thankyou}/>
-        <Route path="/write/feedback" render={() => <Writing title="Give your feedback..." desc="Give us your response to writing & watching fake-news with us" subject="feedback" rows="4" length="280" value={this.state.feedback} handleChange={this.handleChange} handleSubmit={this.handleFeedback} linkto="/write/thankyou"/>}/>
+        <Route path="/write/feedback" render={() =>
+          <Writing
+          title="Give your feedback..."
+          desc="Give us your response to writing & watching fake-news with us"
+          subject="feedback"
+          rows="4"
+          length="280"
+          value={this.state.feedback}
+          handleChange={this.handleChange}
+          handleSubmit={this.apiPost}
+          apiEndPoint="/write/feedback"
+          entriesToSend={["feedback"]}
+          linkto="/write/thankyou"/>}/>
         <Redirect to="/write"/>
       </Switch>
     </div>)
