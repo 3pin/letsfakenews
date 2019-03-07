@@ -1,5 +1,8 @@
 'use strict';
 
+// module debugging
+const debug = require('debug')('routes_write');
+
 /* declare a new router */
 const write = require('express').Router();
 /* routes */
@@ -7,10 +10,10 @@ const add_title_story = require('./add_title_story');
 const add_feedback = require('./add_feedback');
 
 //=============================================================================
-// REACT connections: from Landing
+// REACT connection
 write.get('/write', (req, res) => {
-  console.log('Hello from REACT /write received');
-  res.send({ express: 'Hello /write' });
+  debug("'REACT /write' says 'Hello' ");
+  res.send({ express: "Hello 'REACT /write' " });
 });
 // REACT connections: from Users
 write.post('/write/news', add_title_story);

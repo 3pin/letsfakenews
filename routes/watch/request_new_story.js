@@ -1,7 +1,7 @@
 // public routes into the app
 
 'use strict';
-const debug = require('debug')('displays/reqnewstory');
+const debug = require('debug')('routes_watch');
 // module variable to hold the id to read from the db
 let id;
 

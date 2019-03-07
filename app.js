@@ -21,10 +21,12 @@ const
   path = require('path'),
   // to connect to database
   monk = require('monk'),
-  db = monk(process.env.MONGODB_URI),
-  // auth
-  auth = require("http-auth"),
-  digest = auth.digest({
+  db = monk(process.env.MONGODB_URI)
+
+/*
+// auth
+const auth = require("http-auth");
+const digest = auth.digest({
     realm: "Private area",
     file: "./htpasswd",
     authType: "digest"
@@ -32,8 +34,10 @@ const
 function middleware_auth(req, res, next) {
   //console.log('middleware_auth: this page requires authentification')
   (auth.connect(digest))(req, res, next);
-  //return next()
+  return next();
 }
+*/
+
 //=============================================================================
 // routes structure
 const write = require('./routes/write');
@@ -79,13 +83,11 @@ app.use(function(req, res, next) {
   next();
 });
 //=============================================================================
-
 // define that all routes are within the 'routes' folder
 app.use('/', write);
 app.use('/watch', watch);
 app.use('/admin', admin);
 app.use('/settings', settings);
-
 //=============================================================================
 // Error Handlers
 // catch 404 and forward to error handler

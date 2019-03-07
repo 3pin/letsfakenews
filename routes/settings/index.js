@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('index');
+const debug = require('debug')('routes_settings');
 
 /* declare a new router */
 const routes = require('express').Router();

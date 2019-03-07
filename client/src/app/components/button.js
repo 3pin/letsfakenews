@@ -10,7 +10,7 @@ export default class ButtonFrameForm extends React.Component {
     if (this.props.handleClick) {
       this.props.handleClick();
     }
-  };
+  }
   render() {
     let buttonLabel;
     if (this.props.buttonlabel) {

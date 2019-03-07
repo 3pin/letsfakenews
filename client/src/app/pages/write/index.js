@@ -17,20 +17,6 @@ export default class IndexWrite extends React.Component {
       feedback: ""
     }
   }
-  
-  componentDidMount() {
-    // register with the backend server
-    this.apiCall(this.props.path).then(res => console.log(res)).catch(err => console.log(err));
-    //if LocalStorage has values, pass them to this.state
-    this.hydrateStateWithLocalStorage();
-    // add event listener to save state to localStorage when user leaves/refreshes the page
-    window.addEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
-  }
-  componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
-    // saves if component has a chance to unmount
-    this.saveStateToLocalStorage();
-  }
   saveStateToLocalStorage() {
     // for every item in React state
     for (let key in this.state) {
@@ -73,7 +59,6 @@ export default class IndexWrite extends React.Component {
   }
   apiPost = async (apiEndPoint, entriesToSend) => {
     // send JSON to proxy server
-    console.log(entriesToSend.length)
     const data = {}
     for (let item=0; item<entriesToSend.length; item++) {
       data[entriesToSend[item]] = this.state[entriesToSend[item]]
@@ -92,7 +77,19 @@ export default class IndexWrite extends React.Component {
     }
     this.saveStateToLocalStorage();
   };
-
+  componentDidMount() {
+    // register with the backend server
+    this.apiCall(this.props.path).then(res => console.log(res)).catch(err => console.log(err));
+    //if LocalStorage has values, pass them to this.state
+    this.hydrateStateWithLocalStorage();
+    // add event listener to save state to localStorage when user leaves/refreshes the page
+    window.addEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
+  }
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
+    // saves if component has a chance to unmount
+    this.saveStateToLocalStorage();
+  }
   render() {
     return (<div>
       <Switch>
@@ -100,7 +97,7 @@ export default class IndexWrite extends React.Component {
         <Route path="/write/story" render={() =>
           <Writing
           title="Write a story..."
-          desc="Make up a ridiculous fake-news story"
+          desc="Make up a fake-news story"
           subject="story"
           rows="4" length="280"
           value={this.state.story}
@@ -111,7 +108,7 @@ export default class IndexWrite extends React.Component {
         render={() =>
           <Writing
           title="Add a title..."
-          desc="Make up a ridiculous title for your story"
+          desc="Give a title to your story"
           subject="title"
           rows="1"
           length="25"

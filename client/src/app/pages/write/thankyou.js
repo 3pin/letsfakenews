@@ -9,7 +9,7 @@ export default class Thankyou extends React.Component {
       <section>
         <BannerFrame title="Thank you..." desc="We hope you enjoyed writing & watching fake-news, its so much!"/>
         <hr/>
-        <ButtonFrame linkto="/write" label="restart" desc="Write more fake news"/>
+        <ButtonFrame linkto="/write/story" label="restart" desc="Write more fake news"/>
         <hr/>
         <ButtonFrame linkto="/write/feedback" label="feedback" desc="Leave your feedback for the LetsFakeNews team"/>
         <hr/>

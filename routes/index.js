@@ -1,5 +1,8 @@
 'use strict';
 
+/* module debugging */
+const debug = require('debug')('routes_index');
+
 /* declare a new router */
 const routes = require('express').Router();
 
@@ -7,21 +10,25 @@ const routes = require('express').Router();
 const write = require('./write/index');
 const watch = require('./watch/index');
 const admin = require('./admin/index');
-
+/*
+//=============================================================================
+// authenticate
+const auth = require("http-auth");
+const digest = auth.digest({
+  realm: "Private area",
+  file: "./htpasswd",
+  authType: "digest"
+});
+function middleware_auth(req, res, next) {
+  console.log('middleware_auth: this page requires authentification');
+  (auth.connect(digest))(req, res, next);
+  next();
+}
+*/
 //=============================================================================
 // REACT connections: from Landing
-roues.use('/write', write);
-roues.use('/watch', watch);
-roues.use('/admin', admin);
-
-/*
-routes.get('/write', (req, res) => {
-  console.log('GET test from REACT received');
-  res.send({ express: 'Hello /write' });
-});
-// REACT connections: from Users
-routes.post('/add_title_story', add_title_story);
-routes.post('/add_feedback', add_feedback);
-*/
+routes.use('/write', write);
+routes.use('/watch', watch);
+routes.use('/admin', admin);
 
 module.exports = routes;

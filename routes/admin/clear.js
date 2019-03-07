@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('databases/clear')
+const debug = require('debug')('routes_admin')
 
 module.exports = (req, res) => {
   let collection = req.db.get(process.env.COLLECTION);

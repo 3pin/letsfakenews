@@ -1,7 +1,11 @@
 'use strict';
 
+/* module debugging */
+const debug = require('debug')('routes_admin');
+
 /* declare a new router */
 const admin = require('express').Router();
+
 /* routes */
 const main = require('./main');
 const feedback = require('./feedback');
@@ -12,30 +16,26 @@ const autolive = require('./autolive');
 const storylive = require('./storylive');
 const refresh = require('./refresh');
 
-const auth = require("http-auth");
-const digest = auth.digest({
-  realm: "Private area",
-  file: "./htpasswd",
-  authType: "digest"
-});
-
-function middleware_auth(req, res, next) {
-  //console.log('middleware_auth: this page requires authentification')
-  (auth.connect(digest))(req, res, next);
-}
-
-/* this router */
-// REACT connections: from Landing
+// REACT connections
 admin.get('/', (req, res) => {
-  console.log('Hello from REACT /admin received');
-  res.send({ express: 'Hello /admin' });
+  debug("'REACT /admin' says 'Hello' ");
+  res.send({express: "Hello 'REACT /admin' "});
 });
+/*
+admin.get('/feedback', (req, res) => {
+  debug("'REACT /admin/feedback' says 'Hello' ");
+  res.send({express: "Hello 'REACT /admin/feedback' "});
+});
+*/
+admin.get('/feedback', (req, res, next) => {
+  debug("'REACT /admin/feedback' says 'Hello' ");
+  next();
+}, feedback);
+admin.get('/feedback/clear', feedback_clear);
 
-admin.get('/admin/stories', middleware_auth, main);
-
-admin.get('/feedback', feedback);
+admin.get('/admin/stories', main);
 admin.delete('/clear', clear);
-admin.delete('/feedback_clear', feedback_clear);
+//admin.delete('/feedback_clear', feedback_clear);
 admin.delete('/remove', remove);
 admin.put('/autolive', autolive);
 admin.put('/storylive', storylive);

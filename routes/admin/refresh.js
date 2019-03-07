@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('databases/refresh');
+const debug = require('debug')('routes_admin');
 const refresh_urls_iterative = require('../../modules/refresh_urls_iterative.js');
 
 module.exports = (req, res) => {

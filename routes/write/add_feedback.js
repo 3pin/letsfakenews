@@ -1,5 +1,5 @@
 'use strict';
-const debug = require('debug')('users/feedback');
+const debug = require('debug')('routes_write');
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');
 

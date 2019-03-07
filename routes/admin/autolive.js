@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('databases/autolive');
+const debug = require('debug')('routes_admin');
 
 module.exports = (req, res) => {
   debug('autolive: ' + req.body.autolive);

@@ -1,7 +1,7 @@
 'use strict';
 
 // module debugging
-const debug = require('debug')('display')
+const debug = require('debug')('routes_watch');
 
 /* declare a new router */
 const watch = require('express').Router();
@@ -22,10 +22,10 @@ function middleware_auth(req, res, next) {
 }
 
 /* this router */
-// REACT connections: from Landing
+// REACT connection
 watch.get('/', (req, res) => {
-  console.log('Hello from REACT /watch received');
-  res.send({ express: 'Hello /watch' });
+  debug("'REACT /watch' says 'Hello' ");
+  res.send({ express: "Hello 'REACT /watch' " });
 });
 watch.get('/watch/watch', display);
 //watch.get('/', middleware_auth, main);

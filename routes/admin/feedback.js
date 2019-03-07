@@ -1,14 +1,12 @@
 'use strict';
 
-const debug = require('debug')('databases/feedback');
+const debug = require('debug')('routes_admin');
 
 module.exports = (req, res) => {
-  debug('/GET routes/databases/feedback')
+  debug('/GET /admin/feedback');
   let collection = req.db.get(process.env.FEEDBACK);
   collection.find({}, {}, function(e, docs) {
-    res.render('databases/feedback', {
-      tabtitle: "LetsFakeNews:db_feedback",
-      feedback: docs
-    });
+    //res.send({express: "Hello 'REACT /admin/feedback' "});
+    res.send({feedback: docs});
   });
 };
