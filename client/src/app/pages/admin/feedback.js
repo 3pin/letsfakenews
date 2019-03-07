@@ -7,6 +7,8 @@ export default class Feedback extends React.Component {
     this.state = {
       feedback: []
     };
+    this.eventSource = new EventSource("http://localhost:5000/settings/sse");
+    //this.eventSource = new EventSource("/settings/sse");
   }
   apiCall = async (endpoint) => {
     const response = await fetch(endpoint);
@@ -22,6 +24,21 @@ export default class Feedback extends React.Component {
   componentDidMount() {
     // say hello into the backend server
     this.apiCall(this.props.path).then(res => this.setState({'feedback': res.feedback})).catch(err => console.log(err));
+    // sse
+    this.eventSource.addEventListener("feedback", e => this.updateFrontend(JSON.parse(e.data)));
+  }
+  updateFrontend(data) {
+    console.log(data);
+    this.setState(Object.assign({}, { feedback: data }));
+  }
+  handleNewMessage(message) {
+    if (message.to === this.props.channel) {
+      this.setState({messages: this.state.messages.concat(message)});
+    }
+  }
+  componentWillUnmount() {
+    //SSE
+    this.eventSource.close();
   }
   render() {
     console.log(this.state)
@@ -70,8 +87,7 @@ export default class Feedback extends React.Component {
                   <td>{entry.feedback}</td>
                 </tr>)
               })
-              : <tr>
-                </tr>
+              : <tr></tr>
           }
         </tbody>
       </table>

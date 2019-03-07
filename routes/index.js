@@ -10,6 +10,7 @@ const routes = require('express').Router();
 const write = require('./write/index');
 const watch = require('./watch/index');
 const admin = require('./admin/index');
+const settings = require('./settings/index');
 /*
 //=============================================================================
 // authenticate
@@ -30,5 +31,6 @@ function middleware_auth(req, res, next) {
 routes.use('/write', write);
 routes.use('/watch', watch);
 routes.use('/admin', admin);
+routes.use('/settings', settings);
 
 module.exports = routes;

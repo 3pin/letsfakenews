@@ -18,12 +18,8 @@ module.exports = (req, res) => {
       res.send('Feedback inserted into database successfully');
     }).then(() => {
       debug('Refreshing the feedback-admin-frontend');
-      // print out the new shortened db
-      collection.find({}, {
-        sort: {
-          _id: 1
-        }
-      }, (err, docs) => {
+      // fetch the updated db
+      collection.find({}, {sort: {_id: 1}}, function(err, docs) {
         //if autolive is TRUE, then new-story should be auto added to activelist
         if (req.app.locals.autolive == true) {
           req.app.locals.activelist.push(docs[docs.length - 1]._id);
@@ -33,9 +29,7 @@ module.exports = (req, res) => {
           debug(req.app.locals.entry_to_read);
         }
         // tell eventbus about a new-feedback to trigger refresh of admin-frontend
-        bus.emit('feedback', {
-          new_entry: docs[docs.length - 1]
-        });
+        bus.emit('feedback', docs);
         debug('SSE event triggered by New_Feedback');
       });
     }).catch((err) => {
