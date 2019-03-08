@@ -53,7 +53,7 @@ debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' 
 //=============================================================================
 // module variables
 app.locals.entry_to_read = 0;        // id_to_read from above array
-app.locals.autolive = true;      // sets whether new-stories auto-display on main-screen or not
+app.locals.autolive = process.env.AUTOLIVE;      // sets whether new-stories auto-display on main-screen or not
 app.locals.activelist = [];       // list of active stories for display
 app.locals.db_mode = 'next';
 //=============================================================================

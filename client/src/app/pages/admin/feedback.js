@@ -1,4 +1,5 @@
 import React from 'react';
+import BannerFrame from '../../../app/components/banner';
 
 export default class Feedback extends React.Component {
   constructor(props) {
@@ -8,7 +9,6 @@ export default class Feedback extends React.Component {
       feedback: []
     };
     this.eventSource = new EventSource("http://localhost:5000/settings/sse");
-    //this.eventSource = new EventSource("/settings/sse");
   }
   apiCall = async (endpoint) => {
     const response = await fetch(endpoint);
@@ -17,32 +17,34 @@ export default class Feedback extends React.Component {
       throw Error(body.message);
     return body;
   }
-  handleClear() {
-    /* Connect to API and clear feedback from database */
-    this.apiCall('/admin/feedback/clear').then(res => this.setState({'feedback': []})).catch(err => console.log(err));
-  }
-  componentDidMount() {
-    // say hello into the backend server
-    this.apiCall(this.props.path).then(res => this.setState({'feedback': res.feedback})).catch(err => console.log(err));
-    // sse
-    this.eventSource.addEventListener("feedback", e => this.updateFrontend(JSON.parse(e.data)));
-  }
+  /*
   updateFrontend(data) {
     console.log(data);
-    this.setState(Object.assign({}, { feedback: data }));
+    this.setState(Object.assign({}, {feedback: data}));
   }
-  handleNewMessage(message) {
-    if (message.to === this.props.channel) {
-      this.setState({messages: this.state.messages.concat(message)});
-    }
+  */
+  handleClear() {
+    document.activeElement.blur();
+    /* Connect to API and clear feedback from database */
+    this.apiCall(this.props.apiClear).then(res => this.setState({feedback: []})).catch(err => console.log(err));
+  }
+  componentDidMount() {
+    /* load database into this.state */
+    this.apiCall(this.props.apiHello).then(res => this.setState({feedback: res.feedback})).catch(err => console.log(err));
+    /* open sse listener */
+    this.eventSource.addEventListener('feedback', e => this.setState({
+      feedback: JSON.parse(e.data)
+    }));
   }
   componentWillUnmount() {
-    //SSE
+    /* close sse listener */
     this.eventSource.close();
   }
   render() {
-    console.log(this.state)
+    console.log(this.state.feedback)
     return (<div>
+      <BannerFrame desc={this.props.desc} title={this.props.title}/>
+      <hr/>
       <table className="table table-bordered" style={{
           backgroundColor: "white"
         }}>
@@ -65,6 +67,7 @@ export default class Feedback extends React.Component {
           </tr>
         </tbody>
       </table>
+      <hr/>
       <table className="table table-bordered" style={{
           backgroundColor: "white"
         }}>

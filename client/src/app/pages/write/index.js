@@ -63,6 +63,7 @@ export default class IndexWrite extends React.Component {
     for (let item=0; item<entriesToSend.length; item++) {
       data[entriesToSend[item]] = this.state[entriesToSend[item]]
     }
+    console.log(JSON.stringify(data))
     const response = await fetch(apiEndPoint, {
       method: 'POST',
       headers: {

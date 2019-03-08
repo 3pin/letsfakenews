@@ -6,7 +6,7 @@ export default class BannerFrame extends React.Component {
     if (this.props.hsize) {
       Tag = this.props.hsize
     } else {
-      Tag = "h3"
+      Tag = "h4"
     }
     return (<div>
       <Tag>{this.props.title}</Tag>

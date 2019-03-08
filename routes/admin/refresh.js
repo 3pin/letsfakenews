@@ -18,7 +18,7 @@ module.exports = (req, res) => {
       collection.drop();
       collection.insert(result);
     }).then(() => {
-      res.send('Refresh of all images completed')
+      res.send({RefreshStatus: 'Refresh of all images completed'});
     });
   }).catch((err) => {
     debug("Err: ", err);

@@ -32,9 +32,7 @@ module.exports = (req, res) => {
         debug('[db_ids] _id: ' + docs[object]._id);
       }
       debug('[db_ids] total_length: ' + db_ids.length);
-      res.json({
-        stories: docs
-      });
+      res.send({ClearedStatus: ' all images completed'});
     });
   }).then(() => {
     // empty the active activelist

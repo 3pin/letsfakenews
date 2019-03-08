@@ -30,21 +30,25 @@ export default class IndexAdmin extends React.Component {
         <Route exact path="/admin" component={Landing}/>
         <Route path="/admin/feedback" render={() =>
           <Feedback
-          title="feedback"
-          path="/admin/feedback"
+          title="Feedback"
           desc="Use this page to view user feedback in realtime"
-          tHeaders={["Command","Action"]}
-          tButtons={["checkbox,","blue","red"]}
-          tRows={["Set new stories to go live automatically","Refresh imagery for all stories","Clear all stories from database"]}
+          subject="feedback"
+          apiHello="/admin/feedback"
+          apiClear="/admin/feedback/clear"
           />
         }/>
         <Route path="/admin/stories" render={() =>
           <Stories
           title="Stories"
           desc="Use this page to moderate fakenews stories in realtime"
-          tHeaders={["Command","Action"]}
-          tButtons={["checkbox,","blue","red"]}
-          tRows={["Set new stories to go live automatically","Refresh imagery for all stories","Clear all stories from database"]}
+          subject="stories"
+          apiHello="/admin/stories"
+          apiAutoliveRequest="/admin/stories/autolive_request"
+          apiAutoliveSet="/admin/stories/autolive_set"
+          apiAutolive="/admin/stories/autolive"
+          apiRefresh="/admin/stories/refresh"
+          apiClear="/admin/stories/clear"
+          apiRemove="/admin/story/remove"
           />
         }/>
         <Redirect to="/admin"/>
