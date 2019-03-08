@@ -13,6 +13,7 @@ export default class Stories extends React.Component {
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleClear = this.handleClear.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+    this.handleStorylive = this.handleStorylive.bind(this);
     //
     this.state = {
       stories: [],
@@ -42,7 +43,9 @@ export default class Stories extends React.Component {
   };
   handleAutolive(e) {
     /* update state.autolive */
-    this.setState({autolive: e.target.checked});
+    this.setState({
+      autolive: e.target.checked
+    });
     /* Change autolive status on the backend */
     let endpoint = this.props.apiAutoliveSet
     let data = {
@@ -52,19 +55,25 @@ export default class Stories extends React.Component {
   }
   handleRefresh(e) {
     document.activeElement.blur();
-    //e.preventDefault();
     /* Connect to API to refresh imagery */
     this.apiCall(this.props.apiRefresh).then(res => console.log(res)).catch(err => console.log(err));
   }
   handleClear() {
     document.activeElement.blur();
     /* Connect to API and clear all from database */
-    this.apiCall(this.props.apiClear).then(res => console.log(res)).then(this.setState({'stories': []})).catch(err => console.log(err));
+    this.apiCall(this.props.apiClear).then(res => console.log(res)).then(this.setState({
+      'stories': []
+    })).catch(err => console.log(err));
   }
   handleRemove() {
     document.activeElement.blur();
     /* Connect to API and delete single entry from database */
     //this.apiPost(this.props.apiRemove).then(res => this.setState({'stories': []})).catch(err => console.log(err));
+  }
+  handleStorylive(e) {
+    console.log(e );
+    /* Connect to API to update storylive-setting for entry in database */
+    //this.apiPost(this.props.apiStorylive,data).then(res => console.log(res)).catch(err => console.log(err));
   }
   componentDidMount() {
     /* load autolive-status from Db */
@@ -72,7 +81,9 @@ export default class Stories extends React.Component {
       'autolive': JSON.parse(res.autolive)
     })).catch(err => console.log(err));
     /* load stories from Db into this.state */
-    this.apiCall(this.props.apiHello).then(res => this.setState({'stories': res.stories})).catch(err => console.log(err));
+    this.apiCall(this.props.apiHello).then(res => this.setState({
+      'stories': res.stories
+    })).catch(err => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('story', e => this.setState({
       stories: JSON.parse(e.data)
@@ -121,7 +132,7 @@ export default class Stories extends React.Component {
         </tbody>
       </table>
       <hr/>
-      <table className="table table-bordered" style={{
+      <table ref='table_stories' className="table table-bordered table-hover" style={{
           backgroundColor: "white"
         }}>
         <thead className="thead-dark">
@@ -148,13 +159,14 @@ export default class Stories extends React.Component {
             (this.state.stories.length > 0)
               ? this.state.stories.map((entry, index) => {
                 return (<tr key={index}>
+                  <td style={{display:'none'}}>{entry._id}</td>
                   <td>{index + 1}</td>
                   <td>{entry.title}</td>
                   <td>{entry.story}</td>
                   <td>
-                    <button type="button" onClick={this.handleRefresh.bind(this)} className="btn btn-danger show_tip clear"></button>
+                    <button type="button" onClick={this.handleRemove.bind(this)} className="btn btn-danger show_tip clear"></button>
                   </td>
-                  <td style={{textAlign: "center"}}><input type="checkbox" checked={this.state.autolive} onChange={this.handleAutolive.bind(this)} className="form-check-input show_tip autolive"/></td>
+                  <td style={{textAlign:'center'}}><input type="checkbox" checked={entry.storylive===true ? true : false} onChange={this.handleStorylive.bind(this)} className="form-check-input show_tip autolive"/></td>
                 </tr>)
               })
               : <tr></tr>

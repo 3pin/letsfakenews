@@ -16,9 +16,8 @@ const autolive_set = require('./autolive_set');
 const refresh = require('./refresh');
 const stories_clear = require('./clear_stories');
 const remove = require('./remove');
-//
 const storylive = require('./storylive');
-
+//
 // admin landing
 admin.get('/', (req, res) => {
   debug("'REACT /admin' says 'Hello' ");
@@ -41,6 +40,7 @@ admin.get('/stories/autolive_request', autolive_request);
 admin.post('/stories/autolive_set', autolive_set);
 admin.get('/stories/refresh', refresh);
 admin.get('/stories/clear', stories_clear);
+admin.post('/story/storylive', storylive);
 //admin.post('/story/remove', remove);
 
 module.exports = admin;

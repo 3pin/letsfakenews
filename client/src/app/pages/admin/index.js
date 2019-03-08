@@ -4,6 +4,7 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 import Landing from './landing';
 import Stories from './stories';
 import Feedback from './feedback';
+import Bootstrap from './bootstrap';
 
 export default class IndexAdmin extends React.Component {
   constructor() {
@@ -45,12 +46,13 @@ export default class IndexAdmin extends React.Component {
           apiHello="/admin/stories"
           apiAutoliveRequest="/admin/stories/autolive_request"
           apiAutoliveSet="/admin/stories/autolive_set"
-          apiAutolive="/admin/stories/autolive"
           apiRefresh="/admin/stories/refresh"
           apiClear="/admin/stories/clear"
+          apiStorylive="/admin/stories/storylive"
           apiRemove="/admin/story/remove"
           />
         }/>
+        <Route path="/admin/bootstrap" component={Bootstrap}/>
         <Redirect to="/admin"/>
       </Switch>
     </div>)
