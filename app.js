@@ -49,11 +49,11 @@ const settings = require('./routes/settings');
 // initialize
 const app = express();
 debug('App Name: ' + process.env.npm_package_name)
-debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.COLLECTION + ' db_feedback:' + process.env.FEEDBACK);
+debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.DB_STORIES + ' db_feedback:' + process.env.DB_FEEDBACK);
 //=============================================================================
 // module variables
 app.locals.entry_to_read = 0;        // id_to_read from above array
-app.locals.autolive = process.env.AUTOLIVE;      // sets whether new-stories auto-display on main-screen or not
+app.locals.autolive = JSON.parse(process.env.AUTOLIVE);      // sets whether new-stories auto-display on main-screen or not
 app.locals.activelist = [];       // list of active stories for display
 app.locals.db_mode = 'next';
 //=============================================================================

@@ -4,7 +4,7 @@ const debug = require('debug')('routes_admin')
 module.exports = (req, res) => {
   debug('/GET routes/databases/main')
   //load stories (in order of _id) from db
-  let collection = req.db.get(process.env.COLLECTION);
+  let collection = req.db.get(process.env.DB_STORIES);
   collection.find({}, {
     sort: {
       _id: 1

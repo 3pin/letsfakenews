@@ -7,7 +7,7 @@ export default class Stories extends React.Component {
     //
     this.eventSource = new EventSource("http://localhost:5000/settings/sse");
     //
-    this.apiCall = this.apiCall.bind(this);
+    this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
     this.handleAutolive = this.handleAutolive.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
@@ -20,7 +20,7 @@ export default class Stories extends React.Component {
       autolive: false
     };
   }
-  apiCall = async (endpoint) => {
+  apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
     if (response.status !== 200)
@@ -28,7 +28,6 @@ export default class Stories extends React.Component {
     return body;
   }
   apiPost = async (endpoint, data) => {
-    // send JSON to proxy server
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -41,51 +40,51 @@ export default class Stories extends React.Component {
       throw Error(body.message);
     return body;
   };
-  handleAutolive(e) {
-    /* update state.autolive */
-    this.setState({
-      autolive: e.target.checked
-    });
-    /* Change autolive status on the backend */
-    let endpoint = this.props.apiAutoliveSet
-    let data = {
-      autolive: e.target.checked
-    }
-    this.apiPost(endpoint, data).then(res => console.log(res)).catch(err => console.log(err));
+  handleAutolive(isChecked) {
+    /* update status of autolive */
+    this.apiGet(this.props.apiAutolive).then((res) => this.setState({
+      autolive: JSON.parse(res.autolive)
+    })).catch(err => console.log(err));
   }
-  handleRefresh(e) {
-    document.activeElement.blur();
+  handleRefresh() {
     /* Connect to API to refresh imagery */
-    this.apiCall(this.props.apiRefresh).then(res => console.log(res)).catch(err => console.log(err));
+    document.activeElement.blur();
+    this.apiGet(this.props.apiRefresh).then(res => console.log(res)).catch(err => console.log(err));
   }
   handleClear() {
-    document.activeElement.blur();
     /* Connect to API and clear all from database */
-    this.apiCall(this.props.apiClear).then(res => console.log(res)).then(this.setState({'stories': [] })).catch(err => console.log(err));
+    document.activeElement.blur();
+    /* Connect to API and clear feedback from database */
+    let data = {
+      database: this.props.database
+    }
+    this.apiPost(this.props.apiClear, data).then(res => this.setState({
+      stories: res.data
+    })).catch(err => console.log(err));
   }
   handleRemove(row) {
     document.activeElement.blur();
     /* Connect to API and delete single entry from database */
-    this.apiPost(this.props.apiRemove,row).then((res) => this.setState({'stories': res.stories })).catch(err => console.log(err));
+    this.apiPost(this.props.apiRemove, row).then((res) => this.setState({
+      stories: res.stories
+    })).catch(err => console.log(err));
   }
   handleStorylive(row) {
-    console.log(row);
     /* Connect to API to update storylive-setting for entry in database */
-    this.apiPost(this.props.apiStorylive,row).then((res) => this.setState({'stories': res.stories })).catch(err => console.log(err));
+    this.apiPost(this.props.apiStorylive, row).then((res) => this.setState({
+      stories: res.stories
+    })).catch(err => console.log(err));
   }
   componentDidMount() {
-    /* load autolive-status from Db */
-    this.apiCall(this.props.apiAutoliveRequest).then(res => this.setState({
-      'autolive': JSON.parse(res.autolive)
-    })).catch(err => console.log(err));
-    /* load stories from Db into this.state */
-    this.apiCall(this.props.apiHello).then(res => this.setState({
-      'stories': res.stories
-    })).catch(err => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('story', e => this.setState({
       stories: JSON.parse(e.data)
     }));
+    /* load autolive-status & stories from Db */
+    this.apiGet(this.props.apiHello).then(res => this.setState({
+      autolive: JSON.parse(res.autolive),
+      stories: res.stories
+    })).catch(err => console.log(err));
   }
   componentWillUnmount() {
     /* close sse listener */
@@ -95,13 +94,10 @@ export default class Stories extends React.Component {
     const tableStyle = {
       backgroundColor: "white"
     }
-    console.log(this.state.stories)
     return (<div>
       <BannerFrame desc={this.props.desc} title={this.props.title}/>
       <hr/>
-      <table className="table table-bordered" style={{
-          backgroundColor: "white"
-        }}>
+      <table className="table table-bordered" style={tableStyle}>
         <thead className="thead-dark">
           <tr>
             <th style={{

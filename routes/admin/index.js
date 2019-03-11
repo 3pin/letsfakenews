@@ -8,13 +8,10 @@ const admin = require('express').Router();
 
 /* routes */
 const feedback = require('./feedback');
-const feedback_clear = require('./clear_feedback');
-//
+const clear = require('./clear');
 const stories = require('./stories');
-const autolive_request = require('./autolive_request');
-const autolive_set = require('./autolive_set');
+const autolive = require('./autolive');
 const refresh = require('./refresh');
-const stories_clear = require('./clear_stories');
 const remove = require('./remove');
 const storylive = require('./storylive');
 //
@@ -24,22 +21,16 @@ admin.get('/', (req, res) => {
   res.send({express: "Hello 'REACT /admin' "});
 });
 
-// admin feedback-db
-admin.get('/feedback', (req, res, next) => {
-  debug("'REACT /admin/feedback' says 'Hello' ");
-  next();
-}, feedback);
-admin.get('/feedback/clear', feedback_clear);
-
-// admin stories-db
-admin.get('/stories', (req, res, next) => {
-  debug("'REACT /admin/stories' says 'Hello' ");
-  next();
-}, stories);
-admin.get('/stories/autolive_request', autolive_request);
-admin.post('/stories/autolive_set', autolive_set);
+/* display feedback database */
+admin.get('/feedback', feedback);
+/* display stories database */
+admin.get('/stories', stories);
+/* clear a database */
+admin.post('/clear', clear);
+// stories macro-ops
+admin.get('/stories/autolive', autolive);
 admin.get('/stories/refresh', refresh);
-admin.get('/stories/clear', stories_clear);
+// stories row-ops
 admin.post('/story/remove', remove);
 admin.post('/story/storylive', storylive);
 

@@ -8,12 +8,12 @@ function remove(array, element) {
 }
 
 module.exports = (req, res) => {
-  let collection = req.db.get(process.env.COLLECTION);
+  let collection = req.db.get(process.env.DB_STORIES);
   debug('/DELETE routes/databases/remove');
   // if entry was active... remove entry from activelist
   req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body._id);
   // delete the entry from db
-  let query = {
+  const query = {
     _id: req.body._id
   };
   debug(req.body._id);
@@ -22,7 +22,6 @@ module.exports = (req, res) => {
   }).then((err, docs) => {
     if (err) {
       debug('error');
-      //debug(err);
     } else {
       debug('no error');
       //debug(docs.result.n + " document(s) deleted");
@@ -39,6 +38,6 @@ module.exports = (req, res) => {
       });
     });
   }).catch((err) => {
-    debug("Err: ", err);
+    debug("Error: ", err);
   });
 }

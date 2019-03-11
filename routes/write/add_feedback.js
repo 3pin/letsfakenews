@@ -12,7 +12,7 @@ module.exports = (req, res) => {
   process_client_feedback.process(client_JSON).then((result) => {
     debug('About to save to db');
     // Save to the DB
-    let collection = req.db.get(process.env.FEEDBACK);
+    let collection = req.db.get(process.env.DB_FEEDBACK);
     collection.insert(result).then((output) => {
       debug('Document inserted to db_feedback successfully');
       res.send('Feedback inserted into database successfully');

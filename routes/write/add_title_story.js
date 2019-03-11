@@ -14,7 +14,7 @@ module.exports = (req, res) => {
   process_client_story.process(client_JSON).then((result) => {
     debug('About to save to db');
     //save to db
-    let collection = req.db.get(process.env.COLLECTION);
+    let collection = req.db.get(process.env.DB_STORIES);
     collection.insert(result).then((output) => {
       debug('Document inserted to db successfully');
       res.send('Story inserted into database successfully');

@@ -8,7 +8,7 @@ function remove(array, element) {
 }
 
 module.exports = (req, res) => {
-  let collection = req.db.get(process.env.COLLECTION);
+  let collection = req.db.get(process.env.DB_STORIES);
   /* update an entries display-checkbox */
   debug('/PUT routes/databases/storylive');
   debug('_id: ' + req.body._id);

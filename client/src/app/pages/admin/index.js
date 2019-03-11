@@ -32,22 +32,21 @@ export default class IndexAdmin extends React.Component {
         <Route path="/admin/feedback" render={() =>
           <Feedback
           title="Feedback"
+          database="DB_FEEDBACK"
           desc="Use this page to view user feedback in realtime"
-          subject="feedback"
           apiHello="/admin/feedback"
-          apiClear="/admin/feedback/clear"
+          apiClear="/admin/clear"
           />
         }/>
         <Route path="/admin/stories" render={() =>
           <Stories
           title="Stories"
+          database="DB_STORIES"
           desc="Use this page to moderate fakenews stories in realtime"
-          subject="stories"
           apiHello="/admin/stories"
-          apiAutoliveRequest="/admin/stories/autolive_request"
-          apiAutoliveSet="/admin/stories/autolive_set"
+          apiAutolive="/admin/stories/autolive"
           apiRefresh="/admin/stories/refresh"
-          apiClear="/admin/stories/clear"
+          apiClear="/admin/clear"
           apiRemove="/admin/story/remove"
           apiStorylive="/admin/story/storylive"
           />

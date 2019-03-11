@@ -6,7 +6,7 @@ const refresh_urls_iterative = require('../../modules/refresh_urls_iterative.js'
 module.exports = (req, res) => {
   debug('/PUT routes/databases/refresh');
   /* fetch the db entries */
-  let collection = req.db.get(process.env.COLLECTION);
+  let collection = req.db.get(process.env.DB_STORIES);
   // return the empty db to the frontend
   collection.find({}, {
     sort: {
