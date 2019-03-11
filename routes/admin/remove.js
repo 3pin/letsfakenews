@@ -11,11 +11,12 @@ module.exports = (req, res) => {
   let collection = req.db.get(process.env.COLLECTION);
   debug('/DELETE routes/databases/remove');
   // if entry was active... remove entry from activelist
-  req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body.id);
+  req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body._id);
   // delete the entry from db
   let query = {
-    _id: req.body.id
+    _id: req.body._id
   };
+  debug(req.body._id);
   collection.remove(query, {
     multi: false
   }).then((err, docs) => {

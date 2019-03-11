@@ -36,6 +36,7 @@ module.exports = (req, res) => {
         }
         // tell eventbus about a new-story to trigger refresh of admin-frontend
         bus.emit('story', docs);
+        debug(docs)
         debug('SSE event triggered by New_Story');
       });
     });

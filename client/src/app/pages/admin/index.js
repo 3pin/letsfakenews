@@ -48,8 +48,8 @@ export default class IndexAdmin extends React.Component {
           apiAutoliveSet="/admin/stories/autolive_set"
           apiRefresh="/admin/stories/refresh"
           apiClear="/admin/stories/clear"
-          apiStorylive="/admin/stories/storylive"
           apiRemove="/admin/story/remove"
+          apiStorylive="/admin/story/storylive"
           />
         }/>
         <Route path="/admin/bootstrap" component={Bootstrap}/>

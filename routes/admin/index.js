@@ -40,7 +40,7 @@ admin.get('/stories/autolive_request', autolive_request);
 admin.post('/stories/autolive_set', autolive_set);
 admin.get('/stories/refresh', refresh);
 admin.get('/stories/clear', stories_clear);
+admin.post('/story/remove', remove);
 admin.post('/story/storylive', storylive);
-//admin.post('/story/remove', remove);
 
 module.exports = admin;

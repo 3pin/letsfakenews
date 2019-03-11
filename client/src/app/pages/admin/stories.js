@@ -61,19 +61,17 @@ export default class Stories extends React.Component {
   handleClear() {
     document.activeElement.blur();
     /* Connect to API and clear all from database */
-    this.apiCall(this.props.apiClear).then(res => console.log(res)).then(this.setState({
-      'stories': []
-    })).catch(err => console.log(err));
+    this.apiCall(this.props.apiClear).then(res => console.log(res)).then(this.setState({'stories': [] })).catch(err => console.log(err));
   }
-  handleRemove() {
+  handleRemove(row) {
     document.activeElement.blur();
     /* Connect to API and delete single entry from database */
-    //this.apiPost(this.props.apiRemove).then(res => this.setState({'stories': []})).catch(err => console.log(err));
+    this.apiPost(this.props.apiRemove,row).then((res) => this.setState({'stories': res.stories })).catch(err => console.log(err));
   }
-  handleStorylive(e) {
-    console.log(e );
+  handleStorylive(row) {
+    console.log(row);
     /* Connect to API to update storylive-setting for entry in database */
-    //this.apiPost(this.props.apiStorylive,data).then(res => console.log(res)).catch(err => console.log(err));
+    this.apiPost(this.props.apiStorylive,row).then((res) => this.setState({'stories': res.stories })).catch(err => console.log(err));
   }
   componentDidMount() {
     /* load autolive-status from Db */
@@ -94,6 +92,9 @@ export default class Stories extends React.Component {
     this.eventSource.close();
   }
   render() {
+    const tableStyle = {
+      backgroundColor: "white"
+    }
     console.log(this.state.stories)
     return (<div>
       <BannerFrame desc={this.props.desc} title={this.props.title}/>
@@ -132,9 +133,7 @@ export default class Stories extends React.Component {
         </tbody>
       </table>
       <hr/>
-      <table ref='table_stories' className="table table-bordered table-hover" style={{
-          backgroundColor: "white"
-        }}>
+      <table ref='table_stories' className="table table-bordered table-hover" style={tableStyle}>
         <thead className="thead-dark">
           <tr>
             <th style={{
@@ -164,9 +163,9 @@ export default class Stories extends React.Component {
                   <td>{entry.title}</td>
                   <td>{entry.story}</td>
                   <td>
-                    <button type="button" onClick={this.handleRemove.bind(this)} className="btn btn-danger show_tip clear"></button>
+                    <button type="button" onClick={() => this.handleRemove(entry)} className="btn btn-danger show_tip clear"></button>
                   </td>
-                  <td style={{textAlign:'center'}}><input type="checkbox" checked={entry.storylive===true ? true : false} onChange={this.handleStorylive.bind(this)} className="form-check-input show_tip autolive"/></td>
+                  <td style={{textAlign:'center'}}><input type="checkbox" checked={entry.storylive===true ? true : false} onChange={() => this.handleStorylive(entry)} className="form-check-input show_tip autolive"/></td>
                 </tr>)
               })
               : <tr></tr>
