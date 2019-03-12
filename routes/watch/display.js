@@ -1,20 +1,9 @@
 'use strict';
 
 const debug = require('debug')('routes_watch')
-const auth = require("http-auth");
-const digest = auth.digest({
-  realm: "Private area",
-  file: "./htpasswd",
-  authType: "digest"
-});
+
 // module variable to hold the id to read from the db
 let id;
-// auth middleware
-function middleware_auth(req, res, next) {
-  //console.log('middleware_auth: this page requires authentification')
-  (auth.connect(digest))(req, res, next);
-  //return next()
-}
 
 module.exports = (req, res) => {
   debug('/GET routes/displays')

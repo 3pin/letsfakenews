@@ -28,11 +28,14 @@ module.exports = (req, res) => {
 
   // fetch the JSON from db
   debug('fetching the obj from db')
-  let collection = req.db.get(process.env.COLLECTION);
+  let collection = req.db.get(process.env.DB_STORIES);
   collection.findOne({
     _id: id
   }, (err, data) => {
-    res.send(data);
+    debug(data);
+    res.send({
+      data: data
+    });
   }).catch((err) => {
     debug("Err: ", err);
   });
