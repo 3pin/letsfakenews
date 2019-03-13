@@ -1,5 +1,19 @@
-import React from 'react';
-import ReactPlayer from 'react-player';
+import React from 'react'
+import {
+  Media,
+  Player,
+  controls
+} from 'react-media-player'
+const {
+  PlayPause,
+  CurrentTime,
+  Progress,
+  SeekBar,
+  Duration,
+  MuteUnmute,
+  Volume,
+  Fullscreen
+} = controls
 
 // func to calc timing-durations
 const diff = (start, end) => {
@@ -28,12 +42,7 @@ const metadata = (data, image_duration, imagesStart) => {
 export default class Watch extends React.Component {
   constructor(props) {
     super(props);
-    //
     this.apiGet = this.apiGet.bind(this);
-    this.handleFullscreen = this.handleFullscreen.bind(this);
-    this.onProgress = this.onProgress.bind(this);
-    this.onEnded = this.onEnded.bind(this);
-    //
     this.state = {
       mode: "",
       //timings
@@ -58,13 +67,13 @@ export default class Watch extends React.Component {
       image: {
         visibility: 'hidden'
       },
+      panel_title: {
+        visibility: 'hidden'
+      },
       scroller: {
         visibility: 'hidden'
       },
-      playing: false,
-      controls: true,
-      progressInterval: 500,
-      url: "https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4"
+      playback:'Pause'
     }
   }
   apiGet = async (endpoint) => {
@@ -76,18 +85,9 @@ export default class Watch extends React.Component {
   }
   handleFullscreen() {
     document.activeElement.blur();
-    console.log('button fullscreen pressed');
-    console.log(this.player);
-    if (this.state.playing === false) {
-      this.setState({
-        playing: true
-      });
-    } else {
-      this.setState({
-        playing: false
-      });
-    }
-    let i = this.container;
+    console.log('boom');
+    this.state.vid.play();
+    let i = document.getElementById('videoContainer');
     // go full-screen with cross-browser support
     if (i.requestFullscreen) {
       i.requestFullscreen();
@@ -99,28 +99,34 @@ export default class Watch extends React.Component {
       i.msRequestFullscreen()
     }
   }
-  onProgress(e) {
-    //console.log('video progressing...');
-    let currentSec = e.playedSeconds;
-    //console.log(currentSec);
+  onProgress() {
+    console.log('video loading...');
+  }
+  onPlay() {
+    console.log('video started')
+  }
+  onPause() {
+    console.log('video paused')
+  }
+  onTimeUpdate(e) {
+    //console.log(e.currentTime);
     /* change url-image according to markers... */
-    if (currentSec >= this.state.markers[this.state.url_index]) {
+    if (e.currentTime >= this.state.markers[this.state.url_index]) {
       console.log('marker passed')
       this.setState({
         url_index: this.state.url_index + 1
       });
-      console.log(this.state.urls[this.state.url_index]);
     }
     /* change interface according to markers */
-    if (currentSec >= this.state.popupStart && currentSec <= this.state.popupEnd) {
-      //console.log('popup & title should be visible');
+    if (e.currentTime >= this.state.popupStart && e.currentTime <= this.state.popupEnd) {
+      console.log('popup & title should be visible');
       this.setState({
         popup_title: {
           visibility: 'visible'
         }
       });
-    } else if (currentSec >= this.state.imagesStart && currentSec <= this.state.imagesEnd) {
-      //console.log('images & scroller should be visible');
+    } else if (e.currentTime >= this.state.imagesStart && e.currentTime <= this.state.imagesEnd) {
+      console.log('images & scroller should be visible');
       this.setState({
         popup_title: {
           visibility: 'hidden'
@@ -144,6 +150,9 @@ export default class Watch extends React.Component {
           visibility: 'hidden'
         },
         image: {
+          visibility: 'hidden'
+        },
+        panel_title: {
           visibility: 'hidden'
         },
         scroller: {
@@ -163,11 +172,7 @@ export default class Watch extends React.Component {
         markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers
       }))
       .then(() => console.log(this.state))
-      .then(() => this.setState({
-        playing: true
-      }))
-      .then(() => this.player.seekTo(0))
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
   }
   componentWillMount() {
     console.log('componentWillMount');
@@ -179,7 +184,7 @@ export default class Watch extends React.Component {
   }
   componentDidMount() {
     console.log('componentDidMount');
-    this.player.seekTo(0);
+    this.video.seekTo('0');
     /* add video-onEnded listener */
     //this.videoElement.addEventListener("ended", this.onEnded.bind(this));
     /* load initial story into this.state */
@@ -189,41 +194,46 @@ export default class Watch extends React.Component {
         story: res.data.story,
         urls: metadata(res.data, this.state.image_duration, this.state.imagesStart).urls,
         markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers,
-        playback: 'Play'
+        playback:'Play'
       })).then(() => console.log(this.state))
       .catch(err => console.log(err));
+  }
+  componentWillUnmount() {
+    //this.videoElement.removeEventListener("ended", onEnded);
   }
   render() {
     return (<div>
       <div id="button_div">
         <p>
-          <button id="btnFullscreen" onClick={this.handleFullscreen.bind(this)} type="button">TOGGLE PLAY/FULLSCREEN</button>
+          <button id="btnFullscreen" onClick={this.handleFullscreen.bind(this)} type="button">PLAY FULLSCREEN</button>
         </p>
       </div>
-        <div id="outerContainer" ref={outerContainer => { this.outerContainer=outerContainer }} className="media">
-          <div id="videoContainer" ref={container => { this.container=container }} className="media-player">
-            <ReactPlayer
-            id="videoPlayer"
-            ref={player => { this.player=player }}
-            controls={this.state.controls}
-            progressInterval = {this.state.progressInterval}
-            playing={this.state.playing}
-            onProgress={this.onProgress.bind(this)}
-            onEnded={this.onEnded.bind(this)}
-            url={this.state.url}
-            />
-            <div id="popup_title" style={this.state.popup_title}>
-              <p id="popup_title_text">{this.state.title}</p>
-            </div>
-            <div id="image_frame" style={this.state.image_frame}>
-              <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image}/>
-            </div>
-            <div id="scroller" className="scroll-left" style={this.state.scroller}>
-              <p id="scroller_text">{this.state.story}</p>
-            </div>
+      <Media>
+        <div className="media">
+        <div className="media-controls">
+          <PlayPause />
+          <CurrentTime />
+          <Progress />
+          <SeekBar />
+          <Duration />
+          <MuteUnmute />
+          <Volume />
+          <Fullscreen />
+        </div>
+          <div className="media-player">
+            <Player ref={(el) => { this.video = el }} loop={true} autoPlay={false} onProgress={this.onProgress.bind(this)} onPlay={this.onPlay.bind(this)} onPause={this.onPause.bind(this)} onTimeUpdate={this.onTimeUpdate.bind(this)} src="https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4"/>
+          </div>
+          <div id="popup_title" style={this.state.popup_title}>
+            <p id="popup_title_text">{this.state.title}</p>
+          </div>
+          <div id="image_frame" style={this.state.image_frame}>
+            <img id="image" alt="" src={this.state.urls[this.state.urls_index]} style={this.state.image}/>
+          </div>
+          <div id="scroller" className="scroll-left" style={this.state.scroller}>
+            <p id="scroller_text">{this.state.story}</p>
           </div>
         </div>
-
+      </Media>
     </div>)
   }
 }
