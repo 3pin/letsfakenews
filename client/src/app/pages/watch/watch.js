@@ -31,6 +31,7 @@ export default class Watch extends React.Component {
     //
     this.apiGet = this.apiGet.bind(this);
     this.handleFullscreen = this.handleFullscreen.bind(this);
+    this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onEnded = this.onEnded.bind(this);
     //
@@ -77,7 +78,6 @@ export default class Watch extends React.Component {
   handleFullscreen() {
     document.activeElement.blur();
     console.log('button fullscreen pressed');
-    console.log(this.player);
     if (this.state.playing === false) {
       this.setState({
         playing: true
@@ -99,17 +99,27 @@ export default class Watch extends React.Component {
       i.msRequestFullscreen()
     }
   }
+  onReady() {
+    /* load new story into this.state */
+    this.apiGet('/watch/request_new_story')
+      .then((res) => this.setState({
+        title: res.data.title.toUpperCase(),
+        story: res.data.story,
+        urls: metadata(res.data, this.state.image_duration, this.state.imagesStart).urls,
+        markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers
+      }))
+      .then(() => console.log(this.state))
+      .catch(err => console.log(err))
+  }
   onProgress(e) {
-    //console.log('video progressing...');
-    let currentSec = e.playedSeconds;
-    //console.log(currentSec);
     /* change url-image according to markers... */
+    let currentSec = e.playedSeconds;
     if (currentSec >= this.state.markers[this.state.url_index]) {
-      console.log('marker passed')
+      //console.log('marker passed');
       this.setState({
         url_index: this.state.url_index + 1
       });
-      console.log(this.state.urls[this.state.url_index]);
+      //console.log(this.state.urls[this.state.url_index]);
     }
     /* change interface according to markers */
     if (currentSec >= this.state.popupStart && currentSec <= this.state.popupEnd) {
@@ -153,21 +163,7 @@ export default class Watch extends React.Component {
     }
   }
   onEnded() {
-    console.log('videoEnded');
-    /* load new story into this.state */
-    this.apiGet('/watch/request_new_story')
-      .then((res) => this.setState({
-        title: res.data.title,
-        story: res.data.story,
-        urls: metadata(res.data, this.state.image_duration, this.state.imagesStart).urls,
-        markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers
-      }))
-      .then(() => console.log(this.state))
-      .then(() => this.setState({
-        playing: true
-      }))
-      .then(() => this.player.seekTo(0))
-      .catch(err => console.log(err))
+    this.player.seekTo(0);
   }
   componentWillMount() {
     console.log('componentWillMount');
@@ -179,19 +175,7 @@ export default class Watch extends React.Component {
   }
   componentDidMount() {
     console.log('componentDidMount');
-    this.player.seekTo(0);
-    /* add video-onEnded listener */
-    //this.videoElement.addEventListener("ended", this.onEnded.bind(this));
-    /* load initial story into this.state */
-    this.apiGet('/watch/request_new_story')
-      .then((res) => this.setState({
-        title: res.data.title,
-        story: res.data.story,
-        urls: metadata(res.data, this.state.image_duration, this.state.imagesStart).urls,
-        markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers,
-        playback: 'Play'
-      })).then(() => console.log(this.state))
-      .catch(err => console.log(err));
+    //this.player.seekTo(0);
   }
   render() {
     return (<div>
@@ -204,22 +188,26 @@ export default class Watch extends React.Component {
           <div id="videoContainer" ref={container => { this.container=container }} className="media-player">
             <ReactPlayer
             id="videoPlayer"
+            className='react-player'
+            width='100%'
+            height='100%'
             ref={player => { this.player=player }}
             controls={this.state.controls}
             progressInterval = {this.state.progressInterval}
             playing={this.state.playing}
+            onReady={this.onReady.bind(this)}
             onProgress={this.onProgress.bind(this)}
             onEnded={this.onEnded.bind(this)}
             url={this.state.url}
             />
             <div id="popup_title" style={this.state.popup_title}>
-              <p id="popup_title_text">{this.state.title}</p>
+              <h1 id="popup_title_text">{this.state.title}</h1>
             </div>
             <div id="image_frame" style={this.state.image_frame}>
               <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image}/>
             </div>
             <div id="scroller" className="scroll-left" style={this.state.scroller}>
-              <p id="scroller_text">{this.state.story}</p>
+              <h1 id="scroller_text">{this.state.story}</h1>
             </div>
           </div>
         </div>
