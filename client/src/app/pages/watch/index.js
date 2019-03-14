@@ -15,7 +15,9 @@ export default class IndexWatch extends React.Component {
   }
   componentWillMount() {
     // say hello into the backend server
-    this.callApi('/watch').then(res => console.log(res)).catch(err => console.log(err));
+    this.callApi('/settings/activelist')
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
   }
   render() {
     return (<div className="layout">

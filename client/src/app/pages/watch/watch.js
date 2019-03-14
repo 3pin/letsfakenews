@@ -51,19 +51,20 @@ export default class Watch extends React.Component {
       url_index: 0,
       // interface elements visibility
       popup_title: {
-        visibility: 'hidden'
+        display: 'none'
       },
       image_frame: {
-        visibility: 'hidden'
+        display: 'none'
       },
       image: {
-        visibility: 'hidden'
+        display: 'none'
       },
       scroller: {
-        visibility: 'hidden'
+        display: 'none'
       },
       playing: false,
-      controls: true,
+      controls: false,
+      volume: 1,
       progressInterval: 500,
       url: "https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4"
     }
@@ -126,38 +127,38 @@ export default class Watch extends React.Component {
       //console.log('popup & title should be visible');
       this.setState({
         popup_title: {
-          visibility: 'visible'
+          display: 'block'
         }
       });
     } else if (currentSec >= this.state.imagesStart && currentSec <= this.state.imagesEnd) {
       //console.log('images & scroller should be visible');
       this.setState({
         popup_title: {
-          visibility: 'hidden'
+          display: 'none'
         },
         image_frame: {
-          visibility: 'visible'
+          display: 'block'
         },
         image: {
-          visibility: 'visible'
+          display: 'block'
         },
         scroller: {
-          visibility: 'visible'
+          display: 'block'
         }
       });
     } else {
       this.setState({
         popup_title: {
-          visibility: 'hidden'
+          display: 'none'
         },
         image_frame: {
-          visibility: 'hidden'
+          display: 'none'
         },
         image: {
-          visibility: 'hidden'
+          display: 'none'
         },
         scroller: {
-          visibility: 'hidden'
+          display: 'none'
         }
       });
     }
@@ -189,6 +190,7 @@ export default class Watch extends React.Component {
             <ReactPlayer
             id="videoPlayer"
             className='react-player'
+            volume={this.state.volume}
             width='100%'
             height='100%'
             ref={player => { this.player=player }}
@@ -201,13 +203,13 @@ export default class Watch extends React.Component {
             url={this.state.url}
             />
             <div id="popup_title" style={this.state.popup_title}>
-              <h1 id="popup_title_text">{this.state.title}</h1>
+              <p id="popup_title_text">{this.state.title}</p>
             </div>
             <div id="image_frame" style={this.state.image_frame}>
               <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image}/>
             </div>
             <div id="scroller" className="scroll-left" style={this.state.scroller}>
-              <h1 id="scroller_text">{this.state.story}</h1>
+              <p id="scroller_text">{this.state.story}</p>
             </div>
           </div>
         </div>

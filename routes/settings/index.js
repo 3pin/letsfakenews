@@ -7,9 +7,11 @@ const routes = require('express').Router();
 /* routes */
 const sse = require('./sse');
 const mode = require('./mode');
+const activelist = require('./activelist');
 
 /* this router */
 routes.get('/sse', sse);
 routes.get('/mode', mode);
+routes.get('/activelist', activelist);
 
 module.exports = routes;

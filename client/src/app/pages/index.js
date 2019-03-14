@@ -9,7 +9,19 @@ import Watch from './watch/index';
 import NavFrame from '../../app/components/navframe';
 
 export default class Index extends React.Component {
-
+  callApi = async (endpoint) => {
+    const response = await fetch(endpoint);
+    const body = await response.json();
+    if (response.status !== 200)
+      throw Error(body.message);
+    return body;
+  }
+  componentWillMount() {
+    // say hello into the backend server
+    this.callApi('/settings/activelist')
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+  }
   render() {
     return (<div>
       <br/>
