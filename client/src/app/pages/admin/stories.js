@@ -123,7 +123,9 @@ export default class Stories extends React.Component {
           <tr>
             <td>Clear all stories from database</td>
             <td>
-              <button type="button" onClick={this.handleClear.bind(this)} className="btn btn-danger show_tip clear"></button>
+              <button
+              type="button" onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear.bind(this) : document.activeElement.blur() } } 
+              className="btn btn-danger show_tip clear"></button>
             </td>
           </tr>
         </tbody>
