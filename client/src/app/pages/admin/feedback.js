@@ -76,7 +76,9 @@ export default class Feedback extends React.Component {
           <tr>
             <td>Clear all entries from database</td>
             <td>
-              <button onClick={this.handleClear.bind(this)} title="clear" type="button" className="btn btn-danger show_tip clear "></button>
+              <button
+              onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear.bind(this) : document.activeElement.blur() } } 
+              title="clear" type="button" className="btn btn-danger show_tip clear "></button>
             </td>
           </tr>
         </tbody>
