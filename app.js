@@ -18,11 +18,24 @@ const
   logger = require('morgan'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
-  path = require('path'),
-  // to connect to database
-  monk = require('monk'),
-  db = monk(process.env.MONGODB_URI)
-
+  path = require('path')
+//=============================================================================
+// mongoose DB connection
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+mongoose.Promise = global.Promise;
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// check / create mongoose 'Master' schema
+const Master = require('./models/master.model');
+const master = new Master();
+master.save().then((result) => {
+  debug('Master Database Schema created');
+  debug(result);
+  app.locals.dbId = result._id;
+}).catch((err) => {
+  debug("Err: ", err);
+});
 /*
 // auth
 const auth = require("http-auth");
@@ -104,6 +117,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 //=============================================================================
 module.exports = app;

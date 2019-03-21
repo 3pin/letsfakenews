@@ -1,15 +1,12 @@
 'use strict';
-const debug = require('debug')('routes_admin')
+const debug = require('debug')('routes_admin');
+// import mongoose 'Story' schema
+const Story = require('../../models/story.model');
 
 module.exports = (req, res) => {
   debug('/GET routes/databases/main')
   //load stories (in order of _id) from db
-  let collection = req.db.get(process.env.DB_STORIES);
-  collection.find({}, {
-    sort: {
-      _id: 1
-    }
-  }, (err, docs) => {
+  Story.find({}).then((err, docs) => {
     let db_ids = [];
     req.app.locals.activelist = [];
     let object

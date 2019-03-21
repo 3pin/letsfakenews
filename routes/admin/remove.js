@@ -1,6 +1,8 @@
 'use strict';
 
 const debug = require('debug')('routes_admin');
+// import mongoose 'Story' schema
+const Story = require('../../models/story.model');
 
 function remove(array, element) {
   const index = array.indexOf(element);
@@ -8,7 +10,6 @@ function remove(array, element) {
 }
 
 module.exports = (req, res) => {
-  let collection = req.db.get(process.env.DB_STORIES);
   debug('/DELETE routes/databases/remove');
   // if entry was active... remove entry from activelist
   req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body._id);
@@ -17,22 +18,19 @@ module.exports = (req, res) => {
     _id: req.body._id
   };
   debug(req.body._id);
-  collection.remove(query, {
-    multi: false
-  }).then((err, docs) => {
+  Story.findOneAndDelete(query).then((docs, err) => {
     if (err) {
       debug('error');
+      debug(err);
     } else {
       debug('no error');
+      debug(docs);
       //debug(docs.result.n + " document(s) deleted");
     }
   }).then(() => {
     // fetch the db to refresh the frontend
-    collection.find({}, {
-      sort: {
-        _id: 1
-      }
-    }, (err, docs) => {
+    Story.find({}).then((docs,err) => {
+      debug(docs);
       res.json({
         stories: docs
       });

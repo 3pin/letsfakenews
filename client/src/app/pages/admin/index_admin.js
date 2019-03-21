@@ -23,7 +23,9 @@ export default class IndexAdmin extends React.Component {
   }
   componentDidMount() {
     // say hello into the backend server
-    this.apiCall(this.props.path).then(res => console.log(res)).catch(err => console.log(err));
+    this.apiCall(this.props.path)
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
   }
   render() {
     return (<div className="layout">

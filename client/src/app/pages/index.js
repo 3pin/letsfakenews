@@ -2,9 +2,9 @@ import React from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom';
 //
 import Landing from './landing';
-import Write from './write/index';
-import Admin from './admin/index';
-import Watch from './watch/index';
+import Write from './write/index_write';
+import Admin from './admin/index_admin';
+import Watch from './watch/index_watch';
 //
 import NavFrame from '../../app/components/navframe';
 
@@ -16,11 +16,9 @@ export default class Index extends React.Component {
       throw Error(body.message);
     return body;
   }
-  componentWillMount() {
-    // say hello into the backend server
-    this.callApi('/settings/activelist')
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
+  componentDidMount() {
+    // load the activelist for displat purposes
+    //this.callApi('/settings/activelist').then(res => console.log(res)).catch(err => console.log(err));
   }
   render() {
     return (<div>
