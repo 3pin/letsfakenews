@@ -22,6 +22,39 @@ const
 //=============================================================================
 // mongoose DB connection
 const mongoose = require('mongoose');
+const db = mongoose.createConnection(process.env.MONGODB_URI, {
+  useNewUrlParser: true
+});
+let gate = false;
+db.on('open', function () {
+  db.db.listCollections().toArray(function (err, collectionNames) {
+    if (err) {
+      debug(err);
+      return;
+    }
+    debug(collectionNames);
+    debug(collectionNames.length);
+    if (collectionNames.length === 0) {
+      gate = true;
+      debug(`gate: ${gate}`);
+      // check / create mongoose 'Master' schema
+      const Master = require('./models/master.model');
+      const master = new Master();
+      debug('boom')
+      master.save().then((result) => {
+        debug('Master Database Schema created');
+        debug(result);
+        app.locals.dbId = result._id;
+      }).catch((err) => {
+        debug("Err: ", err);
+      });
+    }
+    db.close();
+  });
+});
+
+/*
+const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 let db = mongoose.connection;
@@ -36,6 +69,7 @@ master.save().then((result) => {
 }).catch((err) => {
   debug("Err: ", err);
 });
+*/
 /*
 // auth
 const auth = require("http-auth");
