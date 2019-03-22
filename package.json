@@ -36,7 +36,7 @@
     "google-images": "^2.1.0",
     "htdigest": "^2.2.3",
     "http-auth": "^3.2.3",
-    "monk": "^6.0.6",
+    "mongoose": "^5.4.19",
     "morgan": "^1.9.1",
     "pos": "^0.4.2",
     "serve-favicon": "^2.5.0"

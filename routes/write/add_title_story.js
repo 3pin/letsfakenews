@@ -22,8 +22,9 @@ module.exports = (req, res) => {
         debug(result);
         debug('Document inserted to db successfully');
         res.send('Story Saved successfully');
+
         // fetch updated db
-        Master.findById(req.app.locals.dbId)
+        Master.findById(req.app.locals.dbId.stories.req.body._id)
           .then((docs) => {
             //if autolive is TRUE, then new-story should be auto added to activelist
             if (req.app.locals.autolive == true) {
@@ -38,6 +39,7 @@ module.exports = (req, res) => {
             debug(docs.stories)
             debug('SSE event triggered by New_Story');
           });
+          
       });
   }).catch((err) => {
     debug("Err: ", err);

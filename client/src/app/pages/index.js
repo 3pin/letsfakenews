@@ -1,5 +1,9 @@
 import React from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom';
 //
 import Landing from './landing';
 import Write from './write/index_write';
@@ -17,8 +21,9 @@ export default class Index extends React.Component {
     return body;
   }
   componentDidMount() {
-    // load the activelist for displat purposes
-    //this.callApi('/settings/activelist').then(res => console.log(res)).catch(err => console.log(err));
+    this.callApi('/settings/mode')
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
   }
   render() {
     return (<div>

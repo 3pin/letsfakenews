@@ -20,56 +20,6 @@ const
   bodyParser = require('body-parser'),
   path = require('path')
 //=============================================================================
-// mongoose DB connection
-const mongoose = require('mongoose');
-const db = mongoose.createConnection(process.env.MONGODB_URI, {
-  useNewUrlParser: true
-});
-let gate = false;
-db.on('open', function () {
-  db.db.listCollections().toArray(function (err, collectionNames) {
-    if (err) {
-      debug(err);
-      return;
-    }
-    debug(collectionNames);
-    debug(collectionNames.length);
-    if (collectionNames.length === 0) {
-      gate = true;
-      debug(`gate: ${gate}`);
-      // check / create mongoose 'Master' schema
-      const Master = require('./models/master.model');
-      const master = new Master();
-      debug('boom')
-      master.save().then((result) => {
-        debug('Master Database Schema created');
-        debug(result);
-        app.locals.dbId = result._id;
-      }).catch((err) => {
-        debug("Err: ", err);
-      });
-    }
-    db.close();
-  });
-});
-
-/*
-const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
-mongoose.Promise = global.Promise;
-let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-// check / create mongoose 'Master' schema
-const Master = require('./models/master.model');
-const master = new Master();
-master.save().then((result) => {
-  debug('Master Database Schema created');
-  debug(result);
-  app.locals.dbId = result._id;
-}).catch((err) => {
-  debug("Err: ", err);
-});
-*/
 /*
 // auth
 const auth = require("http-auth");
@@ -84,7 +34,6 @@ function middleware_auth(req, res, next) {
   return next();
 }
 */
-
 //=============================================================================
 // routes structure
 const write = require('./routes/write');
@@ -99,10 +48,12 @@ debug('App Name: ' + process.env.npm_package_name)
 debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.DB_STORIES + ' db_feedback:' + process.env.DB_FEEDBACK);
 //=============================================================================
 // module variables
-app.locals.entry_to_read = 0;        // id_to_read from above array
-app.locals.autolive = JSON.parse(process.env.AUTOLIVE);      // sets whether new-stories auto-display on main-screen or not
-app.locals.activelist = [];       // list of active stories for display
+app.locals.entry_to_read = 0; // id_to_read from above array
+app.locals.autolive = JSON.parse(process.env.AUTOLIVE); // sets whether new-stories auto-display on main-screen or not
+app.locals.activelist = []; // list of active stories for display
 app.locals.db_mode = 'next';
+app.locals.createDB = false;
+app.locals.dbId = '0';
 //=============================================================================
 // configuration
 app.set('views', path.join(__dirname, 'views'));
@@ -125,10 +76,23 @@ app.use(cookieParser());
 //app.use(express.static(path.join('../client', 'public')));
 
 // Make our db accessible to our router
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   req.db = db;
   next();
 });
+
+/*
+var middleware = {
+  globalLocals: function (req, res, next) {
+    res.locals({
+      dbId: dbId
+    });
+    next();
+  }
+};
+app.use(middleware.globalLocals);
+*/
+
 //=============================================================================
 // define that all routes are within the 'routes' folder
 app.use('/', write);
@@ -138,12 +102,12 @@ app.use('/settings', settings);
 //=============================================================================
 // Error Handlers
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // provides error reporting in development only
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -152,4 +116,73 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 //=============================================================================
+// DB setup
+const mongoose = require('mongoose');
+// Schemas
+const Master = require('./models/master.model');
+const master = new Master();
+// Connect and check is existing collection... else create new collection
+const options = {
+  useNewUrlParser: true,
+  keepAlive: true,
+  keepAliveInitialDelay: 300000,
+  promiseLibrary: Promise
+};
+mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
+  if (err) {
+    debug(err);
+  }
+  client.db.listCollections().toArray( (err, collections) => {
+    debug(collections);
+    // if there are no collectsion existing...
+    if (collections.length === 0) {
+      master.save().then((result) => {
+        debug(`No collections were found... Master Schema created: ${result._id}`);
+        app.locals.dbId = result._id;
+      }).catch((err) => {
+        debug("Err: ", err);
+      });
+      // else for collectsion that exist...
+    } else {
+      for (const [index,value] of collections.entries()) {
+        debug(value.name);
+        // if there is a collection matching the current project...
+        if (value.name === process.env.DATABASE) {
+          // load its _id
+          Master.find().then((result) => {
+            debug('Matching collection found: ' + result[0]._id);
+            //debug(index);
+            //debug(result);
+            app.locals.dbId = result[0]._id;
+          });
+          break;
+        } else if (index === collections.length-1) {
+          // if there is no matching collection...
+          master.save().then((result) => {
+            debug(`No matching collection found... Master Schema created with: ${result._id}`);
+            app.locals.dbId = result._id;
+          }).catch((err) => {
+            debug("Err: ", err);
+          });
+          break;
+        }
+      }
+    }
+  });
+});
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.on('connected', function (ref) {
+  debug("Connected mongo.")
+});
+db.on('open', function (ref) {
+  debug("Opened mongo.")
+});
+db.on('SIGINT', () => {
+  mongoose.connection.close(() => {
+    process.exit(0);
+  });
+});
+//=============================================================================
+
 module.exports = app;

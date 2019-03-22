@@ -9,4 +9,4 @@ let MasterSchema = new Schema({
 });
 
 // Export the model
-module.exports = mongoose.model('Master', MasterSchema);
+module.exports = mongoose.model('Master', MasterSchema, process.env.DATABASE);
