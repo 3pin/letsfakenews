@@ -175,33 +175,29 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   */
 });
 let db = mongoose.connection;
-db.once('open', function () {
+db.on('connected', function (ref) {
+  debug("Connected to mongoDB.");
+});
+db.on('open', function (ref) {
   // All OK - fire (emit) a ready event.
   app.emit('ready');
   // import mongoose schemas
   const Story = require('./models/story.model');
-  Story.find({type:"story", storylive: true }, function (e, docs) {
+  Story.find({}, {storylive: true}, function (e, docs) {
     docs.forEach( (entry) => {
       if (entry.storylive === true) {
         app.locals.activelist.push(entry._id);
       }
     });
-    debug(app.locals.activelist);
-    debug('Activelist loaded');
+    debug(`Activelist loaded: ${app.locals.activelist}`);
   });
-});
-db.on('error', console.error.bind(console, 'connection error:'));
-db.on('connected', function (ref) {
-  debug("Connected mongo.")
-});
-db.on('open', function (ref) {
-  debug("Opened mongo.")
 });
 db.on('SIGINT', () => {
   mongoose.connection.close(() => {
     process.exit(0);
   });
 });
+db.on('error', console.error.bind(console, 'connection error:'));
 //=============================================================================
 
 module.exports = app;

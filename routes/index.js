@@ -7,10 +7,10 @@ const debug = require('debug')('routes_index');
 const routes = require('express').Router();
 
 /* routes */
-const write = require('./write/index');
-const watch = require('./watch/index');
-const admin = require('./admin/index');
-const settings = require('./settings/index');
+const write = require('./write');
+const watch = require('./watch');
+const admin = require('./admin');
+const settings = require('./settings');
 /*
 //=============================================================================
 // authenticate

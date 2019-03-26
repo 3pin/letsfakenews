@@ -5,9 +5,9 @@ const debug = require('debug')('routes_settings');
 const routes = require('express').Router();
 
 /* routes */
-const sse = require('./sse');
-const mode = require('./mode');
-const activelist = require('./activelist');
+const sse = require('../controllers/settings/sse');
+const mode = require('../controllers/settings/mode');
+const activelist = require('../controllers/settings/activelist');
 
 /* this router */
 routes.get('/sse', sse);

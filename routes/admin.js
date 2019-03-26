@@ -7,13 +7,13 @@ const debug = require('debug')('routes_admin');
 const admin = require('express').Router();
 
 /* routes */
-const feedback = require('./feedback');
-const clear = require('./clear');
-const stories = require('./stories');
-const autolive = require('./autolive');
-const refresh = require('./refresh');
-const remove = require('./remove');
-const storylive = require('./storylive');
+const feedback = require('../controllers/admin/feedback');
+const clear = require('../controllers/admin/clear');
+const stories = require('../controllers/admin/stories');
+const autolive = require('../controllers/admin/autolive');
+const refresh = require('../controllers/admin/refresh');
+const remove = require('../controllers/admin/remove');
+const storylive = require('../controllers/admin/storylive');
 //
 // admin landing
 admin.get('/', (req, res) => {

@@ -6,8 +6,8 @@ const debug = require('debug')('routes_write');
 /* declare a new router */
 const write = require('express').Router();
 /* routes */
-const add_title_story = require('./add_title_story');
-const add_feedback = require('./add_feedback');
+const add_title_story = require('../controllers/write/add_title_story');
+const add_feedback = require('../controllers/write/add_feedback');
 
 //=============================================================================
 // REACT connection

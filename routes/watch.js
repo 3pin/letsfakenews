@@ -7,7 +7,7 @@ const debug = require('debug')('routes_watch');
 const watch = require('express').Router();
 
 /* routes */
-const request_new_story = require('./request_new_story');
+const request_new_story = require('../controllers/watch/request_new_story');
 
 // REACT connection
 watch.get('/', (req, res) => {
