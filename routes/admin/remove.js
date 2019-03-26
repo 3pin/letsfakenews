@@ -10,7 +10,7 @@ function remove(array, element) {
 }
 
 module.exports = (req, res) => {
-  debug('/DELETE routes/databases/remove');
+  debug('/routes/story/remove');
   // if entry was active... remove entry from activelist
   req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body._id);
   // delete the entry from db
@@ -29,7 +29,7 @@ module.exports = (req, res) => {
     }
   }).then(() => {
     // fetch the db to refresh the frontend
-    Story.find({type:'story'}).then((docs,err) => {
+    Story.find({}).then((docs,err) => {
       debug(docs);
       res.json({
         stories: docs

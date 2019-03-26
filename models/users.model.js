@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Base = require('./base.model');
 
 let UserSchema = new Schema({
-  type: {
-    type: String,
-    required: true
-  },
   username: {
     type: String,
     required: true
@@ -19,4 +16,4 @@ let UserSchema = new Schema({
 });
 
 // Export the model
-module.exports = mongoose.model('User', UserSchema);
+module.exports = Base.discriminator('User', UserSchema);

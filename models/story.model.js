@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Base = require('./base.model');
 
 let StorySchema = new Schema({
-  type: {
-    type: String,
-    required: true
-  },
   title: {
     type: String,
     required: true,
@@ -31,4 +28,4 @@ let StorySchema = new Schema({
 });
 
 // Export the model
-module.exports = mongoose.model('Story', StorySchema, );
+module.exports = Base.discriminator('Story', StorySchema, );

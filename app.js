@@ -125,7 +125,8 @@ const options = {
   useNewUrlParser: true,
   keepAlive: true,
   keepAliveInitialDelay: 300000,
-  promiseLibrary: Promise
+  promiseLibrary: Promise,
+  useFindAndModify: false
 };
 mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   if (err) {

@@ -2,6 +2,8 @@
 
 'use strict';
 const debug = require('debug')('routes_watch');
+// import mongoose schemas
+const Story = require('../../models/story.model');
 // module variable to hold the id to read from the db
 let id;
 
@@ -27,11 +29,8 @@ module.exports = (req, res) => {
   debug('id to read from activelist: ' + id);
 
   // fetch the JSON from db
-  debug('fetching the obj from db')
-  let collection = req.db.get(process.env.DB_STORIES);
-  collection.findOne({
-    _id: id
-  }, (err, data) => {
+  debug('fetching the obj from db');
+  Story.findById(id, (err, data) => {
     debug(data);
     res.send({
       data: data

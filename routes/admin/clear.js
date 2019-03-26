@@ -2,23 +2,23 @@
 
 const debug = require('debug')('routes_admin');
 // import mongoose 'Story' schema
-const Story = require('../../models/story.model');
+const Base = require('../../models/base.model');
 
 module.exports = (req, res) => {
   debug('/DELETE /routes/admin/clear')
   /* set the db collection */
   let query
   if (req.body.subject == 'Feedback') {
-    query = {type:'feedback'}
+    query = {__type:'Feedback'}
   } else if (req.body.subject == 'Stories') {
-    query = {type:'story'}
+    query = {__type:'Story'}
     /* empty the active activelist if we are clearing stories */
     req.app.locals.activelist = [];
     req.app.locals.entry_to_read = 0;
   }
   debug(query);
   /* delete a db entry */
-  Story.deleteMany(query).then((docs,err) => {
+  Base.deleteMany(query).then((docs,err) => {
     if (err) {
       debug(err);
     } else {

@@ -101,6 +101,7 @@ export default class Watch extends React.Component {
     }
   }
   onReady() {
+    console.log('ready');
     /* load new story into this.state */
     this.apiGet('/watch/request_new_story')
       .then((res) => this.setState({

@@ -7,7 +7,7 @@ const Story = require('../../models/story.model');
 module.exports = (req, res) => {
   debug('/GET /admin/stories');
   debug(req.app.locals.autolive);
-  Story.find({type:'story'}).then((docs) => {
+  Story.find({}).then((docs) => {
     //res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
       autolive: req.app.locals.autolive,

@@ -2,20 +2,12 @@
 
 const debug = require('debug')('routes_admin');
 // import mongoose schemas
-const Master = require('../../models/master.model');
 const Story = require('../../models/story.model');
-
-function remove(array, element) {
-  const index = array.indexOf(element);
-  array.splice(index, 1);
-}
 
 module.exports = (req, res) => {
   /* update an entries display-checkbox */
   debug('/PUT routes/databases/storylive');
-  debug('_id: ' + req.body._id);
-  debug('Currently set to: ' + req.body.storylive);
-  debug(req.body.storylive);
+  debug('_id: ' + req.body._id + ' currently set to: ' + req.body.storylive);
   // if checkbox is true/false... add/remove from activelist
   var new_status;
   if (req.body.storylive === true) {
@@ -38,29 +30,18 @@ module.exports = (req, res) => {
     });
   }
   //update database so the frontend continues to reflect status of the checbox
-  Master.findByIdAndUpdate(req.app.locals.dbId.stories.req.body._id,{storylive: new_status},{new:true}).then((docs,err) => {
-  //Story.findByIdAndUpdate(req.body._id,{storylive: new_status},{new:true}).then((docs,err) => {
+  const query = {_id: req.body._id};
+  Story.findOneAndUpdate(query, {storylive: new_status}, {new: true}).then((docs, err) => {
     if (err) {
-      debug('error');
       debug(err);
     } else {
-      debug('no error');
       debug(docs);
     }
   }).then(() => {
     // return updated version of the db to the frontend admin page
-    Master.findById(req.app.locals.dbId)
-    .then((docs) => {
-      // populate an array of _id's
-      let db_ids = [];
-      let object
-      for (object in docs.stories) {
-        db_ids.push(docs.stories[object]._id);
-        debug('[db_ids] _id: ' + docs.stories[object]._id);
-      }
-      debug('[db_ids] total_length: ' + db_ids.length);
-      res.json({
-        stories: docs.stories
+    Story.find({}).then((docs) => {
+      res.send({
+        stories: docs
       });
     });
   }).catch((err) => {

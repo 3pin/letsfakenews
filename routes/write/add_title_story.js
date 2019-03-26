@@ -12,9 +12,9 @@ module.exports = (req, res) => {
   //let collection = req.db.get(process.env.DATABASE);
   // receive title-story info
   let client_JSON = req.body
-  client_JSON.type = "story";
+  let title = req.body.title.toUpperCase();
+  client_JSON.title = title;
   client_JSON.storylive = req.app.locals.autolive;
-  debug(client_JSON);
   //process JSON... add NLP_words & matching urls
   const process_client_story = require('../../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
@@ -26,7 +26,7 @@ module.exports = (req, res) => {
         debug('Document inserted to db successfully');
         res.send('Story Saved successfully');
         // fetch updated db
-        Story.find({type:"story"}).then((docs) => {
+        Story.find({}).then((docs) => {
             debug(docs);
             //if autolive is TRUE, then new-story should be auto added to activelist
             if (req.app.locals.autolive == true) {

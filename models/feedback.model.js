@@ -1,11 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Base = require('./base.model');
 
 let FeedbackSchema = new Schema({
-  type: {
-    type: String,
-    required: true
-  },
   feedback: {
     type: String,
     required: true
@@ -19,4 +16,4 @@ let FeedbackSchema = new Schema({
 });
 
 // Export the model
-module.exports = mongoose.model('Feedback', FeedbackSchema);
+module.exports = Base.discriminator('Feedback', FeedbackSchema);
