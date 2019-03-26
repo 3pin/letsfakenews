@@ -16,7 +16,7 @@ module.exports = {
     return new Promise(function(resolve, reject) {
       let story = input_story;
       nlp.parse_nouns(story).then(nouns => {
-        imagesearch_iterative.iterative_url_search(nouns).then(urls => {
+        imagesearch_iterative.process(nouns).then(urls => {
           resolve(urls);
         })
       }).catch((err) => {

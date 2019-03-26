@@ -12,8 +12,11 @@ const chai = require('chai'),
 const process_client_feedback = require('../../modules/process_client_feedback.js');
 
 describe('testing function to prepare JSON obj for submission to db as feedback...', () => {
-  it('should take a string, create timestamp => return in a jsonOBJ', (done) => {
-    process_client_feedback.process('great').then((result) => {
+  it('should take a JSON with feedback, add a timestamp => return JSON', (done) => {
+    let feedback_JSON = {
+      feedback: "great"
+    };
+    process_client_feedback.process(feedback_JSON).then((result) => {
       debug(result);
       expect(result.feedback).to.equal('great');
       done();

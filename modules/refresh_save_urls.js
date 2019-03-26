@@ -28,7 +28,7 @@ module.exports = {
             urls: result
           }).then(() => {
             debug('1 story updated');
-            resolve(result);
+            debug(result);
           });
         })
       }).catch((error) => {

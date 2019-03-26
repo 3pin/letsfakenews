@@ -16,7 +16,6 @@ module.exports = {
       var promises = idArray.map(refresh_save_urls.process)
       Promise.all(promises).then((result) => {
         debug(result);
-        resolve(result);
       }).catch((error) => {
         debug("Failed!", error);
       });

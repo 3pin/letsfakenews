@@ -16,7 +16,7 @@ module.exports = {
     debug(obj);
     return new Promise(function(resolve, reject) {
       let words = obj.words;
-      imagesearch_iterative.iterative_url_search(words).then(urls => {
+      imagesearch_iterative.process(words).then(urls => {
         obj.urls = urls;
         debug(obj);
         resolve(obj);
