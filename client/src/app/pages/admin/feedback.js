@@ -5,6 +5,8 @@ export default class Feedback extends React.Component {
   constructor(props) {
     super(props);
     this.apiGet = this.apiGet.bind(this);
+    this.apiPost = this.apiPost.bind(this);
+    this.handleClear = this.handleClear.bind(this);
     this.state = {
       feedback: []
     };
@@ -31,10 +33,11 @@ export default class Feedback extends React.Component {
     return body;
   };
   handleClear() {
+    /* Connect to API and clear all from database */
     document.activeElement.blur();
     /* Connect to API and clear feedback from database */
     let data = {
-      database: this.props.database
+      subject: this.props.title
     }
     this.apiPost(this.props.apiClear, data).then(res => this.setState({
       feedback: res.data
@@ -77,8 +80,9 @@ export default class Feedback extends React.Component {
             <td>Clear all entries from database</td>
             <td>
               <button
-              onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear.bind(this) : document.activeElement.blur() } } 
-              title="clear" type="button" className="btn btn-danger show_tip clear "></button>
+              type="button"
+              onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }
+              className="btn btn-danger show_tip clear"></button>
             </td>
           </tr>
         </tbody>

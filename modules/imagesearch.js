@@ -1,8 +1,7 @@
 /* a module that...
 takes a searchterm
-finds the first returned image from google-image-search
-prints the searchterm & URL
-saves as an entry to a JSON file */
+matches searchterm:image via google-image-search
+*/
 
 'use strict';
 const debug = require('debug')('imagesearch')
@@ -19,7 +18,7 @@ module.exports = {
   single_url_search: function(input_text) {
     return new Promise(function(resolve, reject) {
       let searchterm = input_text
-      debug(searchterm)
+      debug(searchterm);
       client.search(searchterm, searchSettings).then((result) => {
         let urlArray = []
         for (let value of result) {

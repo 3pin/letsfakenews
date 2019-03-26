@@ -56,7 +56,7 @@ export default class Stories extends React.Component {
     document.activeElement.blur();
     /* Connect to API and clear feedback from database */
     let data = {
-      database: this.props.database
+      subject: this.props.title
     }
     this.apiPost(this.props.apiClear, data).then(res => this.setState({
       stories: res.data

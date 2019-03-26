@@ -1,8 +1,7 @@
-/* a module that...
-takes a searchterm
-finds the first returned image from google-image-search
-prints the searchterm & URL
-saves as an entry to a JSON file
+/*
+takes an array of DB documents
+processes the URLS field in each
+return the updates array of DB documents
 */
 
 'use strict';
@@ -13,11 +12,10 @@ module.exports = {
 
   //for an array of nouns: find an image-url to match a noun
   process: function(input_array) {
-    let array = input_array
     return new Promise((resolve, reject) => {
-      var promises = array.map(refresh_urls.process)
+      var promises = input_array.map(refresh_urls.process)
       Promise.all(promises).then((result) => {
-          resolve(result)
+          resolve(result);
         }).catch((error) => {
         debug("Failed!", error);
       });

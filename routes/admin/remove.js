@@ -29,7 +29,7 @@ module.exports = (req, res) => {
     }
   }).then(() => {
     // fetch the db to refresh the frontend
-    Story.find({}).then((docs,err) => {
+    Story.find({type:'story'}).then((docs,err) => {
       debug(docs);
       res.json({
         stories: docs

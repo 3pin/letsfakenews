@@ -40,7 +40,6 @@ const write = require('./routes/write');
 const admin = require('./routes/admin');
 const watch = require('./routes/watch');
 const settings = require('./routes/settings');
-
 //=============================================================================
 // initialize
 const app = express();
@@ -132,7 +131,9 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   if (err) {
     debug(err);
   }
-  client.db.listCollections().toArray( (err, collections) => {
+  /*
+  // check for existing collections
+  client.db.listCollections().toArray((err, collections) => {
     debug(collections);
     // if there are no collectsion existing...
     if (collections.length === 0) {
@@ -144,7 +145,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
       });
       // else for collectsion that exist...
     } else {
-      for (const [index,value] of collections.entries()) {
+      for (const [index, value] of collections.entries()) {
         debug(value.name);
         // if there is a collection matching the current project...
         if (value.name === process.env.DATABASE) {
@@ -152,11 +153,12 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
           Master.find().then((result) => {
             debug('Matching collection found: ' + result[0]._id);
             //debug(index);
-            //debug(result);
+            //
+            debug(result);
             app.locals.dbId = result[0]._id;
           });
           break;
-        } else if (index === collections.length-1) {
+        } else if (index === collections.length - 1) {
           // if there is no matching collection...
           master.save().then((result) => {
             debug(`No matching collection found... Master Schema created with: ${result._id}`);
@@ -169,8 +171,24 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
       }
     }
   });
+  */
 });
 let db = mongoose.connection;
+db.once('open', function () {
+  // All OK - fire (emit) a ready event.
+  app.emit('ready');
+  // import mongoose schemas
+  const Story = require('./models/story.model');
+  Story.find({type:"story", storylive: true }, function (e, docs) {
+    docs.forEach( (entry) => {
+      if (entry.storylive === true) {
+        app.locals.activelist.push(entry._id);
+      }
+    });
+    debug(app.locals.activelist);
+    debug('Activelist loaded');
+  });
+});
 db.on('error', console.error.bind(console, 'connection error:'));
 db.on('connected', function (ref) {
   debug("Connected mongo.")

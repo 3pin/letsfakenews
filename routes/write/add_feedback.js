@@ -2,24 +2,28 @@
 const debug = require('debug')('routes_write');
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');
+// import mongoose schemas
+const Feedback = require('../../models/feedback.model');
 
 module.exports = (req, res) => {
-  debug('/POST routes/add_feedback')
+  debug('/POST routes/add_feedback');
   // Get our form values. These rely on the "name" attributes
   let client_JSON = req.body;
+  client_JSON.type = "feedback";
   debug(client_JSON);
   const process_client_feedback = require('../../modules/process_client_feedback.js');
   process_client_feedback.process(client_JSON).then((result) => {
     debug('About to save to db');
     // Save to the DB
-    let collection = req.db.get(process.env.DB_FEEDBACK);
-    collection.insert(result).then((output) => {
+    let feedback = new Feedback({ ...result});
+    feedback.save()
+    .then((output) => {
       debug('Document inserted to db_feedback successfully');
       res.send('Feedback inserted into database successfully');
     }).then(() => {
       debug('Refreshing the feedback-admin-frontend');
       // fetch the updated db
-      collection.find({}, {sort: {_id: 1}}, function(err, docs) {
+      Feedback.find({type:"feedback"}).then((docs) => {
         //if autolive is TRUE, then new-story should be auto added to activelist
         if (req.app.locals.autolive == true) {
           req.app.locals.activelist.push(docs[docs.length - 1]._id);

@@ -4,7 +4,6 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 import Landing from './landing';
 import Stories from './stories';
 import Feedback from './feedback';
-import Bootstrap from './bootstrap';
 
 export default class IndexAdmin extends React.Component {
   constructor() {
@@ -34,7 +33,6 @@ export default class IndexAdmin extends React.Component {
         <Route path="/admin/feedback" render={() =>
           <Feedback
           title="Feedback"
-          database="DB_FEEDBACK"
           desc="Use this page to view user feedback in realtime"
           apiHello="/admin/feedback"
           apiClear="/admin/clear"
@@ -43,7 +41,6 @@ export default class IndexAdmin extends React.Component {
         <Route path="/admin/stories" render={() =>
           <Stories
           title="Stories"
-          database="DB_STORIES"
           desc="Use this page to moderate fakenews stories in realtime"
           apiHello="/admin/stories"
           apiAutolive="/admin/stories/autolive"
@@ -53,7 +50,6 @@ export default class IndexAdmin extends React.Component {
           apiStorylive="/admin/story/storylive"
           />
         }/>
-        <Route path="/admin/bootstrap" component={Bootstrap}/>
         <Redirect to="/admin"/>
       </Switch>
     </div>)

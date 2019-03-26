@@ -24,7 +24,7 @@ module.exports = {
         nlp.parse_nouns(client_JSON.story).then((words) => {
           // add nouns to the JSON
           client_JSON.words = words
-          imagesearch_iterative.iterative_url_search(words).then((urls) => {
+          imagesearch_iterative.process(words).then((urls) => {
             // add URLs to the JSON
             client_JSON.urls = urls
             resolve(client_JSON)

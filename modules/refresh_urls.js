@@ -1,4 +1,4 @@
-/* a module that...
+/*
 takes a JSON-obj
 extracts its nouns field to an []
 via middleware... creates a urls[] per item in nouns[]
