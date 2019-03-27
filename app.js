@@ -70,13 +70,25 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
-// condense the visible URL address in a client's browser
-//app.use(express.static(path.join(__dirname, 'build')));
-//app.use(express.static(path.join(__dirname, 'public')));
-//app.use(express.static(path.join('../client', 'build')));
-
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+// production mode
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  //
+  app.get('*', (req, res) => {
+    res.sendfile(path.join(__dirname = 'client/build/index.html'));
+  })
+}
+// dev mode
+else {
+  app.use(express.static(path.join(__dirname, 'client/public')));
+}
+//local mode
+/*
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/public/index.html'));
+})
+*/
 
 // Make our db accessible to our router
 app.use(function (req, res, next) {
@@ -136,47 +148,6 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   if (err) {
     debug(err);
   }
-  /*
-  // check for existing collections
-  client.db.listCollections().toArray((err, collections) => {
-    debug(collections);
-    // if there are no collectsion existing...
-    if (collections.length === 0) {
-      master.save().then((result) => {
-        debug(`No collections were found... Master Schema created: ${result._id}`);
-        app.locals.dbId = result._id;
-      }).catch((err) => {
-        debug("Err: ", err);
-      });
-      // else for collectsion that exist...
-    } else {
-      for (const [index, value] of collections.entries()) {
-        debug(value.name);
-        // if there is a collection matching the current project...
-        if (value.name === process.env.DATABASE) {
-          // load its _id
-          Master.find().then((result) => {
-            debug('Matching collection found: ' + result[0]._id);
-            //debug(index);
-            //
-            debug(result);
-            app.locals.dbId = result[0]._id;
-          });
-          break;
-        } else if (index === collections.length - 1) {
-          // if there is no matching collection...
-          master.save().then((result) => {
-            debug(`No matching collection found... Master Schema created with: ${result._id}`);
-            app.locals.dbId = result._id;
-          }).catch((err) => {
-            debug("Err: ", err);
-          });
-          break;
-        }
-      }
-    }
-  });
-  */
 });
 let db = mongoose.connection;
 db.on('connected', function (ref) {
@@ -187,8 +158,10 @@ db.on('open', function (ref) {
   app.emit('ready');
   // import mongoose schemas
   const Story = require('./models/story.model');
-  Story.find({}, {storylive: true}, function (e, docs) {
-    docs.forEach( (entry) => {
+  Story.find({}, {
+    storylive: true
+  }, function (e, docs) {
+    docs.forEach((entry) => {
       if (entry.storylive === true) {
         app.locals.activelist.push(entry._id);
       }
