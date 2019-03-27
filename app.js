@@ -71,8 +71,11 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 // condense the visible URL address in a client's browser
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'build')));
+//app.use(express.static(path.join(__dirname, 'build')));
 //app.use(express.static(path.join(__dirname, 'public')));
-//app.use(express.static(path.join('../client', 'public')));
+//app.use(express.static(path.join('../client', 'build')));
 
 // Make our db accessible to our router
 app.use(function (req, res, next) {
