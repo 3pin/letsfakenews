@@ -71,11 +71,10 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 // condense the visible URL address in a client's browser
-app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, 'build')));
 //app.use(express.static(path.join(__dirname, 'build')));
 //app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join('../client', 'build')));
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
