@@ -69,8 +69,9 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-
+//=============================================================================
 // Serve static files from the React app
+
 // production mode
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
@@ -79,10 +80,11 @@ if (process.env.NODE_ENV === 'production') {
     res.sendfile(path.join(__dirname = 'client/build/index.html'));
   })
 }
-// dev mode
+// local mode
 else {
   app.use(express.static(path.join(__dirname, 'client/public')));
 }
+
 //local mode
 /*
 app.get('*', (req, res) => {
