@@ -48,7 +48,7 @@ debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' 
 //=============================================================================
 // module variables
 app.locals.entry_to_read = 0; // id_to_read from above array
-app.locals.autolive = JSON.parse(process.env.AUTOLIVE); // sets whether new-stories auto-display on main-screen or not
+app.locals.autolive = false; // sets whether new-stories auto-display on main-screen or not
 app.locals.activelist = []; // list of active stories for display
 app.locals.db_mode = 'next';
 app.locals.createDB = false;
@@ -155,6 +155,9 @@ db.on('connected', function (ref) {
 db.on('open', function (ref) {
   // All OK - fire (emit) a ready event.
   app.emit('ready');
+  // load the autolive setting
+  app.locals.autolive = process.env.AUTOLIVE;
+  debug(`autolive setting: ${app.locals.autolive}`);
   // import mongoose schemas
   const Story = require('./models/story.model');
   Story.find({}, {
