@@ -6,9 +6,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "client": "cd ../client && npm start",
+    "server": "nodemon ./bin/www",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\" ",
     "test_coverage_text": "nyc --reporter=text mocha ./test --recursive",
     "test_coverage_html": "nyc --reporter=html mocha ./test --recursive",
     "test": "mocha ./test --recursive",

@@ -76,6 +76,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 //app.use(express.static(path.join(__dirname, 'build')));
 //app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join('../client', 'build')));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Make our db accessible to our router
 app.use(function (req, res, next) {
