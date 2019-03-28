@@ -46,36 +46,28 @@ const app = express();
 debug('App Name: ' + process.env.npm_package_name)
 debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.DB_STORIES + ' db_feedback:' + process.env.DB_FEEDBACK);
 //=============================================================================
-// module variables
-app.locals.entry_to_read = 0; // id_to_read from above array
-app.locals.autolive = false; // sets whether new-stories auto-display on main-screen or not
-app.locals.activelist = []; // list of active stories for display
-app.locals.db_mode = 'next';
-//=============================================================================
 // configuration
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //=============================================================================
 // middleware
+
 app.use(logger('dev'));
-/*
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(favicon(path.join('../client', 'public', 'favicon.ico')));
-*/
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+//app.use(favicon(path.join('../client', 'public', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-//=============================================================================
-// Serve static files from the React app
 
-// production mode
+// Serve static files from the React app
+// ... production mode
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
   //app.get('*', (req, res) => {res.sendfile(path.join(__dirname = 'client/build/index.html'));})
 }
-// local mode
+// ... local mode
 else {
   app.use(express.static(path.join(__dirname, 'client/public')));
 }
@@ -92,24 +84,9 @@ app.use(function (req, res, next) {
   req.db = db;
   next();
 });
-
+// fetch dbSettings from db
 const dbSettingsFetch = require('./controllers/settings/dbSettingsFetch');
 app.use(dbSettingsFetch);
-
-/*
-app.use(function (req, res, next) {
-  debug('using app-level middleware');
-  const Settings = require('./models/settings.model');
-  Settings.find({}).then((data) => {
-    debug(data);
-    req.dbSettings = data;
-    next()
-  }).catch(function (error) {
-    res.status(500).end() //replace with proper error handling
-  })
-})
-*/
-
 //=============================================================================
 // define that all routes are within the 'routes' folder
 app.use('/', write);
