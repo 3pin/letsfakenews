@@ -84,9 +84,25 @@ app.use(function (req, res, next) {
   req.db = db;
   next();
 });
+
 // fetch dbSettings from db
+/*
 const dbSettingsFetch = require('./controllers/settings/dbSettingsFetch');
 app.use(dbSettingsFetch);
+*/
+app.use(function (req,res,next) {
+  debug("Entered app-level middleware");
+  const Settings = require('./models/settings.model');
+  // import mongoose schemas
+  Settings.find({}).then((data) => {
+    debug(data[0]);
+    req.dbSettings = data[0];
+    next();
+  }).catch(function (err) {
+    res.status(500).end();
+    next(err);
+  })
+})
 //=============================================================================
 // define that all routes are within the 'routes' folder
 app.use('/', write);

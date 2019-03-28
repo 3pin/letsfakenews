@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   Settings.find({}).then((data) => {
     debug(data);
     req.dbSettings = data[0];
-    next()
+    next();
   }).catch(function (err) {
     res.status(500).end();
     next(err);
