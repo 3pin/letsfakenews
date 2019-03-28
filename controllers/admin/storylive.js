@@ -3,8 +3,10 @@
 const debug = require('debug')('routes_admin');
 // import mongoose schemas
 const Story = require('../../models/story.model');
+const Settings = require('../../models/settings.model');
 
 module.exports = (req, res) => {
+  let dbSettings = req.dbSettings;
   /* update an entries display-checkbox */
   debug('/PUT routes/databases/storylive');
   debug('_id: ' + req.body._id + ' currently set to: ' + req.body.storylive);
@@ -12,26 +14,44 @@ module.exports = (req, res) => {
   var new_status;
   if (req.body.storylive === true) {
     debug('Setting to FALSE');
-    new_status = false
-    req.app.locals.activelist = req.app.locals.activelist.filter(item => item != req.body._id);
-    req.app.locals.activelist.forEach(function (item, index) {
-      debug(item);
-    });
+    new_status = false;
+    dbSettings.activelist = dbSettings.activelist.filter(item => item != req.body._id);
+    Settings.findOneAndUpdate({}, {
+        activelist: dbSettings.activelist
+      }, {
+        new: true
+      })
+      .then((res) => {
+        debug('response');
+        debug(res);
+      });
   } else {
     debug('Setting to TRUE');
     new_status = true;
-    req.app.locals.activelist.push(req.body._id);
-    req.app.locals.entry_to_read = req.app.locals.activelist.length - 1;
-    req.app.locals.db_mode = 'next';
-    debug(`db_mode: ${req.app.locals.db_mode}`);
-    debug(`entry_to_read: ${req.app.locals.entry_to_read}`);
-    req.app.locals.activelist.forEach(function (item, index) {
-      debug(item);
-    });
+    dbSettings.activelist.push(req.body._id);
+    dbSettings.entry_to_read = dbSettings.activelist.length - 1;
+    dbSettings.db_mode = 'next';
+    Settings.findOneAndUpdate({}, {
+        activelist: dbSettings.activelist,
+        entry_to_read: dbSettings.entry_to_read,
+        db_mode: dbSettings.db_mode
+      }, {
+        new: true
+      })
+      .then((res) => {
+        debug('response');
+        debug(res);
+      });
   }
   //update database so the frontend continues to reflect status of the checbox
-  const query = {_id: req.body._id};
-  Story.findOneAndUpdate(query, {storylive: new_status}, {new: true}).then((docs, err) => {
+  const query = {
+    _id: req.body._id
+  };
+  Story.findOneAndUpdate(query, {
+    storylive: new_status
+  }, {
+    new: true
+  }).then((docs, err) => {
     if (err) {
       debug(err);
     } else {

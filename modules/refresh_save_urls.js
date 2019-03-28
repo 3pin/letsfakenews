@@ -28,7 +28,6 @@ module.exports = {
             urls: result
           }).then(() => {
             debug('1 story updated');
-            debug(result);
           });
         })
       }).catch((error) => {

@@ -9,7 +9,6 @@ module.exports = (req, res) => {
   Feedback.find({}).then((docs) => {
     //res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
-      autolive: req.app.locals.autolive,
       feedback: docs
     });
   });

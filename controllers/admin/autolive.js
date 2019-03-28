@@ -1,23 +1,32 @@
 'use strict';
 
 const debug = require('debug')('routes_admin');
+const Settings = require('../../models/settings.model');
 
 module.exports = (req, res) => {
   /* update an entries display-checkbox */
-  debug('About to switch autolive status... ');
-  debug('Autolive status currently set to: ' + req.app.locals.autolive);
-  debug(req.app.locals.autolive);
-  if (req.app.locals.autolive === true) {
+  let dbSettings = req.dbSettings;
+  debug('About to switch autolive status...status currently set to: ' + dbSettings.autolive);
+  if (dbSettings.autolive === true) {
     debug('Setting to FALSE');
-    req.app.locals.autolive = false;
+    dbSettings.autolive = false;
     res.json({
       autolive: false
     });
   } else {
     debug('Setting to TRUE');
-    req.app.locals.autolive = true;
+    dbSettings.autolive = true;
     res.json({
       autolive: true
     });
   }
+  Settings.findOneAndUpdate({}, {
+      autolive: dbSettings.autolive
+    }, {
+      new: true
+    })
+    .then((res) => {
+      debug('response');
+      debug(res);
+    });
 }

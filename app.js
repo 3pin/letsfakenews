@@ -51,8 +51,6 @@ app.locals.entry_to_read = 0; // id_to_read from above array
 app.locals.autolive = false; // sets whether new-stories auto-display on main-screen or not
 app.locals.activelist = []; // list of active stories for display
 app.locals.db_mode = 'next';
-app.locals.createDB = false;
-app.locals.dbId = '0';
 //=============================================================================
 // configuration
 app.set('views', path.join(__dirname, 'views'));
@@ -95,16 +93,21 @@ app.use(function (req, res, next) {
   next();
 });
 
+const dbSettingsFetch = require('./controllers/settings/dbSettingsFetch');
+app.use(dbSettingsFetch);
+
 /*
-var middleware = {
-  globalLocals: function (req, res, next) {
-    res.locals({
-      dbId: dbId
-    });
-    next();
-  }
-};
-app.use(middleware.globalLocals);
+app.use(function (req, res, next) {
+  debug('using app-level middleware');
+  const Settings = require('./models/settings.model');
+  Settings.find({}).then((data) => {
+    debug(data);
+    req.dbSettings = data;
+    next()
+  }).catch(function (error) {
+    res.status(500).end() //replace with proper error handling
+  })
+})
 */
 
 //=============================================================================
@@ -132,9 +135,6 @@ app.use(function (err, req, res, next) {
 //=============================================================================
 // DB setup
 const mongoose = require('mongoose');
-// Schemas
-const Master = require('./models/master.model');
-const master = new Master();
 // Connect and check is existing collection... else create new collection
 const options = {
   useNewUrlParser: true,
@@ -147,29 +147,83 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   if (err) {
     debug(err);
   }
+  // check for existing collections
+  client.db.listCollections().toArray((err, collections) => {
+    debug(collections);
+    // settings schema
+    const Base = require('./models/base.model');
+    const Settings = require('./models/settings.model');
+    let settingsObj = {
+      entry_to_read: parseInt(process.env.ENTRY_TO_READ),
+      autolive: Boolean(process.env.AUTOLIVE),
+      activelist: [],
+      db_mode: process.env.DB_MODE
+    }
+    // if there are no collections existing...
+    if (collections.length === 0) {
+      debug('No collections exist... creating a settings entry');
+      let settings = new Settings({ ...settingsObj
+      });
+      settings.save().then((res) => {
+        debug(res);
+      });
+    }
+    // else for collectsion that exist...
+    else {
+      for (const [index, value] of collections.entries()) {
+        debug(value.name);
+        // if there is a collection matching the current project...
+        if (value.name === process.env.DATABASE) {
+          debug('Collection already exists... updating existing settings entry');
+          // load _ids of all live-stories into activelist[]
+          let activelist = [];
+          const Story = require('./models/story.model');
+          Story.find({}, {
+              storylive: true
+            }, function (e, docs) {
+              docs.forEach((entry) => {
+                if (entry.storylive === true) {
+                  activelist.push(entry._id);
+                }
+              });
+            })
+            .then(() => {
+              settingsObj.activelist = activelist;
+              debug(settingsObj.activelist);
+              Settings.findOneAndUpdate({}, { $set: { activelist: settingsObj.activelist }}, {new: false})
+                .then((res) => {
+                  debug('app response');
+                  debug(res);
+                });
+
+            });
+        }
+        // if there is no matching collection...
+        else if (index === collections.length - 1) {
+          debug('Existing colections dont match current project... creating a settings entry');
+          let settingsObj = {
+            entry_to_read: process.env.ENTRY_TO_READ,
+            autolive: process.env.AUTOLIVE,
+            activelist: [],
+            db_mode: process.env.DB_MODE
+          }
+          let settings = new Settings({
+            settingsObj
+          });
+          settings.save().then((res) => {
+            debug(res);
+          });
+        }
+      }
+    }
+  });
 });
 let db = mongoose.connection;
 db.on('connected', function (ref) {
   debug("Connected to mongoDB.");
 });
 db.on('open', function (ref) {
-  // All OK - fire (emit) a ready event.
-  app.emit('ready');
-  // load the autolive setting
-  app.locals.autolive = process.env.AUTOLIVE;
-  debug(`autolive setting: ${app.locals.autolive}`);
-  // import mongoose schemas
-  const Story = require('./models/story.model');
-  Story.find({}, {
-    storylive: true
-  }, function (e, docs) {
-    docs.forEach((entry) => {
-      if (entry.storylive === true) {
-        app.locals.activelist.push(entry._id);
-      }
-    });
-    debug(`Activelist loaded: ${app.locals.activelist}`);
-  });
+  debug("Opened mongoDB");
 });
 db.on('SIGINT', () => {
   mongoose.connection.close(() => {

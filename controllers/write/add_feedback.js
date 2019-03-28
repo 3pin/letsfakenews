@@ -13,29 +13,22 @@ module.exports = (req, res) => {
   process_client_feedback.process(client_JSON).then((result) => {
     debug('About to save to db');
     // Save to the DB
-    let feedback = new Feedback({ ...result});
-    feedback.save()
-    .then((output) => {
-      debug('Document inserted to db_feedback successfully');
-      res.send('Feedback inserted into database successfully');
-    }).then(() => {
-      debug('Refreshing the feedback-admin-frontend');
-      // fetch the updated db
-      Feedback.find({}).then((docs) => {
-        //if autolive is TRUE, then new-story should be auto added to activelist
-        if (req.app.locals.autolive == true) {
-          req.app.locals.activelist.push(docs[docs.length - 1]._id);
-          req.app.locals.entry_to_read = req.app.locals.activelist.length - 1;
-          req.app.locals.db_mode = 'next';
-          debug(req.app.locals.activelist);
-          debug(req.app.locals.entry_to_read);
-        }
-        // tell eventbus about a new-feedback to trigger refresh of admin-frontend
-        bus.emit('feedback', docs);
-        debug('SSE event triggered by New_Feedback');
-      });
-    }).catch((err) => {
-      debug("Err: ", err);
+    let feedback = new Feedback({ ...result
     });
+    feedback.save()
+      .then((output) => {
+        debug('Document inserted to db_feedback successfully');
+        res.send('Feedback inserted into database successfully');
+      }).then(() => {
+        debug('Refreshing the feedback-admin-frontend');
+        // fetch the updated db
+        Feedback.find({}).then((docs) => {
+          // tell eventbus about a new-feedback to trigger refresh of admin-frontend
+          bus.emit('feedback', docs);
+          debug('SSE event triggered by New_Feedback');
+        });
+      }).catch((err) => {
+        debug("Err: ", err);
+      });
   });
 }
