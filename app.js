@@ -155,7 +155,13 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
     // if there are no collections existing...
     if (collections.length === 0) {
       debug('No collections exist... creating a settings entry');
-      let settings = new Settings({ ...settingsObj});
+      let settings = new Settings({
+        entry_to_read: settingsObj.entry_to_read,
+        autolive: settingsObj.autolive,
+        autolive: settingsObj.autolive,
+        activelist: settingsObj.activelist,
+        db_mode: settingsObj.db_mode
+      });
       settings.save().then((res) => {
         debug(res);
       });
@@ -195,12 +201,18 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
         else if (index === collections.length - 1) {
           debug('Existing colections dont match current project... creating a settings entry');
           let settingsObj = {
-            entry_to_read: process.env.ENTRY_TO_READ,
-            autolive: process.env.AUTOLIVE,
+            entry_to_read: parseInt(process.env.ENTRY_TO_READ),
+            autolive: Boolean(process.env.AUTOLIVE),
             activelist: [],
             db_mode: process.env.DB_MODE
           }
-          let settings = new Settings({settingsObj});
+          let settings = new Settings({
+            entry_to_read: settingsObj.entry_to_read,
+            autolive: settingsObj.autolive,
+            autolive: settingsObj.autolive,
+            activelist: settingsObj.activelist,
+            db_mode: settingsObj.db_mode
+          });
           settings.save().then((res) => {
             debug(res);
           });
