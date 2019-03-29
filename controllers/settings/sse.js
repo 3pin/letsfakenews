@@ -6,28 +6,29 @@ const debug = require('debug')('routes_settings');
 const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
-  /* stop SSE when client closes connection
+  /* stop SSE when client closes connection */
   req.on("close", () => {
     if (!res.finished) {
       res.end();
-      console.log("Stopped sending events.");
+      debug("Stopped sending events.");
     }
   });
-  */
+
   // setup
   debug('a client subscribed to /sse endpoint');
   //req.setTimeout(0);
   res.set({Connection: "keep-alive", 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', "Access-Control-Allow-Origin": "*"});
-  // send a startup & keepalive message
+
+  // send startup message
   res.write(`event: startup\n`);
   res.write(`data: Server received your /sse request\n\n`);
-  //
-  /* a dummy event to keep the connection from timing-out
+
+  // send a repeating dummy event to keep the connection from timing-out
   setInterval(function() {
-    res.write(`: SSE keep-alive dummy-comment\n`);
-    debug('Emmitted an SSE keep-alive comment');
+    res.write(`event: keepalive\n`);
+    res.write(`: SSE keep-alive dummy-comment\n\n`);
+    debug('Emmitted an SSE keep-alive event');
   }, process.env.KEEPALIVE);
-  */
   //
   // send an 'admin' message
   bus.on('admin', (data) => {

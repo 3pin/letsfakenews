@@ -1,4 +1,4 @@
-const debug = require('debug')('dbSettings');
+const debug = require('debug')('middleware');
 const Settings = require('../../models/settings.model');
 
 module.exports = (dbSettings) => {
