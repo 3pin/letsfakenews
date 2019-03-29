@@ -66,20 +66,16 @@ app.use(cookieParser());
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
   app.get('*', (req, res) => {
-    res.sendfile(path.join(__dirname = 'client/build/index.html'));
+    res.sendFile(path.join(__dirname = 'client/build/index.html'));
   })
 }
 // ... local mode
 else {
   app.use(express.static(path.join(__dirname, 'client/public')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/public/index.html'));
+  })
 }
-
-//local mode
-/*
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/public/index.html'));
-})
-*/
 
 // Make our db accessible to our router
 app.use(function (req, res, next) {
