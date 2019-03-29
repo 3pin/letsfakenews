@@ -86,23 +86,8 @@ app.use(function (req, res, next) {
 });
 
 // fetch dbSettings from db
-/*
-const dbSettingsFetch = require('./controllers/settings/dbSettingsFetch');
+const dbSettingsFetch = require('./controllers/middleware/dbSettingsFetch');
 app.use(dbSettingsFetch);
-*/
-app.use(function (req,res,next) {
-  debug("Entered app-level middleware");
-  const Settings = require('./models/settings.model');
-  // import mongoose schemas
-  Settings.find({}).then((data) => {
-    debug(data[0]);
-    req.dbSettings = data[0];
-    next();
-  }).catch(function (err) {
-    res.status(500).end();
-    next(err);
-  })
-})
 //=============================================================================
 // define that all routes are within the 'routes' folder
 app.use('/', write);
@@ -136,15 +121,27 @@ const options = {
   promiseLibrary: Promise,
   useFindAndModify: false
 };
+let db = mongoose.connection;
+db.on('connected', function (ref) {
+  debug("Connected to mongoDB.");
+});
+db.on('open', function (ref) {
+  debug("Opened mongoDB");
+});
+db.on('SIGINT', () => {
+  mongoose.connection.close(() => {
+    process.exit(0);
+  });
+});
+db.on('error', console.error.bind(console, 'connection error:'));
 mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   if (err) {
     debug(err);
   }
   // check for existing collections
   client.db.listCollections().toArray((err, collections) => {
-    debug(collections);
+    //debug(collections);
     // settings schema
-    const Base = require('./models/base.model');
     const Settings = require('./models/settings.model');
     let settingsObj = {
       entry_to_read: parseInt(process.env.ENTRY_TO_READ),
@@ -154,14 +151,8 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
     }
     // if there are no collections existing...
     if (collections.length === 0) {
-      debug('No collections exist... creating a settings entry');
-      let settings = new Settings({
-        entry_to_read: settingsObj.entry_to_read,
-        autolive: settingsObj.autolive,
-        autolive: settingsObj.autolive,
-        activelist: settingsObj.activelist,
-        db_mode: settingsObj.db_mode
-      });
+      debug('No collections exist... creating a settings document');
+      let settings = new Settings(settingsObj);
       settings.save().then((res) => {
         debug(res);
       });
@@ -169,7 +160,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
     // else for collectsion that exist...
     else {
       for (const [index, value] of collections.entries()) {
-        debug(value.name);
+        //debug(value.name);
         // if there is a collection matching the current project...
         if (value.name === process.env.DATABASE) {
           debug('Collection already exists... updating existing settings entry');
@@ -187,32 +178,17 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
             })
             .then(() => {
               settingsObj.activelist = activelist;
-              debug(settingsObj.activelist);
-              Settings.findOneAndUpdate({}, { $set: { activelist: settingsObj.activelist }}, {new: false})
-                .then((res) => {
-                  debug('app response');
-                  debug(res);
-                });
-
+              const dbSettingsUpdate = require('./controllers/middleware/dbSettingsUpdate');
+              dbSettingsUpdate(settingsObj).then((res) => {
+                debug(res);
+              });
             });
-            break;
+          break;
         }
         // if there is no matching collection...
         else if (index === collections.length - 1) {
           debug('Existing colections dont match current project... creating a settings entry');
-          let settingsObj = {
-            entry_to_read: parseInt(process.env.ENTRY_TO_READ),
-            autolive: Boolean(process.env.AUTOLIVE),
-            activelist: [],
-            db_mode: process.env.DB_MODE
-          }
-          let settings = new Settings({
-            entry_to_read: settingsObj.entry_to_read,
-            autolive: settingsObj.autolive,
-            autolive: settingsObj.autolive,
-            activelist: settingsObj.activelist,
-            db_mode: settingsObj.db_mode
-          });
+          let settings = new Settings(settingsObj);
           settings.save().then((res) => {
             debug(res);
           });
@@ -222,19 +198,6 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
     }
   });
 });
-let db = mongoose.connection;
-db.on('connected', function (ref) {
-  debug("Connected to mongoDB.");
-});
-db.on('open', function (ref) {
-  debug("Opened mongoDB");
-});
-db.on('SIGINT', () => {
-  mongoose.connection.close(() => {
-    process.exit(0);
-  });
-});
-db.on('error', console.error.bind(console, 'connection error:'));
 //=============================================================================
 
 module.exports = app;

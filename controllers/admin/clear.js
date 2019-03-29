@@ -8,14 +8,19 @@ const Settings = require('../../models/settings.model');
 module.exports = (req, res) => {
   debug('/DELETE /routes/admin/clear')
   /* set the db collection */
+  let dbSettings = req.dbSettings;
   let query;
   if (req.body.subject == 'Feedback') {
-    query = {__type:'Feedback'}
+    query = {
+      __type: 'Feedback'
+    }
   } else if (req.body.subject == 'Stories') {
-    query = {__type:'Story'}
+    query = {
+      __type: 'Story'
+    }
   }
   /* delete a db entry */
-  Base.deleteMany(query).then((docs,err) => {
+  Base.deleteMany(query).then((docs, err) => {
     if (err) {
       debug(err);
     } else {
@@ -25,18 +30,12 @@ module.exports = (req, res) => {
     res.json({
       data: []
     });
-  }).then( () => {
+  }).then(() => {
     /* empty the active activelist if we are clearing stories */
-    Settings.findOneAndUpdate(
-      {},
-      { activelist: [],
-        entry_to_read: 0,
-        },
-      {new: true})
-    .then((res) => {
-      debug('response');
-      debug(res);
-    });
+    dbSettings.activelist = [];
+    dbSettings.entry_to_read = 0;
+    const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
+    dbSettingsUpdate(dbSettings);
   }).catch((err) => {
     debug("Err: ", err);
   });

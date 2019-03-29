@@ -9,8 +9,8 @@ import Landing from './landing';
 import Write from './write/index_write';
 import Admin from './admin/index_admin';
 import Watch from './watch/index_watch';
-//
 import NavFrame from '../../app/components/navframe';
+//
 
 export default class Index extends React.Component {
   callApi = async (endpoint) => {

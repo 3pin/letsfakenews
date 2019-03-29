@@ -20,13 +20,6 @@ module.exports = (req, res) => {
       autolive: true
     });
   }
-  Settings.findOneAndUpdate({}, {
-      autolive: dbSettings.autolive
-    }, {
-      new: true
-    })
-    .then((res) => {
-      debug('response');
-      debug(res);
-    });
+  const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
+  dbSettingsUpdate(dbSettings);
 }

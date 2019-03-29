@@ -3,68 +3,62 @@
 const debug = require('debug')('routes_admin');
 // import mongoose schemas
 const Story = require('../../models/story.model');
-const Settings = require('../../models/settings.model');
+// import function
+const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
 
 module.exports = (req, res) => {
+  debug('/routes/admin/storylive');
   let dbSettings = req.dbSettings;
+  let storySettings = req.body;
   /* update an entries display-checkbox */
-  debug('/PUT routes/databases/storylive');
-  debug('_id: ' + req.body._id + ' currently set to: ' + req.body.storylive);
-  // if checkbox is true/false... add/remove from activelist
-  var new_status;
-  if (req.body.storylive === true) {
-    debug('Setting to FALSE');
-    new_status = false;
-    dbSettings.activelist = dbSettings.activelist.filter(item => item != req.body._id);
-    Settings.findOneAndUpdate({}, {
-        activelist: dbSettings.activelist
-      }, {
-        new: true
-      })
-      .then((res) => {
-        debug('response');
-        debug(res);
+  debug('_id: ' + storySettings._id + ' currently set to: ' + storySettings.storylive);
+  // check checkbox is true/false... add/remove from activelist
+  if (storySettings.storylive === true) {
+    debug('Must set to FALSE');
+    // remove from activelist
+    dbSettings.activelist = dbSettings.activelist.filter(item => item != storySettings._id);
+    dbSettingsUpdate(dbSettings).then((doc) => {
+      debug(doc);
+    });
+    // update db storylive entry
+    Story.findByIdAndUpdate(storySettings._id, {
+      storylive: false
+    }, {
+      new: true
+    }).then(() => {
+      // send new db to frontend to update REACT state
+      Story.find({}).then((docs, err) => {
+        debug(docs);
+        res.json({
+          stories: docs
+        });
       });
+    }).catch((err) => {
+      debug(err);
+    });
   } else {
-    debug('Setting to TRUE');
-    new_status = true;
-    dbSettings.activelist.push(req.body._id);
+    debug('Must set to TRUE');
+    dbSettings.activelist.push(storySettings._id);
     dbSettings.entry_to_read = dbSettings.activelist.length - 1;
     dbSettings.db_mode = 'next';
-    Settings.findOneAndUpdate({}, {
-        activelist: dbSettings.activelist,
-        entry_to_read: dbSettings.entry_to_read,
-        db_mode: dbSettings.db_mode
-      }, {
-        new: true
-      })
-      .then((res) => {
-        debug('response');
-        debug(res);
-      });
-  }
-  //update database so the frontend continues to reflect status of the checbox
-  const query = {
-    _id: req.body._id
-  };
-  Story.findOneAndUpdate(query, {
-    storylive: new_status
-  }, {
-    new: true
-  }).then((docs, err) => {
-    if (err) {
-      debug(err);
-    } else {
-      debug(docs);
-    }
-  }).then(() => {
-    // return updated version of the db to the frontend admin page
-    Story.find({}).then((docs) => {
-      res.send({
-        stories: docs
-      });
+    dbSettingsUpdate(dbSettings).then((doc) => {
+      debug(doc);
     });
-  }).catch((err) => {
-    debug(err);
-  });
+    // update db storylive entry
+    Story.findByIdAndUpdate(storySettings._id, {
+      storylive: true
+    }, {
+      new: true
+    }).then(() => {
+      // send new db to frontend to update REACT state
+      Story.find({}).then((docs, err) => {
+        debug(docs);
+        res.json({
+          stories: docs
+        });
+      });
+    }).catch((err) => {
+      debug(err);
+    });
+  }
 }

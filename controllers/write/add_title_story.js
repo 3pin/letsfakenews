@@ -22,7 +22,8 @@ module.exports = (req, res) => {
   const process_client_story = require('../../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
     debug(result);
-    let story = new Story({ ...result});
+    let story = new Story({ ...result
+    });
     story.save().then((result) => {
       //debug(result);
       debug('Document inserted to db successfully');
@@ -35,15 +36,8 @@ module.exports = (req, res) => {
           dbSettings.activelist.push(docs[docs.length - 1]._id);
           dbSettings.entry_to_read = dbSettings.activelist.length - 1;
           dbSettings.db_mode = 'next';
-          Settings.findOneAndUpdate(
-            {},
-            { activelist: dbSettings.activelist,
-              entry_to_read: dbSettings.entry_to_read,
-              db_mode: dbSettings.db_mode
-              },
-            {new: true})
-          .then((res) => {
-            debug('response');
+          const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
+          dbSettingsUpdate(dbSettings).then((res) => {
             debug(res);
           });
         }

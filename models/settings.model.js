@@ -4,19 +4,20 @@ const Base = require('./base.model');
 
 let SettingsSchema = new Schema({
   entry_to_read: {
-    type: Number
+    type: Number,
+    required: true
   },
   autolive: {
-    type: Boolean
+    type: Boolean,
+    required: true
   },
   activelist: {
-    type: Array
+    type: Array,
+    required: true
   },
   db_mode: {
-    type: String
-  },
-  createDB: {
-    type: Boolean
+    type: String,
+    required: true
   }
 }, {
   collection: process.env.DATABASE
