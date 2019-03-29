@@ -3,9 +3,8 @@
 /*
 module.exports = function override(config, env) {
   //do stuff with the webpack config...
-  if (NODE_ENV === "production") {
-    console.log("Production");
-    config = injectBabelPlugin("transform-remove-console", config);
+  devServer: {
+    historyApiFallback: true
   }
   return config;
 }
