@@ -28,22 +28,21 @@ module.exports = (req, res) => {
       //debug(result);
       debug('Document inserted to db successfully');
       res.send('Story Saved successfully');
-      // fetch updated db
+      // fetch updated db to then pass onto frontend
       Story.find({}).then((docs) => {
         //debug(docs);
+        // tell eventbus about a new-story to trigger refresh of admin-frontend
+        bus.emit('story', docs);
+        debug('SSE event triggered by New_Story');
         //if autolive is TRUE, then new-story should be auto added to activelist
         if (dbSettings.autolive == true) {
           dbSettings.activelist.push(docs[docs.length - 1]._id);
           dbSettings.entry_to_read = dbSettings.activelist.length - 1;
           dbSettings.db_mode = 'next';
           const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
-          dbSettingsUpdate(dbSettings).then((res) => {
-            //debug(res);
-          }).then(() => {
-            // tell eventbus about a new-story to trigger refresh of admin-frontend
-            bus.emit('story', docs);
-            debug('SSE event triggered by New_Story');
-          });
+          dbSettingsUpdate(dbSettings).then((docs) => {
+            //debug(docs);
+          })
         }
       });
     });
