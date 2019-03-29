@@ -72,9 +72,11 @@ if (process.env.NODE_ENV === 'production') {
 // ... local mode
 else {
   app.use(express.static(path.join(__dirname, 'client/public')));
+  /*
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/public/index.html'));
   })
+  */
 }
 
 // Make our db accessible to our router
