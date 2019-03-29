@@ -38,6 +38,7 @@
   ],
   "devDependencies": {
     "babel-plugin-transform-remove-console": "^6.9.4",
+    "customize-cra": "^0.2.12",
     "typescript": "^3.3.4000"
   }
 }
