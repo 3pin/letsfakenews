@@ -56,7 +56,7 @@ module.exports = (req, res) => {
   });
   // send a 'story' message
   bus.on('story', (data) => {
-    //debug(data);
+    debug(data);
     debug('SSE story-msg to be emmitted from eventbus');
     res.write(`event: story\n`);
     res.write(`data: ${JSON.stringify(data)}`);
