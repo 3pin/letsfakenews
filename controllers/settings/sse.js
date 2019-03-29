@@ -6,40 +6,52 @@ const debug = require('debug')('routes_settings');
 const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
+  let open = true;
+
   /* stop SSE when client closes connection */
-  /*
   req.on("close", () => {
     if (!res.finished) {
+      open = false;
       res.end();
       debug("Stopped sending events.");
     }
   });
-  */
 
   // setup
   debug('a client subscribed to /sse endpoint');
-  res.set({Connection: "keep-alive", 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', "Access-Control-Allow-Origin": "*"});
+  //req.setTimeout(0);
+  res.set({
+    Connection: "keep-alive",
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    "Access-Control-Allow-Origin": "*"
+  });
 
   // send startup message
   res.write(`event: startup\n`);
   res.write(`data: Server received your /sse request\n\n`);
 
+/*
   // send a repeating dummy event to keep the connection from timing-out
-  setInterval(function() {
-    res.write(`event: keepalive\n`);
-    res.write(`data: SSE keep-alive dummy-comment\n\n`);
-    debug('Emmitted an SSE keep-alive event');
-  }, process.env.KEEPALIVE);
-  //
+  if (open) {
+    debug(gate);
+    setInterval(function () {
+      res.write(`event: keepalive\n`);
+      res.write(`: SSE keep-alive dummy-comment\n\n`);
+      debug('Emmitted an SSE keep-alive event');
+    }, process.env.KEEPALIVE);
+  }
+  */
 
-  // detect 'admin' message
+  //
+  // send an 'admin' message
   bus.on('admin', (data) => {
     debug('SSE msg to be emmitted from eventbus');
     res.write(`event: admin\n`);
     res.write(`data: ${JSON.stringify(data)}`);
     res.write(`\n\n`);
   });
-  // detect 'story' message
+  // send a 'story' message
   bus.on('story', (data) => {
     debug(data);
     debug('SSE story-msg to be emmitted from eventbus');
@@ -47,7 +59,7 @@ module.exports = (req, res) => {
     res.write(`data: ${JSON.stringify(data)}`);
     res.write(`\n\n`);
   });
-  // detect 'feedback' message
+  // send an 'feedback' message
   bus.on('feedback', (data) => {
     debug(data);
     debug('SSE feedback-msg to be emmitted from eventbus');
