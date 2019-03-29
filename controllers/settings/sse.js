@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('routes_settings');
+const debug = require('debug')('sse');
 
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');
@@ -10,11 +10,14 @@ module.exports = (req, res) => {
 
   /* stop SSE when client closes connection */
   req.on("close", () => {
+    debug("SSE close msg recevied");
+    /*
     if (!res.finished) {
       open = false;
-      res.end();
       debug("Stopped sending events.");
+      res.end();
     }
+    */
   });
 
   // setup

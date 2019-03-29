@@ -38,12 +38,13 @@ module.exports = (req, res) => {
           dbSettings.db_mode = 'next';
           const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
           dbSettingsUpdate(dbSettings).then((res) => {
-            debug(res);
+            //debug(res);
+          }).then(() => {
+            // tell eventbus about a new-story to trigger refresh of admin-frontend
+            bus.emit('story', docs);
+            debug('SSE event triggered by New_Story');
           });
         }
-        // tell eventbus about a new-story to trigger refresh of admin-frontend
-        bus.emit('story', docs);
-        debug('SSE event triggered by New_Story');
       });
     });
   }).catch((err) => {
