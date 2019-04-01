@@ -35,7 +35,7 @@ module.exports = (req, res) => {
     Connection: "keep-alive",
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Expose-Headers': '*',
     'Access-Control-Allow-Credentials': true
   });
