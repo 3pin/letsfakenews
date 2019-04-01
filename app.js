@@ -67,19 +67,17 @@ app.use(cookieParser());
 if (process.env.NODE_ENV === 'production') {
   console.log('mode: production');
   console.log(`${__dirname}client/build`);
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(express.static(path.join(__dirname, '/client/build')));
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname = 'client/build/index.html'));
+    res.sendFile(path.join(__dirname, '/client/build/index.html'));
   })
 }
 // ... local mode
 else {
-  /*
   app.use(express.static(path.join(__dirname, 'client/public')));
-  app.get('*', (req, res) => {
-    res.sendfile(path.join(__dirname+'/client/public/index.html'));
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/public/index.html'));
   })
-  */
 }
 
 // Make our db accessible to our router
@@ -154,7 +152,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
     }
     // if there are no collections existing...
     if (collections.length === 0) {
-      debug('No collections exist... creating a settings document');
+      debug(`No collections exist... creating database: ${process.env.DATABASE}`);
       let settings = new Settings(settingsObj);
       settings.save().then((res) => {
         debug(res);
@@ -166,7 +164,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
         //debug(value.name);
         // if there is a collection matching the current project...
         if (value.name === process.env.DATABASE) {
-          debug('Collection already exists... updating existing settings entry');
+          debug(`Collection already exists... updating database: ${process.env.DATABASE}`);
           // load _ids of all live-stories into activelist[]
           let activelist = [];
           const Story = require('./models/story.model');
@@ -190,7 +188,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
         }
         // if there is no matching collection...
         else if (index === collections.length - 1) {
-          debug('Existing colections dont match current project... creating a settings entry');
+          debug(`Existing colections dont match current project... creating database: ${process.env.DATABASE}`);
           let settings = new Settings(settingsObj);
           settings.save().then((res) => {
             debug(res);
