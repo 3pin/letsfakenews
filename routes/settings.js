@@ -11,9 +11,9 @@ const activelist = require('../controllers/settings/activelist');
 
 const cors = require('cors');
 const corsOptions = {
-  origin: 'http://localhost:3000'
+  origin: `http://localhost:${process.env.REACT_PORT}`
 }
-const whitelist = ['http://localhost:3000', process.env.WHITELIST_REMOTE]
+const whitelist = [`http://localhost:${process.env.REACT_PORT}`, process.env.WHITELIST_REMOTE]
 const corsOptions_whitelist = function (req, callback) {
   var corsOptions;
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
