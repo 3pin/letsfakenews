@@ -6,6 +6,7 @@ const debug = require('debug')('sse');
 const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
+  debug('SSE activity');
 
   /* stop listening to SSE when the client closes frontend connection */
   req.on("close", () => {
@@ -29,13 +30,11 @@ module.exports = (req, res) => {
   });
 
   // setup
-  debug('a client subscribed to /sse endpoint');
-  //req.setTimeout(0);
   res.writeHead(200, {
     Connection: "keep-alive",
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
     'Access-Control-Expose-Headers': '*',
     'Access-Control-Allow-Credentials': true
   });
