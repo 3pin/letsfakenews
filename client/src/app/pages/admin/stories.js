@@ -1,11 +1,12 @@
 import React from 'react';
 import BannerFrame from '../../../app/components/banner';
+import 'eventsource-polyfill';
 
 export default class Stories extends React.Component {
   constructor(props) {
     super(props);
     //
-    this.eventSource = new EventSource("http://localhost:5000/settings/sse");
+    this.eventSource = new EventSource("http://localhost:5000/settings/sse", {withCredentials: true});
     //
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
@@ -77,9 +78,16 @@ export default class Stories extends React.Component {
   }
   componentDidMount() {
     /* open sse listener */
-    this.eventSource.addEventListener('story', e => this.setState({
-      stories: JSON.parse(e.data)
-    }));
+    this.eventSource.addEventListener('story', (e) => {
+      console.log('boom');
+      this.setState({
+        stories: JSON.parse(e.data)
+      });
+    });
+    // Catches errors
+    this.eventSource.onerror = (e) => {
+      console.log("---- ERROR: ", e.data);
+    };
     /* load autolive-status & stories from Db */
     this.apiGet(this.props.apiHello).then(res => this.setState({
       autolive: JSON.parse(res.autolive),

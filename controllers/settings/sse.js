@@ -6,16 +6,24 @@ const debug = require('debug')('sse');
 const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
-  let open = true;
 
-  /* stop SSE when client closes connection */
+  /* stop listening to SSE when the client closes frontend connection */
   req.on("close", () => {
-    debug("SSE close msg recevied");
+    debug("SSE req.close");
     /*
     if (!res.finished) {
-      open = false;
-      debug("Stopped sending events.");
       res.end();
+      debug("Stopped sending events.");
+    }
+    */
+  });
+  //
+  res.socket.on('end', () => {
+    debug('SSE socket.close');
+    /*
+    if (!res.finished) {
+      res.end();
+      debug("Stopped sending events.");
     }
     */
   });
@@ -23,28 +31,29 @@ module.exports = (req, res) => {
   // setup
   debug('a client subscribed to /sse endpoint');
   //req.setTimeout(0);
-  res.set({
+  res.writeHead(200, {
     Connection: "keep-alive",
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
-    "Access-Control-Allow-Origin": "*"
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Expose-Headers': '*',
+    'Access-Control-Allow-Credentials': true
   });
 
   // send startup message
+  /*
   res.write(`event: startup\n`);
   res.write(`data: Server received your /sse request\n\n`);
-
-/*
-  // send a repeating dummy event to keep the connection from timing-out
-  if (open) {
-    debug(gate);
-    setInterval(function () {
-      res.write(`event: keepalive\n`);
-      res.write(`: SSE keep-alive dummy-comment\n\n`);
-      debug('Emmitted an SSE keep-alive event');
-    }, process.env.KEEPALIVE);
-  }
   */
+
+  /*
+    // send a repeating dummy event to keep the connection from timing-out
+      setInterval(function () {
+        res.write(`event: keepalive\n`);
+        res.write(`: SSE keep-alive dummy-comment\n\n`);
+        debug('Emmitted an SSE keep-alive event');
+      }, process.env.KEEPALIVE);
+    */
 
   //
   // send an 'admin' message
@@ -69,5 +78,10 @@ module.exports = (req, res) => {
     res.write(`event: feedback\n`);
     res.write(`data: ${JSON.stringify(data)}`);
     res.write(`\n\n`);
+  });
+  // send an 'feedback' message
+  bus.on('error', (err) => {
+    //debug(data);
+    debug('SSE bus err', err);
   });
 }

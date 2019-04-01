@@ -29,8 +29,10 @@
     "async": "^2.6.2",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
+    "console-stamp": "^0.2.7",
     "cookie-parser": "^1.4.4",
     "corenlp": "^1.5.0",
+    "debug": "^4.1.1",
     "dotenv": "^6.1.0",
     "ejs": "^2.6.1",
     "events": "^3.0.0",
@@ -41,8 +43,7 @@
     "mongoose": "^5.4.19",
     "morgan": "^1.9.1",
     "pos": "^0.4.2",
-    "serve-favicon": "^2.5.0",
-    "debug": "^4.1.1"
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",

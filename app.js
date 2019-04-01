@@ -43,8 +43,8 @@ const settings = require('./routes/settings');
 //=============================================================================
 // initialize
 const app = express();
-debug('App Name: ' + process.env.npm_package_name)
-debug('Port:' + process.env.PORT + ' mode:' + process.env.NODE_ENV + ' db_uri:' + process.env.MONGODB_URI + ' db_collection:' + process.env.DB_STORIES + ' db_feedback:' + process.env.DB_FEEDBACK);
+debug(`App Name: ${process.env.npm_package_name}`);
+debug(`Port:${process.env.PORT} mode:${process.env.NODE_ENV} db_uri:${process.env.MONGODB_URI} database:${process.env.DATABASE}`);
 //=============================================================================
 // configuration
 app.set('views', path.join(__dirname, 'views'));
@@ -71,10 +71,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 // ... local mode
 else {
-  app.use(express.static(path.join(__dirname, 'client/public')));
   /*
+  app.use(express.static(path.join(__dirname, 'client/public')));
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/client/public/index.html'));
+    res.sendfile(path.join(__dirname+'/client/public/index.html'));
   })
   */
 }

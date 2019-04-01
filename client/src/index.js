@@ -1,6 +1,5 @@
 //import 'bootstrap-without-jquery';
 //import 'bootstrap/dist/css/bootstrap.min.css';
-//import './maximum.css';
 import './minimum.css';
 
 import React from 'react';
