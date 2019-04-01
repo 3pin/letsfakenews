@@ -82,6 +82,26 @@ else {
   })
 }
 
+//cors
+const cors = require('cors');
+const corsOption = {
+  origin: process.env.CORS_OPTION
+}
+const whitelist = [process.env.WHITELIST_LOCAL, process.env.WHITELIST_REMOTE]
+const corsOption_whitelist = function (req, callback) {
+  var corsOptions;
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    // reflect (enable) the requested origin in the CORS response
+    corsOptions = {origin: true}
+  } else {
+    // disable CORS for this request
+    corsOptions = {origin: false}
+  }
+  // callback expects two parameters: error and options
+  callback(null, corsOptions)
+}
+app.use(cors(corsOption_whitelist));
+
 // Make our db accessible to our router
 app.use(function (req, res, next) {
   req.db = db;
