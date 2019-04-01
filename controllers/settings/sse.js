@@ -30,13 +30,10 @@ module.exports = (req, res) => {
   });
 
   // setup
-  res.writeHead(200, {
+  res.set({
     Connection: "keep-alive",
     'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
-    'Access-Control-Expose-Headers': '*',
-    'Access-Control-Allow-Credentials': true
+    'Cache-Control': 'no-cache'
   });
 
   // send startup message
