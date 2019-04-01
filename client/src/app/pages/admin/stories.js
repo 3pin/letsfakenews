@@ -7,7 +7,7 @@ export default class Stories extends React.Component {
     super(props);
     //
     if (process.env === 'production') {
-      consloe.log('Eventsource listening @ ../settings/sse');
+      console.log('Eventsource listening @ ../settings/sse');
       this.eventSource = new EventSource('../settings/sse');
 
     } else {
