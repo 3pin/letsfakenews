@@ -10,20 +10,25 @@ const mode = require('../controllers/settings/mode');
 const activelist = require('../controllers/settings/activelist');
 
 const cors = require('cors');
-// Set up a whitelist and check against it:
-const whitelist = [`http://localhost:${process.env.REACT_PORT}`, 'https://letsfakenews.herokuapp.com/', `https://letsfakenews.herokuapp.com/admin/stories`]
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
+  origin: 'https://localhost:3000'
+}
+const whitelist = ['https://localhost:3000', 'https://letsfakenews.herokuapp.com']
+const corsOptions_whitelist = function (req, callback) {
+  var corsOptions;
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    // reflect (enable) the requested origin in the CORS response
+    corsOptions = {origin: true}
+  } else {
+    // disable CORS for this request
+    corsOptions = {origin: false}
   }
+  // callback expects two parameters: error and options
+  callback(null, corsOptions)
 }
 
 /* this router */
-routes.get('/sse', cors(corsOptions), sse);
+routes.get('/sse', cors(corsOptions_whitelist), sse);
 routes.get('/mode', mode);
 routes.get('/activelist', activelist);
 

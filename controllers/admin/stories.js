@@ -7,6 +7,7 @@ const Story = require('../../models/story.model');
 module.exports = (req, res) => {
   debug('/GET /admin/stories');
   let dbSettings = req.dbSettings;
+  debug(dbSettings);
   Story.find({}).then((docs) => {
     //res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({

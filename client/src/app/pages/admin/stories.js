@@ -7,7 +7,7 @@ export default class Stories extends React.Component {
     super(props);
     //
     //this.eventSource = new EventSource("http://localhost:5000/settings/sse");
-    //this.eventSource = new EventSource("../settings/sse");
+    this.eventSource = new EventSource("/settings/sse");
     //
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
@@ -27,7 +27,8 @@ export default class Stories extends React.Component {
     const body = await response.json();
     if (response.status !== 200)
       throw Error(body.message);
-    return body;
+    else
+      return body;
   }
   apiPost = async (endpoint, data) => {
     const response = await fetch(endpoint, {
@@ -79,7 +80,6 @@ export default class Stories extends React.Component {
   }
   componentDidMount() {
     /* open sse listener */
-    /*
     this.eventSource.addEventListener('story', (e) => {
       console.log('boom');
       this.setState({
@@ -88,26 +88,27 @@ export default class Stories extends React.Component {
     });
     // Catches errors
     this.eventSource.onerror = (e) => {
-      console.log("---- ERROR: ", e.data);
+      console.log("---- ERROR: ", e);
     };
-    */
+
     /* load autolive-status & stories from Db */
-    this.apiGet(this.props.apiHello).then(res => this.setState({
-      autolive: JSON.parse(res.autolive),
-      stories: res.stories
-    })).catch(err => console.log(err));
+    this.apiGet(this.props.apiHello)
+    .then((res) => {
+      this.setState({autolive: JSON.parse(res.autolive), stories: res.stories})
+      console.log(res);
+    }).catch(err => console.log(err));
+}
+componentWillUnmount() {
+  /* close sse listener */
+  /*
+  this.eventSource.close();
+  */
+}
+render() {
+  const tableStyle = {
+    backgroundColor: "white"
   }
-  componentWillUnmount() {
-    /* close sse listener */
-    /*
-    this.eventSource.close();
-    */
-  }
-  render() {
-    const tableStyle = {
-      backgroundColor: "white"
-    }
-    return (<div>
+  return (<div>
       <BannerFrame desc={this.props.desc} title={this.props.title}/>
       <hr/>
       <table className="table table-bordered" style={tableStyle}>
@@ -186,5 +187,5 @@ export default class Stories extends React.Component {
       </table>
       <hr/>
     </div>)
-  }
+}
 }
