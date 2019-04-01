@@ -6,6 +6,7 @@ module.exports = (req, res) => {
   // serve mode-data to client
   debug('/GET routes/mode');
   let dbSettings = req.dbSettings;
+  debug(dbSettings);
   res.send({
     dbSettings: dbSettings
   });
