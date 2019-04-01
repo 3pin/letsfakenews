@@ -11,9 +11,9 @@ const activelist = require('../controllers/settings/activelist');
 
 const cors = require('cors');
 const corsOptions = {
-  origin: 'https://localhost:3000'
+  origin: 'http://localhost:3000'
 }
-const whitelist = ['https://localhost:3000', 'https://letsfakenews.herokuapp.com']
+const whitelist = ['http://localhost:3000', process.env.WHITELIST_REMOTE]
 const corsOptions_whitelist = function (req, callback) {
   var corsOptions;
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
@@ -28,7 +28,7 @@ const corsOptions_whitelist = function (req, callback) {
 }
 
 /* this router */
-routes.get('/sse', cors(corsOptions_whitelist), sse);
+routes.get('/sse', cors(corsOptions), sse);
 routes.get('/mode', mode);
 routes.get('/activelist', activelist);
 
