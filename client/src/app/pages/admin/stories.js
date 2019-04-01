@@ -7,7 +7,7 @@ export default class Stories extends React.Component {
     super(props);
     //
     //this.eventSource = new EventSource("http://localhost:5000/settings/sse");
-    this.eventSource = new EventSource("../settings/sse");
+    //this.eventSource = new EventSource("../settings/sse");
     //
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
@@ -79,6 +79,7 @@ export default class Stories extends React.Component {
   }
   componentDidMount() {
     /* open sse listener */
+    /*
     this.eventSource.addEventListener('story', (e) => {
       console.log('boom');
       this.setState({
@@ -89,6 +90,7 @@ export default class Stories extends React.Component {
     this.eventSource.onerror = (e) => {
       console.log("---- ERROR: ", e.data);
     };
+    */
     /* load autolive-status & stories from Db */
     this.apiGet(this.props.apiHello).then(res => this.setState({
       autolive: JSON.parse(res.autolive),
@@ -97,7 +99,9 @@ export default class Stories extends React.Component {
   }
   componentWillUnmount() {
     /* close sse listener */
+    /*
     this.eventSource.close();
+    */
   }
   render() {
     const tableStyle = {
