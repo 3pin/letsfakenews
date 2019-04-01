@@ -10,10 +10,10 @@ const mode = require('../controllers/settings/mode');
 const activelist = require('../controllers/settings/activelist');
 
 const cors = require('cors');
-const corsOptions = {
-  origin: `http://localhost:${process.env.REACT_PORT}`
+const corsOption = {
+  origin: process.env.CORS_OPTION
 }
-const whitelist = [`http://localhost:${process.env.REACT_PORT}`, process.env.WHITELIST_REMOTE]
+const whitelist = [process.env.WHITELIST_LOCAL, process.env.WHITELIST_REMOTE]
 const corsOptions_whitelist = function (req, callback) {
   var corsOptions;
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
@@ -28,7 +28,7 @@ const corsOptions_whitelist = function (req, callback) {
 }
 
 /* this router */
-routes.get('/sse', cors(corsOptions), sse);
+routes.get('/sse', cors(corsOption), sse);
 routes.get('/mode', mode);
 routes.get('/activelist', activelist);
 
