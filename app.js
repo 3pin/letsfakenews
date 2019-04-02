@@ -58,26 +58,22 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
-// Serve static files from the React app
-// ... production mode
+// ... production mode => serve static files for React
 if (process.env.NODE_ENV === 'production') {
   console.log('Serving: ' + path.join(__dirname, '../client/build', 'index.html'));
   app.use(express.static(path.join(__dirname, '../client/build')));
-  //
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname + '../client/build', 'index.html'));
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
   })
 }
 // ... local mode
-/*
 else {
-  debug('Serving: ' + path.join(__dirname, '/client/public/index.html'));
-  app.use(express.static(path.join(__dirname, '/client/public')));
+  debug('Serving: ' + path.join(__dirname, '/client/public', 'index.html'));
+  app.use(express.static(path.join(__dirname, '../client/public')));
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/client/public/index.html'));
+    res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
   })
 }
-*/
 
 //cors
 const cors = require('cors');
@@ -102,7 +98,7 @@ const corsOption_whitelist = function (req, callback) {
   // callback expects two parameters: error and options
   callback(null, corsOptions)
 }
-app.use(cors(corsOption_whitelist));
+app.use(cors(corsOption));
 
 // Make our db accessible to our router
 app.use(function (req, res, next) {

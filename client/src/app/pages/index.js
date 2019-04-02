@@ -30,11 +30,11 @@ export default class Index extends React.Component {
       <NavFrame title="Let's Fake News" links={["home", "write", "watch", "admin"]}/>
       <br/>
       <Switch>
-        <Route exact path="/" component={Landing}/>
-        <Route path="/write" render={() => <Write path="/write"/>}/>
-        <Route path="/admin" render={() => <Admin path="/admin"/>}/>
-        <Route path="/watch" component={Watch}/>
-        <Redirect to="/"/>
+        <Route exact path={`${process.env.PUBLIC_URL}/`} component={Landing}/>
+        <Route path={`${process.env.PUBLIC_URL}/write`} render={() => <Write path={`${process.env.PUBLIC_URL}/write`}/>}/>
+        <Route path={`${process.env.PUBLIC_URL}/admin`} render={() => <Admin path={`${process.env.PUBLIC_URL}/admin`}/>}/>
+        <Route path={`${process.env.PUBLIC_URL}/watch`} component={Watch}/>
+        <Redirect to={`${process.env.PUBLIC_URL}/`}/>
       </Switch>
     </div>)
   }
