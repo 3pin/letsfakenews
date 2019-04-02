@@ -65,10 +65,14 @@ app.use(cookieParser());
 // Serve static files from the React app
 // ... production mode
 if (process.env.NODE_ENV === 'production') {
-  console.log('Serving: ' + path.join(__dirname, '/client/build/index.html'));
-  app.use(express.static('client/build'));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  console.log('Serving: ' + path.join(__dirname, 'client/build', 'index.html'));
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'), function (err) {
+      if (err) {
+        res.status(500).send(err)
+      }
+    })
   })
 }
 // ... local mode
