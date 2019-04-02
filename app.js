@@ -66,13 +66,14 @@ app.use(cookieParser());
 // ... production mode
 if (process.env.NODE_ENV === 'production') {
   console.log(`${__dirname}/client/build`);
-  app.use(express.static('/client/build'));
+  app.use(express.static(path.join(__dirname, '/client/build')));
   app.get('*', (req, res) => {
-    res.sendFile('/client/build/index.html');
+    res.sendFile(path.join(__dirname, '/client/build/index.html'));
   })
 }
 // ... local mode
 else {
+  console.log('mode: dev');
   console.log(`${__dirname}/client/public`);
   app.use(express.static(path.join(__dirname, '/client/public')));
   app.get('/', (req, res) => {
