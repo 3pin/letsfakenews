@@ -66,9 +66,9 @@ app.use(cookieParser());
 // ... production mode
 if (process.env.NODE_ENV === 'production') {
   console.log('Serving: ' + path.join(__dirname, '/client/build/index.html'));
-  app.use(express.static(path.join(__dirname, '/client/build')));
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/client/build/index.html'));
+  app.use(express.static(__dirname + '/client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '/client/build', 'index.html'));
   })
 }
 // ... local mode
@@ -93,10 +93,14 @@ const corsOption_whitelist = function (req, callback) {
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
     debug(req.header('Origin'));
     // reflect (enable) the requested origin in the CORS response
-    corsOptions = {origin: true}
+    corsOptions = {
+      origin: true
+    }
   } else {
     // disable CORS for this request
-    corsOptions = {origin: false}
+    corsOptions = {
+      origin: false
+    }
   }
   // callback expects two parameters: error and options
   callback(null, corsOptions)
