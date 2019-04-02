@@ -10,6 +10,7 @@
     "server": "nodemon ./bin/www",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test_react": "cd client && npm run test",
     "test_coverage_text": "nyc --reporter=text mocha ./test --recursive",
     "test_coverage_html": "nyc --reporter=html mocha ./test --recursive",
     "test": "mocha ./test --recursive",
