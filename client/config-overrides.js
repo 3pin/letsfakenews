@@ -6,6 +6,9 @@ module.exports = function override(config, env) {
   devServer: {
     historyApiFallback: true
   }
+  server: {
+    historyApiFallback: true
+  }
   return config;
 }
 
