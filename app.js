@@ -47,10 +47,6 @@ const app = express();
 debug(`App Name: ${process.env.npm_package_name}`);
 debug(`Port:${process.env.PORT} mode:${process.env.NODE_ENV} db_uri:${process.env.MONGODB_URI} database:${process.env.DATABASE}`);
 //=============================================================================
-// configuration
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-//=============================================================================
 // middleware
 
 app.use(logger('dev'));
@@ -65,11 +61,14 @@ app.use(cookieParser());
 // Serve static files from the React app
 // ... production mode
 if (process.env.NODE_ENV === 'production') {
-  console.log('Serving: ' + path.join(__dirname, 'client/build', 'index.html'));
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  app.get('/', (req, res) => {
-    res.sendFile(path.resolve(__dirname + 'client/build', 'index.html'));
+  /*
+  console.log('Serving: ' + path.join(__dirname, '../client/build', 'index.html'));
+  app.use(express.static(path.join(__dirname, '../client/build')));
+  //
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname + '../client/build', 'index.html'));
   })
+  */
 }
 // ... local mode
 /*
