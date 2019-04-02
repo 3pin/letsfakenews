@@ -65,20 +65,18 @@ app.use(cookieParser());
 // Serve static files from the React app
 // ... production mode
 if (process.env.NODE_ENV === 'production') {
-  console.log(`${__dirname}/client/build`);
-  consoe.log(__dirname + '/client/build/index.html');
+  consoe.log(path.join(__dirname, '/client/build/index.html'));
   app.use(express.static(path.join(__dirname, '/client/build')));
   app.get('*', (req, res) => {
-    res.sendFile(__dirname + '/client/build/index.html');
+    res.sendFile(path.join(__dirname, '/client/build/index.html'));
   })
 }
 // ... local mode
 else {
-  debug(`${__dirname}/client/public`);
-  debug(__dirname + '/client/public/index.html');
+  debug(path.join(__dirname, '/client/public/index.html'));
   app.use(express.static(path.join(__dirname, '/client/public')));
   app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/client/public/index.html');
+    res.sendFile(path.join(__dirname, '/client/public/index.html'));
   })
 }
 
