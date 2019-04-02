@@ -67,11 +67,14 @@ app.use(cookieParser());
 if (process.env.NODE_ENV === 'production') {
   console.log('Serving: ' + path.join(__dirname, '/client/build/index.html'));
   app.use(express.static(path.join(__dirname, '/client/build')));
+  /*
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build/index.html'));
   })
+  */
 }
 // ... local mode
+/*
 else {
   debug('Serving: ' + path.join(__dirname, '/client/public/index.html'));
   app.use(express.static(path.join(__dirname, '/client/public')));
@@ -79,6 +82,7 @@ else {
     res.sendFile(path.join(__dirname, '/client/public/index.html'));
   })
 }
+*/
 
 //cors
 const cors = require('cors');
