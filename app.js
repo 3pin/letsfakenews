@@ -61,23 +61,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 
-// ... production mode => serve static files for React
-if (process.env.NODE_ENV === 'production') {
-  console.log('Serving: ' + path.join(__dirname, '../client/build', 'index.html'));
-  app.use(express.static(path.join(__dirname, '../client/build')));
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  })
-}
-// ... local mode
-else {
-  debug('Serving: ' + path.join(__dirname, '/client/public', 'index.html'));
-  app.use(express.static(path.join(__dirname, '../client/public')));
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/public', 'index.html'));
-  })
-}
-
 //cors
 const cors = require('cors');
 const corsOption = {
@@ -102,6 +85,23 @@ const corsOption_whitelist = function (req, callback) {
   callback(null, corsOptions)
 }
 app.use(cors(corsOption));
+
+// ... production mode => serve static files for React
+if (process.env.NODE_ENV === 'production') {
+  console.log('Serving: ' + __dirname + '/client/build/index.html');
+  app.use(express.static(__dirname + '/client/build'));//
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/build/index.html'));
+  })
+}
+// ... local mode
+else {
+  debug('Serving: ' + __dirname + '/client/public/index.html');
+  app.use(express.static(__dirname + '/client/public'));
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/public/index.html'));
+  })
+}
 
 // Make our db accessible to our router
 app.use(function (req, res, next) {
