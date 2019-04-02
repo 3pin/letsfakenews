@@ -84,7 +84,7 @@ const corsOption_whitelist = function (req, callback) {
   // callback expects two parameters: error and options
   callback(null, corsOptions)
 }
-app.use(cors(corsOption));
+app.use(cors(corsOption_whitelist));
 
 // ... production mode => serve static files for React
 if (process.env.NODE_ENV === 'production') {
