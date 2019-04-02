@@ -10,5 +10,4 @@ cloudinary.js
 tmp
 .DS_Store
 database
-client/config
-client/scripts
+htpasswd
