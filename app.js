@@ -47,8 +47,11 @@ const app = express();
 debug(`App Name: ${process.env.npm_package_name}`);
 debug(`Port:${process.env.PORT} mode:${process.env.NODE_ENV} db_uri:${process.env.MONGODB_URI} database:${process.env.DATABASE}`);
 //=============================================================================
+// configuration
+//app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+//=============================================================================
 // middleware
-
 app.use(logger('dev'));
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(favicon(path.join('../client', 'public', 'favicon.ico')));
