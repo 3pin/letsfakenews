@@ -65,16 +65,14 @@ app.use(cookieParser());
 // Serve static files from the React app
 // ... production mode
 if (process.env.NODE_ENV === 'production') {
-  console.log('mode: production');
   console.log(`${__dirname}/client/build`);
-  app.use(express.static(path.join(__dirname, '/client/build')));
+  app.use(express.static('/client/build'));
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '/client/build/index.html'));
+    res.sendFile('/client/build/index.html');
   })
 }
 // ... local mode
 else {
-  console.log('mode: dev');
   console.log(`${__dirname}/client/public`);
   app.use(express.static(path.join(__dirname, '/client/public')));
   app.get('/', (req, res) => {
@@ -91,6 +89,7 @@ const whitelist = [process.env.WHITELIST_LOCAL, process.env.WHITELIST_REMOTE]
 const corsOption_whitelist = function (req, callback) {
   var corsOptions;
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    debug(req.header('Origin'));
     // reflect (enable) the requested origin in the CORS response
     corsOptions = {origin: true}
   } else {
