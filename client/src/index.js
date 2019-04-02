@@ -8,7 +8,7 @@ import {BrowserRouter} from 'react-router-dom';
 
 import Routes from './app/pages/index';
 
-const App = () => (<BrowserRouter basename="/directory-name">
+const App = () => (<BrowserRouter>
   <Routes/>
 </BrowserRouter>);
 
