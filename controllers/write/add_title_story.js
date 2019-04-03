@@ -3,7 +3,6 @@ const debug = require('debug')('routes_write');
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');
 // import mongoose schemas
-const Base = require('../../models/base.model');
 const Settings = require('../../models/settings.model');
 const Story = require('../../models/story.model');
 

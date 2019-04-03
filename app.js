@@ -5,7 +5,7 @@
 require('dotenv').config();
 //=============================================================================
 // module debugging
-const debug = require('debug')('app')
+const debug = require('debug')('app');
 if (process.env.NODE_ENV !== 'production') {
   debug('App Mode: ' + process.env.NODE_ENV);
   //debug(process.env);   // log all system env variables
@@ -168,7 +168,8 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   // check for existing collections
   client.db.listCollections().toArray((err, collections) => {
     //debug(collections);
-    // settings schema
+    // schemas
+    const Auth = require('./models/auth.model');
     const Settings = require('./models/settings.model');
     let settingsObj = {
       entry_to_read: parseInt(process.env.ENTRY_TO_READ),
@@ -176,21 +177,38 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
       activelist: [],
       db_mode: process.env.DB_MODE
     }
+    let authObj = {
+      username: process.env.USERNAME,
+      password: process.env.PASSWORD
+    }
     // if there are no collections existing...
     if (collections.length === 0) {
       debug(`No collections exist... creating database: ${process.env.DATABASE}`);
+      // create a user-entry for authorisation to backend...
+      let auth = new Auth(authObj);
+      auth.save().then((doc) => {
+        debug(doc);
+      });
+      // create a settings-entry
       let settings = new Settings(settingsObj);
       settings.save().then((res) => {
         debug(res);
       });
     }
-    // else for collectsion that exist...
+    // else for exiting collections...
     else {
       for (const [index, value] of collections.entries()) {
         //debug(value.name);
         // if there is a collection matching the current project...
         if (value.name === process.env.DATABASE) {
           debug(`Collection already exists... updating database: ${process.env.DATABASE}`);
+          //replace default user entry
+          Auth.deleteOne({}).then(() => {
+            let auth = new Auth(authObj);
+            auth.save().then((doc) => {
+              debug(doc);
+            });
+          })
           // load _ids of all live-stories into activelist[]
           let activelist = [];
           const Story = require('./models/story.model');
@@ -217,6 +235,10 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
           debug(`Existing colections dont match current project... creating database: ${process.env.DATABASE}`);
           let settings = new Settings(settingsObj);
           settings.save().then((res) => {
+            debug(res);
+          });
+          let auth = new Auth(authObj);
+          auth.save().then((res) => {
             debug(res);
           });
           break;
