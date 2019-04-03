@@ -42,6 +42,8 @@ AuthSchema.pre('save', function (next) {
 });
 
 AuthSchema.methods.isCorrectPassword = function(password, callback){
+  debug('entered AuthSchema.method');
+  debug(password, this.password);
   bcrypt.compare(password, this.password, function(err, same) {
     if (err) {
       callback(err);

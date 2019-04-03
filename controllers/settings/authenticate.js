@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('routes_settings');
+const debug = require('debug')('routes_auth');
 
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET;
@@ -9,10 +9,11 @@ const Auth = require('../../models/auth.model');
 
 module.exports = (req, res) => {
   debug('/settings/authenticate');
+  debug(req.body);
   const { username, password } = req.body;
-  User.findOne({ username }, function(err, user) {
+  Auth.findOne({ username }, function(err, user) {
     if (err) {
-      console.error(err);
+      console.error('Error Boom', err);
       res.status(500)
         .json({
         error: 'Internal error please try again'
@@ -23,6 +24,8 @@ module.exports = (req, res) => {
           error: 'Incorrect username or password'
         });
     } else {
+      debug(user);
+      let auth = new Auth();
       user.isCorrectPassword(password, function(err, same) {
         if (err) {
           res.status(500)
@@ -35,6 +38,7 @@ module.exports = (req, res) => {
               error: 'Incorrect username or password'
           });
         } else {
+          debug('same', same);
           // Issue token
           const payload = { username };
           const token = jwt.sign(payload, secret, {

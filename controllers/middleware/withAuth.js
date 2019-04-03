@@ -1,12 +1,11 @@
+//middleware for routes: checks if the client has token-auth before passing on
 const debug = require('debug')('middleware');
-
-// middleware.js
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET;
 
 const Settings = require('../../models/settings.model');
 
-const withAuth = (req, res, next) => {
+module.exports = (req, res, next) => {
   debug("Entered middleware to check token-authorisation");
   const token =
     req.body.token ||
@@ -20,10 +19,9 @@ const withAuth = (req, res, next) => {
       if (err) {
         res.status(401).send('Unauthorized: Invalid token');
       } else {
-        req.email = decoded.email;
+        req.username = decoded.username;
         next();
       }
     });
   }
 }
-module.exports = withAuth;

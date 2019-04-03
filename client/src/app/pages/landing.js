@@ -18,6 +18,8 @@ export default class Landing extends React.Component {
         <hr/>
         <ButtonFrame linkto="/admin" buttonlabel="Admin" desc="Administer the fakenews (password required)"/>
         <hr/>
+        <ButtonFrame linkto="/login" buttonlabel="Login" desc="Login as an admin"/>
+        <hr/>
       </section>
     </div>)
   }

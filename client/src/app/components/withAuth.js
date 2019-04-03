@@ -2,7 +2,9 @@
 // ... and if client has valid token passes the component,
 // ... if not redirects them to login
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import {
+  Redirect
+} from 'react-router-dom';
 
 export default function withAuth(ComponentToProtect) {
   return class extends React.Component {
@@ -17,7 +19,10 @@ export default function withAuth(ComponentToProtect) {
       fetch('/settings/checkToken')
         .then(res => {
           if (res.status === 200) {
-            this.setState({loading: false});
+            this.setState({
+              loading: false
+            });
+            console.log('loading false')
           } else {
             const error = new Error(res.error);
             throw error;
@@ -25,7 +30,11 @@ export default function withAuth(ComponentToProtect) {
         })
         .catch(err => {
           console.error(err);
-          this.setState({loading: false,redirect: true});
+          console.log('redirecting');
+          this.setState({
+            loading: false,
+            redirect: true
+          });
         });
     }
     render() {

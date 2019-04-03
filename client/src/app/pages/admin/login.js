@@ -1,26 +1,33 @@
 // Login... user logins then backend verifies credentials
 import React from 'react';
 import BannerFrame from '../../../app/components/banner';
-import FormFrame from '../../../app/components/form';
+//import FormFrame from '../../../app/components/form';
 
 export default class Login extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      email: '',
-      password: ''
+      'username': '',
+      'password': ''
     };
   }
   handleChange(event) {
-    const {
-      value,
-      name
-    } = event.target;
-    this.setState({
-      [name]: value
-    });
+    const {value,name} = event.target;
+    this.setState({[name]: value});
   }
-  handleSubmit(event) {
+  handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await fetch('/settings/authenticate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state)
+    });
+    const body = await response.text();
+    console.log(body);
+  };
+  _handleSubmit(event) {
     event.preventDefault();
     fetch('/settings/authenticate', {
         method: 'POST',
@@ -31,7 +38,7 @@ export default class Login extends React.Component {
       })
       .then(res => {
         if (res.status === 200) {
-          this.props.history.push('/');
+          //this.props.history.push('/');
         } else {
           const error = new Error(res.error);
           throw error;
@@ -44,14 +51,15 @@ export default class Login extends React.Component {
   }
   render() {
     return (<div>
-      <form onSubmit={this.handleSubmit}>
-        <h1>Login Below!</h1>
+      <BannerFrame title="Login..." desc="Login with your admin credentials."/>
+      <hr/>
+      <form onSubmit={this.handleSubmit.bind(this)}>
         <input
-          type="email"
-          name="email"
-          placeholder="Enter email"
-          value={this.state.email}
-          onChange={this.handleChange}
+          type="username"
+          name="username"
+          placeholder="Enter username"
+          value={this.state.username}
+          onChange={this.handleChange.bind(this)}
           required
         />
         <input
@@ -59,11 +67,13 @@ export default class Login extends React.Component {
           name="password"
           placeholder="Enter password"
           value={this.state.password}
-          onChange={this.handleChange}
+          onChange={this.handleChange.bind(this)}
           required
         />
        <input type="submit" value="Submit"/>
       </form>
+      <hr/>
+
       </div>);
   }
 }
