@@ -5,14 +5,14 @@ import {
   Redirect
 } from 'react-router-dom';
 // middleware
-import withAuth from '../components/withAuth';
+import withAuth from './components/withAuth';
 // components
-import Landing from './landing';
-import RoutesWrite from './write/routes';
-import RoutesAdmin from './admin/routes';
-import RoutesWatch from './watch/routes';
-import NavFrame from '../../app/components/navframe';
-import Login from '../pages/admin/login';
+import Landing from './pages/landing';
+import RoutesWrite from './pages/write/routes';
+import RoutesAdmin from './pages/admin/routes';
+import RoutesWatch from './pages/watch/routes';
+import NavFrame from './components/navframe';
+import Login from './pages/admin/login';
 
 export default class Routes extends React.Component {
   callApi = async (endpoint) => {

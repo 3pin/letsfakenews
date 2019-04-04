@@ -6,7 +6,7 @@ import {
   HashRouter
 } from 'react-router-dom';
 
-import Routes from './app/pages/routes';
+import Routes from './app/routes';
 
 const App = () => (<HashRouter>
   <Routes/>
