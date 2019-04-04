@@ -42,14 +42,13 @@ module.exports = (req, res) => {
   res.write(`data: Server received your /sse request\n\n`);
   */
 
-  /*
-    // send a repeating dummy event to keep the connection from timing-out
-      setInterval(function () {
-        res.write(`event: keepalive\n`);
-        res.write(`: SSE keep-alive dummy-comment\n\n`);
-        debug('Emmitted an SSE keep-alive event');
-      }, process.env.KEEPALIVE);
-    */
+
+  // send a repeating dummy event to keep the connection from timing-out
+  setInterval(function () {
+    res.write(`event: keepalive\n`);
+    res.write(`: SSE keep-alive dummy-comment\n\n`);
+    debug('Emmitted an SSE keep-alive event');
+  }, process.env.KEEPALIVE);
 
   //
   // send an 'admin' message
