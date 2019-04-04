@@ -20,7 +20,7 @@ const storylive = require('../controllers/admin/storylive');
 // admin landing
 admin.get('/', (req, res) => {
   debug("'REACT /admin' says 'Hello' ");
-  res.send({express: "Hello 'REACT /admin' "});
+  res.send({express: "Hello 'REACT... route admin' "});
 });
 
 /* display feedback database */

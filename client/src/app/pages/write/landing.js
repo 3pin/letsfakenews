@@ -4,9 +4,6 @@ import BannerFrame from '../../../app/components/banner';
 import ButtonFrame from '../../../app/components/button';
 
 export default class Landing extends React.Component {
-  componentDidMount() {
-    //console.log(this.props);
-}
   render() {
     return (<div>
       <section>

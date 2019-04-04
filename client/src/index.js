@@ -1,5 +1,3 @@
-//import 'bootstrap-without-jquery';
-//import 'bootstrap/dist/css/bootstrap.min.css';
 import './minimum.css';
 
 import React from 'react';
@@ -8,7 +6,7 @@ import {
   HashRouter
 } from 'react-router-dom';
 
-import Routes from './app/pages/index';
+import Routes from './app/pages/routes';
 
 const App = () => (<HashRouter>
   <Routes/>

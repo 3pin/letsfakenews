@@ -5,7 +5,7 @@ import ButtonFrame from '../../app/components/button';
 
 export default class Landing extends React.Component {
   componentDidMount() {
-    //console.log(this.props);
+    //console.log(this.state);
 }
   render() {
     return (<div>
@@ -17,8 +17,6 @@ export default class Landing extends React.Component {
         <ButtonFrame linkto="/watch" buttonlabel="Watch" desc="Watch fakenews in fullscreen (Desktop only)"/>
         <hr/>
         <ButtonFrame linkto="/admin" buttonlabel="Admin" desc="Administer the fakenews (password required)"/>
-        <hr/>
-        <ButtonFrame linkto="/login" buttonlabel="Login" desc="Login as an admin"/>
         <hr/>
       </section>
     </div>)

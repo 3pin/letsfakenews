@@ -22,7 +22,6 @@ export default function withAuth(ComponentToProtect) {
             this.setState({
               loading: false
             });
-            console.log('loading false')
           } else {
             const error = new Error(res.error);
             throw error;
@@ -42,7 +41,7 @@ export default function withAuth(ComponentToProtect) {
         return null;
       }
       if (this.state.redirect) {
-        return <Redirect to="/login" />;
+        return <Redirect to="/login"/>;
       }
       return (
         <React.Fragment>

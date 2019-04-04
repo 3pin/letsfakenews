@@ -14,7 +14,7 @@ const add_feedback = require('../controllers/write/add_feedback');
 write.get('/write', (req, res) => {
   debug("'REACT /write' says 'Hello' ");
   res.send({
-    express: "Hello 'REACT /write' "
+    express: "Hello 'REACT... route-write' "
   });
 });
 // REACT connections: from Users

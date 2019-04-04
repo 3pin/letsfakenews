@@ -4,7 +4,7 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 import Landing from './landing';
 import Watch from './watch';
 
-export default class IndexWatch extends React.Component {
+export default class RoutesWatch extends React.Component {
 
   callApi = async (endpoint) => {
     const response = await fetch(endpoint);
@@ -15,7 +15,7 @@ export default class IndexWatch extends React.Component {
   }
   componentDidMount() {
     // load the activelist for display purposes
-    //this.callApi('/settings/activelist').then(res => console.log('Activelist loaded')).catch(err => console.log(err));
+    //this.callApi(this.props.match.url).then(res => console.log('Activelist loaded')).catch(err => console.log(err));
   }
   render() {
     return (<div className="layout">

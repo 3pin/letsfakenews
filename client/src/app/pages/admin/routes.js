@@ -5,7 +5,7 @@ import Landing from './landing';
 import Stories from './stories';
 import Feedback from './feedback';
 
-export default class IndexAdmin extends React.Component {
+export default class RoutesAdmin extends React.Component {
   constructor() {
     super();
     //this.handleChange = this.handleChange.bind(this);
@@ -22,9 +22,7 @@ export default class IndexAdmin extends React.Component {
   }
   componentDidMount() {
     // say hello into the backend server
-    this.apiCall(this.props.path)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
+    //this.apiCall(this.props.match.url).then(res => console.log(res)).catch(err => console.log(err));
   }
   render() {
     return (<div className="layout">

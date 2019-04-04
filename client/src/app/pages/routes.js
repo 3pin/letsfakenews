@@ -8,13 +8,13 @@ import {
 import withAuth from '../components/withAuth';
 // components
 import Landing from './landing';
-import Write from './write/index_write';
-import Admin from './admin/index_admin';
-import Watch from './watch/index_watch';
+import RoutesWrite from './write/routes';
+import RoutesAdmin from './admin/routes';
+import RoutesWatch from './watch/routes';
 import NavFrame from '../../app/components/navframe';
 import Login from '../pages/admin/login';
 
-export default class Index extends React.Component {
+export default class Routes extends React.Component {
   callApi = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
@@ -23,10 +23,8 @@ export default class Index extends React.Component {
     return body;
   }
   componentDidMount() {
-    console.log(process.env.PUBLIC_URL);
-    this.callApi('/settings/mode')
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    // load db settings
+    //this.callApi('/settings/mode').then(res => console.log(res)).catch(err => console.log(err));
   }
   render() {
     return (<div>
@@ -35,10 +33,9 @@ export default class Index extends React.Component {
       <br/>
       <Switch>
         <Route exact path='/' component={Landing}/>
-        <Route path='/write' render={() => <Write path='/write'/>}/>
-        <Route path='/admin' render={() => <Admin path='/admin'/>}/>
-        <Route path='/_admin' component={withAuth(Admin)}/>
-        <Route path='/watch' component={Watch}/>
+        <Route path='/write' component={RoutesWrite}/>
+        <Route path='/admin' component={withAuth(RoutesAdmin)}/>
+        <Route path='/watch' component={RoutesWatch}/>
         <Route path='/login' component={Login}/>
         <Redirect to='/'/>
       </Switch>
