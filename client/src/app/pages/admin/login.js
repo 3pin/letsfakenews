@@ -10,7 +10,7 @@ export default class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      redirectToReferrer: false
+      redirectLogin: false
     };
   }
   handleChange(event) {

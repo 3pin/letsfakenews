@@ -83,7 +83,6 @@ export default class Stories extends React.Component {
   componentDidMount() {
     /* open sse listener */
     this.eventSource.addEventListener('story', (e) => {
-      console.log('boom');
       this.setState({
         stories: JSON.parse(e.data)
       });
@@ -102,9 +101,7 @@ export default class Stories extends React.Component {
 }
 componentWillUnmount() {
   /* close sse listener */
-  /*
   this.eventSource.close();
-  */
 }
 render() {
   const tableStyle = {

@@ -18,13 +18,22 @@ export default class ButtonFrameForm extends React.Component {
     } else {
       buttonLabel = 'Submit'
     }
-    return (<div>
-      <p>{this.props.desc}</p>
-      <Link to={this.props.linkto}>
-        <button type="button"
-        onClick={this.handleClick.bind(this)}
-        className="btn btn-primary btn-responsive">{buttonLabel}</button>
-      </Link>
-    </div>)
+    if (this.props.linkto) {
+      return (<div>
+        <p>{this.props.desc}</p>
+        <Link to={this.props.linkto}>
+          <button type="button"
+          onClick={this.handleClick.bind(this)}
+          className="btn btn-primary btn-responsive">{buttonLabel}</button>
+        </Link>
+      </div>)
+    } else {
+      return (<div>
+        <p>{this.props.desc}</p>
+          <button type="button"
+          onClick={this.handleClick.bind(this)}
+          className="btn btn-primary btn-responsive">{buttonLabel}</button>
+      </div>)
+    }
   }
 }

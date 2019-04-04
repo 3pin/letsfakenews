@@ -16,7 +16,8 @@ export default class writeTitle extends React.Component {
           subject="title"
           apiEndPoint="/write/news"
           stateToSubmit={["story","title"]}
-          linkto="/write/thankyou"
+          _linkto="/write/thankyou"
+          redirect="/write/thankyou"
           />
         <hr/>
       </section>

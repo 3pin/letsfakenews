@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import BannerFrame from './banner';
 import FormFrame from './form';
 
@@ -29,9 +30,12 @@ export default class Story extends React.Component {
     });
     const body = await response.text();
     console.log(body);
+    this.setState(() => ({
+      redirect: true
+    }))
     //empty the relevant localStorage entries
     for (let key in toSubmit) {
-      localStorage.setItem(toSubmit[key], "");
+      localStorage.removeItem(toSubmit[key]);
     }
   };
   saveStateToLocalStorage() {
@@ -71,22 +75,6 @@ export default class Story extends React.Component {
   handleChange(value) {
    this.setState({[this.props.subject]: value});
  }
-  /*
-  handleChange(key, value) {
-   this.setState({[key]: value});
-   //const obj = {}
-   //obj[this.props.subject] = content;
-   // update master state then send back to props to reflect change
-   //console.log(e);
-   //this.setState(JSON.parse(e));
- }
-  handleChange(value) {
-    let subject = this.props.subject
-    this.props.handleChange(subject, value);
-    // update localStorage
-    localStorage.setItem(subject, value);
-  }
-  */
   handleSubmit() {
     if (this.props.stateToSubmit) {
       //move active data from state to localstorage
@@ -95,7 +83,9 @@ export default class Story extends React.Component {
     }
   }
   componentWillMount() {
-    //
+    this.setState(() => ({
+      redirect: false
+    }))
   }
   componentDidMount() {
     // register with the backend server
@@ -107,8 +97,16 @@ export default class Story extends React.Component {
   }
   componentWillUnmount() {
     window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
-    // saves if component has a chance to unmount
-    this.saveStateToLocalStorage();
+    if (this.state.redirect) {
+      //empty state and localstorage
+      localStorage.clear();
+      this.setState(() => ({
+        redirect: false
+      }))
+    } else {
+      // saves if component has a chance to unmount
+      this.saveStateToLocalStorage();
+    }
   }
 
   loadStateSubject(object, comparison) {
@@ -122,22 +120,26 @@ export default class Story extends React.Component {
   }
   render() {
     const val = this.loadStateSubject(this.state, this.props.subject);
-    return (<div>
-      <section>
-        <BannerFrame
-          hsize='h4'
-          title={this.props.title}
-          desc={this.props.desc}/>
-        <hr/>
-        <FormFrame
-          rows={this.props.rows}
-          length={this.props.length}
-          linkto={this.props.linkto}
-          value={val}
-          handleChange={this.handleChange.bind(this)}
-          handleSubmit={this.handleSubmit.bind(this)}/>
-        <hr/>
-      </section>
-    </div>)
+    if (this.state.redirect === true) {
+      return <Redirect to={this.props.redirect} />
+    } else {
+      return (<div>
+        <section>
+          <BannerFrame
+            hsize='h4'
+            title={this.props.title}
+            desc={this.props.desc}/>
+          <hr/>
+          <FormFrame
+            rows={this.props.rows}
+            length={this.props.length}
+            linkto={this.props.linkto}
+            value={val}
+            handleChange={this.handleChange.bind(this)}
+            handleSubmit={this.handleSubmit.bind(this)}/>
+          <hr/>
+        </section>
+      </div>)
+    }
   }
 }
