@@ -42,7 +42,6 @@ module.exports = (req, res) => {
   res.write(`data: Server received your /sse request\n\n`);
   */
 
-
   // send a repeating dummy event to keep the connection from timing-out
   setInterval(function () {
     res.write(`event: keepalive\n`);
@@ -51,9 +50,16 @@ module.exports = (req, res) => {
   }, process.env.KEEPALIVE);
 
   //
+  // send a 'dummy' message
+  bus.on('keepalive', (data) => {
+    debug('SSE keepalive-msg to be emmitted from eventbus');
+    res.write(`event: keepalive\n`);
+    res.write(`data: ${JSON.stringify(data)}`);
+    res.write(`\n\n`);
+  });
   // send an 'admin' message
   bus.on('admin', (data) => {
-    debug('SSE msg to be emmitted from eventbus');
+    debug('SSE admin-msg to be emmitted from eventbus');
     res.write(`event: admin\n`);
     res.write(`data: ${JSON.stringify(data)}`);
     res.write(`\n\n`);
