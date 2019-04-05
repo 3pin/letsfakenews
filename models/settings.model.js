@@ -18,6 +18,10 @@ let SettingsSchema = new Schema({
   db_mode: {
     type: String,
     required: true
+  },
+  node_mode: {
+    type: String,
+    required: true
   }
 }, {
   collection: process.env.DATABASE

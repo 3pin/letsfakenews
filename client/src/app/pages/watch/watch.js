@@ -169,11 +169,34 @@ export default class Watch extends React.Component {
   }
   componentWillMount() {
     console.log('componentWillMount');
+    // load db settings... load 'mode' into localStorage
+    this.apiGet('/settings/mode').then(res => {
+      //console.log(res);
+      //sessionStorage.setItem('node_mode', res.dbSettings.node_mode);
+      this.setState({
+        mode: res.dbSettings.node_mode
+      });
+    }).then(() => {
+      if (this.state.mode === 'production') {
+        this.setState({
+          playing: false,
+          controls: false,
+          volume: 1
+        });
+      } else {
+        this.setState({
+          playing: true,
+          controls: true,
+          volume: 0
+        });
+      }
+    }).catch(err => console.log(err));
     /* calculate durations */
     this.setState({
       popup_duration: diff(this.state.popupStart, this.state.popupEnd),
       image_duration: diff(this.state.imagesStart, this.state.imagesEnd)
     });
+
   }
   componentDidMount() {
     console.log('componentDidMount');

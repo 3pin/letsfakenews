@@ -175,7 +175,8 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
       entry_to_read: parseInt(process.env.ENTRY_TO_READ),
       autolive: Boolean(process.env.AUTOLIVE),
       activelist: [],
-      db_mode: process.env.DB_MODE
+      db_mode: process.env.DB_MODE,
+      node_mode: process.env.NODE_ENV,
     }
     let authObj = {
       username: process.env.USERNAME,
@@ -206,7 +207,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
           Auth.deleteOne({}).then(() => {
             let auth = new Auth(authObj);
             auth.save().then((doc) => {
-              debug(doc);
+              debug("Auth Entry: ", doc);
             });
           })
           // load _ids of all live-stories into activelist[]
