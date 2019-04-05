@@ -1,6 +1,8 @@
 // Login... user logins then backend verifies credentials
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import {
+  Redirect
+} from 'react-router-dom';
 import BannerFrame from '../../../app/components/banner';
 //import FormFrame from '../../../app/components/form';
 
@@ -10,7 +12,7 @@ export default class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      redirectLogin: false
+      redirect: false
     };
   }
   handleChange(event) {
@@ -22,18 +24,6 @@ export default class Login extends React.Component {
       [name]: value
     });
   }
-  _handleSubmit = async (event) => {
-    event.preventDefault();
-    const response = await fetch('/settings/authenticate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(this.state)
-    });
-    const body = await response.text();
-    console.log(body);
-  };
   handleSubmit(event) {
     event.preventDefault();
     fetch('/settings/authenticate', {
@@ -47,9 +37,9 @@ export default class Login extends React.Component {
         if (res.status === 200) {
           //this.props.history.push('/');
           this.setState(() => ({
-            redirectToReferrer: true
+            redirect: true
           }))
-          console.log('redirectToReferrer', this.state.redirectToReferrer)
+          console.log('redirect', this.state.redirect)
         } else {
           const error = new Error(res.error);
           throw error;
@@ -60,6 +50,11 @@ export default class Login extends React.Component {
         alert('Error logging in please try again');
       });
   }
+  renderRedirect() {
+    if (this.state.redirect) {
+      return <Redirect to='/admin' />
+    }
+  }
   componentDidMount() {
     console.log('\n');
     console.log(this.props);
@@ -67,11 +62,8 @@ export default class Login extends React.Component {
     console.log('\n');
   }
   render() {
-    const { redirectToReferrer } = this.state
-    if (redirectToReferrer === true) {
-      return <Redirect to='/admin' />
-    } else {
-      return (<div>
+    return (<div>
+        {this.renderRedirect()}
         <BannerFrame title="Login..." desc="Login with your admin credentials."/>
         <hr/>
         <form onSubmit={this.handleSubmit.bind(this)}>
@@ -95,6 +87,5 @@ export default class Login extends React.Component {
         </form>
         <hr/>
       </div>);
-    }
   }
 }

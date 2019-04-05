@@ -1,5 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import {
+  Redirect
+} from 'react-router-dom';
 import BannerFrame from './banner';
 import FormFrame from './form';
 
@@ -9,7 +11,9 @@ export default class Story extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.apiCall = this.apiCall.bind(this);
     this.apiPost = this.apiPost.bind(this);
-    this.state = {}
+    this.state = {
+      redirect: false
+    }
   }
   apiCall = async (apiEndPoint) => {
     const response = await fetch(apiEndPoint);
@@ -58,23 +62,29 @@ export default class Story extends React.Component {
     return data
   }
   hydrateStateWithLocalStorage() {
-      // if the key exists in localStorage
-      if (localStorage.hasOwnProperty(this.props.subject)) {
-        // get the key's value from localStorage
-        let value = localStorage.getItem(this.props.subject);
-        // parse the localStorage string and setState
-        try {
-          value = JSON.parse(value);
-          this.setState({[this.props.subject]: value});
-        } catch (e) {
-          // handle empty string
-          this.setState({[this.props.subject]: value});
-        }
+    // if the key exists in localStorage
+    if (localStorage.hasOwnProperty(this.props.subject)) {
+      // get the key's value from localStorage
+      let value = localStorage.getItem(this.props.subject);
+      // parse the localStorage string and setState
+      try {
+        value = JSON.parse(value);
+        this.setState({
+          [this.props.subject]: value
+        });
+      } catch (e) {
+        // handle empty string
+        this.setState({
+          [this.props.subject]: value
+        });
       }
+    }
   }
   handleChange(value) {
-   this.setState({[this.props.subject]: value});
- }
+    this.setState({
+      [this.props.subject]: value
+    });
+  }
   handleSubmit() {
     if (this.props.stateToSubmit) {
       //move active data from state to localstorage
@@ -82,11 +92,7 @@ export default class Story extends React.Component {
       this.apiPost(this.props.apiEndPoint, this.props.stateToSubmit);
     }
   }
-  componentWillMount() {
-    this.setState(() => ({
-      redirect: false
-    }))
-  }
+  componentWillMount() {}
   componentDidMount() {
     // register with the backend server
     //this.apiCall(this.props.match.url).then(res => console.log(res)).catch(err => console.log(err));
@@ -108,22 +114,24 @@ export default class Story extends React.Component {
       this.saveStateToLocalStorage();
     }
   }
-
   loadStateSubject(object, comparison) {
     let result;
-    Object.keys(object).forEach(function(key) {
+    Object.keys(object).forEach(function (key) {
       if (key === comparison) {
         result = object[key]
       }
     })
     return result
   }
+  renderRedirect() {
+    if (this.state.redirect) {
+      return <Redirect to='/write/thankyou' />
+    }
+  }
   render() {
     const val = this.loadStateSubject(this.state, this.props.subject);
-    if (this.state.redirect === true) {
-      return <Redirect to={this.props.redirect} />
-    } else {
-      return (<div>
+    return (<div>
+        {this.renderRedirect()}
         <section>
           <BannerFrame
             hsize='h4'
@@ -140,6 +148,5 @@ export default class Story extends React.Component {
           <hr/>
         </section>
       </div>)
-    }
   }
 }
