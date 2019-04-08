@@ -210,6 +210,7 @@ export default class Watch extends React.Component {
         handleClick={this.handleFullscreen.bind(this)}
       />
       <hr/>
+      <br/>
       <div id="outerContainer" ref={outerContainer => { this.outerContainer=outerContainer }} className="media">
         <div id="videoContainer" ref={container => { this.container=container }} className="media-player">
           <ReactPlayer
