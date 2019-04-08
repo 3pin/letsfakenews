@@ -29,7 +29,7 @@ export default class Routes extends React.Component {
   render() {
     return (<div>
       <br/>
-      <NavFrame title="Let's Fake News" links={["home", "write", "watch", "admin"]}/>
+      <NavFrame title="LetsFakeNews" links={["home", "write", "watch", "admin"]}/>
       <br/>
       <Switch>
         <Route exact path='/' component={Landing}/>
