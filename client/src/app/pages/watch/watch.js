@@ -197,49 +197,49 @@ export default class Watch extends React.Component {
       popup_duration: diff(this.state.popupStart, this.state.popupEnd),
       image_duration: diff(this.state.imagesStart, this.state.imagesEnd)
     });
-
   }
   componentDidMount() {
     console.log('componentDidMount');
     //this.player.seekTo(0);
   }
   render() {
-    return (<div>
-      <ButtonFrame
-        buttonlabel='PLAY'
-        handleClick={this.handleFullscreen.bind(this)}
-      />
+    return (
+      <div>
+        <ButtonFrame
+          buttonlabel='PLAY'
+          handleClick={this.handleFullscreen.bind(this)}/>
       <hr/>
       <br/>
-      <div id="outerContainer" ref={outerContainer => { this.outerContainer=outerContainer }} className="media">
-        <div id="videoContainer" ref={container => { this.container=container }} className="media-player">
-          <ReactPlayer
-          id="videoPlayer"
-          className='react-player'
-          volume={this.state.volume}
-          width='100%'
-          height='100%'
-          ref={player => { this.player=player }}
-          controls={this.state.controls}
-          progressInterval = {this.state.progressInterval}
-          playing={this.state.playing}
-          onReady={this.onReady.bind(this)}
-          onProgress={this.onProgress.bind(this)}
-          onEnded={this.onEnded.bind(this)}
-          url={this.state.url}
-          />
-          <div id="popup_title" style={this.state.popup_title}>
-            <p id="popup_title_text">{this.state.title}</p>
-          </div>
-          <div id="image_frame" style={this.state.image_frame}>
-            <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image}/>
-          </div>
-          <div id="scroller" className="scroll-left" style={this.state.scroller}>
-            <p id="scroller_text">{this.state.story}</p>
+      <br/>
+        <div className="media" id="outerContainer" ref={outerContainer => { this.outerContainer=outerContainer }}>
+          <div id="videoContainer" ref={container => { this.container=container }} className="media-player">
+            <ReactPlayer
+            id="videoPlayer"
+            className='react-player'
+            volume={this.state.volume}
+            width='100%'
+            height='100%'
+            ref={player => { this.player=player }}
+            controls={this.state.controls}
+            progressInterval = {this.state.progressInterval}
+            playing={this.state.playing}
+            onReady={this.onReady.bind(this)}
+            onProgress={this.onProgress.bind(this)}
+            onEnded={this.onEnded.bind(this)}
+            url={this.state.url}
+            />
+            <div id="popup_title" style={this.state.popup_title}>
+              <p id="popup_title_text">{this.state.title}</p>
+            </div>
+            <div id="image_frame" style={this.state.image_frame}>
+              <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image}/>
+            </div>
+            <div id="scroller" className="scroll-left" style={this.state.scroller}>
+              <p id="scroller_text">{this.state.story}</p>
+            </div>
           </div>
         </div>
       </div>
-
-    </div>)
+    )
   }
 }
