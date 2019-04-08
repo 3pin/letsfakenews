@@ -6,6 +6,7 @@
   "proxy": "http://localhost:5000",
   "dependencies": {
     "babel-plugin-transform-remove-console": "^6.9.4",
+    "bootstrap": "^4.3.1",
     "customize-cra": "^0.2.12",
     "eventsource-polyfill": "^0.9.6",
     "react": "^16.8.6",

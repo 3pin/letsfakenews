@@ -1,7 +1,9 @@
-//import '../node_modules/bootstrap/dist/js/bootstrap.min.js'
-//import '../node_modules/bootstrap-without-jquery/dist/bootstrap-without-jquery.min.js'
-//import '../node_modules/react-bootstrap/dist/react-bootstrap.min.js';
-//import './maximum.css';
+// REACT JS
+import '../node_modules/react/cjs/react.production.min.js';
+import '../node_modules/react-dom/cjs/react-dom.production.min.js';
+import '../node_modules/react-bootstrap/dist/react-bootstrap.min.js';
+// styles
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './minimum.css';
 
 import React from 'react';

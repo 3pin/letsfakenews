@@ -100,6 +100,7 @@ if (process.env.NODE_ENV === 'production') {
 else {
   debug('Serving: ' + __dirname + '/client/public/index.html');
   app.use(express.static(__dirname + '/client/public'));
+  //app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
   //
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/public/index.html'));
