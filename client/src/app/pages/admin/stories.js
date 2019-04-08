@@ -1,5 +1,5 @@
 import React from 'react';
-import BannerFrame from '../../../app/components/banner';
+import BannerFrame from '../../../app/components/bannerframe';
 import 'eventsource-polyfill';
 
 export default class Stories extends React.Component {

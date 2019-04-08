@@ -1,7 +1,7 @@
 import React from 'react';
 //import {Link} from 'react-router-dom';
 
-import ButtonFrame from './button';
+import ButtonFrame from './buttonframe';
 
 export default class FormFrame extends React.Component {
   componentDidMount() {

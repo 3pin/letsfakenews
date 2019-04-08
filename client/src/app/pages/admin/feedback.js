@@ -1,5 +1,5 @@
 import React from 'react';
-import BannerFrame from '../../../app/components/banner';
+import BannerFrame from '../../../app/components/bannerframe';
 
 export default class Feedback extends React.Component {
   constructor(props) {

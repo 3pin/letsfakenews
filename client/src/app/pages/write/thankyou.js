@@ -1,7 +1,7 @@
 import React from 'react';
 
-import BannerFrame from '../../../app/components/banner';
-import ButtonFrame from '../../../app/components/button';
+import BannerFrame from '../../../app/components/bannerframe';
+import ButtonFrame from '../../../app/components/buttonframe';
 
 export default class Thankyou extends React.Component {
   render() {

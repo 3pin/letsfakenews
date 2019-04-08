@@ -2,8 +2,8 @@ import React from 'react';
 import {
   Redirect
 } from 'react-router-dom';
-import BannerFrame from './banner';
-import FormFrame from './form';
+import BannerFrame from './bannerframe';
+import FormFrame from './formframe';
 
 export default class Story extends React.Component {
   constructor(props) {

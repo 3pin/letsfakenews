@@ -3,8 +3,8 @@ import React from 'react';
 import {
   Redirect
 } from 'react-router-dom';
-import BannerFrame from '../../../app/components/banner';
-//import FormFrame from '../../../app/components/form';
+import BannerFrame from '../../../app/components/bannerframe';
+//import FormFrame from '../../../app/components/formframe';
 
 export default class Login extends React.Component {
   constructor(props) {
