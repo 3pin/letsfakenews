@@ -13,7 +13,6 @@ export default class writeStory extends React.Component {
           subject='story'
           linkto="/write/title"
           />
-        <hr/>
       </section>
     </div>)
   }

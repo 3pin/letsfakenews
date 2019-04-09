@@ -25,17 +25,21 @@ export default class ButtonFrame extends React.Component {
       buttonLabel = 'Submit'
     }
     if (this.props.linkto) {
-      return (<div>
-        <p>{this.props.desc}</p>
-        <Link to={this.props.linkto}>
-          <Button variant={variant} onClick={this.handleClick.bind(this)}>{buttonLabel}</Button>
-        </Link>
-      </div>)
+      return (
+        <div>
+          <p>{this.props.desc}</p>
+          <Link to={this.props.linkto}>
+            <Button variant={variant} onClick={this.handleClick.bind(this)}>{buttonLabel}</Button>
+          </Link>
+        </div>
+        )
     } else {
-      return (<div>
-        <p>{this.props.desc}</p>
-          <Button variant={variant} onClick={this.handleClick.bind(this)}>{buttonLabel}</Button>
-      </div>)
+      return (
+        <div>
+          <p>{this.props.desc}</p>
+            <Button variant={variant} onClick={this.handleClick.bind(this)}>{buttonLabel}</Button>
+        </div>
+    )
     }
   }
 }

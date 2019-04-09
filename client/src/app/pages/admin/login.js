@@ -65,7 +65,7 @@ export default class Login extends React.Component {
   render() {
     return (<div>
         {this.renderRedirect()}
-        <BannerFrame title="Login..." desc="Admin access require authorisation..."/>
+        <BannerFrame title="Login..." desc="Admin access requires authorisation..."/>
         <hr/>
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <input
@@ -83,6 +83,7 @@ export default class Login extends React.Component {
             value={this.state.password}
             onChange={this.handleChange.bind(this)}
             required/>
+          <br/>
           <br/>
          <Button variant="secondary" type="submit">Submit</Button>
         </Form>
