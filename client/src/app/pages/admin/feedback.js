@@ -1,5 +1,6 @@
 import React from 'react';
 import BannerFrame from '../../../app/components/bannerframe';
+import {Table, Button} from 'react-bootstrap';
 
 export default class Feedback extends React.Component {
   constructor(props) {
@@ -61,10 +62,16 @@ export default class Feedback extends React.Component {
     const tableStyle = {
       backgroundColor: "white"
     }
+    let variant;
+    if (this.props.variant) {
+      variant = this.props.variant
+    } else {
+      variant = 'danger'
+    }
     return (<div>
       <BannerFrame desc={this.props.desc} title={this.props.title}/>
       <hr/>
-      <table className="table table-bordered" style={tableStyle}>
+      <Table bordered style={tableStyle}>
         <thead className="thead-dark">
           <tr>
             <th style={{
@@ -79,16 +86,13 @@ export default class Feedback extends React.Component {
           <tr>
             <td>Clear all entries from database</td>
             <td>
-              <button
-              type="button"
-              onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }
-              className="btn btn-danger show_tip clear"></button>
+              <Button variant={variant} onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }></Button>
             </td>
           </tr>
         </tbody>
-      </table>
+      </Table>
       <hr/>
-      <table className="table table-bordered" style={tableStyle}>
+      <Table bordered style={tableStyle}>
         <thead className="thead-dark">
           <tr>
             <th style={{
@@ -111,7 +115,7 @@ export default class Feedback extends React.Component {
               : <tr></tr>
           }
         </tbody>
-      </table>
+      </Table>
       <hr/>
     </div>)
   }

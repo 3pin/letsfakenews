@@ -1,4 +1,5 @@
 import React from 'react';
+import {Table, Button} from 'react-bootstrap';
 
 export default class TableOps extends React.Component {
   constructor() {
@@ -27,7 +28,7 @@ export default class TableOps extends React.Component {
     //const TableHeadersObject = tOpsData.map((entry, i) => <th key={i} style={{'width:50%'}}>{entry}</th>)
 
     return (<div>
-      <table className="table table-bordered" style={{
+      <Table bordered hover style={{
           backgroundColor: "white"
         }}>
         <thead className="thead-dark">
@@ -61,7 +62,7 @@ export default class TableOps extends React.Component {
             </td>
           </tr>
         </tbody>
-      </table>
+      </Table>
     </div>)
   }
 }

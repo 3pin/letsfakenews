@@ -1,6 +1,5 @@
 import React from 'react';
-//import {Link} from 'react-router-dom';
-
+import {Form} from 'react-bootstrap';
 import ButtonFrame from './buttonframe';
 
 export default class FormFrame extends React.Component {
@@ -18,26 +17,25 @@ export default class FormFrame extends React.Component {
   }
   render() {
     return (<div>
-      <form onSubmit={this.handleSubmit.bind(this)}>
+      <Form onSubmit={this.handleSubmit.bind(this)}>
         <div>
           <textarea
-          ref={function(input) {if (input != null) {input.focus();}}}
-          className="form-control form-responsive"
-          required="required"
-          autoFocus
-          rows={this.props.rows}
-          maxLength={this.props.length}
-          placeholder={`${this.props.length} chars max...`}
-          value={this.props.value}
-          onChange={this.handleChange.bind(this)}>
+            ref={function(input) {if (input != null) {input.focus();}}}
+            className="form-control form-responsive"
+            required="required"
+            autoFocus
+            rows={this.props.rows}
+            maxLength={this.props.length}
+            placeholder={`${this.props.length} chars max...`}
+            value={this.props.value}
+            onChange={this.handleChange.bind(this)}>
           </textarea>
-
           <ButtonFrame
-          linkto={this.props.linkto}
-          buttonlabel={this.props.buttonlabel}
-          handleClick={this.handleSubmit.bind(this)}/>
+            linkto={this.props.linkto}
+            buttonlabel={this.props.buttonlabel}
+            handleClick={this.handleSubmit.bind(this)}/>
         </div>
-      </form>
+      </Form>
     </div>)
   }
 }

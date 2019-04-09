@@ -1,6 +1,7 @@
 import React from 'react';
 import BannerFrame from '../../../app/components/bannerframe';
-import 'eventsource-polyfill';
+//import 'eventsource-polyfill';
+import {Table, Button} from 'react-bootstrap';
 
 export default class Stories extends React.Component {
   constructor(props) {
@@ -107,10 +108,16 @@ render() {
   const tableStyle = {
     backgroundColor: "white"
   }
+  let variant;
+  if (this.props.variant) {
+    variant = this.props.variant
+  } else {
+    variant = 'danger'
+  }
   return (<div>
       <BannerFrame desc={this.props.desc} title={this.props.title}/>
       <hr/>
-      <table className="table table-bordered" style={tableStyle}>
+      <Table bordered style={tableStyle}>
         <thead className="thead-dark">
           <tr>
             <th style={{
@@ -130,22 +137,19 @@ render() {
           <tr>
             <td>Refresh imagery for all stories</td>
             <td>
-              <button type="button" onClick={this.handleRefresh.bind(this)} className="btn btn-primary show_tip refresh "></button>
+              <Button variant={variant} onClick={this.handleRefresh.bind(this)}></Button>
             </td>
           </tr>
           <tr>
             <td>Clear all stories from database</td>
             <td>
-              <button
-              type="button"
-              onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }
-              className="btn btn-danger show_tip clear"></button>
+              <Button variant={variant} onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }></Button>
             </td>
           </tr>
         </tbody>
-      </table>
+      </Table>
       <hr/>
-      <table ref='table_stories' className="table table-bordered table-hover" style={tableStyle}>
+      <Table ref='table_stories' bordered hover style={tableStyle}>
         <thead className="thead-dark">
           <tr>
             <th style={{
@@ -175,7 +179,7 @@ render() {
                   <td>{entry.title}</td>
                   <td>{entry.story}</td>
                   <td>
-                    <button type="button" onClick={() => this.handleRemove(entry)} className="btn btn-danger show_tip clear"></button>
+                    <Button variant={variant} onClick={() => this.handleRemove(entry)}></Button>
                   </td>
                   <td style={{textAlign:'center'}}><input type="checkbox" checked={entry.storylive===true ? true : false} onChange={() => this.handleStorylive(entry)} className="form-check-input show_tip autolive"/></td>
                 </tr>)
@@ -183,7 +187,7 @@ render() {
               : <tr></tr>
           }
         </tbody>
-      </table>
+      </Table>
       <hr/>
     </div>)
 }

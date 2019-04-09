@@ -1,5 +1,6 @@
 // Login... user logins then backend verifies credentials
 import React from 'react';
+import {Form, Button} from 'react-bootstrap';
 import {
   Redirect
 } from 'react-router-dom';
@@ -64,27 +65,27 @@ export default class Login extends React.Component {
   render() {
     return (<div>
         {this.renderRedirect()}
-        <BannerFrame title="Login..." desc="Login with your admin credentials."/>
+        <BannerFrame title="Login..." desc="Admin access require authorisation..."/>
         <hr/>
-        <form onSubmit={this.handleSubmit.bind(this)}>
+        <Form onSubmit={this.handleSubmit.bind(this)}>
           <input
             type="username"
             name="username"
             placeholder="Enter username"
             value={this.state.username}
             onChange={this.handleChange.bind(this)}
-            required
-          />
+            required/>
+          <br/>
           <input
             type="password"
             name="password"
             placeholder="Enter password"
             value={this.state.password}
             onChange={this.handleChange.bind(this)}
-            required
-          />
-         <input type="submit" value="Submit"/>
-        </form>
+            required/>
+          <br/>
+         <Button variant="secondary" type="submit">Submit</Button>
+        </Form>
         <hr/>
       </div>);
   }

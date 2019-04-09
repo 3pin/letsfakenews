@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {Button} from 'react-bootstrap';
 
 export default class ButtonFrame extends React.Component {
   componentDidMount() {
@@ -12,7 +13,12 @@ export default class ButtonFrame extends React.Component {
     }
   }
   render() {
-    let buttonLabel;
+    let variant, buttonLabel;
+    if (this.props.variant) {
+      variant = this.props.variant
+    } else {
+      variant = 'secondary'
+    }
     if (this.props.buttonlabel) {
       buttonLabel = this.props.buttonlabel
     } else {
@@ -22,17 +28,13 @@ export default class ButtonFrame extends React.Component {
       return (<div>
         <p>{this.props.desc}</p>
         <Link to={this.props.linkto}>
-          <button type="button"
-          onClick={this.handleClick.bind(this)}
-          className="btn btn-primary btn-responsive">{buttonLabel}</button>
+          <Button variant={variant} onClick={this.handleClick.bind(this)}>{buttonLabel}</Button>
         </Link>
       </div>)
     } else {
       return (<div>
         <p>{this.props.desc}</p>
-          <button type="button"
-          onClick={this.handleClick.bind(this)}
-          className="btn btn-primary btn-responsive">{buttonLabel}</button>
+          <Button variant={variant} onClick={this.handleClick.bind(this)}>{buttonLabel}</Button>
       </div>)
     }
   }
