@@ -18,7 +18,8 @@ const
   logger = require('morgan'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
-  path = require('path')
+  path = require('path'),
+  device = require('express-device');
 
 //=============================================================================
 /*
@@ -60,6 +61,8 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
+//add the 'device' property to all 'req' objects
+app.use(device.capture());
 
 //cors
 const cors = require('cors');

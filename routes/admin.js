@@ -5,8 +5,6 @@ const debug = require('debug')('routes_admin');
 
 /* declare a new router */
 const admin = require('express').Router();
-/* load middleware */
-const withAuth = require('../controllers/middleware/withAuth');
 
 /* routes */
 const feedback = require('../controllers/admin/feedback');
@@ -24,9 +22,9 @@ admin.get('/', (req, res) => {
 });
 
 /* display feedback database */
-admin.get('/feedback', withAuth, feedback);
+admin.get('/feedback', feedback);
 /* display stories database */
-admin.get('/stories', withAuth, stories);
+admin.get('/stories', stories);
 /* clear a database */
 admin.post('/clear', clear);
 // stories macro-ops

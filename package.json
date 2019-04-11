@@ -40,6 +40,7 @@
     "ejs": "^2.6.1",
     "events": "^3.0.0",
     "express": "^4.16.4",
+    "express-device": "^0.4.2",
     "google-images": "^2.1.0",
     "htdigest": "^2.2.3",
     "http-auth": "^3.2.3",

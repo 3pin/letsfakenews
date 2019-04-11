@@ -5,6 +5,8 @@ const debug = require('debug')('routes_index');
 
 /* declare a new router */
 const routes = require('express').Router();
+/* load middleware */
+const withAuth = require('../controllers/middleware/withAuth');
 
 /* routes */
 const write = require('./write');
@@ -29,8 +31,8 @@ function middleware_auth(req, res, next) {
 //=============================================================================
 // REACT connections: from Landing
 routes.use('/write', write);
-routes.use('/watch', watch);
-routes.use('/admin', admin);
+routes.use('/watch', deviceType, watch);
+routes.use('/admin', withAuth, admin);
 routes.use('/settings', settings);
 
 module.exports = routes;
