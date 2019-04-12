@@ -36,7 +36,7 @@ export default function checkDevice(ComponentToProtect) {
             loading: false,
             redirect: true
           });
-          alert("Only DESKTOP browsers can watch the LetsFakeNews service");
+          alert("Only desktop browsers can access the LetsFakeNews service");
         });
     }
     render() {
