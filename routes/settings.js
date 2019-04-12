@@ -3,26 +3,29 @@ const debug = require('debug')('routes_settings');
 
 /* declare a new router */
 const routes = require('express').Router();
-/* load middleware */
-const withAuth = require('../controllers/middleware/withAuth');
 
 /* routes */
 const sse = require('../controllers/settings/sse');
 const mode = require('../controllers/settings/mode');
 const activelist = require('../controllers/settings/activelist');
 const password = require('../controllers/settings/password');
+const checkToken = require('../controllers/settings/checkToken');
 const authenticate = require('../controllers/settings/authenticate');
+const checkDevice = require('../controllers/settings/checkdevice');
 
-/* this router */
+/* sub to SSE */
 routes.get('/sse', sse);
+/* fetch mode from db */
 routes.get('/mode', mode);
+/* fetch activelist from db */
 routes.get('/activelist', activelist);
+/* fetch password from db */
 routes.get('/password', password);
+/* check if the user has an authToken... if not ask them to login */
+routes.get('/checkToken', checkToken);
+/* authenticate login:username/password against db */
 routes.post('/authenticate', authenticate);
-//
-routes.get('/checkToken', withAuth, function(req, res) {
-  debug('Ran withAuth middleware token-check');
-  res.sendStatus(200);
-});
+/* check device Type ... desktop or mobile? */
+routes.get('/checkDevice', checkDevice);
 
 module.exports = routes;

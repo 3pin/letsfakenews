@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 // middleware
 import withAuth from './components/withAuth';
+import checkDevice from './components/checkDevice';
 // components
 import Landing from './pages/landing';
 import RoutesWrite from './pages/write/routes';
@@ -35,7 +36,7 @@ export default class Routes extends React.Component {
         <Route exact path='/' component={Landing}/>
         <Route path='/write' component={RoutesWrite}/>
         <Route path='/admin' component={withAuth(RoutesAdmin)}/>
-        <Route path='/watch' component={RoutesWatch}/>
+        <Route path='/watch' component={checkDevice(RoutesWatch)}/>
         <Route path='/login' component={Login}/>
         <Redirect to='/'/>
       </Switch>
