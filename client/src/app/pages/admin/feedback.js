@@ -1,5 +1,6 @@
 import React from 'react';
 import BannerFrame from '../../../app/components/bannerframe';
+import 'eventsource-polyfill';
 import {Table, Button} from 'react-bootstrap';
 
 export default class Feedback extends React.Component {
@@ -11,7 +12,7 @@ export default class Feedback extends React.Component {
     this.state = {
       feedback: []
     };
-    this.eventSource = new EventSource("http://localhost:5000/settings/sse");
+    this.eventSource = new EventSource('../settings/sse');
   }
   apiGet = async (endpoint) => {
     const response = await fetch(endpoint);

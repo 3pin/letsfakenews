@@ -7,72 +7,69 @@ const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('SSE activity');
-
   /* stop listening to SSE when the client closes frontend connection */
   req.on("close", () => {
     debug("SSE req.close");
-    /*
     if (!res.finished) {
       res.end();
       debug("Stopped sending events.");
     }
-    */
   });
-  //
-  res.socket.on('end', () => {
-    debug('SSE socket.close');
-    /*
-    if (!res.finished) {
-      res.end();
-      debug("Stopped sending events.");
-    }
-    */
-  });
-
-  // setup
+  /*
+    res.socket.on('end', () => {
+      debug('SSE socket.close');
+      if (!res.finished) {
+        res.end();
+        debug("Stopped sending events.");
+      }
+    });
+  */
+  /* setup */
   res.set({
     Connection: "keep-alive",
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache'
   });
-
-  // send startup message
   /*
+  // send startup message
   res.write(`event: startup\n`);
   res.write(`data: Server received your /sse request\n\n`);
   */
-
   // send a repeating dummy event to keep the connection from timing-out
   setInterval(function () {
-    res.write(`event: keepalive\n`);
-    res.write(`: SSE keep-alive dummy-comment\n\n`);
-    debug('Emmitted an SSE keep-alive event');
+    if (!res.finished) {
+      res.write(`event: keepalive\n`);
+      res.write(`: SSE keep-alive dummy-comment\n\n`);
+      debug('Emmitted an SSE keep-alive event');
+    }
   }, process.env.KEEPALIVE);
-
-  //
-  // send a 'dummy' message
+  /* send a 'dummy' message */
   bus.on('keepalive', (data) => {
-    debug('SSE keepalive-msg to be emmitted from eventbus');
-    res.write(`event: keepalive\n`);
-    res.write(`data: ${JSON.stringify(data)}`);
-    res.write(`\n\n`);
+    if (!res.finished) {
+      debug('SSE keepalive-msg to be emmitted from eventbus');
+      res.write(`event: keepalive\n`);
+      res.write(`data: ${JSON.stringify(data)}`);
+      res.write(`\n\n`);
+    }
   });
-  // send an 'admin' message
+  /* send an 'admin' message */
   bus.on('admin', (data) => {
     debug('SSE admin-msg to be emmitted from eventbus');
     res.write(`event: admin\n`);
     res.write(`data: ${JSON.stringify(data)}`);
     res.write(`\n\n`);
   });
-  // send a 'story' message
+  /* send a 'story' message */
   bus.on('story', (data) => {
-    debug(data);
-    debug('SSE story-msg to be emmitted from eventbus');
-    res.write(`event: story\n`);
-    res.write(`data: ${JSON.stringify(data)}`);
-    res.write(`\n\n`);
+    if (!res.finished) {
+      debug(data);
+      debug('SSE story-msg to be emmitted from eventbus');
+      res.write(`event: story\n`);
+      res.write(`data: ${JSON.stringify(data)}`);
+      res.write(`\n\n`);
+    }
   });
-  // send an 'feedback' message
+  /* send an 'feedback' message */
   bus.on('feedback', (data) => {
     //debug(data);
     debug('SSE feedback-msg to be emmitted from eventbus');
@@ -80,7 +77,7 @@ module.exports = (req, res) => {
     res.write(`data: ${JSON.stringify(data)}`);
     res.write(`\n\n`);
   });
-  // send an 'feedback' message
+  /* send an 'feedback' message */
   bus.on('error', (err) => {
     //debug(data);
     debug('SSE bus err', err);
