@@ -9,7 +9,7 @@ const sse = require('../controllers/settings/sse');
 const mode = require('../controllers/settings/mode');
 const activelist = require('../controllers/settings/activelist');
 const password = require('../controllers/settings/password');
-const checkToken = require('../controllers/settings/checkToken');
+const checkToken = require('../controllers/settings/checktoken');
 const authenticate = require('../controllers/settings/authenticate');
 const checkDevice = require('../controllers/settings/checkdevice');
 
@@ -26,6 +26,6 @@ routes.get('/checkToken', checkToken);
 /* authenticate login:username/password against db */
 routes.post('/authenticate', authenticate);
 /* check device Type ... desktop or mobile? */
-routes.get('/checkDevice', checkDevice);
+routes.get('/checkDevice', checkdevice);
 
 module.exports = routes;
