@@ -19,7 +19,6 @@ export default class writeTitle extends React.Component {
           _linkto="/write/thankyou"
           redirect="/write/thankyou"
           />
-        <hr/>
       </section>
     </div>)
   }
