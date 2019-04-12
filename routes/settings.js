@@ -26,6 +26,6 @@ routes.get('/checkToken', checkToken);
 /* authenticate login:username/password against db */
 routes.post('/authenticate', authenticate);
 /* check device Type ... desktop or mobile? */
-routes.get('/checkDevice', checkdevice);
+routes.get('/checkDevice', checkDevice);
 
 module.exports = routes;
