@@ -9,7 +9,7 @@ import './minimum.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import HashRouter from 'react-router-dom/HashRouter';
-import {Container, Row, Col} from 'react-bootstrap';
+import { Container,Row,Col } from 'react-bootstrap';
 
 import Routes from './app/routes';
 
