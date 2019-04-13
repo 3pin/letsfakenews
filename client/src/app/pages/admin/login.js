@@ -42,6 +42,11 @@ export default class Login extends React.Component {
           }))
           console.log('redirect', this.state.redirect)
         } else {
+          this.setState(() => ({
+            username: '',
+            password: ''
+          }))
+          this.nameInput.focus()
           const error = new Error(res.error);
           throw error;
         }
@@ -61,6 +66,7 @@ export default class Login extends React.Component {
     console.log(this.props);
     console.log(this.state);
     console.log('\n');
+    this.nameInput.focus()
   }
   render() {
     return (<div>
@@ -71,6 +77,7 @@ export default class Login extends React.Component {
           <input
             type="username"
             name="username"
+            ref={(input) => { this.nameInput = input; }}
             placeholder="Enter username"
             value={this.state.username}
             onChange={this.handleChange.bind(this)}
