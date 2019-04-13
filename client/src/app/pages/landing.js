@@ -10,7 +10,7 @@ export default class Landing extends React.Component {
   render() {
     return (<div>
       <section>
-        <BannerFrame title="About..." desc="Welcome to the LetsFakeNews 24-hour TV service where we take your fake-news without judgement and display it for the world to see."/>
+        <BannerFrame title="About..." desc="Welcome to the LetsFakeNews 24-hour TV service... Al-Jazeera take your stories to display for the world to see."/>
         <hr/>
         <ButtonFrame linkto="/write" buttonlabel="Write" desc="Write fakenews on your device (Phone, Desktop etc.)"/>
         <hr/>

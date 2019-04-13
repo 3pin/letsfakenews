@@ -98,6 +98,8 @@ module.exports = {
       } else {
         reject(Error("did not parse an array"));
       }
+    }).catch((err) => {
+      debug("Err: ", err);
     });
   },
 

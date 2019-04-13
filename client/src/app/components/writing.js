@@ -22,9 +22,10 @@ export default class Story extends React.Component {
       throw Error(body.message);
     return body;
   }
-  apiPost = async (apiEndPoint, toSubmit) => {
-    //fetch from localStorage the data that needs to be POSTED to the API
-    const data = this.hydrate_Some_StateWithLocalStorage(toSubmit)
+  apiPost = async (apiEndPoint, stateToSubmit) => {
+    //fetch from Storage the data that needs to be POSTED to the API
+    const data = this.hydrateSomeStateWithStorage(stateToSubmit)
+    console.log(data)
     const response = await fetch(apiEndPoint, {
       method: 'POST',
       headers: {
@@ -34,39 +35,43 @@ export default class Story extends React.Component {
     });
     const body = await response.text();
     console.log(body);
+    if (body === 'Story contained no proper words') {
+      alert(body)
+    }
+    /* empty the relevant state entries */
+    for (let entry of stateToSubmit) {
+      this.setState({[entry]: ''});
+    }
+    /* trigger redirect to exit and render next component */
     this.setState(() => ({
       redirect: true
     }))
-    //empty the relevant localStorage entries
-    for (let key in toSubmit) {
-      localStorage.removeItem(toSubmit[key]);
-    }
   };
-  saveStateToLocalStorage() {
+  saveStateToStorage() {
     // for every item in React state
     for (let key in this.state) {
-      // save to localStorage
-      localStorage.setItem(key, JSON.stringify(this.state[key]));
+      // save to storage
+      sessionStorage.setItem(key, JSON.stringify(this.state[key]));
     }
   }
-  hydrate_Some_StateWithLocalStorage(array) {
+  hydrateSomeStateWithStorage(array) {
     const data = {};
     for (let entry in array) {
-      // if the key exists in localStorage
-      if (localStorage.hasOwnProperty(array[entry])) {
-        // get the key's value from localStorage
-        let value = JSON.parse(localStorage.getItem(array[entry]));
+      // if the key exists in Storage
+      if (sessionStorage.hasOwnProperty(array[entry])) {
+        // get the key's value from Storage
+        let value = JSON.parse(sessionStorage.getItem(array[entry]));
         data[array[entry]] = value;
       }
     }
     return data
   }
-  hydrateStateWithLocalStorage() {
-    // if the key exists in localStorage
-    if (localStorage.hasOwnProperty(this.props.subject)) {
-      // get the key's value from localStorage
-      let value = localStorage.getItem(this.props.subject);
-      // parse the localStorage string and setState
+  hydrateStateWithStorage() {
+    // if the key exists in Storage
+    if (sessionStorage.hasOwnProperty(this.props.subject)) {
+      // get the key's value from Storage
+      let value = sessionStorage.getItem(this.props.subject);
+      // parse the Storage string and setState
       try {
         value = JSON.parse(value);
         this.setState({
@@ -87,31 +92,27 @@ export default class Story extends React.Component {
   }
   handleSubmit() {
     if (this.props.stateToSubmit) {
-      //move active data from state to localstorage
-      this.saveStateToLocalStorage();
+      //save state to storage
+      this.saveStateToStorage();
       this.apiPost(this.props.apiEndPoint, this.props.stateToSubmit);
     }
   }
-  componentWillMount() {}
+  componentWillMount() {
+    // add event listener to save state to Storage when user leaves/refreshes the page
+    window.addEventListener("beforeunload", this.saveStateToStorage.bind(this));
+  }
   componentDidMount() {
-    // register with the backend server
-    //this.apiCall(this.props.match.url).then(res => console.log(res)).catch(err => console.log(err));
-    // if LocalStorage has values, pass them to this.state
-    this.hydrateStateWithLocalStorage();
-    // add event listener to save state to localStorage when user leaves/refreshes the page
-    window.addEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
+    // if Storage has values, pass them to this.state
+    this.hydrateStateWithStorage();
   }
   componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.saveStateToLocalStorage.bind(this));
+    window.removeEventListener("beforeunload", this.saveStateToStorage.bind(this));
     if (this.state.redirect) {
-      //empty state and localstorage
-      localStorage.clear();
-      this.setState(() => ({
-        redirect: false
-      }))
+      /* empty storage */
+      sessionStorage.clear();
     } else {
-      // saves if component has a chance to unmount
-      this.saveStateToLocalStorage();
+      /* save to storage */
+      this.saveStateToStorage();
     }
   }
   loadStateSubject(object, comparison) {
@@ -125,7 +126,7 @@ export default class Story extends React.Component {
   }
   renderRedirect() {
     if (this.state.redirect) {
-      return <Redirect to='/write/thankyou' />
+      return <Redirect to={this.props.redirect} />
     }
   }
   render() {
