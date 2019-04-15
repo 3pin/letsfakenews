@@ -35,8 +35,8 @@ export default class Routes extends React.Component {
       <Switch>
         <Route exact path='/' component={Landing}/>
         <Route path='/write' component={RoutesWrite}/>
-        <Route path='/admin' component={withAuth(RoutesAdmin)}/>
         <Route path='/watch' component={checkDevice(RoutesWatch)}/>
+        <Route path='/admin' component={withAuth(RoutesAdmin)}/>
         <Route path='/login' component={Login}/>
         <Redirect to='/'/>
       </Switch>

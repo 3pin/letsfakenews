@@ -6,13 +6,18 @@ import {Table, Button} from 'react-bootstrap';
 export default class Feedback extends React.Component {
   constructor(props) {
     super(props);
+    console.log('NODE_ENV: ' + process.env.NODE_ENV)
+    if (process.env.NODE_ENV === 'production') {
+      this.eventSource = new EventSource('/settings/sse');
+    } else {
+      this.eventSource = new EventSource(`http://localhost:5000/settings/sse`);
+    }
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
     this.handleClear = this.handleClear.bind(this);
     this.state = {
       feedback: []
     };
-    this.eventSource = new EventSource('../settings/sse');
   }
   apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
@@ -47,9 +52,14 @@ export default class Feedback extends React.Component {
   }
   componentDidMount() {
     /* open sse listener */
-    this.eventSource.addEventListener('feedback', e => this.setState({
-      feedback: JSON.parse(e.data)
-    }));
+    this.eventSource.addEventListener('feedback', (e) => {
+      console.log('A new feedback was processed by the backend');
+      this.setState({feedback: JSON.parse(e.data)});
+    });
+    // Catche errors
+    this.eventSource.onerror = (e) => {
+      console.log("--- SSE EVENTSOURCE ERROR: ", e);
+    };
     /* load database into this.state */
     this.apiGet(this.props.apiHello).then(res => this.setState({
       feedback: res.feedback

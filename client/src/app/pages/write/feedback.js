@@ -16,7 +16,7 @@ export default class writeFeedback extends React.Component {
           subject="feedback"
           apiEndPoint="/write/feedback"
           stateToSubmit={["feedback"]}
-          linkto="/write/thankyou"
+          redirect="/write/thankyou"
           />
         <hr/>
       </section>

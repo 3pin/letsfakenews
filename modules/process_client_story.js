@@ -22,13 +22,9 @@ module.exports = {
         // add current-time to the JSON
         client_JSON.time = result.time
         nlp.parse_nouns(client_JSON.story).then((words) => {
-          debug(words[0])
-          if (words.length === 1) {
-            debug('1 word array')
-            if (words[0] === undefined) {
-              debug('no words');
-              resolve(null)
-            }
+          if (words[0] === undefined) {
+            debug('no words');
+            resolve(null);
           } else {
             // add nouns to the JSON
             client_JSON.words = words

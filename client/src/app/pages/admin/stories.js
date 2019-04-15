@@ -6,14 +6,12 @@ import {Table, Button} from 'react-bootstrap';
 export default class Stories extends React.Component {
   constructor(props) {
     super(props);
-    this.eventSource = new EventSource('../settings/sse');
-/*
+    console.log('NODE_ENV: ' + process.env.NODE_ENV)
     if (process.env.NODE_ENV === 'production') {
       this.eventSource = new EventSource('/settings/sse');
     } else {
       this.eventSource = new EventSource(`http://localhost:5000/settings/sse`);
     }
-    */
     //
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
@@ -87,11 +85,12 @@ export default class Stories extends React.Component {
   componentDidMount() {
     /* open sse listener */
     this.eventSource.addEventListener('story', (e) => {
+      console.log('A new story was processed by the backend');
       this.setState({stories: JSON.parse(e.data)});
     });
     // Catches errors
     this.eventSource.onerror = (e) => {
-      console.log("---- ERROR: ", e);
+      console.log("--- SSE EVENTSOURCE ERROR: ", e);
     };
     /* load autolive-status & stories from Db */
     this.apiGet(this.props.apiHello)

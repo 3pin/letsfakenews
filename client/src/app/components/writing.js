@@ -9,18 +9,10 @@ export default class Story extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.apiCall = this.apiCall.bind(this);
     this.apiPost = this.apiPost.bind(this);
     this.state = {
       redirect: false
     }
-  }
-  apiCall = async (apiEndPoint) => {
-    const response = await fetch(apiEndPoint);
-    const body = await response.json();
-    if (response.status !== 200)
-      throw Error(body.message);
-    return body;
   }
   apiPost = async (apiEndPoint, stateToSubmit) => {
     //fetch from Storage the data that needs to be POSTED to the API

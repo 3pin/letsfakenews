@@ -4,8 +4,15 @@ import BannerFrame from '../../app/components/bannerframe';
 import ButtonFrame from '../../app/components/buttonframe';
 
 export default class Landing extends React.Component {
+  apiGet = async (apiEndPoint) => {
+    const response = await fetch(apiEndPoint);
+    const body = await response.json();
+    if (response.status !== 200)
+      throw Error(body.message);
+    return body;
+  }
   componentDidMount() {
-    //console.log(this.state);
+    //this.apiGet('/settings/mode').then((res) => {console.log(res);});
 }
   render() {
     return (<div>
