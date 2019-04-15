@@ -24,19 +24,18 @@ export default function checkDevice(ComponentToProtect) {
               loading: false
             });
           } else {
-            console.log('This is NOT a Desktop device');
-            const error = new Error(res.error);
-            throw error;
+            console.log('Redirecting... This is NOT a Desktop device');
+            this.setState({
+              loading: false,
+              redirect: true
+            });
+            alert("Only desktop browsers can access the LetsFakeNews service");
+            //const error = new Error(res.error);
+            //throw error;
           }
         })
         .catch(err => {
           console.error(err);
-          console.log('redirecting');
-          this.setState({
-            loading: false,
-            redirect: true
-          });
-          alert("Only desktop browsers can access the LetsFakeNews service");
         });
     }
     render() {
