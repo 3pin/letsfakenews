@@ -18,7 +18,6 @@ export default class writeFeedback extends React.Component {
           stateToSubmit={["feedback"]}
           redirect="/write/thankyou"
           />
-        <hr/>
       </section>
     </div>)
   }
