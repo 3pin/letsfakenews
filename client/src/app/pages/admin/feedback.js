@@ -6,7 +6,6 @@ import {Table, Button} from 'react-bootstrap';
 export default class Feedback extends React.Component {
   constructor(props) {
     super(props);
-    console.log('NODE_ENV: ' + process.env.NODE_ENV)
     if (process.env.NODE_ENV === 'production') {
       this.eventSource = new EventSource('/settings/sse');
     } else {

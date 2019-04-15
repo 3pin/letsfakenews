@@ -23,17 +23,17 @@ export default function withAuth(ComponentToProtect) {
               loading: false
             });
           } else {
-            const error = new Error(res.error);
-            throw error;
+            console.log('redirecting');
+            this.setState({
+              loading: false,
+              redirect: true
+            });
+            //const error = new Error(res.error);
+            //throw error;
           }
         })
         .catch(err => {
           console.error(err);
-          console.log('redirecting');
-          this.setState({
-            loading: false,
-            redirect: true
-          });
         });
     }
     render() {

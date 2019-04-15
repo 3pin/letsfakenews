@@ -47,13 +47,13 @@ export default class Login extends React.Component {
             password: ''
           }))
           this.nameInput.focus()
-          const error = new Error(res.error);
-          throw error;
+          alert('Error logging in please try again');
+          //const error = new Error(res.error);
+          //throw error;
         }
       })
       .catch(err => {
         console.error(err);
-        alert('Error logging in please try again');
       });
   }
   renderRedirect() {
