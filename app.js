@@ -60,8 +60,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+//app.use(cookieParser(process.env.SECRET));
 app.use(cookieParser());
-//add the 'device' property to all 'req' objects
+//add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
 //cors

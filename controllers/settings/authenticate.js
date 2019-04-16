@@ -3,8 +3,6 @@
 const debug = require('debug')('authenticate');
 
 const jwt = require('jsonwebtoken');
-const secret = process.env.SECRET;
-
 const Auth = require('../../models/auth.model');
 
 module.exports = (req, res) => {
@@ -40,10 +38,8 @@ module.exports = (req, res) => {
           debug('same', same);
           // Issue token
           const payload = { username };
-          debug('payload', payload);
-          const token = jwt.sign(payload, secret, {expiresIn: '1h'});
-          //const token = jwt.sign(payload, secret);
-          debug('token', token);
+          const secret = process.env.SECRET
+          const token = jwt.sign(payload, secret);
           let domain;
           if (process.env.NODE_ENV === 'production') {
             domain = 'letsfakenews.herokuapp.com'
@@ -51,10 +47,12 @@ module.exports = (req, res) => {
             domain = 'localhost'
           }
           let tokenAge = Number(process.env.TOKEN_AGE_MINS) * 60000;
-          let tokenOptions = {domain:domain, maxAge:tokenAge, httpOnly:false, sameSite:false}
+          //let tokenOptions = {signed:true, secure:true, domain:domain, maxAge:tokenAge, httpOnly:true, sameSite:false}
+          let tokenOptions = {domain:domain, maxAge:tokenAge, httpOnly:true, sameSite:false}
           debug(tokenOptions);
-          res.cookie('token', token, tokenOptions)
-            .sendStatus(200);
+          res.cookie('token', token, tokenOptions).sendStatus(200);
+          //res.json({token:token});
+          //res.status(200).send({ user, token: jwt.token });
         }
       });
     }
