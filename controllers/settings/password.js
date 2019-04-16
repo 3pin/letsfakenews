@@ -4,7 +4,7 @@ const debug = require('debug')('password');
 const Auth = require('../../models/auth.model');
 
 module.exports = (req, res) => {
-  debug('/GET /settings/activelist');
+  debug('/GET /settings/password');
   Auth.find({}).then((res) => {
     debug(res.password);
     res.send({
