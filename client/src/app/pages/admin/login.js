@@ -27,6 +27,7 @@ export default class Login extends React.Component {
     fetch('/settings/authenticate', {
         method: 'POST',
         body: JSON.stringify(this.state),
+        credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/json'
         }

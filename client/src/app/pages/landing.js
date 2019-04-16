@@ -23,7 +23,7 @@ export default class Landing extends React.Component {
         <hr/>
         <ButtonFrame linkto="/watch" buttonlabel="Watch" desc="Watch fakenews in fullscreen (Desktop only)"/>
         <hr/>
-        <ButtonFrame linkto="/admin" buttonlabel="Admin" desc="Administer the fakenews (Desktop only... password required)"/>
+        <ButtonFrame linkto="/admin" buttonlabel="Admin" desc="Administer the fakenews (Desktop only)"/>
         <hr/>
       </section>
     </div>)
