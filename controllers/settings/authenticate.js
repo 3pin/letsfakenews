@@ -43,8 +43,10 @@ module.exports = (req, res) => {
           debug('payload', payload);
           const token = jwt.sign(payload, secret, {expiresIn: '1h'});
           debug('token', token);
+          let tokenAge = parseInt(process.env.TOKEN_AGE_MINS) * 60000;
+          debug(tokenAge);
           //let tokenOptions = JSON.parse(process.env.TOKEN_OPTIONS);
-          let tokenOptions = {httpOnly:true, sameSite:false}
+          let tokenOptions = {httpOnly:true, sameSite:false, maxAge:tokenAge}
           res.cookie('token', token, tokenOptions)
             .sendStatus(200);
         }
