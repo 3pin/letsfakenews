@@ -21,7 +21,7 @@ module.exports = (req, res) => {
     } else if (!user) {
       res.status(401)
         .json({
-          error: 'Incorrect username or password'
+          error: 'Incorrect username'
         });
     } else {
       debug(user);
@@ -35,16 +35,14 @@ module.exports = (req, res) => {
         } else if (!same) {
           res.status(401)
             .json({
-              error: 'Incorrect username or password'
+              error: 'Incorrect password'
           });
         } else {
           debug('same', same);
           // Issue token
           const payload = { username };
-          const token = jwt.sign(payload, secret, {
-            expiresIn: '1h'
-          });
-          res.cookie('token', token, { httpOnly: true })
+          const token = jwt.sign(payload, secret, {expiresIn: '1h'});
+          res.cookie('token', token, { httpOnly: true, secure: true })
             .sendStatus(200);
         }
       });
