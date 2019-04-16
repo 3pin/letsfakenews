@@ -41,10 +41,11 @@ module.exports = (req, res) => {
           // Issue token
           const payload = { username };
           debug('payload', payload);
-          const token = jwt.sign(payload, secret, {expiresIn: '1h'});
+          //const token = jwt.sign(payload, secret, {expiresIn: '1h'});
+          const token = jwt.sign(payload, secret);
           debug('token', token);
           let tokenAge = Number(process.env.TOKEN_AGE_MINS) * 60000;
-          let tokenOptions = {httpOnly:true, sameSite:false, maxAge:tokenAge}
+          let tokenOptions = {sameSite:false, maxAge:tokenAge}
           debug(tokenOptions);
           res.cookie('token', token, tokenOptions)
             .sendStatus(200);
