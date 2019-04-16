@@ -6,11 +6,12 @@ const Settings = require('../../models/settings.model');
 
 module.exports = (req, res) => {
   debug("Entered middleware to check token-authorisation");
-  debug(req);
+  //debug(req);
   const token =
     req.body.token ||
     req.query.token ||
     req.headers['x-access-token'] ||
+    req.headers['cookie'] ||
     req.cookies.token;
   debug(token);
   if (!token) {

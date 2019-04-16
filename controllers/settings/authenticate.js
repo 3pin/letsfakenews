@@ -9,7 +9,7 @@ const Auth = require('../../models/auth.model');
 
 module.exports = (req, res) => {
   debug('/settings/authenticate');
-  debug(req.body);
+  //debug(req.body);
   const { username, password } = req.body;
   Auth.findOne({ username }, function(err, user) {
     if (err) {
@@ -41,8 +41,8 @@ module.exports = (req, res) => {
           // Issue token
           const payload = { username };
           debug('payload', payload);
-          //const token = jwt.sign(payload, secret, {expiresIn: '1h'});
-          const token = jwt.sign(payload, secret);
+          const token = jwt.sign(payload, secret, {expiresIn: '1h'});
+          //const token = jwt.sign(payload, secret);
           debug('token', token);
           let tokenAge = Number(process.env.TOKEN_AGE_MINS) * 60000;
           let tokenOptions = {sameSite:false, maxAge:tokenAge}
