@@ -1,5 +1,5 @@
 //middleware for routes: checks if the client has token-auth before passing on
-const debug = require('debug')('routes_settings');
+const debug = require('debug')('checkToken');
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET;
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('routes_auth');
+const debug = require('debug')('authenticate');
 
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET;

@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('routes_settings');
+const debug = require('debug')('mode');
 
 module.exports = (req, res) => {
   // serve mode-data to client

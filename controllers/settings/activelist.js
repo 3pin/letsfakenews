@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('routes_settings');
+const debug = require('debug')('activelist');
 const Settings = require('../../models/settings.model');
 
 module.exports = (req, res) => {

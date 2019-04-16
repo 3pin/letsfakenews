@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('routes_settings');
+const debug = require('debug')('password');
 const Auth = require('../../models/auth.model');
 
 module.exports = (req, res) => {
