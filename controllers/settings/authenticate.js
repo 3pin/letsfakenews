@@ -44,8 +44,14 @@ module.exports = (req, res) => {
           const token = jwt.sign(payload, secret, {expiresIn: '1h'});
           //const token = jwt.sign(payload, secret);
           debug('token', token);
+          let domain;
+          if (process.env.NODE_ENV === 'production') {
+            domain = 'letsfakenew.herkuapp.com'
+          } else {
+            domain = 'localhost'
+          }
           let tokenAge = Number(process.env.TOKEN_AGE_MINS) * 60000;
-          let tokenOptions = {sameSite:false, maxAge:tokenAge}
+          let tokenOptions = {domain:domain, maxAge:tokenAge, httpOnly:false, sameSite:false}
           debug(tokenOptions);
           res.cookie('token', token, tokenOptions)
             .sendStatus(200);
