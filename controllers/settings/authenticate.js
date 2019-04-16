@@ -46,7 +46,7 @@ module.exports = (req, res) => {
           debug('token', token);
           let domain;
           if (process.env.NODE_ENV === 'production') {
-            domain = 'letsfakenew.herkuapp.com'
+            domain = 'letsfakenews.herokuapp.com'
           } else {
             domain = 'localhost'
           }
