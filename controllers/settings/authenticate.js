@@ -13,7 +13,6 @@ module.exports = (req, res) => {
   const { username, password } = req.body;
   Auth.findOne({ username }, function(err, user) {
     if (err) {
-      console.error('Error Boom', err);
       res.status(500)
         .json({
         error: 'Internal error please try again'
@@ -41,7 +40,9 @@ module.exports = (req, res) => {
           debug('same', same);
           // Issue token
           const payload = { username };
+          debug('payload', payload);
           const token = jwt.sign(payload, secret, {expiresIn: '1h'});
+          debug('token', token);
           res.cookie('token', token, { httpOnly: true, secure: true })
             .sendStatus(200);
         }
