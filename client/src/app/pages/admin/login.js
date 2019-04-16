@@ -29,6 +29,7 @@ export default class Login extends React.Component {
         body: JSON.stringify(this.state),
         credentials: 'include',
         headers: {
+          Accept: "application/json",
           'Content-Type': 'application/json'
         }
       })

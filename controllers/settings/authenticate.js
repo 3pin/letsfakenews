@@ -43,8 +43,8 @@ module.exports = (req, res) => {
           debug('payload', payload);
           const token = jwt.sign(payload, secret, {expiresIn: '1h'});
           debug('token', token);
-          let tokenOptions = JSON.parse(process.env.TOKEN_OPTIONS)
-          //let tokenOptions = {httpOnly: true, secure: true}
+          //let tokenOptions = JSON.parse(process.env.TOKEN_OPTIONS);
+          let tokenOptions = {httpOnly:true, sameSite:false}
           res.cookie('token', token, tokenOptions)
             .sendStatus(200);
         }

@@ -66,9 +66,6 @@ app.use(device.capture());
 
 //cors
 const cors = require('cors');
-const corsOption = {
-  origin: process.env.CORS_OPTION
-}
 const whitelist = [process.env.WHITELIST_LOCAL, process.env.WHITELIST_REMOTE]
 const corsOption_whitelist = function (req, callback) {
   var corsOptions;
@@ -76,12 +73,14 @@ const corsOption_whitelist = function (req, callback) {
     debug(req.header('Origin'));
     // reflect (enable) the requested origin in the CORS response
     corsOptions = {
-      origin: true
+      origin: true,
+      credentials: true,
     }
   } else {
     // disable CORS for this request
     corsOptions = {
-      origin: false
+      origin: false,
+      credentials: false
     }
   }
   // callback expects two parameters: error and options
