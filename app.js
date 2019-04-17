@@ -41,7 +41,7 @@ app.set('view engine', 'ejs');
 //=============================================================================
 // middleware
 app.use(logger('dev'));
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== '_production') {
   // force HSTS on the clients requests
   app.use(helmet());
 }
