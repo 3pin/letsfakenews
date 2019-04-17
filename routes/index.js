@@ -27,6 +27,10 @@ function middleware_auth(req, res, next) {
 }
 */
 //=============================================================================
+// endpoint for certbot to test authenticity against
+routes.get('/.well-known/acme-challenge/' + process.env.CERTBOT_CALL, function(req, res) {
+  res.send(process.env.CERTBOT_RESPONSE);
+})
 // REACT connections: from Landing
 routes.use('/write', write);
 routes.use('/watch', watch);
