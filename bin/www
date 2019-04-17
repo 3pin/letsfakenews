@@ -12,10 +12,11 @@ Create HTTP server.
 if (process.env.NODE_ENV === 'production') {
   const fs = require('fs');
   var httpsOptions = {
-    key: fs.readFileSync('./certs/privkey.pem'),
-    cert: fs.readFileSync('./certs/fullchain.pem')
+    key: fs.readFileSync('./certs/key.pem'),
+    cert: fs.readFileSync('./certs/cert.pem')
   };
   var https = require('https');
+  //var server = https.createServer(httpsOptions,app);
   var server = https.createServer(app);
 } else {
   var http = require('http');
