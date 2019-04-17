@@ -9,7 +9,7 @@ export default class Feedback extends React.Component {
     if (process.env.NODE_ENV === 'production') {
       this.eventSource = new EventSource('/settings/sse');
     } else {
-      this.eventSource = new EventSource(`https://localhost:5000/settings/sse`);
+      this.eventSource = new EventSource(`http://localhost:5000/settings/sse`);
     }
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);

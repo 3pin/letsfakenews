@@ -5,15 +5,15 @@ Module dependencies.
 */
 
 var app = require('../app');
-const fs = require('fs')
 
 /*
 Create HTTP server.
 */
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === '_production') {
+  const fs = require('fs');
   var httpsOptions = {
-    key: fs.readFileSync('./certs/key.pem'),
-    cert: fs.readFileSync('./certs/cert.pem')
+    key: fs.readFileSync('./certs/privkey.pem'),
+    cert: fs.readFileSync('./certs/fullchain.pem')
   };
   var https = require('https');
   var server = https.createServer(httpsOptions, app);

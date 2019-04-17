@@ -238,5 +238,8 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   });
 });
 //=============================================================================
+app.get('/.well-known/acme-challenge/:content', function(req, res) {
+  res.send('xxxxxxxxxxxx-yyyy.zzzzzzzzzzzzzzzzzzz')
+})
 
 module.exports = app;
