@@ -100,8 +100,9 @@ else {
 }
 
 // endpoint for certbot to test authenticity against
-app.get('/.well-known/acme-challenge/:content', function(req, res) {
-  res.send('xxxxxxxxxxxx-yyyy.zzzzzzzzzzzzzzzzzzz')
+app.get('/.well-known/acme-challenge/1tAh6zfIQ5qFRE79mU6QdO5QhHLZJsM-8oWWjjhBIh4', function(req, res) {
+  //res.send('xxxxxxxxxxxx-yyyy.zzzzzzzzzzzzzzzzzzz');
+  res.send('1tAh6zfIQ5qFRE79mU6QdO5QhHLZJsM-8oWWjjhBIh4.R9VFj5_TEePO7AkAOyJoQMZL-1ibHzFwqZufe7RzHYU');
 })
 
 // Make our db accessible to our router
