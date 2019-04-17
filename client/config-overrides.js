@@ -10,11 +10,7 @@ module.exports = function override(config, env) {
 }
 */
 
-
-const {
-  override,
-  addBabelPlugins
-} = require("customize-cra");
+const {override,addBabelPlugins} = require("customize-cra");
 const path = require("path");
 module.exports = override(
   ...addBabelPlugins(

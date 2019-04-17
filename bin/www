@@ -5,12 +5,22 @@ Module dependencies.
 */
 
 var app = require('../app');
+const fs = require('fs')
 
 /*
 Create HTTP server.
 */
-var http = require('http');
-var server = http.createServer(app);
+if (process.env.NODE_ENV === 'production') {
+  var httpsOptions = {
+    key: fs.readFileSync('./certs/key.pem'),
+    cert: fs.readFileSync('./certs/cert.pem')
+  };
+  var https = require('https');
+  var server = https.createServer(httpsOptions, app);
+} else {
+  var http = require('http');
+  var server = http.createServer(app);
+}
 
 /*
 Get port from environment and store in Express.
@@ -52,9 +62,9 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ?
+    'Pipe ' + port :
+    'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -77,7 +87,7 @@ Event listener for HTTP server "listening" event.
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  var bind = typeof addr === 'string' ?
+    'pipe ' + addr :
+    'port ' + addr.port;
 }

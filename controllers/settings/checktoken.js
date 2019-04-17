@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
       if (err) {
         res.status(401).send('Unauthorized: Invalid token');
       } else {
-        debug('Mathcing token found in client req');
+        debug('Matching token in client req');
         req.username = decoded.username;
         res.sendStatus(200);
         //next();
