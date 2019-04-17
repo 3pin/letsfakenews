@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'production') {
     cert: fs.readFileSync('./certs/fullchain.pem')
   };
   var https = require('https');
-  var server = https.createServer(httpsOptions, app);
+  var server = https.createServer(app);
 } else {
   var http = require('http');
   var server = http.createServer(app);
