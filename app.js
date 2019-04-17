@@ -19,14 +19,16 @@ const
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   path = require('path'),
-  device = require('express-device');
+  device = require('express-device'),
+  helmet = require("helmet");
 
 //=============================================================================
 // routes structure
-const write = require('./routes/write');
-const admin = require('./routes/admin');
-const watch = require('./routes/watch');
-const settings = require('./routes/settings');
+const index = require('./routes/index');
+// const write = require('./routes/write');
+// const admin = require('./routes/admin');
+// const watch = require('./routes/watch');
+// const settings = require('./routes/settings');
 //=============================================================================
 // initialize
 const app = express();
@@ -39,6 +41,8 @@ app.set('view engine', 'ejs');
 //=============================================================================
 // middleware
 app.use(logger('dev'));
+// force HSTS on the clients requests
+//app.use(helmet());
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(favicon(path.join('../client', 'public', 'favicon.ico')));
 app.use(bodyParser.json());
@@ -95,6 +99,11 @@ else {
   })
 }
 
+// endpoint for certbot to test authenticity against
+app.get('/.well-known/acme-challenge/:content', function(req, res) {
+  res.send('xxxxxxxxxxxx-yyyy.zzzzzzzzzzzzzzzzzzz')
+})
+
 // Make our db accessible to our router
 app.use(function (req, res, next) {
   req.db = db;
@@ -106,10 +115,10 @@ const dbSettingsFetch = require('./controllers/middleware/dbSettingsFetch');
 app.use(dbSettingsFetch);
 //=============================================================================
 // define that all routes are within the 'routes' folder
-app.use('/', write);
-app.use('/watch', watch);
-app.use('/admin', admin);
-app.use('/settings', settings);
+app.use('/', index);
+// app.use('/watch', watch);
+// app.use('/admin', admin);
+// app.use('/settings', settings);
 //=============================================================================
 // Error Handlers
 // catch 404 and forward to error handler
@@ -238,8 +247,5 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   });
 });
 //=============================================================================
-app.get('/.well-known/acme-challenge/:content', function(req, res) {
-  res.send('xxxxxxxxxxxx-yyyy.zzzzzzzzzzzzzzzzzzz')
-})
 
 module.exports = app;

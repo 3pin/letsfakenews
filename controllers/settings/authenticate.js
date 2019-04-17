@@ -48,7 +48,7 @@ module.exports = (req, res) => {
           }
           let tokenAge = Number(process.env.TOKEN_AGE_MINS) * 60000;
           //let tokenOptions = {signed:true, secure:true, domain:domain, maxAge:tokenAge, httpOnly:true, sameSite:false}
-          let tokenOptions = {signed:false, secure:false, maxAge:tokenAge, httpOnly:true, sameSite:false}
+          let tokenOptions = {signed:false, secure:false, httpOnly:true, sameSite:false, maxAge:tokenAge}
           debug(tokenOptions);
           res.cookie('token', token, tokenOptions).sendStatus(200);
           //res.json({token:token});

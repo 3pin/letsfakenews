@@ -43,6 +43,7 @@
     "express": "^4.16.4",
     "express-device": "^0.4.2",
     "google-images": "^2.1.0",
+    "helmet": "^3.16.0",
     "htdigest": "^2.2.3",
     "http-auth": "^3.2.3",
     "jsonwebtoken": "^8.5.1",
