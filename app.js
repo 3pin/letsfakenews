@@ -41,8 +41,10 @@ app.set('view engine', 'ejs');
 //=============================================================================
 // middleware
 app.use(logger('dev'));
-// force HSTS on the clients requests
-//app.use(helmet());
+if (process.env.NODE_ENV !== 'production') {
+  // force HSTS on the clients requests
+  app.use(helmet());
+}
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 //app.use(favicon(path.join('../client', 'public', 'favicon.ico')));
 app.use(bodyParser.json());

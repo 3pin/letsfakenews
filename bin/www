@@ -9,7 +9,7 @@ var app = require('../app');
 /*
 Create HTTP server.
 */
-if (process.env.NODE_ENV === '_production') {
+if (process.env.NODE_ENV === 'production') {
   const fs = require('fs');
   var httpsOptions = {
     key: fs.readFileSync('./certs/privkey.pem'),
