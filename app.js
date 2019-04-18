@@ -59,7 +59,9 @@ app.use(device.capture());
 
 //cors
 const cors = require('cors');
-const whitelist = [process.env.WHITELIST_LOCAL, process.env.WHITELIST_REMOTE]
+const whiteObj = JSON.parse(process.env.WHITELIST)
+const whitelist = Object.values(whiteObj);
+debug(whitelist);
 const corsOption_whitelist = function (req, callback) {
   var corsOptions;
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
@@ -253,5 +255,4 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
   });
 });
 //=============================================================================
-
 module.exports = app;
