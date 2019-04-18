@@ -50,7 +50,7 @@ if (toBoolean(process.env.TOKEN_SECURE)) {
 app.use(device.capture());
 
 //cors
-if (process.env.NODE_ENV === 'development') {
+if (process.env.CORS === 'whitelist') {
   const cors = require('cors');
   const corsOption_whitelist = function (req, callback) {
     var whitelist = [process.env.WHITELIST]
@@ -74,6 +74,8 @@ if (process.env.NODE_ENV === 'development') {
     callback(null, corsOptions)
   }
   app.use(cors(corsOption_whitelist));
+} else if (process.env.CORS === 'all') {
+  app.use(cors());
 }
 
 // force HSTS on the clients requests
