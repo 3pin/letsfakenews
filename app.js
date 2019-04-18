@@ -52,28 +52,17 @@ app.use(device.capture());
 //cors
 if (process.env.CORS === 'whitelist') {
   const cors = require('cors');
-  const corsOption_whitelist = function (req, callback) {
-    var whitelist = [process.env.WHITELIST]
-    var corsOptions;
-    if (whitelist.indexOf(req.header('Origin')) !== -1) {
-      console.log('Req origin in whitelist: ', req.header('Origin'));
-      // enable the requested origin in the CORS response
-      corsOptions = {
-        origin: true,
-        credentials: true,
-      }
-    } else {
-      console.log('Req origin NOT in whitelist: ', req.header('Origin'));
-      // disable CORS for this request
-      corsOptions = {
-        origin: false,
-        credentials: false
+  var whitelist = ['http://localhost:5000']
+  var corsOptions = {
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1 || !origin) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
       }
     }
-    // callback expects two parameters: error and options
-    callback(null, corsOptions)
   }
-  app.use(cors(corsOption_whitelist));
+  app.use(cors(corsOptions));
 } else if (process.env.CORS === 'all') {
   const cors = require('cors');
   app.use(cors());
@@ -109,6 +98,7 @@ else {
   app.use(favicon(path.join(__dirname, '/client/public', 'favicon.ico')));
   //app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
   app.get('/', (req, res) => {
+    debug(req)
     res.sendFile(path.join(__dirname, '/client/public/index.html'));
   })
 }
