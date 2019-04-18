@@ -75,6 +75,7 @@ if (process.env.CORS === 'whitelist') {
   }
   app.use(cors(corsOption_whitelist));
 } else if (process.env.CORS === 'all') {
+  const cors = require('cors');
   app.use(cors());
 }
 
