@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Module Dependencies
 const
   express = require('express'),
-  //favicon = require('serve-favicon'),
+  favicon = require('serve-favicon'),
   logger = require('morgan'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
@@ -46,33 +46,32 @@ if (toBoolean(process.env.HSTS)) {
   // force HSTS on the clients requests
   app.use(helmet());
 }
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-//app.use(favicon(path.join('../client', 'public', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-//app.use(cookieParser(process.env.SECRET));
-app.use(cookieParser(process.env.SECRET));
+// setup cookie security
+if (toBoolean(process.env.TOKEN_SECURE)) {
+  app.use(cookieParser(process.env.SECRET));
+} else {
+  app.use(cookieParser());
+}
 //add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
 //cors
 const cors = require('cors');
-// const whiteObj = JSON.parse(process.env.WHITELIST)
-// const whitelist = Object.values(whiteObj);
-// debug(whitelist);
-var whitelist;
-if (process.env.NODE_ENV === 'development') {
-  whitelist = ["http://localhost:3000","https://localhost:3000"]
-} else {
-  whitelist = ["http://letsfakenews.herokuapp.com","https://letsfakenews.herokuapp.com","http://letsfakenews.com","https://letsfakenews.com"]
-}
 const corsOption_whitelist = function (req, callback) {
+  var whitelist;
+  if (process.env.NODE_ENV === 'development') {
+    whitelist = ["http://localhost:3000","https://localhost:3000"]
+  } else {
+    whitelist = ["http://letsfakenews.herokuapp.com","https://letsfakenews.herokuapp.com","http://letsfakenews.com","https://letsfakenews.com"]
+  }
   var corsOptions;
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
     debug(req.header('Origin'));
-    // reflect (enable) the requested origin in the CORS response
+    // enable the requested origin in the CORS response
     corsOptions = {
       origin: true,
       credentials: true,
@@ -101,18 +100,16 @@ if (toBoolean(process.env.HTTPS_REDIRECT)) {
 if (process.env.NODE_ENV === 'production') {
   console.log('Serving: ' + __dirname + '/client/build/index.html');
   app.use(express.static(__dirname + '/client/build'));
-  //
+  app.use(favicon(path.join(__dirname, '/client/build', 'favicon.ico')));
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build/index.html'));
   })
-
 }
-// ... local mode
 else {
   debug('Serving: ' + __dirname + '/client/public/index.html');
   app.use(express.static(__dirname + '/client/public'));
+  app.use(favicon(path.join(__dirname, '/client/public', 'favicon.ico')));
   //app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
-  //
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/public/index.html'));
   })
