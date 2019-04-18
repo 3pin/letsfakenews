@@ -62,7 +62,7 @@ const cors = require('cors');
 // const whiteObj = JSON.parse(process.env.WHITELIST)
 // const whitelist = Object.values(whiteObj);
 // debug(whitelist);
-const whitelist;
+var whitelist;
 if (process.env.NODE_ENV === 'development') {
   whitelist = ["http://localhost:3000","https://localhost:3000"]
 } else {
