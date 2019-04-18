@@ -17,7 +17,7 @@ export default class Story extends React.Component {
   apiPost = async (apiEndPoint, stateToSubmit) => {
     //fetch from Storage the data that needs to be POSTED to the API
     const data = this.hydrateSomeStateWithStorage(stateToSubmit)
-    console.log(data)
+    console.log(apiEndPoint, data)
     const response = await fetch(apiEndPoint, {
       method: 'POST',
       headers: {

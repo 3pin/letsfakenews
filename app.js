@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 const
   express = require('express'),
   favicon = require('serve-favicon'),
-  logger = require('morgan'),
+  morgan = require('morgan'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   path = require('path'),
@@ -24,27 +24,18 @@ const
   helmet = require("helmet");
 
 //=============================================================================
-// routes structure
-const index = require('./routes/index');
-// const write = require('./routes/write');
-// const admin = require('./routes/admin');
-// const watch = require('./routes/watch');
-// const settings = require('./routes/settings');
-//=============================================================================
 // initialize
 const app = express();
 debug(`App Name: ${process.env.npm_package_name}`);
 debug(`Port:${process.env.PORT} mode:${process.env.NODE_ENV} db_uri:${process.env.MONGODB_URI} database:${process.env.DATABASE}`);
 //=============================================================================
-// configuration
-//app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-//=============================================================================
 // middleware
-app.use(logger('dev'));
-if (toBoolean(process.env.HSTS)) {
-  // force HSTS on the clients requests
-  app.use(helmet());
+
+// You can set morgan to log differently depending on your environment
+if (process.env.NODE_ENV == 'production') {
+  app.use(morgan('common', { skip: function(req, res) { return res.statusCode < 400 }, stream: __dirname + '/../morgan.log' }));
+} else {
+  app.use(morgan('combined'));
 }
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -52,6 +43,7 @@ app.use(bodyParser.urlencoded({
 }));
 // setup cookie security
 if (toBoolean(process.env.TOKEN_SECURE)) {
+  debug('Cookies are secured')
   app.use(cookieParser(process.env.SECRET));
 } else {
   app.use(cookieParser());
@@ -62,21 +54,17 @@ app.use(device.capture());
 //cors
 const cors = require('cors');
 const corsOption_whitelist = function (req, callback) {
-  var whitelist;
-  if (process.env.NODE_ENV === 'development') {
-    whitelist = ["http://localhost:3000","https://localhost:3000"]
-  } else {
-    whitelist = ["http://letsfakenews.herokuapp.com","https://letsfakenews.herokuapp.com","http://letsfakenews.com","https://letsfakenews.com"]
-  }
+  var whitelist = [process.env.WHITELIST]
   var corsOptions;
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
-    debug(req.header('Origin'));
+    console.log('Req origin in whitelist: ', req.header('Origin'));
     // enable the requested origin in the CORS response
     corsOptions = {
       origin: true,
       credentials: true,
     }
   } else {
+    console.log('Req origin NOT in whitelist: ', req.header('Origin'));
     // disable CORS for this request
     corsOptions = {
       origin: false,
@@ -88,8 +76,15 @@ const corsOption_whitelist = function (req, callback) {
 }
 app.use(cors(corsOption_whitelist));
 
+// force HSTS on the clients requests
+if (toBoolean(process.env.HSTS)) {
+  debug('Using helmet for HSTS')
+  app.use(helmet());
+}
+
 // ... production mode => serve static files for React
 if (toBoolean(process.env.HTTPS_REDIRECT)) {
+  debug('Redirecting HTTP to HTTPS')
   app.use(function (req, res, next) {
     var reqType = req.headers["x-forwarded-proto"];
     reqType == 'https' ? next() : res.redirect("https://" + req.headers.host + req.url);
@@ -126,10 +121,8 @@ const dbSettingsFetch = require('./controllers/middleware/dbSettingsFetch');
 app.use(dbSettingsFetch);
 //=============================================================================
 // define that all routes are within the 'routes' folder
+const index = require('./routes/index');
 app.use('/', index);
-// app.use('/watch', watch);
-// app.use('/admin', admin);
-// app.use('/settings', settings);
 //=============================================================================
 // Error Handlers
 // catch 404 and forward to error handler
@@ -142,9 +135,9 @@ app.use(function (err, req, res, next) {
   // provides error reporting in development only
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  //res.send('error: ', err);
+  res.status(err.status || 500).send(err.message)
 });
 //=============================================================================
 // DB setup
@@ -242,7 +235,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
         }
         // if there is no matching collection...
         else if (index === collections.length - 1) {
-          debug(`Existing colections dont match current project... creating database: ${process.env.DATABASE}`);
+          debug(`Existing collections dont match current project... creating database: ${process.env.DATABASE}`);
           let settings = new Settings(settingsObj);
           settings.save().then((res) => {
             debug(res);
