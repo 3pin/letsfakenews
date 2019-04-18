@@ -9,7 +9,11 @@ var app = require('../app');
 /*
 Create HTTP server.
 */
-if (process.env.NODE_ENV === 'production') {
+if (process.env.HTTPS === 'heroku') {
+  var https = require('https');
+  //var server = https.createServer(httpsOptions,app);
+  var server = https.createServer(app);
+} else if (process.env.HTTPS === 'manual') {
   const fs = require('fs');
   var httpsOptions = {
     key: fs.readFileSync('./certs/key.pem'),
@@ -17,7 +21,7 @@ if (process.env.NODE_ENV === 'production') {
   };
   var https = require('https');
   //var server = https.createServer(httpsOptions,app);
-  var server = https.createServer(app);
+  var server = https.createServer(httpsOptions, app);
 } else {
   var http = require('http');
   var server = http.createServer(app);
