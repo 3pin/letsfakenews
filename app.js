@@ -82,6 +82,14 @@ const corsOption_whitelist = function (req, callback) {
 app.use(cors(corsOption_whitelist));
 
 // ... production mode => serve static files for React
+if (toBoolean(process.env.HTTPS_REDIRECT)) {
+  app.use(function (req, res, next) {
+    var reqType = req.headers["x-forwarded-proto"];
+    reqType == 'https' ? next() : res.redirect("https://" + req.headers.host + req.url);
+  });
+}
+
+// ... production mode => serve static files for React
 if (process.env.NODE_ENV === 'production') {
   console.log('Serving: ' + __dirname + '/client/build/index.html');
   app.use(express.static(__dirname + '/client/build'));
