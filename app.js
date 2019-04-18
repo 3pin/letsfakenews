@@ -32,9 +32,7 @@ debug(`Port:${process.env.PORT} mode:${process.env.NODE_ENV} db_uri:${process.en
 // middleware
 
 // You can set morgan to log differently depending on your environment
-if (process.env.NODE_ENV == 'production') {
-  app.use(morgan('common', { skip: function(req, res) { return res.statusCode < 400 }, stream: __dirname + '/../morgan.log' }));
-} else {
+if (process.env.NODE_ENV == 'development') {
   app.use(morgan('combined'));
 }
 app.use(bodyParser.json());
