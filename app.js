@@ -59,9 +59,15 @@ app.use(device.capture());
 
 //cors
 const cors = require('cors');
-const whiteObj = JSON.parse(process.env.WHITELIST)
-const whitelist = Object.values(whiteObj);
-debug(whitelist);
+// const whiteObj = JSON.parse(process.env.WHITELIST)
+// const whitelist = Object.values(whiteObj);
+// debug(whitelist);
+const whitelist;
+if (process.env.NODE_ENV === 'development') {
+  whitelist = ["http://localhost:3000","https://localhost:3000"]
+} else {
+  whitelist = ["http://letsfakenews.herokuapp.com","https://letsfakenews.herokuapp.com","http://letsfakenews.com","https://letsfakenews.com"]
+}
 const corsOption_whitelist = function (req, callback) {
   var corsOptions;
   if (whitelist.indexOf(req.header('Origin')) !== -1) {
