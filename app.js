@@ -52,29 +52,31 @@ if (toBoolean(process.env.TOKEN_SECURE)) {
 app.use(device.capture());
 
 //cors
-const cors = require('cors');
-const corsOption_whitelist = function (req, callback) {
-  var whitelist = [process.env.WHITELIST]
-  var corsOptions;
-  if (whitelist.indexOf(req.header('Origin')) !== -1) {
-    console.log('Req origin in whitelist: ', req.header('Origin'));
-    // enable the requested origin in the CORS response
-    corsOptions = {
-      origin: true,
-      credentials: true,
+if (process.env.NODE_ENV === 'development') {
+  const cors = require('cors');
+  const corsOption_whitelist = function (req, callback) {
+    var whitelist = [process.env.WHITELIST]
+    var corsOptions;
+    if (whitelist.indexOf(req.header('Origin')) !== -1) {
+      console.log('Req origin in whitelist: ', req.header('Origin'));
+      // enable the requested origin in the CORS response
+      corsOptions = {
+        origin: true,
+        credentials: true,
+      }
+    } else {
+      console.log('Req origin NOT in whitelist: ', req.header('Origin'));
+      // disable CORS for this request
+      corsOptions = {
+        origin: false,
+        credentials: false
+      }
     }
-  } else {
-    console.log('Req origin NOT in whitelist: ', req.header('Origin'));
-    // disable CORS for this request
-    corsOptions = {
-      origin: false,
-      credentials: false
-    }
+    // callback expects two parameters: error and options
+    callback(null, corsOptions)
   }
-  // callback expects two parameters: error and options
-  callback(null, corsOptions)
+  app.use(cors(corsOption_whitelist));
 }
-app.use(cors(corsOption_whitelist));
 
 // force HSTS on the clients requests
 if (toBoolean(process.env.HSTS)) {
