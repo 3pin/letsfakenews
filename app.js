@@ -52,7 +52,7 @@ app.use(device.capture());
 //cors
 if (process.env.CORS === 'whitelist') {
   const cors = require('cors');
-  var whitelist = ['http://localhost:5000']
+  var whitelist = [process.env.WHITELIST]
   var corsOptions = {
     origin: function (origin, callback) {
       if (whitelist.indexOf(origin) !== -1 || !origin) {
