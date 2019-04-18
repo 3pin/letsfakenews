@@ -20,6 +20,7 @@ const
   bodyParser = require('body-parser'),
   path = require('path'),
   device = require('express-device'),
+  toBoolean = require('to-boolean'),
   helmet = require("helmet");
 
 //=============================================================================
@@ -41,7 +42,7 @@ app.set('view engine', 'ejs');
 //=============================================================================
 // middleware
 app.use(logger('dev'));
-if (Boolean(process.env.HSTS)) {
+if (toBoolean(process.env.HSTS)) {
   // force HSTS on the clients requests
   app.use(helmet());
 }
@@ -52,7 +53,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 //app.use(cookieParser(process.env.SECRET));
-app.use(cookieParser());
+app.use(cookieParser(process.env.SECRET));
 //add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
@@ -168,7 +169,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
     const Settings = require('./models/settings.model');
     let settingsObj = {
       entry_to_read: parseInt(process.env.ENTRY_TO_READ),
-      autolive: Boolean(process.env.AUTOLIVE),
+      autolive: toBoolean(process.env.AUTOLIVE),
       activelist: [],
       db_mode: process.env.DB_MODE,
       node_mode: process.env.NODE_ENV,

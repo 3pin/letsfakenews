@@ -1,7 +1,7 @@
 'use strict';
 
 const debug = require('debug')('authenticate');
-
+const toBoolean = require('to-boolean');
 const jwt = require('jsonwebtoken');
 const Auth = require('../../models/auth.model');
 
@@ -48,7 +48,11 @@ module.exports = (req, res) => {
           }
           let tokenAge = Number(process.env.TOKEN_AGE_MINS) * 60000;
           let tokenOptions;
-          if (process.env.NODE_ENV === 'production') {
+          debug(process.env.AUTOLIVE)
+          debug(toBoolean(process.env.AUTOLIVE))
+          debug(process.env.TOKEN_SECURE)
+          debug(toBoolean(process.env.TOKEN_SECURE))
+          if (toBoolean(process.env.TOKEN_SECURE)) {
             tokenOptions = {signed:true, secure:true, httpOnly:true, sameSite:false, maxAge:tokenAge}
           } else {
             tokenOptions = {signed:false, secure:false, httpOnly:true, sameSite:false, maxAge:tokenAge}
