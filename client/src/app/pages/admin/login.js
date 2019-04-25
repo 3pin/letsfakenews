@@ -25,11 +25,13 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     fetch('/settings/authenticate', {
-        method: 'POST',
         body: JSON.stringify(this.state),
-        credentials: 'include',
+        method: 'POST',
+        mode: 'same-origin',
+        credentials: 'same-origin',
+        cache: 'no-cache',
+        referrer: "client",
         headers: {
-          Accept: "application/json",
           'Content-Type': 'application/json'
         }
       })
