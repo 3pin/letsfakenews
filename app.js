@@ -49,6 +49,7 @@ if (toBoolean(process.env.TOKEN_SECURE)) {
 //add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
+/*
 //cors
 if (process.env.CORS === 'whitelist') {
   const cors = require('cors');
@@ -67,6 +68,7 @@ if (process.env.CORS === 'whitelist') {
   const cors = require('cors');
   app.use(cors());
 }
+*/
 
 // force HSTS on the clients requests
 if (toBoolean(process.env.HSTS)) {

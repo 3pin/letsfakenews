@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://letsfakenews.herokuapp.com/",
+  "homepage": "https://letsfakenews.com/",
   "proxy": "http://localhost:5000",
   "dependencies": {
     "babel-plugin-transform-remove-console": "^6.9.4",

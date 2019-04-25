@@ -36,29 +36,26 @@ module.exports = (req, res) => {
           });
         } else {
           debug('same', same);
-          // Issue token
+          // Setup token
+          let time = Number(process.env.TOKEN_AGE_MINS) * 60000;
           const payload = { username };
           const secret = process.env.SECRET
-          const token = jwt.sign(payload, secret);
+          const token = jwt.sign(payload, secret, {expiresIn: time});
+          // Setup Cookie
+          let cookieOptions;
           let domain;
           if (process.env.NODE_ENV === 'production') {
-            domain = 'letsfakenews.herokuapp.com'
+            domain = 'www.letsfakenews.com'
           } else {
             domain = 'localhost'
           }
-          let tokenAge = Number(process.env.TOKEN_AGE_MINS) * 60000;
-          let tokenOptions;
-          debug(process.env.AUTOLIVE)
-          debug(toBoolean(process.env.AUTOLIVE))
-          debug(process.env.TOKEN_SECURE)
-          debug(toBoolean(process.env.TOKEN_SECURE))
           if (toBoolean(process.env.TOKEN_SECURE)) {
-            tokenOptions = {signed:true, secure:true, httpOnly:true, sameSite:false, maxAge:tokenAge}
+            cookieOptions = {httpOnly:true, sameSite:true, domain:domain, maxAge:time, secure:false, signed:false}
           } else {
-            tokenOptions = {signed:false, secure:false, httpOnly:true, sameSite:false, maxAge:tokenAge}
+            cookieOptions = {httpOnly:false, sameSite:false, domain:domain, maxAge:time, secure:false, signed:false}
           }
-          debug(tokenOptions);
-          res.cookie('token', token, tokenOptions).sendStatus(200);
+          debug(cookieOptions);
+          res.cookie('token', token, cookieOptions).sendStatus(200);
         }
       });
     }
