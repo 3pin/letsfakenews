@@ -42,12 +42,7 @@ module.exports = (req, res) => {
           const secret = process.env.SECRET
           const token = jwt.sign(payload, secret, {expiresIn: time});
           // Setup Cookie
-          let cookieOptions;
-          if (toBoolean(process.env.TOKEN_SECURE)) {
-            cookieOptions = {httpOnly:true, sameSite:true, maxAge:time, secure:false, signed:false}
-          } else {
-            cookieOptions = {httpOnly:false, sameSite:false, maxAge:time, secure:false, signed:false}
-          }
+          let cookieOptions = {httpOnly:toBoolean(process.env.COOKIEOPTION_HTTPONLY), sameSite:toBoolean(process.env.COOKIEOPTION_SAMESITE), maxAge:time, secure:false, signed:false}
           debug(cookieOptions);
           res.cookie('token', token, cookieOptions).sendStatus(200);
         }
