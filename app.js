@@ -35,17 +35,22 @@ debug(`Port:${process.env.PORT} mode:${process.env.NODE_ENV} db_uri:${process.en
 if (process.env.NODE_ENV == 'development') {
   app.use(morgan('combined'));
 }
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-// setup cookie security
+
+// adding cookies to req headers
+debug('cookieParser secure... ');
+debug(toBoolean(process.env.COOKIEPARSER_SECURE));
 if (toBoolean(process.env.COOKIEPARSER_SECURE)) {
   debug('Cookies are secured')
   app.use(cookieParser(process.env.SECRET));
 } else {
   app.use(cookieParser());
 }
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
 //add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
