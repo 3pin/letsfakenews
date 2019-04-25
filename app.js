@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 // setup cookie security
-if (toBoolean(process.env.TOKEN_SECURE)) {
+if (toBoolean(process.env.COOKIEPARSER_SECURE)) {
   debug('Cookies are secured')
   app.use(cookieParser(process.env.SECRET));
 } else {
