@@ -43,16 +43,10 @@ module.exports = (req, res) => {
           const token = jwt.sign(payload, secret, {expiresIn: time});
           // Setup Cookie
           let cookieOptions;
-          let domain;
-          if (process.env.NODE_ENV === 'production') {
-            domain = 'www.letsfakenews.com'
-          } else {
-            domain = 'localhost'
-          }
           if (toBoolean(process.env.TOKEN_SECURE)) {
-            cookieOptions = {httpOnly:true, sameSite:true, domain:domain, maxAge:time, secure:false, signed:false}
+            cookieOptions = {httpOnly:true, sameSite:true, maxAge:time, secure:false, signed:false}
           } else {
-            cookieOptions = {httpOnly:false, sameSite:false, domain:domain, maxAge:time, secure:false, signed:false}
+            cookieOptions = {httpOnly:false, sameSite:false, maxAge:time, secure:false, signed:false}
           }
           debug(cookieOptions);
           res.cookie('token', token, cookieOptions).sendStatus(200);
