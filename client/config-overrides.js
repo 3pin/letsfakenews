@@ -14,6 +14,6 @@ const {override,addBabelPlugins} = require("customize-cra");
 const path = require("path");
 module.exports = override(
   ...addBabelPlugins(
-    //"babel-plugin-transform-remove-console"
+    "babel-plugin-transform-remove-console"
   )
 );
