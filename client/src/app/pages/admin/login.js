@@ -27,10 +27,8 @@ export default class Login extends React.Component {
     fetch('/settings/authenticate', {
         body: JSON.stringify(this.state),
         method: 'POST',
-        mode: 'same-origin',
-        credentials: 'same-origin',
+        credentials: 'include',
         cache: 'no-cache',
-        referrer: "client",
         headers: {
           'Content-Type': 'application/json'
         }
@@ -63,11 +61,7 @@ export default class Login extends React.Component {
     }
   }
   componentDidMount() {
-    console.log('\n');
-    console.log(this.props);
-    console.log(this.state);
-    console.log('\n');
-    this.nameInput.focus()
+    //this.nameInput.focus()
   }
   render() {
     return (<div>
@@ -76,9 +70,10 @@ export default class Login extends React.Component {
         <hr/>
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <input
+            ref={(input) => { this.nameInput = input; }}
+            autoFocus
             type="username"
             name="username"
-            ref={(input) => { this.nameInput = input; }}
             placeholder="Enter username"
             value={this.state.username}
             onChange={this.handleChange.bind(this)}
