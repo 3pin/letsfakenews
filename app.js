@@ -37,12 +37,11 @@ if (process.env.NODE_ENV == 'development') {
 }
 
 // adding cookies to req headers
-debug('cookieParser secure... ');
-debug(toBoolean(process.env.COOKIEPARSER_SECURE));
 if (toBoolean(process.env.COOKIEPARSER_SECURE)) {
-  debug('Cookies are secured')
+  debug('Cookies are secure')
   app.use(cookieParser(process.env.SECRET));
 } else {
+  debug('Cookies are NOT secure')
   app.use(cookieParser());
 }
 
@@ -54,14 +53,14 @@ app.use(bodyParser.urlencoded({
 //add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
-/*
 //cors
 if (process.env.CORS === 'whitelist') {
   const cors = require('cors');
   var whitelist = [process.env.WHITELIST]
+  debug('whitelist: ' + whitelist);
   var corsOptions = {
     origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1 || !origin) {
+      if (whitelist.indexOf(origin) !== -1) {
         callback(null, true)
       } else {
         callback(new Error('Not allowed by CORS'))
@@ -72,8 +71,9 @@ if (process.env.CORS === 'whitelist') {
 } else if (process.env.CORS === 'all') {
   const cors = require('cors');
   app.use(cors());
+} else {
+  debug('NOT running CORS')
 }
-*/
 
 // force HSTS on the clients requests
 if (toBoolean(process.env.HSTS)) {
@@ -88,6 +88,8 @@ if (toBoolean(process.env.HTTPS_REDIRECT)) {
     var reqType = req.headers["x-forwarded-proto"];
     reqType == 'https' ? next() : res.redirect("https://" + req.headers.host + req.url);
   });
+} else {
+  debug('NOT redirecting HTTP to HTTPS')
 }
 
 // ... production mode => serve static files for React
@@ -98,8 +100,7 @@ if (process.env.NODE_ENV === 'production') {
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build/index.html'));
   })
-}
-else {
+} else {
   debug('Serving: ' + __dirname + '/client/public/index.html');
   app.use(express.static(__dirname + '/client/public'));
   app.use(favicon(path.join(__dirname, '/client/public', 'favicon.ico')));
@@ -141,8 +142,20 @@ app.use(function (err, req, res, next) {
 });
 //=============================================================================
 // DB setup
-const mongoose = require('mongoose');
-// Connect and check is existing collection... else create new collection
+// schemas
+const Auth = require('./models/auth.model');
+const Settings = require('./models/settings.model');
+const settingsObj = {
+  entry_to_read: parseInt(process.env.ENTRY_TO_READ),
+  autolive: toBoolean(process.env.AUTOLIVE),
+  activelist: [],
+  db_mode: process.env.DB_MODE,
+  node_mode: process.env.NODE_ENV,
+}
+const authObj = {
+  username: process.env.USERNAME,
+  password: process.env.PASSWORD
+}
 const options = {
   useNewUrlParser: true,
   keepAlive: true,
@@ -150,6 +163,86 @@ const options = {
   promiseLibrary: Promise,
   useFindAndModify: false
 };
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
+  if (err) {
+    debug('error coming...')
+    debug(err);
+  }
+  //readystate: 0=disconnect 1=connected 2=conecting 3=disconnecting
+  debug(`Db connection state: ${mongoose.connection.readyState}`);
+  if (mongoose.connection.readyState === 0) {
+    debug('Cannot connect to specified database');
+  } else {
+    // check for existing collections
+    client.db.listCollections().toArray((err, collections) => {
+      // if there are no collections existing...
+      if (collections.length === 0) {
+        debug(`No collections exist... creating database: ${process.env.DATABASE}`);
+        // create a user-entry for authorisation to backend...
+        let auth = new Auth(authObj);
+        auth.save().then((doc) => {
+          debug(doc);
+        });
+        // create a settings-entry
+        let settings = new Settings(settingsObj);
+        settings.save().then((res) => {
+          debug(res);
+        });
+      }
+      // else for exiting collections...
+      else {
+        for (const [index, value] of collections.entries()) {
+          //debug(value.name);
+          // if there is a collection matching the current project...
+          if (value.name === process.env.DATABASE) {
+            debug(`Collection already exists... updating database: ${process.env.DATABASE}`);
+            //replace default user entry
+            Auth.deleteOne({}).then(() => {
+              let auth = new Auth(authObj);
+              auth.save().then((doc) => {
+                debug("Auth Entry: ", doc);
+              });
+            })
+            // load _ids of all live-stories into activelist[]
+            let activelist = [];
+            const Story = require('./models/story.model');
+            Story.find({}, {
+                storylive: true
+              }, function (e, docs) {
+                docs.forEach((entry) => {
+                  if (entry.storylive === true) {
+                    activelist.push(entry._id);
+                  }
+                });
+              })
+              .then(() => {
+                settingsObj.activelist = activelist;
+                const dbSettingsUpdate = require('./controllers/middleware/dbSettingsUpdate');
+                dbSettingsUpdate(settingsObj).then((res) => {
+                  debug(res);
+                });
+              });
+            break;
+          }
+          // if there is no matching collection...
+          else if (index === collections.length - 1) {
+            debug(`Existing collections dont match current project... creating database: ${process.env.DATABASE}`);
+            let settings = new Settings(settingsObj);
+            settings.save().then((res) => {
+              debug(res);
+            });
+            let auth = new Auth(authObj);
+            auth.save().then((res) => {
+              debug(res);
+            });
+            break;
+          }
+        }
+      }
+    });
+  }
+});
 let db = mongoose.connection;
 db.on('connected', function (ref) {
   debug("Connected to mongoDB.");
@@ -163,92 +256,5 @@ db.on('SIGINT', () => {
   });
 });
 db.on('error', console.error.bind(console, 'connection error:'));
-mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
-  if (err) {
-    debug(err);
-  }
-  // check for existing collections
-  client.db.listCollections().toArray((err, collections) => {
-    //debug(collections);
-    // schemas
-    const Auth = require('./models/auth.model');
-    const Settings = require('./models/settings.model');
-    let settingsObj = {
-      entry_to_read: parseInt(process.env.ENTRY_TO_READ),
-      autolive: toBoolean(process.env.AUTOLIVE),
-      activelist: [],
-      db_mode: process.env.DB_MODE,
-      node_mode: process.env.NODE_ENV,
-    }
-    let authObj = {
-      username: process.env.USERNAME,
-      password: process.env.PASSWORD
-    }
-    // if there are no collections existing...
-    if (collections.length === 0) {
-      debug(`No collections exist... creating database: ${process.env.DATABASE}`);
-      // create a user-entry for authorisation to backend...
-      let auth = new Auth(authObj);
-      auth.save().then((doc) => {
-        debug(doc);
-      });
-      // create a settings-entry
-      let settings = new Settings(settingsObj);
-      settings.save().then((res) => {
-        debug(res);
-      });
-    }
-    // else for exiting collections...
-    else {
-      for (const [index, value] of collections.entries()) {
-        //debug(value.name);
-        // if there is a collection matching the current project...
-        if (value.name === process.env.DATABASE) {
-          debug(`Collection already exists... updating database: ${process.env.DATABASE}`);
-          //replace default user entry
-          Auth.deleteOne({}).then(() => {
-            let auth = new Auth(authObj);
-            auth.save().then((doc) => {
-              debug("Auth Entry: ", doc);
-            });
-          })
-          // load _ids of all live-stories into activelist[]
-          let activelist = [];
-          const Story = require('./models/story.model');
-          Story.find({}, {
-              storylive: true
-            }, function (e, docs) {
-              docs.forEach((entry) => {
-                if (entry.storylive === true) {
-                  activelist.push(entry._id);
-                }
-              });
-            })
-            .then(() => {
-              settingsObj.activelist = activelist;
-              const dbSettingsUpdate = require('./controllers/middleware/dbSettingsUpdate');
-              dbSettingsUpdate(settingsObj).then((res) => {
-                debug(res);
-              });
-            });
-          break;
-        }
-        // if there is no matching collection...
-        else if (index === collections.length - 1) {
-          debug(`Existing collections dont match current project... creating database: ${process.env.DATABASE}`);
-          let settings = new Settings(settingsObj);
-          settings.save().then((res) => {
-            debug(res);
-          });
-          let auth = new Auth(authObj);
-          auth.save().then((res) => {
-            debug(res);
-          });
-          break;
-        }
-      }
-    }
-  });
-});
 //=============================================================================
 module.exports = app;
