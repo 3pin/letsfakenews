@@ -207,7 +207,7 @@ export default class Watch extends React.Component {
       <div>
         <ButtonFrame
           desc='Playback compatible with desktop browser only (not mobile)'
-          buttonlabel='PLAY'
+          buttonLabel='PLAY'
           handleClick={this.handleFullscreen.bind(this.outerContainer)}/>
         <hr/>
         <div className="media" id="outerContainer" ref={outerContainer => { this.outerContainer=outerContainer }}>

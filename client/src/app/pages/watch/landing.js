@@ -10,7 +10,7 @@ export default class LandingWatch extends React.Component {
       <section>
         <BannerFrame title="Watch..." desc="Open this link on a desktop browser, set to fullscreen and enjoy the show!"/>
         <hr/>
-        <ButtonFrame linkto="/watch/display" buttonlabel="Watch"/>
+        <ButtonFrame buttonLabel="Watch" linkto="/watch/display"/>
         <hr/>
       </section>
     </div>)

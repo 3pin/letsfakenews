@@ -11,9 +11,8 @@ module.exports = (req, res) => {
   // fetch db settings
   let dbSettings = req.dbSettings;
   debug(dbSettings);
-  // process title-story info
+  // preprocess 'title' to CAPS & add 'storylive' attribute
   let client_JSON = req.body;
-  debug(client_JSON);
   client_JSON.title = req.body.title.toUpperCase();
   client_JSON.storylive = dbSettings.autolive;
   debug(client_JSON);

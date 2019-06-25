@@ -9,9 +9,9 @@ export default class Landing extends React.Component {
       <section>
         <BannerFrame title="Admin..." desc="Use the following buttons to administer the databases"/>
         <hr/>
-        <ButtonFrame linkto="/admin/stories" buttonlabel="Stories" desc="Administer stories as they are submitted"/>
+        <ButtonFrame linkto="/admin/stories" buttonLabel="Stories" desc="Administer stories as they are submitted"/>
         <hr/>
-        <ButtonFrame linkto="/admin/feedback" buttonlabel="Feedback" desc="View feedback from users"/>
+        <ButtonFrame linkto="/admin/feedback" buttonLabel="Feedback" desc="View feedback from users"/>
         <hr/>
       </section>
     </div>)

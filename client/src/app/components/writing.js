@@ -132,8 +132,11 @@ export default class Story extends React.Component {
             desc={this.props.desc}/>
           <hr/>
           <FormFrame
+            currentPathname = {this.props.currentPathname}
+            buttonLabel={this.props.buttonLabel}
             rows={this.props.rows}
-            length={this.props.length}
+            minLength={this.props.minLength}
+            maxLength={this.props.maxLength}
             linkto={this.props.linkto}
             value={val}
             handleChange={this.handleChange.bind(this)}

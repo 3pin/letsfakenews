@@ -135,7 +135,7 @@ render() {
           <tr>
             <td>Refresh imagery for all stories</td>
             <td>
-              <Button variant={variant} onClick={this.handleRefresh.bind(this)}></Button>
+              <Button variant="primary" onClick={this.handleRefresh.bind(this)}></Button>
             </td>
           </tr>
           <tr>

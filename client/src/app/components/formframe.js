@@ -1,10 +1,10 @@
 import React from 'react';
 import {Form} from 'react-bootstrap';
-import ButtonFrame from './buttonframe';
+import ButtonFrame from './formbutton';
 
 export default class FormFrame extends React.Component {
   componentDidMount() {
-    //console.log(this.props);
+    console.log(this.props);
   }
   handleChange(e) {
     this.props.handleChange(e.target.value);
@@ -16,6 +16,9 @@ export default class FormFrame extends React.Component {
     }
   }
   render() {
+    let content = String(this.props.value)
+    let contentLength = content.length
+    let maxLength = Number(this.props.maxLength)
     return (<div>
       <Form onSubmit={this.handleSubmit.bind(this)}>
         <div>
@@ -25,14 +28,18 @@ export default class FormFrame extends React.Component {
             required="required"
             autoFocus
             rows={this.props.rows}
-            maxLength={this.props.length}
-            placeholder={`${this.props.length} chars max...`}
+            maxLength={this.props.maxLength}
+            placeholder={`${this.props.minLength} - ${this.props.maxLength} chars...`}
             value={this.props.value}
             onChange={this.handleChange.bind(this)}>
           </textarea>
+          <font id="char-count">{contentLength}/{maxLength}</font>
           <ButtonFrame
+            currentPathname = {this.props.currentPathname}
+            value={this.props.value}
+            minLength = {this.props.minLength}
             linkto={this.props.linkto}
-            buttonlabel={this.props.buttonlabel}
+            buttonLabel={this.props.buttonLabel}
             handleClick={this.handleSubmit.bind(this)}/>
         </div>
       </Form>
