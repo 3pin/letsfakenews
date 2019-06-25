@@ -27,8 +27,10 @@ export default class Story extends React.Component {
     });
     const body = await response.text();
     console.log(body);
-    if (body === 'Story contained no proper words') {
-      alert(body)
+    if (body === 'Failure') {
+      alert('Sorry, your story contained no useful words... try again.')
+    } else {
+      //alert('Thanks, your story reached the news-room.')
     }
     /* empty the relevant state entries */
     for (let entry of stateToSubmit) {

@@ -19,14 +19,18 @@ module.exports = (req, res) => {
   // process JSON... add NLP_words & matching urls
   const process_client_story = require('../../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
-    debug(result);
-    if (result) {
-      let story = new Story({ ...result
-      });
+    // 'result' contains: story/title/storylive/time/words/urls
+    //debug(result);
+    debug(result.urls[0]);
+    if (result.urls[0] === undefined) {
+      res.send('Failure');
+    }
+    else {
+      let story = new Story({ ...result});
       story.save().then((result) => {
         //debug(result);
         debug('Document inserted to db successfully');
-        res.send('Story Saved successfully');
+        res.send('Success');
         // fetch updated db to then pass onto frontend
         Story.find({}).then((docs) => {
           //debug(docs);
@@ -47,8 +51,6 @@ module.exports = (req, res) => {
       }).catch((err) => {
         debug("Err: ", err);
       });
-    } else {
-      res.send('Story contained no proper words');
     }
   }).catch((err) => {
     debug("Err: ", err);

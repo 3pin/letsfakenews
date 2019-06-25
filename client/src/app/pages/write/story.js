@@ -15,7 +15,7 @@ export default class writeStory extends React.Component {
           title="Write a story..."
           desc="Make up a fake-news story within the required no. or chars"
           rows="4"
-          minLength="80" maxLength="280"
+          minLength="8" maxLength="280"
           subject='story'
           linkto="/write/title"
           buttonLabel="Next"
