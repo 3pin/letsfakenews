@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
-import ButtonFrame from '../../components/buttonframe';
+import ButtonFrame from '../../components/buttonstatic';
 
 // func to calc timing-durations
 const diff = (start, end) => {
@@ -30,8 +30,9 @@ export default class Watch extends React.Component {
   constructor(props) {
     super(props);
     //
+    this.exitFullscreen = this.exitFullscreen.bind(this);
     this.apiGet = this.apiGet.bind(this);
-    this.handleFullscreen = this.handleFullscreen.bind(this);
+    this.goFullscreen = this.goFullscreen.bind(this);
     this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onEnded = this.onEnded.bind(this);
@@ -77,32 +78,8 @@ export default class Watch extends React.Component {
       throw Error(body.message);
     return body;
   }
-  handleFullscreen() {
-    document.activeElement.blur();
-    console.log('button fullscreen pressed');
-    if (this.state.playing === false) {
-      this.setState({
-        playing: true
-      });
-    } else {
-      this.setState({
-        playing: false
-      });
-    }
-    let i = this.container;
-    // go full-screen with cross-browser support
-    if (i.requestFullscreen) {
-      i.requestFullscreen();
-    } else if (i.webkitRequestFullscreen) {
-      i.webkitRequestFullscreen();
-    } else if (i.mozRequestFullScreen) {
-      i.mozRequestFullScreen();
-    } else if (i.msRequestFullscreen) {
-      i.msRequestFullscreen()
-    }
-  }
   onReady() {
-    console.log('ready');
+    console.log('Media ready');
     /* load new story into this.state */
     this.apiGet('/watch/request_new_story')
       .then((res) => this.setState({
@@ -166,7 +143,35 @@ export default class Watch extends React.Component {
     }
   }
   onEnded() {
+    console.log('Media Ended');
     this.player.seekTo(0);
+  }
+  goFullscreen() {
+    document.activeElement.blur();
+    console.log('fullscreen entered');
+    this.setState({
+      playing: true
+    });
+    let i = this.container;
+    // go full-screen with cross-browser support
+    if (i.requestFullscreen) {
+      i.requestFullscreen();
+    } else if (i.webkitRequestFullscreen) {
+      i.webkitRequestFullscreen();
+    } else if (i.mozRequestFullScreen) {
+      i.mozRequestFullScreen();
+    } else if (i.msRequestFullscreen) {
+      i.msRequestFullscreen()
+    }
+  }
+  exitFullscreen() {
+    if (!document.fullscreenElement) {
+      console.log('fullscreen exited');
+      this.setState({
+        playing: false
+      });
+      this.onEnded()
+    }
   }
   componentWillMount() {
     console.log('componentWillMount');
@@ -199,16 +204,19 @@ export default class Watch extends React.Component {
     });
   }
   componentDidMount() {
-    console.log('componentDidMount');
-    //this.player.seekTo(0);
+    document.addEventListener("fullscreenchange", this.exitFullscreen, false);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("fullscreenchange", this.exitFullscreen, false);
   }
   render() {
     return (
-      <div>
+      <div >
         <ButtonFrame
           desc='Playback compatible with desktop browser only (not mobile)'
           buttonLabel='PLAY'
-          handleClick={this.handleFullscreen.bind(this.outerContainer)}/>
+          handleClick={this.goFullscreen.bind(this.outerContainer)}
+        />
         <hr/>
         <div className="media" id="outerContainer" ref={outerContainer => { this.outerContainer=outerContainer }}>
           <div id="videoContainer" ref={container => { this.container=container }} className="media-player">
