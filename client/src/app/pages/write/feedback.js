@@ -12,7 +12,8 @@ export default class writeFeedback extends React.Component {
         <Writing
           title="Give your feedback..."
           desc="Give us your response to writing & watching fake-news with us"
-          rows="4" length="280"
+          rows="4"
+          minLength="10" maxLength="280"
           subject="feedback"
           apiEndPoint="/write/feedback"
           stateToSubmit={["feedback"]}
