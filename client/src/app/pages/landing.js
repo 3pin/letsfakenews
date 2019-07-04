@@ -17,13 +17,13 @@ export default class Landing extends React.Component {
   render() {
     return (<div>
       <section>
-        <BannerFrame title="About..." desc="Welcome to the LetsFakeNews 24-hour TV service... Al-Jazeera take your stories to display for the world to see."/>
+        <BannerFrame title="About..." desc="Welcome to the LetsFakeNews 24-hour news service, coming to you live from the El-Jazeera news-room."/>
         <hr/>
-        <ButtonFrame linkto="/write" buttonLabel="Write" desc="Write fakenews on your device (Phone, Desktop etc.)"/>
+        <ButtonFrame linkto="/write" buttonLabel="Write" desc={`Write fakenews (phone-tablet-desktop)`}/>
         <hr/>
-        <ButtonFrame linkto="/watch" buttonLabel="Watch" desc="Watch fakenews in fullscreen (Desktop only)"/>
+        <ButtonFrame linkto="/watch" buttonLabel="Watch" desc="Watch in fullscreen (desktop only)"/>
         <hr/>
-        <ButtonFrame linkto="/admin" buttonLabel="Admin" desc="Administer the fakenews (Desktop only)"/>
+        <ButtonFrame linkto="/admin" buttonLabel="Admin" desc="Admin access (login required)"/>
         <hr/>
       </section>
     </div>)
