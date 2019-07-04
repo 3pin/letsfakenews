@@ -24,7 +24,9 @@
     "test_process_client_feedback": "mocha ./test/modules/process_client_feedback.test.js",
     "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js",
     "test_refresh_urls": "mocha ./test/modules/refresh_urls.test.js",
-    "test_refresh_urls_iterative": "mocha ./test/modules/refresh_urls_iterative.test.js"
+    "test_refresh_urls_iterative": "mocha ./test/modules/refresh_urls_iterative.test.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "async": "^2.6.2",
@@ -51,12 +53,14 @@
     "morgan": "^1.9.1",
     "pos": "^0.4.2",
     "serve-favicon": "^2.5.0",
-    "to-boolean": "^1.0.0"
+    "to-boolean": "^1.0.0",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.10",
     "nyc": "^14.0.0"
-  }
+  },
+  "snyk": true
 }
