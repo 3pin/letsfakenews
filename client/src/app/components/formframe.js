@@ -17,6 +17,7 @@ export default class FormFrame extends React.Component {
   }
   render() {
     let content = String(this.props.value)
+    console.log(content);
     let contentLength = content.length
     let maxLength = Number(this.props.maxLength)
     return (<div>

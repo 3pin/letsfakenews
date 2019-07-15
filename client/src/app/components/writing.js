@@ -125,6 +125,7 @@ export default class Story extends React.Component {
   }
   render() {
     const val = this.loadStateSubject(this.state, this.props.subject);
+    console.log(val);
     return (<div>
         {this.renderRedirect()}
         <section>
