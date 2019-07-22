@@ -130,7 +130,6 @@ export default class Story extends React.Component {
         {this.renderRedirect()}
         <section>
           <BannerFrame
-            hsize='h4'
             title={this.props.title}
             desc={this.props.desc}/>
           <hr/>

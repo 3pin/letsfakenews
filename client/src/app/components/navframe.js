@@ -25,7 +25,7 @@ export default class NavFrame extends React.Component {
     const links = this.props.links;
     const linksFrame = links.map((entry, i) => <LinkContainer activeClassName="active" key={i} to={`/${entry}`}><Nav.Link>{entry}</Nav.Link></LinkContainer>);
     return (<div>
-      <Navbar bg="light" variant="light" expand="md" onToggle={this.setNavExpanded.bind(this)} expanded={this.state.navExpanded}>
+      <Navbar fixed="top" bg="light" variant="light" expand="md" onToggle={this.setNavExpanded.bind(this)} expanded={this.state.navExpanded}>
         <LinkContainer to={this.props.title}>
           <a className="navbar-brand" href="/">{this.props.title}</a>
         </LinkContainer>
