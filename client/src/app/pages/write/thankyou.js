@@ -11,7 +11,7 @@ export default class Thankyou extends React.Component {
         <hr/>
         <ButtonFrame buttonLabel="Restart" linkto="/write/story" label="restart" desc="Write more fake news"/>
         <hr/>
-        <ButtonFrame buttonLabel="Feedback" linkto="/write/feedback" label="feedback" desc="Leave your feedback for the LetsFakeNews team"/>
+        <ButtonFrame buttonLabel="Feedback" linkto="/write/feedback" label="feedback" desc="Leave feedback for the team"/>
         <hr/>
       </section>
     </div>)
