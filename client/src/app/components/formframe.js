@@ -24,10 +24,8 @@ export default class FormFrame extends React.Component {
       <Form onSubmit={this.handleSubmit.bind(this)}>
         <div>
           <textarea
-            ref={function(input) {if (input != null) {input.focus();}}}
             className="form-control form-responsive"
             required="required"
-            autoFocus
             rows={this.props.rows}
             maxLength={this.props.maxLength}
             placeholder={`${this.props.minLength} - ${this.props.maxLength} chars...`}
