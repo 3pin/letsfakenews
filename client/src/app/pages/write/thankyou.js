@@ -7,7 +7,7 @@ export default class Thankyou extends React.Component {
   render() {
     return (<div>
       <section>
-        <BannerFrame title="Thank you..." desc="We hope you enjoyed writing real fake-news"/>
+        <BannerFrame title="Thank you..." desc="Thank you for your fake-news. Now, watch the public screen to see how your story compares to others."/>
         <hr/>
         <ButtonFrame buttonLabel="Restart" linkto="/write/story" label="restart" desc="Write more fake news"/>
         <hr/>

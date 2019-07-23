@@ -19,11 +19,11 @@ export default class Landing extends React.Component {
       <section>
         <BannerFrame title="About..." desc="Welcome to the LetsFakeNews service, broadcasting live from the El-Jazeera news-room."/>
         <hr/>
-        <ButtonFrame linkto="/write" buttonLabel="Create" desc="Create your own fakenews"/>
+        <ButtonFrame linkto="/write" buttonLabel="Create" desc="Create fakenews"/>
         <hr/>
-        <ButtonFrame linkto="/watch" buttonLabel="Watch" desc="Watch fakenews (desktop only)"/>
+        <ButtonFrame linkto="/watch" buttonLabel="Watch" desc="Display fakenews (desktop only)"/>
         <hr/>
-        <ButtonFrame linkto="/admin" buttonLabel="Admin" desc="Admin fakenews (login required)"/>
+        <ButtonFrame linkto="/admin" buttonLabel="Admin" desc="Moderate fakenews (admin only)"/>
         <hr/>
       </section>
     </div>)

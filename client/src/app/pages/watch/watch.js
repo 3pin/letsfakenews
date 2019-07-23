@@ -213,7 +213,6 @@ export default class Watch extends React.Component {
     return (
       <div >
         <ButtonFrame
-          desc='Playback compatible with desktop browser only (not mobile)'
           buttonLabel='PLAY'
           handleClick={this.goFullscreen.bind(this.outerContainer)}
         />

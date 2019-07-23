@@ -66,7 +66,7 @@ export default class Login extends React.Component {
   render() {
     return (<div>
         {this.renderRedirect()}
-        <BannerFrame title="Login..." desc="Admin access requires authorisation..."/>
+        <BannerFrame title="Login..." desc="Moderator access requires login..."/>
         <hr/>
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <input

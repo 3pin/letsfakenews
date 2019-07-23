@@ -96,7 +96,7 @@ export default class Feedback extends React.Component {
           <tr>
             <td>Clear all entries from database</td>
             <td>
-              <Button variant={variant} onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }></Button>
+              <Button variant="outline-danger" onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }></Button>
             </td>
           </tr>
         </tbody>

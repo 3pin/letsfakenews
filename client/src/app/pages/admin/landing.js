@@ -7,11 +7,11 @@ export default class Landing extends React.Component {
   render() {
     return (<div>
       <section>
-        <BannerFrame title="Admin..." desc="Use the following buttons to administer the databases"/>
+        <BannerFrame title="Admin..." desc="These buttons link to pages allowing story moderation & feedback viewing."/>
         <hr/>
-        <ButtonFrame linkto="/admin/stories" buttonLabel="Stories" desc="Administer stories as they are submitted"/>
+        <ButtonFrame linkto="/admin/stories" buttonLabel="Stories" desc="Moderate stories in real-time"/>
         <hr/>
-        <ButtonFrame linkto="/admin/feedback" buttonLabel="Feedback" desc="View feedback from users"/>
+        <ButtonFrame linkto="/admin/feedback" buttonLabel="Feedback" desc="View feedback in real-time"/>
         <hr/>
       </section>
     </div>)

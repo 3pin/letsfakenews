@@ -13,7 +13,7 @@ export default class writeStory extends React.Component {
         <Writing
           currentPathname = {currentPathname}
           title="Write a story..."
-          desc="Make up a fake-news story within the required no. or chars"
+          desc="Make up a fake-news story"
           rows="4"
           minLength="80" maxLength="280"
           subject='story'

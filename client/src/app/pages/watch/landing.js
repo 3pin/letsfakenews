@@ -8,7 +8,7 @@ export default class LandingWatch extends React.Component {
   render() {
     return (<div>
       <section>
-        <BannerFrame title="Watch..." desc="Open this link on a desktop browser, set to fullscreen and enjoy the show!"/>
+        <BannerFrame title="Watch..." desc="Go ahead and display the fake-news broadcast. Note: it is best displayed on a large flat-screen or projection-surface."/>
         <hr/>
         <ButtonFrame buttonLabel="Watch" linkto="/watch/display"/>
         <hr/>

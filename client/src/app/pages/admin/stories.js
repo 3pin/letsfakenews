@@ -135,13 +135,13 @@ render() {
           <tr>
             <td>Refresh imagery for all stories</td>
             <td>
-              <Button variant="primary" onClick={this.handleRefresh.bind(this)}></Button>
+              <Button variant="outline-warning" onClick={this.handleRefresh.bind(this)}></Button>
             </td>
           </tr>
           <tr>
             <td>Clear all stories from database</td>
             <td>
-              <Button variant={variant} onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }></Button>
+              <Button variant="outline-danger" onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur() } }></Button>
             </td>
           </tr>
         </tbody>
@@ -177,7 +177,7 @@ render() {
                   <td>{entry.title}</td>
                   <td>{entry.story}</td>
                   <td>
-                    <Button variant={variant} onClick={() => this.handleRemove(entry)}></Button>
+                    <Button variant="outline-danger" onClick={() => this.handleRemove(entry)}></Button>
                   </td>
                   <td style={{textAlign:'center'}}><input type="checkbox" checked={entry.storylive===true ? true : false} onChange={() => this.handleStorylive(entry)} className="form-check-input show_tip autolive"/></td>
                 </tr>)

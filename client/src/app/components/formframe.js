@@ -17,8 +17,13 @@ export default class FormFrame extends React.Component {
   }
   render() {
     let content = String(this.props.value)
-    console.log(content);
-    let contentLength = content.length
+    console.log(content)
+    let contentLength
+    if (content === 'undefined') {
+      contentLength = 0
+    } else {
+      contentLength = content.length
+    }
     let maxLength = Number(this.props.maxLength)
     return (<div>
       <Form onSubmit={this.handleSubmit.bind(this)}>

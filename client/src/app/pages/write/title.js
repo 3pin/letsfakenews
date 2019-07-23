@@ -13,7 +13,7 @@ export default class writeTitle extends React.Component {
         <Writing
           currentPathname = {currentPathname}
           title="Add a title..."
-          desc="Give a title to your story within the required no. or chars"
+          desc="Give your story a title"
           rows="1"
           minLength="5" maxLength="25"
           subject="title"
