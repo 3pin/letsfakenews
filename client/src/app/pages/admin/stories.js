@@ -106,6 +106,7 @@ render() {
   const tableStyle = {
     backgroundColor: "white"
   }
+  // eslint-disable-next-line
   let variant;
   if (this.props.variant) {
     variant = this.props.variant

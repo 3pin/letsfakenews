@@ -72,11 +72,12 @@ export default class Feedback extends React.Component {
     const tableStyle = {
       backgroundColor: "white"
     }
+    // eslint-disable-next-line
     let variant;
     if (this.props.variant) {
       variant = this.props.variant
     } else {
-      variant = 'danger'
+      variant = 'outline-danger'
     }
     return (<div>
       <BannerFrame desc={this.props.desc} title={this.props.title}/>
