@@ -11,10 +11,14 @@ export default class Story extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.apiPost = this.apiPost.bind(this);
     this.state = {
-      redirect: false
+      redirect: false,
+      processing: false
     }
   }
   apiPost = async (apiEndPoint, stateToSubmit) => {
+    this.setState(() => ({
+      processing: true
+    }))
     //fetch from Storage the data that needs to be POSTED to the API
     const data = this.hydrateSomeStateWithStorage(stateToSubmit)
     console.log(apiEndPoint, data)
@@ -124,8 +128,8 @@ export default class Story extends React.Component {
     }
   }
   render() {
+    console.log(this.state.redirect)
     const val = this.loadStateSubject(this.state, this.props.subject);
-    console.log(val);
     return (<div>
         {this.renderRedirect()}
         <section>
@@ -141,6 +145,7 @@ export default class Story extends React.Component {
             maxLength={this.props.maxLength}
             linkto={this.props.linkto}
             value={val}
+            processing={this.state.processing}
             handleChange={this.handleChange.bind(this)}
             handleSubmit={this.handleSubmit.bind(this)}/>
           <hr/>

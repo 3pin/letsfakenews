@@ -8,7 +8,7 @@ import {
 
 export default class ButtonFrame extends React.Component {
   componentDidMount() {
-    //console.log(this.props);
+    console.log(this.props);
   }
   handleClick() {
     console.log('Button clicked')
@@ -40,8 +40,8 @@ export default class ButtonFrame extends React.Component {
     } else {
       link = this.props.linkto
     }
-    console.log(`${contentLength}/${minLength} => ${link}`)
-    //
+    //console.log(`${contentLength}/${minLength} => ${link}`)
+    // if this button not connecting to API
     if (this.props.linkto) {
       return (
         <div>
@@ -51,13 +51,26 @@ export default class ButtonFrame extends React.Component {
           </Link>
         </div>
       )
-    } else {
-      return (
-        <div>
-          <p>{this.props.desc}</p>
-          <Button variant={variant} onClick={() => { contentLength<minLength ? window.alert('What you wrote is too short') : this.handleClick() } }>{buttonLabel}</Button>
-        </div>
-      )
+    }
+    // if this button IS connecting to API
+    else {
+      if (this.props.processing === false) {
+        console.log('API not connected to')
+        return (
+          <div>
+            <p>{this.props.desc}</p>
+            <Button variant={variant} onClick={() => { contentLength<minLength ? window.alert('What you wrote is too short') : this.handleClick() } }>{buttonLabel}</Button>
+          </div>
+        )
+      } else {
+        console.log('API connected')
+        return (
+          <div>
+            <p>{this.props.desc}</p>
+            <Button variant={variant} disabled>Submitting...</Button>
+          </div>
+        )
+      }
     }
   }
 }

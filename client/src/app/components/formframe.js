@@ -17,7 +17,6 @@ export default class FormFrame extends React.Component {
   }
   render() {
     let content = String(this.props.value)
-    console.log(content)
     let contentLength
     if (content === 'undefined') {
       contentLength = 0
@@ -43,6 +42,7 @@ export default class FormFrame extends React.Component {
             value={this.props.value}
             minLength = {this.props.minLength}
             linkto={this.props.linkto}
+            processing={this.props.processing}
             buttonLabel={this.props.buttonLabel}
             handleClick={this.handleSubmit.bind(this)}/>
         </div>
