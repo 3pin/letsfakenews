@@ -3,28 +3,35 @@ const initialState = {
   title: "",
   submitting: false
 }
-const newsReducer = (state=initialState, action) => {
-  switch(action.type) {
-    case "updateStory": {
-      state = {...state, story: action.payload};
-      break;
+const newsReducer = (state = initialState, action) => {
+  switch (action.type) {
+  case "updateStory":
+    {
+      return { ...state,
+        story: action.payload
+      };
     }
-    case "updateTitle": {
-      state = {...state, title: action.payload};
-      break;
+  case "updateTitle":
+    {
+      return { ...state,
+        title: action.payload
+      };
     }
-    case "submitStarted": {
-      state = {...state, submitting: true};
-      break;
+  case "submitStarted":
+    {
+      return { ...state,
+        submitting: true
+      };
     }
-    case "submitEnded": {
-      state = {...state, submitting: false, story: "", title: ""};
-      break;
-    }
-    default: {
-      state = {...state}
+  case "submitEnded":
+    {
+      return { ...state,
+        submitting: false,
+        story: "",
+        title: ""
+      }
     }
   }
-  return state;
-};
+  return state
+}
 export default newsReducer

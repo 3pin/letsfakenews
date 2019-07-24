@@ -6,17 +6,26 @@ import * as actionsNews from "./creatingNews"
 actionsNews.updateStory("This is a new story I am writing")
 */
 
+/*
 export const updateStory = (story) => dispatch => {
   dispatch({
     type: "updateStory",
     payload: story
   })
 }
+*/
+
+export function updateStory(story) {
+  return {
+    type: "updateStory",
+    payload: story,
+  }
+}
 
 export function updateTitle(title) {
   return {
     type: "updateTitle",
-    payload: title
+    payload: title,
   }
 }
 

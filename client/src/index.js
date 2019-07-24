@@ -14,9 +14,13 @@ import {
 import {
   Provider
 } from "react-redux";
-import store from "./app/store"
-
+import store from "./app/store";
 import Routes from './app/routes';
+
+//action listeners
+store.subscribe(() => {
+  console.log('store changed: ' + store.getState());
+})
 
 const App = () => (
   <Provider store={store}>
