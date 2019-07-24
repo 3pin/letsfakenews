@@ -12,19 +12,20 @@ import {
 // middleware
 import withAuth from './components/withAuth';
 import checkDevice from './components/checkDevice';
-// components
+// pages
 import Landing from './pages/landing';
 import RoutesWrite from './pages/write/routes';
 import RoutesAdmin from './pages/admin/routes';
 import RoutesWatch from './pages/watch/routes';
-import NavFrame from './components/navframe';
 import Login from './pages/admin/login';
+// components
+import FrameNavbar from './components/frameNavbar';
 
 export default class Routes extends React.Component {
   render() {
     return (
       <Container as='main'>
-        <NavFrame title="LetsFakeNews" links={["home", "write", "watch", "admin"]}/>
+        <FrameNavbar title="LetsFakeNews" links={["home", "write", "watch", "admin"]}/>
         <Row>
           <Col as='aside' xs={1} sm={1} md={1} lg={1} xl={1}/>
           <Col as='article' xs={10} sm={10} md={10} lg={10} xl={10}>

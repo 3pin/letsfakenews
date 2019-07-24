@@ -3,7 +3,7 @@ import {
   Button
 } from 'react-bootstrap';
 
-const ButtonFrame = (props) => {
+const ButtonStatic = (props) => {
   // setup button-type and button-label
   let variant, buttonLabel;
   if (props.variant) {
@@ -24,4 +24,4 @@ const ButtonFrame = (props) => {
     </div>
   )
 }
-export default ButtonFrame
+export default ButtonStatic

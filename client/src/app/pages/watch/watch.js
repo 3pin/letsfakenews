@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
-import ButtonFrame from '../../components/buttonframe';
+import FrameButton from '../../components/frameButton';
 
 // func to calc timing-durations
 const diff = (start, end) => {
@@ -212,7 +212,7 @@ export default class Watch extends React.Component {
   render() {
     return (
       <div >
-        <ButtonFrame
+        <FrameButton
           buttonLabel='PLAY'
           handleClick={this.goFullscreen.bind(this.outerContainer)}
         />

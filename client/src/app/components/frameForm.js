@@ -4,7 +4,7 @@ import {
 } from 'react-bootstrap';
 import ButtonForm from './buttonform';
 
-export default class FormFrame extends React.Component {
+export default class FrameForm extends React.Component {
   componentDidMount() {
     console.log(this.props);
   }

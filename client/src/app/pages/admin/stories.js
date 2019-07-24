@@ -1,5 +1,5 @@
 import React from 'react';
-import BannerFrame from '../../../app/components/bannerframe';
+import FrameBanner from '../../../app/components/frameBanner';
 import 'eventsource-polyfill';
 import {Table, Button} from 'react-bootstrap';
 
@@ -114,7 +114,7 @@ render() {
     variant = 'danger'
   }
   return (<div>
-      <BannerFrame desc={this.props.desc} title={this.props.title}/>
+      <FrameBanner desc={this.props.desc} title={this.props.title}/>
       <hr/>
       <Table bordered style={tableStyle}>
         <thead className="thead-dark">

@@ -1,6 +1,7 @@
 import React from 'react';
-import BannerFrame from '../../components/bannerframe';
-import FormFrame from '../../components/formframe';
+
+import FrameBanner from '../../components/frameBanner';
+import FrameForm from '../../components/frameForm';
 
 export default class writeFeedback extends React.Component {
   componentDidMount() {
@@ -9,11 +10,11 @@ export default class writeFeedback extends React.Component {
   render() {
     return (<div>
       <section>
-        <BannerFrame
+        <FrameBanner
           title="Give your feedback..."
           desc="Give us your response to writing & watching fake-news with us"/>
         <hr/>
-        <FormFrame
+        <FrameForm
           subject="feedback"
           stateToSubmit={["feedback"]}
           apiEndPoint="/write/feedback"

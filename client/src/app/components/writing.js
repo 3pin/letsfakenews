@@ -2,8 +2,8 @@ import React from 'react';
 import {
   Redirect
 } from 'react-router-dom';
-import BannerFrame from './bannerframe';
-import FormFrame from './formframe';
+import FrameBanner from './frameBanner';
+import FrameForm from './frameForm';
 
 export default class Story extends React.Component {
   constructor(props) {
@@ -133,11 +133,11 @@ export default class Story extends React.Component {
     return (<div>
         {this.renderRedirect()}
         <section>
-          <BannerFrame
+          <FrameBanner
             title={this.props.title}
             desc={this.props.desc}/>
           <hr/>
-          <FormFrame
+          <FrameForm
             currentPathname = {this.props.currentPathname}
             buttonLabel={this.props.buttonLabel}
             rows={this.props.rows}

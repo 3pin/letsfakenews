@@ -2,7 +2,7 @@ import React from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
 import {LinkContainer} from "react-router-bootstrap";
 //
-export default class NavFrame extends React.Component {
+export default class FrameNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

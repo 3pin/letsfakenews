@@ -1,13 +1,13 @@
 import React from 'react';
-import BannerFrame from '../../components/bannerframe';
-import FormFrame from '../../components/formframe';
+import FrameBanner from '../../components/frameBanner';
+import FrameForm from '../../components/frameForm';
 
 export default class Story extends React.Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    //this.handleChange = this.handleChange.bind(this);
   }
-  handleChange(value) {
+  handleChange = (value) => {
     this.setState({
       [this.props.subject]: value
     });
@@ -15,11 +15,11 @@ export default class Story extends React.Component {
   render() {
     return (<div>
         <section>
-          <BannerFrame
+          <FrameBanner
             title="Write a story..."
             desc="Make up a fake-news story"/>
           <hr/>
-          <FormFrame
+          <FrameForm
             subject='story'
             currentPathname="/write/story"
             buttonLabel="Next"
@@ -27,7 +27,7 @@ export default class Story extends React.Component {
             minLength="80"
             maxLength="280"
             linkto="/write/title"
-            handleChange={this.handleChange.bind(this)}/>
+            handleChange={this.handleChange}/>
           <hr/>
         </section>
       </div>)

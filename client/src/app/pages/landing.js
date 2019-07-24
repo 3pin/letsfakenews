@@ -1,7 +1,9 @@
 import React from 'react';
-import {connect} from 'react-redux'
-import BannerFrame from '../../app/components/bannerframe';
-import ButtonFrame from '../../app/components/buttonframe';
+import {
+  connect
+} from 'react-redux'
+import FrameBanner from '../../app/components/frameBanner';
+import FrameButton from '../../app/components/frameButton';
 
 connect((store) => {
   return {
@@ -19,17 +21,17 @@ class Landing extends React.Component {
   }
   componentDidMount() {
     console.log('store: ' + this.props.store)
-}
+  }
   render() {
     return (<div>
       <section>
-        <BannerFrame title="About..." desc="Welcome to the LetsFakeNews service, broadcasting live from the El-Jazeera news-room."/>
+        <FrameBanner title="About..." desc="Welcome to the LetsFakeNews service, broadcasting live from the El-Jazeera news-room."/>
         <hr/>
-        <ButtonFrame linkto="/write" buttonLabel="Create" desc="Create fakenews"/>
+        <FrameButton linkto="/write" buttonLabel="Create" desc="Create fakenews"/>
         <hr/>
-        <ButtonFrame variant="outline-secondary" linkto="/watch" buttonLabel="Watch" desc="Display fakenews (desktop only)"/>
+        <FrameButton variant="outline-secondary" linkto="/watch" buttonLabel="Watch" desc="Display fakenews (desktop only)"/>
         <hr/>
-        <ButtonFrame variant="outline-secondary" linkto="/admin" buttonLabel="Admin" desc="Moderate fakenews (admin only)"/>
+        <FrameButton variant="outline-secondary" linkto="/admin" buttonLabel="Admin" desc="Moderate fakenews (admin only)"/>
         <hr/>
       </section>
     </div>)

@@ -1,5 +1,8 @@
 import React from 'react';
 
+import FrameBanner from '../../components/frameBanner';
+import FrameForm from '../../components/frameForm';
+
 import Writing from '../../components/writing';
 
 export default class writeTitle extends React.Component {

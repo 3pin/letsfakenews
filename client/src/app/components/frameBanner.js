@@ -1,7 +1,7 @@
 //banner component with TITLE and DESCRIPTION
 import React from 'react';
 
-const BannerFrame = (props) => {
+const FrameBanner = (props) => {
   let Tag
   if (props.hsize) {
     Tag = props.hsize
@@ -13,4 +13,4 @@ const BannerFrame = (props) => {
       <p>{props.desc}</p>
     </div>);
 }
-export default BannerFrame
+export default FrameBanner

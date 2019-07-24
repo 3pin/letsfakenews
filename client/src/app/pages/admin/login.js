@@ -4,7 +4,7 @@ import {Form, Button} from 'react-bootstrap';
 import {
   Redirect
 } from 'react-router-dom';
-import BannerFrame from '../../../app/components/bannerframe';
+import FrameBanner from '../../../app/components/frameBanner';
 //import FormFrame from '../../../app/components/formframe';
 
 export default class Login extends React.Component {
@@ -66,7 +66,7 @@ export default class Login extends React.Component {
   render() {
     return (<div>
         {this.renderRedirect()}
-        <BannerFrame title="Login..." desc="Moderator access requires login..."/>
+        <FrameBanner title="Login..." desc="Moderator access requires login..."/>
         <hr/>
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <input

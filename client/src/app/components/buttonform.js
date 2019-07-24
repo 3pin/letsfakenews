@@ -8,7 +8,7 @@ import {
 
 export default class ButtonForm extends React.Component {
   handleClick = () => {
-    console.log('buttonform button clicked')
+    console.log('clicked button: in buttonform')
     if (this.props.handleClick) {
       this.props.handleClick();
     }
