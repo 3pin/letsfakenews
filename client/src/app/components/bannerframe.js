@@ -1,16 +1,16 @@
+//banner component with TITLE and DESCRIPTION
 import React from 'react';
 
-export default class BannerFrame extends React.Component {
-  render() {
-    let Tag
-    if (this.props.hsize) {
-      Tag = this.props.hsize
-    } else {
-      Tag = "h3"
-    }
-    return (<div>
-      <Tag>{this.props.title}</Tag>
-      <p>{this.props.desc}</p>
-    </div>);
+const BannerFrame = (props) => {
+  let Tag
+  if (props.hsize) {
+    Tag = props.hsize
+  } else {
+    Tag = "h2"
   }
+  return (<div>
+      <Tag>{props.title}</Tag>
+      <p>{props.desc}</p>
+    </div>);
 }
+export default BannerFrame

@@ -21,17 +21,6 @@ import NavFrame from './components/navframe';
 import Login from './pages/admin/login';
 
 export default class Routes extends React.Component {
-  callApi = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const body = await response.json();
-    if (response.status !== 200)
-      throw Error(body.message);
-    return body;
-  }
-  componentDidMount() {
-    // load db settings
-    //this.callApi('/settings/mode').then(res => console.log(res)).catch(err => console.log(err));
-  }
   render() {
     return (
       <Container as='main'>

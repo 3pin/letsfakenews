@@ -6,18 +6,15 @@ import {
   Button
 } from 'react-bootstrap';
 
-export default class ButtonFrame extends React.Component {
-  componentDidMount() {
-    console.log(this.props);
-  }
-  handleClick() {
-    console.log('Button clicked')
+export default class ButtonForm extends React.Component {
+  handleClick = () => {
+    console.log('buttonform button clicked')
     if (this.props.handleClick) {
       this.props.handleClick();
     }
   }
   render() {
-    // setup button label & type
+    // setup button type & label
     let variant, buttonLabel;
     if (this.props.variant) {
       variant = this.props.variant
@@ -29,19 +26,19 @@ export default class ButtonFrame extends React.Component {
     } else {
       buttonLabel = 'Submit'
     }
-    // test for length of user-content
+    // test if the button's-form's-textarea content is long enough
     let link, content, contentLength, minLength
     content = String(this.props.value)
     contentLength = content.length
-    console.log('contentLength: ' + contentLength)
     minLength = Number(this.props.minLength)
     if (contentLength<minLength) {
+      // re-link back to current page
       link = this.props.currentPathname
     } else {
+      // allow-link to next page
       link = this.props.linkto
     }
-    //console.log(`${contentLength}/${minLength} => ${link}`)
-    // if this button not connecting to API
+    // return: button = LINK-TO-NEXT-PAGE
     if (this.props.linkto) {
       return (
         <div>
@@ -52,10 +49,9 @@ export default class ButtonFrame extends React.Component {
         </div>
       )
     }
-    // if this button IS connecting to API
+    // return: button = apiEndPoint... with 2 versions
     else {
       if (this.props.processing === false) {
-        console.log('API not connected to')
         return (
           <div>
             <p>{this.props.desc}</p>
@@ -63,7 +59,6 @@ export default class ButtonFrame extends React.Component {
           </div>
         )
       } else {
-        console.log('API connected')
         return (
           <div>
             <p>{this.props.desc}</p>

@@ -11,7 +11,7 @@ export default class Landing extends React.Component {
         <hr/>
         <ButtonFrame linkto="/admin/stories" buttonLabel="Stories" desc="Moderate stories in real-time"/>
         <hr/>
-        <ButtonFrame linkto="/admin/feedback" buttonLabel="Feedback" desc="View feedback in real-time"/>
+        <ButtonFrame variant="outline-secondary" linkto="/admin/feedback" buttonLabel="Feedback" desc="View feedback in real-time"/>
         <hr/>
       </section>
     </div>)

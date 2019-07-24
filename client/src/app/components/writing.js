@@ -34,7 +34,7 @@ export default class Story extends React.Component {
     if (body === 'Failure') {
       alert('Sorry, your story contained no useful words... try again.')
     } else {
-      //alert('Thanks, your story reached the news-room.')
+      alert('Thanks, your story reached the news-room.')
     }
     /* empty the relevant state entries */
     for (let entry of stateToSubmit) {
@@ -83,12 +83,12 @@ export default class Story extends React.Component {
       }
     }
   }
-  handleChange(value) {
+  handleChange = (value) => {
     this.setState({
       [this.props.subject]: value
     });
   }
-  handleSubmit() {
+  handleSubmit = () => {
     if (this.props.stateToSubmit) {
       //save state to storage
       this.saveStateToStorage();
@@ -128,7 +128,7 @@ export default class Story extends React.Component {
     }
   }
   render() {
-    console.log(this.state.redirect)
+    //console.log(this.state.redirect)
     const val = this.loadStateSubject(this.state, this.props.subject);
     return (<div>
         {this.renderRedirect()}
@@ -146,8 +146,8 @@ export default class Story extends React.Component {
             linkto={this.props.linkto}
             value={val}
             processing={this.state.processing}
-            handleChange={this.handleChange.bind(this)}
-            handleSubmit={this.handleSubmit.bind(this)}/>
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}/>
           <hr/>
         </section>
       </div>)

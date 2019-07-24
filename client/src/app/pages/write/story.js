@@ -1,26 +1,35 @@
 import React from 'react';
+import BannerFrame from '../../components/bannerframe';
+import FormFrame from '../../components/formframe';
 
-import Writing from '../../components/writing';
-
-export default class writeStory extends React.Component {
-  componentDidMount() {
-    //console.log(this.props);
+export default class Story extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(value) {
+    this.setState({
+      [this.props.subject]: value
+    });
   }
   render() {
-    let currentPathname = this.props.location.pathname
     return (<div>
-      <section>
-        <Writing
-          currentPathname = {currentPathname}
-          title="Write a story..."
-          desc="Make up a fake-news story"
-          rows="4"
-          minLength="80" maxLength="280"
-          subject='story'
-          linkto="/write/title"
-          buttonLabel="Next"
-          />
-      </section>
-    </div>)
+        <section>
+          <BannerFrame
+            title="Write a story..."
+            desc="Make up a fake-news story"/>
+          <hr/>
+          <FormFrame
+            subject='story'
+            currentPathname="/write/story"
+            buttonLabel="Next"
+            rows="4"
+            minLength="80"
+            maxLength="280"
+            linkto="/write/title"
+            handleChange={this.handleChange.bind(this)}/>
+          <hr/>
+        </section>
+      </div>)
   }
 }

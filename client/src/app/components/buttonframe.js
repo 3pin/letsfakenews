@@ -1,3 +1,4 @@
+//Button component with DESC & BUTTON
 import React from 'react';
 import {
   Link
@@ -6,28 +7,37 @@ import {
   Button
 } from 'react-bootstrap';
 
-export default class ButtonFrame extends React.Component {
-  render() {
-    // setup button-type and button-label
-    let variant, buttonLabel;
-    if (this.props.variant) {
-      variant = this.props.variant
-    } else {
-      variant = 'secondary'
-    }
-    if (this.props.buttonLabel) {
-      buttonLabel = this.props.buttonLabel
-    } else {
-      buttonLabel = 'Submit'
-    }
+const ButtonFrame = (props) => {
+  // setup button-type and button-label
+  let variant, buttonLabel;
+  if (props.variant) {
+    variant = props.variant
+  } else {
+    variant = 'secondary'
+  }
+  if (props.buttonLabel) {
+    buttonLabel = props.buttonLabel
+  } else {
+    buttonLabel = 'Submit'
+  }
+  if (props.linkto) {
     // linkto next page || submit to API and await response
     return (
       <div>
-          <p>{this.props.desc}</p>
-          <Link to={this.props.linkto}>
-            <Button variant={variant}>{buttonLabel}</Button>
-          </Link>
-        </div>
+        <p>{props.desc}</p>
+        <Link to={props.linkto}>
+          <Button variant={variant}>{buttonLabel}</Button>
+        </Link>
+      </div>
+    )
+  } else {
+    // linkto next page || submit to API and await response
+    return (
+      <div>
+        <p>{props.desc}</p>
+        <Button variant={variant} onClick={props.handleClick}>{buttonLabel}</Button>
+      </div>
     )
   }
 }
+export default ButtonFrame

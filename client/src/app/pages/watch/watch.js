@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactPlayer from 'react-player';
-import ButtonFrame from '../../components/buttonstatic';
+import ButtonFrame from '../../components/buttonframe';
 
 // func to calc timing-durations
 const diff = (start, end) => {

@@ -1,9 +1,15 @@
 import React from 'react';
-
+import {connect} from 'react-redux'
 import BannerFrame from '../../app/components/bannerframe';
 import ButtonFrame from '../../app/components/buttonframe';
 
-export default class Landing extends React.Component {
+connect((store) => {
+  return {
+    store: store
+  }
+})
+
+class Landing extends React.Component {
   apiGet = async (apiEndPoint) => {
     const response = await fetch(apiEndPoint);
     const body = await response.json();
@@ -12,7 +18,7 @@ export default class Landing extends React.Component {
     return body;
   }
   componentDidMount() {
-    //this.apiGet('/settings/mode').then((res) => {console.log(res);});
+    console.log('store: ' + this.props.store)
 }
   render() {
     return (<div>
@@ -21,11 +27,12 @@ export default class Landing extends React.Component {
         <hr/>
         <ButtonFrame linkto="/write" buttonLabel="Create" desc="Create fakenews"/>
         <hr/>
-        <ButtonFrame linkto="/watch" buttonLabel="Watch" desc="Display fakenews (desktop only)"/>
+        <ButtonFrame variant="outline-secondary" linkto="/watch" buttonLabel="Watch" desc="Display fakenews (desktop only)"/>
         <hr/>
-        <ButtonFrame linkto="/admin" buttonLabel="Admin" desc="Moderate fakenews (admin only)"/>
+        <ButtonFrame variant="outline-secondary" linkto="/admin" buttonLabel="Admin" desc="Moderate fakenews (admin only)"/>
         <hr/>
       </section>
     </div>)
   }
 }
+export default Landing

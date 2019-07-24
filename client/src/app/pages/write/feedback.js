@@ -1,24 +1,31 @@
 import React from 'react';
-
-import Writing from '../../components/writing';
+import BannerFrame from '../../components/bannerframe';
+import FormFrame from '../../components/formframe';
 
 export default class writeFeedback extends React.Component {
   componentDidMount() {
     //console.log(this.props);
-}
+  }
   render() {
     return (<div>
       <section>
-        <Writing
+        <BannerFrame
           title="Give your feedback..."
-          desc="Give us your response to writing & watching fake-news with us"
-          rows="4"
-          minLength="10" maxLength="280"
+          desc="Give us your response to writing & watching fake-news with us"/>
+        <hr/>
+        <FormFrame
           subject="feedback"
-          apiEndPoint="/write/feedback"
           stateToSubmit={["feedback"]}
+          apiEndPoint="/write/feedback"
           redirect="/write/thankyou"
-          />
+          currentPathname="/write/feedback"
+          rows="4"
+          minLength="5"
+          maxLength="280"
+          processing={this.state.processing}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}/>
+        <hr/>
       </section>
     </div>)
   }

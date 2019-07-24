@@ -11,12 +11,18 @@ import ReactDOM from 'react-dom';
 import {
   HashRouter
 } from 'react-router-dom';
+import {
+  Provider
+} from "react-redux";
+import store from "./app/store"
 
 import Routes from './app/routes';
 
 const App = () => (
-  <HashRouter>
-    <Routes/>
-  </HashRouter>);
+  <Provider store={store}>
+    <HashRouter>
+      <Routes/>
+    </HashRouter>
+  </Provider>);
 
 ReactDOM.render(<App/>, document.getElementById('react'));

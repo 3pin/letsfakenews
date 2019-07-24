@@ -1,16 +1,18 @@
 import React from 'react';
-import {Form} from 'react-bootstrap';
-import ButtonFrame from './formbutton';
+import {
+  Form
+} from 'react-bootstrap';
+import ButtonForm from './buttonform';
 
 export default class FormFrame extends React.Component {
   componentDidMount() {
     console.log(this.props);
   }
-  handleChange(e) {
+  handleChange = (e) => {
     this.props.handleChange(e.target.value);
   }
   //suppress submit if form-action came from the write_story-frame... only accept from write_title-frame
-  handleSubmit() {
+  handleSubmit = () => {
     if (this.props.handleSubmit) {
       this.props.handleSubmit();
     }
@@ -25,8 +27,7 @@ export default class FormFrame extends React.Component {
     }
     let maxLength = Number(this.props.maxLength)
     return (<div>
-      <Form onSubmit={this.handleSubmit.bind(this)}>
-        <div>
+      <Form onSubmit={this.handleSubmit}>
           <textarea
             className="form-control form-responsive"
             required="required"
@@ -34,18 +35,16 @@ export default class FormFrame extends React.Component {
             maxLength={this.props.maxLength}
             placeholder={`${this.props.minLength} - ${this.props.maxLength} chars...`}
             value={this.props.value}
-            onChange={this.handleChange.bind(this)}>
+            onChange={this.handleChange}>
           </textarea>
           <font id="char-count">{contentLength}/{maxLength}</font>
-          <ButtonFrame
+          <ButtonForm
             currentPathname = {this.props.currentPathname}
             value={this.props.value}
             minLength = {this.props.minLength}
             linkto={this.props.linkto}
             processing={this.props.processing}
-            buttonLabel={this.props.buttonLabel}
-            handleClick={this.handleSubmit.bind(this)}/>
-        </div>
+            buttonLabel={this.props.buttonLabel}/>
       </Form>
     </div>)
   }
