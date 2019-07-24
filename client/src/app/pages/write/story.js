@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
+import { creatingNews } from '../../actions/creatingNews'
 
-export default class Story extends React.Component {
+class WriteStory extends React.Component {
   constructor(props) {
     super(props);
     //this.handleChange = this.handleChange.bind(this);
@@ -33,3 +36,4 @@ export default class Story extends React.Component {
       </div>)
   }
 }
+export default connect(mapStateToProps,mapDispatchToProps)(WriteStory);
