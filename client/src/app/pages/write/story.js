@@ -23,11 +23,7 @@ class WriteStory extends React.Component {
     current: "/write/story",
     next: "/write/title",
     rows: "4",
-<<<<<<< HEAD
     minLength: "50",
-=======
-    minLength: "6",
->>>>>>> redux
     maxLength: "280"
   }
   handleSubmit = (story) => {
