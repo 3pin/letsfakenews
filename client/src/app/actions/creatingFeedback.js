@@ -1,26 +1,23 @@
 import axios from "axios";
-const apiEndPoint = "/write/feedback"
 
-/* this is how these actions are called in React-components...
-import * as actionsNews from "./creatingNews"
-actionsNews.updateStory("This is a new story I am writing")
-*/
-
-export const updateFeedback = (feedback) => dispatch => {
-  dispatch({
-    type: "updateFeedback",
-    payload: feedback
-  })
+export const submitStarted = () => {
+  return {
+    type: "SUBMIT_STARTED",
+    payload: null,
+  }
 }
 
-export function submitStarted(feedback) {
+export const submit = (feedback, history) => {
   return function (dispatch) {
-    axios.post(apiEndPoint, feedback)
-      .then((response) => {
+    axios.post("/write/feedback", {
+      feedback: feedback
+    }).then((response) => {
         dispatch({
-          type: "submitEnded",
+          type: "SUBMIT_ENDED",
           payload: null
         })
+      }).then(() => {
+        history.push("/write/thankyou");
       })
       .catch((error) => {
         dispatch({

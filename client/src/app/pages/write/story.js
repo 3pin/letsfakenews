@@ -20,10 +20,11 @@ const mapDispatchToProps = (dispatch) => {
 }
 class WriteStory extends React.Component {
   state = {
-    submitting: false,
     current: "/write/story",
     next: "/write/title",
-    minLength: "5"
+    rows: "4",
+    minLength: "5",
+    maxLength: "280"
   }
   handleSubmit = (story) => {
     if (story.length >= this.state.minLength) {
@@ -44,13 +45,11 @@ class WriteStory extends React.Component {
             desc="Make up a fake-news story"/>
           <hr/>
           <FrameForm
+            rows={this.state.rows}
+            minLength={this.state.minLength}
+            maxLength={this.state.maxLength}
             content={this.props.story}
-            currentPathname="/write/story"
             buttonLabel="Next"
-            rows="4"
-            minLength="5"
-            maxLength="280"
-            submitting={this.state.submitting}
             handleSubmit={this.handleSubmit}/>
           <hr/>
         </section>

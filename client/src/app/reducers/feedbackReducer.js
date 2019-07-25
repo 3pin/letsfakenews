@@ -2,24 +2,26 @@ const initialState = {
   feedback: "",
   submitting: false
 }
-const feedbackReducer = (state=initialState, action) => {
-  switch(action.type) {
-    case "updateFeedback": {
-      state = {...state, feedback: action.payload};
-      break;
+const feedbackReducer = (state = initialState, action) => {
+  switch (action.type) {
+  case "SUBMIT_STARTED":
+    {
+      return { ...state,
+        submitting: true
+      };
     }
-    case "submitStarted": {
-      state = {...state, submitting: true};
-      break;
+  case "SUBMIT_ENDED":
+    {
+      return { ...state,
+        feedback: "",
+        submitting: false
+      }
     }
-    case "submitEnded": {
-      state = {...state, submitting: false, feedback: ""};
-      break;
-    }
-    default: {
-      state = {...state}
+  default:
+    {
+      return state
     }
   }
-  return state;
-};
+  //return state
+}
 export default feedbackReducer

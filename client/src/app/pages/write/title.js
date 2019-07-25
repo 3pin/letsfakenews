@@ -23,7 +23,9 @@ class WriteTitle extends React.Component {
   state = {
     current: "/write/title",
     next: "/write/review",
-    minLength: "5"
+    rows: "1",
+    minLength: "5",
+    maxLength: "25"
   }
   handleSubmit = (title) => {
     if (title.length >= this.state.minLength) {
@@ -48,10 +50,10 @@ class WriteTitle extends React.Component {
           desc="Give your story a title"/>
         <hr/>
         <FrameForm
+          rows={this.state.rows}
+          minLength={this.state.minLength}
+          maxLength={this.state.maxLength}
           content={this.props.title}
-          rows="1"
-          minLength="5"
-          maxLength="25"
           buttonLabel="Review"
           handleSubmit={this.handleSubmit}/>
         <hr/>
