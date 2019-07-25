@@ -36,15 +36,17 @@ const FrameButton = (props) => {
     disabled = false
   }
   if (props.linkto) {
+    //linkto buttons
     return (
       <div>
         <p>{props.desc}</p>
         <Link to={props.linkto}>
-          <Button type="submit" variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
+          <Button variant={variant} size={buttonSize}>{buttonLabel}</Button>
         </Link>
       </div>
     )
   } else {
+    //form-submit buttons
     return (
       <div>
         <p>{props.desc}</p>

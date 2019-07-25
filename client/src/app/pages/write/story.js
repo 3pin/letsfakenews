@@ -29,20 +29,18 @@ function mapDispatchToProps(dispatch) {
 }
 class WriteStory extends React.Component {
   state = {
-    submitting: false
+    submitting: false,
+    current: "/write/story",
+    next: "/write/title",
+    minLength: "5"
   }
-  handleSubmit = (story) => {
-    console.log("form submitted")
-    let minLength = "5"
-    console.log('story-form was submitted: ' + story)
-    if (story.length >= minLength) {
-      console.log("form content long enough")
-      this.props.history.push("/write/title")
-      store.dispatch({type: "updateStory", payload: story})
+  handleSubmit = (content) => {
+    if (content.length >= this.state.minLength) {
+      this.props.history.push(this.state.next)
+      store.dispatch({type: "updateStory", payload: content})
     } else {
-      console.log("form content NOT long enough")
       window.alert('What you wrote is too short')
-      this.props.history.push("/write/story")
+      this.props.history.push(this.state.current)
     }
   }
   render() {

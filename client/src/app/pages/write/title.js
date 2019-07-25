@@ -2,7 +2,7 @@ import React from 'react';
 import {
   connect
 } from 'react-redux';
-
+import axios from "axios";
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
 import store from "../../../app/store";
@@ -30,15 +30,31 @@ function mapDispatchToProps(dispatch) {
 }
 
 class WriteTitle extends React.Component {
-  componentDidMount() {
-    //action listeners
-    store.subscribe(() => {
-      console.log(store.getState());
-    })
+  state = {
+    submitting: false,
+    current: "/write/title",
+    next: "/write/thankyou",
+    minLength: "5",
+    apiEndpoint: "/write/news"
   }
-  handleSubmit = (title) => {
-    console.log('title-form was submitted: ' + title)
-    store.dispatch({type: "updateTitle", payload: title})
+  handleSubmit = (content) => {
+    if (content.length >= this.state.minLength) {
+      store.dispatch({
+        type: "updateTitle",
+        payload: content
+      })
+      axios.post(this.state.apiEndpoint, {
+        story: "this is a test story",
+        title: "this is a test title"
+      }).then((res) => {
+        console.log(res)
+      }).then(() => {
+        this.props.history.push(this.state.next)
+      })
+    } else {
+      window.alert('What you wrote is too short')
+      this.props.history.push(this.state.current)
+    }
   }
   render() {
     /*
