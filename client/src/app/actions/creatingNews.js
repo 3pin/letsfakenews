@@ -15,24 +15,26 @@ export const updateStory = (story) => dispatch => {
 }
 */
 
-export function updateStory(story) {
+export const updateStory = (story) => {
   return {
     type: "UPDATE_STORY",
     payload: story,
   }
 }
 
-export function updateTitle(title) {
+export const updateTitle = (title) => {
   return {
     type: "UPDATE_TITLE",
     payload: title,
   }
 }
 
-export function submitStarted(story, title) {
+export const submitStart = (story, title) => {
   return function (dispatch) {
-    axios.post(apiEndpoint, story, title)
-      .then((response) => {
+    axios.post(apiEndpoint, {
+      story: story,
+      title: title
+    }).then((response) => {
         dispatch({
           type: "SUBMIT_ENDED",
           payload: null

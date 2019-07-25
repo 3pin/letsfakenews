@@ -16,12 +16,10 @@ export default class FrameForm extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log('formContent submitted')
     this.props.handleSubmit(this.state.content);
   }
   componentDidMount() {
     let content = [...this.state.content, this.props.content]
-    console.log('default formContent: ' + content)
     this.setState({
       content: content
     })
@@ -51,7 +49,7 @@ export default class FrameForm extends React.Component {
           <font id="char-count">{contentLength}/{maxLength}</font>
           <FrameButton
             submitting={this.props.submitting}
-            buttonLabel="Next"/>
+            buttonLabel={this.props.buttonLabel}/>
       </Form>
     </div>)
   }

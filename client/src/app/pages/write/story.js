@@ -4,6 +4,8 @@ import {
 } from 'react-redux';
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
+import * as actions from "../../actions/creatingNews"
+
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => {
   return {
@@ -13,7 +15,7 @@ const mapStateToProps = (state) => {
 // which props do we want to inject, given the global store state?
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStore: (content) => {dispatch({type: 'UPDATE_STORY', payload: content})}
+    updateStore: (story) => {dispatch(actions.updateStory(story))}
   }
 }
 class WriteStory extends React.Component {
@@ -25,7 +27,9 @@ class WriteStory extends React.Component {
   }
   handleSubmit = (story) => {
     if (story.length >= this.state.minLength) {
+      //update the store
       this.props.updateStore(story)
+      //goto the next page
       this.props.history.push(this.state.next)
     } else {
       window.alert('What you wrote is too short')
@@ -33,7 +37,6 @@ class WriteStory extends React.Component {
     }
   }
   render() {
-    console.log(this.props)
     return (<div>
         <section>
           <FrameBanner
