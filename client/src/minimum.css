@@ -3,11 +3,11 @@ html, body {
   font-size: 1rem;
 }
 
-.template, .navbar, section {
+.template, .navbar {
   box-shadow: 1px 1px 1px grey;
 }
 
-section {
+_section {
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 15px;

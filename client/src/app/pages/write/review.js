@@ -48,6 +48,11 @@ class Review extends React.Component {
         <FrameButton
           submitting={this.props.submitting}
           onClick={this.handleClick} />
+          <hr/>
+          <FrameButton
+            desc="Go back to change your title / story."
+            linkto={"/write/story"}
+            buttonLabel={"Back"}/>  
         <hr/>
       </section>
     </div>)
