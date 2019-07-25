@@ -6,25 +6,23 @@ import ButtonForm from './buttonform';
 
 export default class FrameForm extends React.Component {
   state = {
-    formContent: ''
+    formContent: null
   }
   handleChange = (e) => {
     console.log('formContent changing')
     this.setState({
       formContent: e.target.value
     })
-    this.props.handleChange(e.target.value)
   }
-  //suppress submit if form-action came from the write_story-frame... only accept from write_title-frame
   handleSubmit = (e) => {
-    //e.preventDefault()
+    //
   }
   componentWillUnmount() {
     console.log('form submitted')
     this.props.handleSubmit(this.state.formContent);
   }
   render() {
-    console.log('this.state.formContent: ' + this.state.formContent)
+    //console.log('this.state.formContent: ' + this.state.formContent)
     let content = String(this.state.formContent)
     let contentLength
     if (content === 'undefined') {

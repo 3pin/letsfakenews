@@ -19,7 +19,7 @@ import Routes from './app/routes';
 
 //action listeners
 store.subscribe(() => {
-  console.log('store changed: ' + store.getState());
+  console.log(store.getState());
 })
 
 const App = () => (

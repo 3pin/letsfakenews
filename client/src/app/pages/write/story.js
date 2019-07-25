@@ -29,19 +29,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 class WriteStory extends React.Component {
-  constructor(props) {
-    super(props);
-    //this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleChange(story) {
-    console.log(story)
-    updateStory(story)
-    store.dispatch({type: "updateStory", payload: story})
-  }
-  handleSubmit(story) {
+  handleSubmit = (story) => {
     console.log('story-form was submitted: ' + story)
-    updateStory(story)
+    //updateStory(story)
+    store.dispatch({type: "updateStory", payload: story})
   }
   render() {
     return (<div>
@@ -57,7 +48,6 @@ class WriteStory extends React.Component {
             minLength="5"
             maxLength="280"
             linkto="/write/title"
-            handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}/>
           <hr/>
         </section>
