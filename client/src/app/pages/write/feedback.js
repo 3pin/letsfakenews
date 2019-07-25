@@ -3,7 +3,7 @@ import React from 'react';
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
 
-export default class writeFeedback extends React.Component {
+class writeFeedback extends React.Component {
   componentDidMount() {
     //console.log(this.props);
   }
@@ -31,3 +31,4 @@ export default class writeFeedback extends React.Component {
     </div>)
   }
 }
+export default writeFeedback

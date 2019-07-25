@@ -4,9 +4,8 @@ import React from 'react';
 import FrameBanner from '../../../app/components/frameBanner';
 import FrameButton from '../../../app/components/frameButton';
 
-export default class Landing extends React.Component {
-  render() {
-    return (<div>
+const Landing = () => {
+  return (<div>
       <section>
         <FrameBanner title="Admin..." desc="These buttons link to pages allowing story moderation & feedback viewing."/>
         <hr/>
@@ -16,5 +15,5 @@ export default class Landing extends React.Component {
         <hr/>
       </section>
     </div>)
-  }
 }
+export default Landing

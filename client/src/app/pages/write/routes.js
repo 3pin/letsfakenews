@@ -1,5 +1,9 @@
 import React from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom';
 
 import Landing from './landing';
 import WriteStory from './story';
@@ -7,9 +11,8 @@ import WriteTitle from './title';
 import WriteFeedback from './feedback';
 import Thankyou from './thankyou';
 
-export default class RoutesWrite extends React.Component {
-  render() {
-    return (<div>
+const RoutesWrite = () => {
+  return (<div>
       <Switch>
         <Route exact path="/write" component={Landing}/>
         <Route path="/write/story" component={WriteStory}/>
@@ -19,5 +22,6 @@ export default class RoutesWrite extends React.Component {
         <Redirect to="/write"/>
       </Switch>
     </div>)
-  }
+
 }
+export default RoutesWrite

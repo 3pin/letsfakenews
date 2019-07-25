@@ -26,7 +26,7 @@ export default class FrameNavbar extends React.Component {
     const linksFrame = links.map((entry, i) => <LinkContainer activeClassName="active" key={i} to={`/${entry}`}><Nav.Link>{entry}</Nav.Link></LinkContainer>);
     return (<div>
       <Navbar fixed="top" bg="light" variant="light" expand="md" onToggle={this.setNavExpanded.bind(this)} expanded={this.state.navExpanded}>
-        <LinkContainer to={this.props.title}>
+        <LinkContainer to="/">
           <a className="navbar-brand" href="/">{this.props.title}</a>
         </LinkContainer>
         <Navbar.Toggle aria-controls="responsive-navbar-nav"/>

@@ -6,66 +6,66 @@ import {
   Button
 } from 'react-bootstrap';
 
-export default class ButtonForm extends React.Component {
-  handleClick = () => {
+//export default class ButtonForm extends React.Component {
+const ButtonForm = (props) => {
+  const handleClick = () => {
     console.log('clicked button: in buttonform')
-    if (this.props.handleClick) {
-      this.props.handleClick();
+    if (props.handleClick) {
+      props.handleClick();
     }
   }
-  render() {
     // setup button type & label
     let variant, buttonLabel;
-    if (this.props.variant) {
-      variant = this.props.variant
+    if (props.variant) {
+      variant = props.variant
     } else {
       variant = 'secondary'
     }
-    if (this.props.buttonLabel) {
-      buttonLabel = this.props.buttonLabel
+    if (props.buttonLabel) {
+      buttonLabel = props.buttonLabel
     } else {
       buttonLabel = 'Submit'
     }
     // test if the button's-form's-textarea content is long enough
     let link, content, contentLength, minLength
-    content = String(this.props.value)
+    content = String(props.value)
     contentLength = content.length
-    minLength = Number(this.props.minLength)
+    minLength = Number(props.minLength)
     if (contentLength<minLength) {
       // re-link back to current page
-      link = this.props.currentPathname
+      link = props.currentPathname
     } else {
       // allow-link to next page
-      link = this.props.linkto
+      link = props.linkto
     }
     // return: button = LINK-TO-NEXT-PAGE
-    if (this.props.linkto) {
+    if (props.linkto) {
       return (
         <div>
-          <p>{this.props.desc}</p>
+          <p>{props.desc}</p>
           <Link to={link}>
-            <Button variant={variant} onClick={() => { contentLength<minLength ? window.alert('What you wrote is too short') : this.handleClick() } }>{buttonLabel}</Button>
+            <Button variant={variant} onClick={() => { contentLength<minLength ? window.alert('What you wrote is too short') : handleClick() } }>{buttonLabel}</Button>
           </Link>
         </div>
       )
     }
     // return: button = apiEndPoint... with 2 versions
     else {
-      if (this.props.processing === false) {
+      if (props.submitting === false) {
         return (
           <div>
-            <p>{this.props.desc}</p>
-            <Button variant={variant} onClick={() => { contentLength<minLength ? window.alert('What you wrote is too short') : this.handleClick() } }>{buttonLabel}</Button>
+            <p>{props.desc}</p>
+            <Button variant={variant} onClick={() => { contentLength<minLength ? window.alert('What you wrote is too short') : handleClick() } }>{buttonLabel}</Button>
           </div>
         )
       } else {
         return (
           <div>
-            <p>{this.props.desc}</p>
+            <p>{props.desc}</p>
             <Button variant={variant} disabled>Submitting...</Button>
           </div>
         )
       }
     }
-  }
 }
+export default ButtonForm

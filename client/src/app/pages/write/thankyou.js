@@ -3,9 +3,8 @@ import React from 'react';
 import FrameBanner from '../../components/frameBanner';
 import FrameButton from '../../../app/components/frameButton';
 
-export default class Thankyou extends React.Component {
-  render() {
-    return (<div>
+const Thankyou = () => {
+  return (<div>
       <section>
         <FrameBanner title="Thank you..." desc="Thank you for your fake-news. Now, watch the public screen to see how your story compares to others."/>
         <hr/>
@@ -15,5 +14,5 @@ export default class Thankyou extends React.Component {
         <hr/>
       </section>
     </div>)
-  }
 }
+export default Thankyou

@@ -31,6 +31,9 @@ const newsReducer = (state = initialState, action) => {
         title: ""
       }
     }
+    default: {
+      state = {...state}
+    }
   }
   return state
 }

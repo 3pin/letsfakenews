@@ -2,27 +2,25 @@ import React from 'react';
 import {
   Form
 } from 'react-bootstrap';
-import ButtonForm from './buttonform';
+import FrameButton from './frameButton';
 
 export default class FrameForm extends React.Component {
   state = {
-    formContent: null
+    formContent: ''
   }
   handleChange = (e) => {
-    console.log('formContent changing')
+    //console.log('formContent changing')
     this.setState({
       formContent: e.target.value
     })
   }
   handleSubmit = (e) => {
-    //
-  }
-  componentWillUnmount() {
-    console.log('form submitted')
+    e.preventDefault()
+    console.log('formContent submitted')
     this.props.handleSubmit(this.state.formContent);
   }
   render() {
-    //console.log('this.state.formContent: ' + this.state.formContent)
+    // setup char-counter
     let content = String(this.state.formContent)
     let contentLength
     if (content === 'undefined') {
@@ -31,6 +29,7 @@ export default class FrameForm extends React.Component {
       contentLength = content.length
     }
     let maxLength = Number(this.props.maxLength)
+    //
     return (<div>
       <Form onSubmit={this.handleSubmit}>
           <textarea
@@ -43,13 +42,9 @@ export default class FrameForm extends React.Component {
             onChange={this.handleChange}>
           </textarea>
           <font id="char-count">{contentLength}/{maxLength}</font>
-          <ButtonForm
-            currentPathname = {this.props.currentPathname}
-            value={this.props.value}
-            minLength = {this.props.minLength}
-            linkto={this.props.linkto}
-            processing={this.props.processing}
-            buttonLabel={this.props.buttonLabel}/>
+          <FrameButton
+            submitting={this.props.submitting}
+            buttonLabel="Next"/>
       </Form>
     </div>)
   }

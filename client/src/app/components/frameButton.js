@@ -1,4 +1,3 @@
-//Button component with DESC & BUTTON
 import React from 'react';
 import {
   Link
@@ -7,37 +6,51 @@ import {
   Button
 } from 'react-bootstrap';
 
-const ButtonFrame = (props) => {
-  // setup button-type and button-label
-  let variant, buttonLabel;
+//export default class ButtonForm extends React.Component {
+const FrameButton = (props) => {
+  // setup button type & label
+  let variant;
   if (props.variant) {
     variant = props.variant
   } else {
     variant = 'secondary'
   }
-  if (props.buttonLabel) {
+  let buttonLabel;
+  if (props.submitting === true) {
+    buttonLabel = "Wait..."
+  } else if (props.buttonLabel) {
     buttonLabel = props.buttonLabel
   } else {
     buttonLabel = 'Submit'
   }
+  let buttonSize;
+  if (props.buttonSize) {
+    buttonSize = props.buttonSize
+  } else {
+    buttonSize = "md"
+  }
+  let disabled;
+  if (props.submitting === true) {
+    disabled = true
+  } else {
+    disabled = false
+  }
   if (props.linkto) {
-    // linkto next page || submit to API and await response
     return (
       <div>
         <p>{props.desc}</p>
         <Link to={props.linkto}>
-          <Button variant={variant}>{buttonLabel}</Button>
+          <Button type="submit" variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
         </Link>
       </div>
     )
   } else {
-    // linkto next page || submit to API and await response
     return (
       <div>
         <p>{props.desc}</p>
-        <Button variant={variant} onClick={props.handleClick}>{buttonLabel}</Button>
+        <Button type="submit" variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
       </div>
     )
   }
 }
-export default ButtonFrame
+export default FrameButton

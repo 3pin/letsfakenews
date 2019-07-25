@@ -1,30 +1,67 @@
 import React from 'react';
+import {
+  connect
+} from 'react-redux';
 
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
+import store from "../../../app/store";
 
-import Writing from '../../components/writing';
+// which props do we want to inject, given the global store state?
+function mapStateToProps(state) {
+  console.log('mapStateToProps', state)
+  return {
+    title: state.title,
+    submitting: state.submitting
+  };
+}
+// which props do we want to inject, given the global store state?
+function mapDispatchToProps(dispatch) {
+  return {
+    onChange: (value) => {
+      console.log('mapDispatchToProps')
+      const action = {
+        type: 'updateTitle',
+        payload: value
+      }
+      dispatch(action);
+    }
+  };
+}
 
-export default class writeTitle extends React.Component {
+class WriteTitle extends React.Component {
   componentDidMount() {
-    //console.log(this.props);
+    //action listeners
+    store.subscribe(() => {
+      console.log(store.getState());
+    })
+  }
+  handleSubmit = (title) => {
+    console.log('title-form was submitted: ' + title)
+    store.dispatch({type: "updateTitle", payload: title})
   }
   render() {
-    let currentPathname = this.props.location.pathname
+    /*
+    subject="title"
+    stateToSubmit={["story","title"]}
+    */
     return (<div>
       <section>
-        <Writing
-          currentPathname = {currentPathname}
+        <FrameBanner
           title="Add a title..."
-          desc="Give your story a title"
+          desc="Give your story a title"/>
+        <hr/>
+        <FrameForm
+          currentPathname="/write/title"
           rows="1"
-          minLength="5" maxLength="25"
-          subject="title"
-          apiEndPoint="/write/news"
-          stateToSubmit={["story","title"]}
+          minLength="5"
+          maxLength="25"
           redirect="/write/thankyou"
-          />
+          apiEndPoint="/write/news"
+          handleSubmit={this.handleSubmit}/>
+        <hr/>
       </section>
     </div>)
   }
 }
+export default connect(mapStateToProps, mapDispatchToProps)(WriteTitle);

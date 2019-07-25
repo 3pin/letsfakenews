@@ -21,10 +21,9 @@ import Login from './pages/admin/login';
 // components
 import FrameNavbar from './components/frameNavbar';
 
-export default class Routes extends React.Component {
-  render() {
-    return (
-      <Container as='main'>
+const Routes = () => {
+  return (
+    <Container as='main'>
         <FrameNavbar title="LetsFakeNews" links={["home", "write", "watch", "admin"]}/>
         <Row>
           <Col as='aside' xs={1} sm={1} md={1} lg={1} xl={1}/>
@@ -41,6 +40,6 @@ export default class Routes extends React.Component {
           <Col as='aside' xs={1} sm={1} md={1} lg={1} xl={1}/>
         </Row>
       </Container>
-    )
-  }
+  )
 }
+export default Routes

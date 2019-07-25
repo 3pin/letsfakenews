@@ -5,7 +5,6 @@ import {
 
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
-import {updateStory} from "../../actions/creatingNews"
 import store from "../../../app/store";
 
 // which props do we want to inject, given the global store state?
@@ -21,7 +20,7 @@ function mapDispatchToProps(dispatch) {
     onChange: (value) => {
       console.log('mapDispatchToProps')
       const action = {
-        type: 'UPDATE_STORY',
+        type: 'updateStory',
         payload: value
       }
       dispatch(action);
@@ -29,10 +28,22 @@ function mapDispatchToProps(dispatch) {
   };
 }
 class WriteStory extends React.Component {
+  state = {
+    submitting: false
+  }
   handleSubmit = (story) => {
+    console.log("form submitted")
+    let minLength = "5"
     console.log('story-form was submitted: ' + story)
-    //updateStory(story)
-    store.dispatch({type: "updateStory", payload: story})
+    if (story.length >= minLength) {
+      console.log("form content long enough")
+      this.props.history.push("/write/title")
+      store.dispatch({type: "updateStory", payload: story})
+    } else {
+      console.log("form content NOT long enough")
+      window.alert('What you wrote is too short')
+      this.props.history.push("/write/story")
+    }
   }
   render() {
     return (<div>
@@ -48,6 +59,8 @@ class WriteStory extends React.Component {
             minLength="5"
             maxLength="280"
             linkto="/write/title"
+            submitting={this.state.submitting}
+            handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}/>
           <hr/>
         </section>
