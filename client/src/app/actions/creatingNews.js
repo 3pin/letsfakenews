@@ -1,5 +1,4 @@
 import axios from "axios";
-const apiEndpoint = "?";
 
 /* this is how these actions are called in React-components...
 import * as actionsNews from "./creatingNews"
@@ -29,9 +28,16 @@ export const updateTitle = (title) => {
   }
 }
 
-export const submitStart = (story, title) => {
+export const submitStarted = () => {
+  return {
+    type: "SUBMIT_STARTED",
+    payload: null,
+  }
+}
+
+export const submit = (story, title, history) => {
   return function (dispatch) {
-    axios.post(apiEndpoint, {
+    axios.post("/write/news", {
       story: story,
       title: title
     }).then((response) => {
@@ -39,6 +45,8 @@ export const submitStart = (story, title) => {
           type: "SUBMIT_ENDED",
           payload: null
         })
+      }).then(() => {
+        history.push("/write/thankyou");
       })
       .catch((error) => {
         dispatch({

@@ -1,16 +1,56 @@
 import React from 'react';
+import {
+  connect
+} from 'react-redux';
+import {
+  withRouter
+} from "react-router-dom"
+
+import * as actions from "../../actions/creatingNews"
 
 import FrameBanner from '../../../app/components/frameBanner';
 import FrameButton from '../../../app/components/frameButton';
 
-const Landing = () => {
-  return (<div>
+// which props do we want to inject, given the global store state?
+const mapStateToProps = (state) => {
+  return {
+    story: state.newsReducer.story,
+    title: state.newsReducer.title,
+    submitting: state.newsReducer.submitting
+  };
+}
+// which props do we want to inject, given the global store state?
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitStarted: () => {
+      dispatch(actions.submitStarted())
+    },
+    submit: (story, title, history) => {
+      dispatch(actions.submit(story, title, history))
+    }
+  }
+}
+class Review extends React.Component {
+  handleClick = () => {
+    this.props.submitStarted();
+    this.props.submit(this.props.story, this.props.title, this.props.history);
+  }
+  render() {
+    let title = "Title: " + this.props.title;
+    let story = "Story: " + this.props.story;
+    return (<div>
       <section>
-        <FrameBanner title="Create..." desc="You're a journalist with a deadline but no news to report... Try to trick the news-room into broadcasting your fake news story... To ensure its accepted, use correct spelling & grammar."/>
+        <FrameBanner
+          title="Review..."
+          desc="Check your fake news before submitting to the news-room."/>
         <hr/>
-        <FrameButton variant="secondary" linkto="/write/story" buttonLabel="Start"/>
+        <p>{title}<br/>{story}</p>
+        <FrameButton
+          submitting={this.props.submitting}
+          onClick={this.handleClick} />
         <hr/>
       </section>
     </div>)
+  }
 }
-export default Landing
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Review))

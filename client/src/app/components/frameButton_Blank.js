@@ -1,8 +1,5 @@
 import React from 'react';
 import {
-  Link
-} from 'react-router-dom';
-import {
   Button
 } from 'react-bootstrap';
 
@@ -35,31 +32,13 @@ const FrameButton = (props) => {
   } else {
     disabled = false
   }
-  if (props.linkto) {
-    //linkto buttons
-    return (
-      <div>
-        <p>{props.desc}</p>
-        <Link to={props.linkto}>
-          <Button variant={variant} size={buttonSize}>{buttonLabel}</Button>
-        </Link>
-      </div>
-    )
-  } else if (props.onClick) {
-    return (
-      <div>
+  //form-submit buttons
+  return (
+    <div>
         <p>{props.desc}</p>
         <Button onClick={props.onClick} variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
       </div>
-    )
-  } else {
-    //form-submit buttons
-    return (
-      <div>
-        <p>{props.desc}</p>
-        <Button type="submit" variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
-      </div>
-    )
-  }
+  )
+
 }
 export default FrameButton
