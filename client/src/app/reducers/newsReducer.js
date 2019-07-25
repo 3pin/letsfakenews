@@ -5,36 +5,37 @@ const initialState = {
 }
 const newsReducer = (state = initialState, action) => {
   switch (action.type) {
-  case "updateStory":
+  case "UPDATE_STORY":
     {
       return { ...state,
         story: action.payload
       };
     }
-  case "updateTitle":
+  case "UPDATE_TITLE":
     {
       return { ...state,
         title: action.payload
       };
     }
-  case "submitStarted":
+  case "SUBMIT_STARTED":
     {
       return { ...state,
         submitting: true
       };
     }
-  case "submitEnded":
+  case "SUBMIT_ENDED":
     {
       return { ...state,
-        submitting: false,
         story: "",
-        title: ""
+        title: "",
+        submitting: false
       }
     }
-    default: {
-      state = {...state}
+  default:
+    {
+      return state
     }
   }
-  return state
+  //return state
 }
 export default newsReducer

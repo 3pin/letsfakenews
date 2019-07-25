@@ -2,30 +2,19 @@ import React from 'react';
 import {
   connect
 } from 'react-redux';
-
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
-import store from "../../../app/store";
-
 // which props do we want to inject, given the global store state?
-function mapStateToProps(state) {
-  console.log('mapStateToProps', state)
+const mapStateToProps = (state) => {
   return {
-    story: state.story
+    story: state.newsReducer.story
   };
 }
 // which props do we want to inject, given the global store state?
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onChange: (value) => {
-      console.log('mapDispatchToProps')
-      const action = {
-        type: 'updateStory',
-        payload: value
-      }
-      dispatch(action);
-    }
-  };
+    updateStore: (content) => {dispatch({type: 'UPDATE_STORY', payload: content})}
+  }
 }
 class WriteStory extends React.Component {
   state = {
@@ -34,16 +23,17 @@ class WriteStory extends React.Component {
     next: "/write/title",
     minLength: "5"
   }
-  handleSubmit = (content) => {
-    if (content.length >= this.state.minLength) {
+  handleSubmit = (story) => {
+    if (story.length >= this.state.minLength) {
+      this.props.updateStore(story)
       this.props.history.push(this.state.next)
-      store.dispatch({type: "updateStory", payload: content})
     } else {
       window.alert('What you wrote is too short')
       this.props.history.push(this.state.current)
     }
   }
   render() {
+    console.log(this.props)
     return (<div>
         <section>
           <FrameBanner
@@ -51,14 +41,13 @@ class WriteStory extends React.Component {
             desc="Make up a fake-news story"/>
           <hr/>
           <FrameForm
+            content={this.props.story}
             currentPathname="/write/story"
             buttonLabel="Next"
             rows="4"
             minLength="5"
             maxLength="280"
-            linkto="/write/title"
             submitting={this.state.submitting}
-            handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}/>
           <hr/>
         </section>

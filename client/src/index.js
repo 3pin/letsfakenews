@@ -5,6 +5,7 @@ import '../node_modules/react-bootstrap/dist/react-bootstrap.min.js';
 // styles
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './minimum.css';
+import registerServiceWorker from './registerServiceWorker'
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -19,7 +20,7 @@ import Routes from './app/routes';
 
 //action listeners
 store.subscribe(() => {
-  console.log('Store changed...')
+  console.log('Store updated...')
   console.log(store.getState());
 })
 
@@ -31,3 +32,4 @@ const App = () => (
   </Provider>);
 
 ReactDOM.render(<App/>, document.getElementById('react'));
+registerServiceWorker();

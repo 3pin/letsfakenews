@@ -5,50 +5,40 @@ import {
 import axios from "axios";
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
-import store from "../../../app/store";
-
 // which props do we want to inject, given the global store state?
-function mapStateToProps(state) {
-  console.log('mapStateToProps', state)
+const mapStateToProps = (state) => {
   return {
-    title: state.title,
-    submitting: state.submitting
+    story: state.newsReducer.story,
+    title: state.newsReducer.title,
+    submitting: state.newsReducer.submitting
   };
 }
 // which props do we want to inject, given the global store state?
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onChange: (value) => {
-      console.log('mapDispatchToProps')
-      const action = {
-        type: 'updateTitle',
-        payload: value
-      }
-      dispatch(action);
-    }
-  };
+    updateStore: (title) => {dispatch({type: 'UPDATE_TITLE', payload: title})},
+    submitStarted: () => {dispatch({type: 'SUBMIT_STARTED', payload: null})},
+    submitEnded: () => {dispatch({type: 'SUBMIT_ENDED', payload: null})}
+  }
 }
-
 class WriteTitle extends React.Component {
   state = {
-    submitting: false,
     current: "/write/title",
     next: "/write/thankyou",
-    minLength: "5",
-    apiEndpoint: "/write/news"
+    apiEndpoint: "/write/news",
+    minLength: "5"
   }
-  handleSubmit = (content) => {
-    if (content.length >= this.state.minLength) {
-      store.dispatch({
-        type: "updateTitle",
-        payload: content
-      })
+  handleSubmit = (title) => {
+    if (title.length >= this.state.minLength) {
+      this.props.updateStore(title)
+      this.props.submitStarted()
       axios.post(this.state.apiEndpoint, {
-        story: "this is a test story",
-        title: "this is a test title"
+        story: this.props.story,
+        title: title
       }).then((res) => {
         console.log(res)
       }).then(() => {
+        this.props.submitEnded()
         this.props.history.push(this.state.next)
       })
     } else {
@@ -68,6 +58,8 @@ class WriteTitle extends React.Component {
           desc="Give your story a title"/>
         <hr/>
         <FrameForm
+          content={this.props.title}
+          submitting={this.props.submitting}
           currentPathname="/write/title"
           rows="1"
           minLength="5"

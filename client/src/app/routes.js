@@ -24,7 +24,7 @@ import FrameNavbar from './components/frameNavbar';
 const Routes = () => {
   return (
     <Container as='main'>
-        <FrameNavbar title="LetsFakeNews" links={["home", "write", "watch", "admin"]}/>
+        <FrameNavbar className="navbar" title="LetsFakeNews" links={["home", "write", "watch", "admin"]}/>
         <Row>
           <Col as='aside' xs={1} sm={1} md={1} lg={1} xl={1}/>
           <Col as='article' xs={10} sm={10} md={10} lg={10} xl={10}>

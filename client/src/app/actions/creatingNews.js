@@ -17,14 +17,14 @@ export const updateStory = (story) => dispatch => {
 
 export function updateStory(story) {
   return {
-    type: "updateStory",
+    type: "UPDATE_STORY",
     payload: story,
   }
 }
 
 export function updateTitle(title) {
   return {
-    type: "updateTitle",
+    type: "UPDATE_TITLE",
     payload: title,
   }
 }
@@ -34,7 +34,7 @@ export function submitStarted(story, title) {
     axios.post(apiEndpoint, story, title)
       .then((response) => {
         dispatch({
-          type: "submitEnded",
+          type: "SUBMIT_ENDED",
           payload: null
         })
       })
