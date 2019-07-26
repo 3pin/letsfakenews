@@ -44,7 +44,7 @@ class Review extends React.Component {
       <section>
         <FrameBanner
           title="Review..."
-          desc="Check your news before submitting."/>
+          desc="Does your news read well?"/>
         <hr/>
         <p>{title}<br/>{story}</p>
         <FrameButton
