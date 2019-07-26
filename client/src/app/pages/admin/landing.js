@@ -11,7 +11,7 @@ const Landing = () => {
         <hr/>
         <FrameButton linkto="/admin/stories" buttonLabel="Stories" desc="Moderate stories in real-time"/>
         <hr/>
-        <FrameButton variant="outline-secondary" linkto="/admin/feedback" buttonLabel="Feedback" desc="View feedback in real-time"/>
+        <FrameButton linkto="/admin/feedback" buttonLabel="Feedback" desc="View feedback in real-time"/>
         <hr/>
       </section>
     </div>)
