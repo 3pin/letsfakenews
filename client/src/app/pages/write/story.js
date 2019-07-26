@@ -39,7 +39,7 @@ class WriteStory extends React.Component {
           <hr/>
           <FrameForm
             rows="2"
-            minLength="5"
+            minLength="50"
             maxLength="280"
             buttonLabel="Next"
             content={this.props.story}
