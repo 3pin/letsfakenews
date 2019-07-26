@@ -7,6 +7,10 @@ html, body {
   box-shadow: 1px 1px 1px grey;
 }
 
+.banner {
+  padding-top: 0.4rem;
+}
+
 _section {
   padding-left: 15px;
   padding-right: 15px;

@@ -36,7 +36,6 @@ const FrameButton = (props) => {
     disabled = false
   }
   if (props.linkto) {
-    //linkto buttons
     console.log("button type: linkto")
     return (
       <div>

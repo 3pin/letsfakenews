@@ -39,12 +39,10 @@ export default class FrameForm extends React.Component {
     }
   }
   componentWillMount() {
-    this.setState((state) => ({
-      content: this.props.content
-    }))
+    this.setState((state) => ({content: this.props.content}))
   }
   componentWillUnmount() {
-    this.props.handleSubmit(this.state.content);
+    //this.props.handleSubmit(this.state.content);
   }
   render() {
     // setup char-counter
@@ -71,6 +69,10 @@ export default class FrameForm extends React.Component {
           </textarea>
           <font id="char-count">{contentLength}/{maxLength}</font>
           <FrameButton
+            linkto={this.props.linkto}
+            onClick={this.props.onClick}
+            desc={this.props.desc}
+            variant={this.props.variant}
             submitting={this.props.submitting}
             buttonLabel={this.props.buttonLabel}/>
       </Form>

@@ -25,13 +25,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 class WriteTitle extends React.Component {
-  state = {
-    current: "/write/title",
-    next: "/write/review",
-    rows: "1",
-    minLength: "5",
-    maxLength: "25"
-  }
   handleSubmit = (title) => {
     /* goto the next page */
     //this.props.history.push(this.state.next)
@@ -46,11 +39,11 @@ class WriteTitle extends React.Component {
           desc="Give your story a title"/>
         <hr/>
         <FrameForm
-          rows={this.state.rows}
-          minLength={this.state.minLength}
-          maxLength={this.state.maxLength}
-          content={this.props.title}
+          rows="1"
+          minLength="5"
+          maxLength="25"
           buttonLabel="Review"
+          content={this.props.title}
           handleSubmit={this.handleSubmit}/>
         <hr/>
       </section>

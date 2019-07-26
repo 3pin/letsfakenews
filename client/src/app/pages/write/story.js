@@ -12,7 +12,7 @@ import * as actions from "../../actions/creatingNews"
 /* which props do we want to inject, given the global store state? */
 const mapStateToProps = (state) => {
   return {
-    story: state.newsReducer.story
+    story: state.newsReducer.story,
   };
 }
 /* which props do we want to inject, given the global store state? */
@@ -24,13 +24,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 class WriteStory extends React.Component {
-  state = {
-    current: "/write/story",
-    next: "/write/title",
-    rows: "4",
-    minLength: "5",
-    maxLength: "280"
-  }
   handleSubmit = (story) => {
     /* goto the next page */
     //this.props.history.push(this.state.next)
@@ -45,11 +38,11 @@ class WriteStory extends React.Component {
             desc="Make up a fake-news story"/>
           <hr/>
           <FrameForm
-            rows={this.state.rows}
-            minLength={this.state.minLength}
-            maxLength={this.state.maxLength}
-            content={this.props.story}
+            rows="2"
+            minLength="5"
+            maxLength="280"
             buttonLabel="Next"
+            content={this.props.story}
             handleSubmit={this.handleSubmit}/>
           <hr/>
         </section>

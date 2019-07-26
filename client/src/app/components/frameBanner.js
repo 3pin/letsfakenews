@@ -8,7 +8,7 @@ const FrameBanner = (props) => {
   } else {
     Tag = "h2"
   }
-  return (<div>
+  return (<div className="banner">
       <Tag>{props.title}</Tag>
       <p>{props.desc}</p>
     </div>);

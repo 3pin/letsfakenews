@@ -29,13 +29,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 class WriteFeedback extends React.Component {
-  state = {
-    current: "/write/feedback",
-    next: "/write/thankyou",
-    rows: "4",
-    minLength: "5",
-    maxLength: "280"
-  }
   handleSubmit = (feedback) => {
     /* dipatch action to change button-UI */
     this.props.submitStarted();
@@ -51,9 +44,9 @@ class WriteFeedback extends React.Component {
             desc="Give your thoughts on using this fake-news service"/>
           <hr/>
           <FrameForm
-            rows={this.state.rows}
-            minLength={this.state.minLength}
-            maxLength={this.state.maxLength}
+            rows="2"
+            minLength="5"
+            maxLength="280"
             content={this.props.feedback}
             submitting={this.props.submitting}
             handleSubmit={this.handleSubmit}/>

@@ -25,7 +25,8 @@ export const browserHistory = createBrowserHistory();
 store.subscribe(() => {
   console.log('Store updated...')
   console.log(store.getState());
-}) */
+})
+*/
 
 const App = () => (
   <Provider store={store}>
