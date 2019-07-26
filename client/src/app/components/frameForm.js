@@ -5,24 +5,44 @@ import {
 import FrameButton from './frameButton';
 
 export default class FrameForm extends React.Component {
-  state = {
-    content: ''
+  constructor(props) {
+    super(props)
+    this.state = {
+      content: ''
+    }
+  }
+  onKeyDown = (e) => {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      e.preventDefault()
+      this.processSubmit()
+    }
   }
   handleChange = (e) => {
-    //console.log('formContent changing')
-    this.setState({
-      content: e.target.value
-    })
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      e.preventDefault()
+      this.processSubmit()
+    } else {
+      this.setState({
+        content: e.target.value
+      })
+    }
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.handleSubmit(this.state.content);
+    this.processSubmit()
   }
-  componentDidMount() {
-    let content = [...this.state.content, this.props.content]
-    this.setState({
-      content: content
-    })
+  processSubmit = () => {
+    //e.preventDefault()
+    if (this.state.content.length >= this.props.minLength) {
+      this.props.handleSubmit(this.state.content);
+    } else {
+      window.alert('What you wrote is too short')
+    }
+  }
+  componentWillMount() {
+    this.setState((state) => ({
+      content: this.props.content
+    }));
   }
   render() {
     // setup char-counter
@@ -44,6 +64,7 @@ export default class FrameForm extends React.Component {
             maxLength={this.props.maxLength}
             placeholder={`${this.props.minLength} - ${this.props.maxLength} chars...`}
             value={this.state.content}
+            onKeyDown={this.onKeyDown}
             onChange={this.handleChange}>
           </textarea>
           <font id="char-count">{contentLength}/{maxLength}</font>

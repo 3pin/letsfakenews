@@ -42,7 +42,7 @@ class Review extends React.Component {
       <section>
         <FrameBanner
           title="Review..."
-          desc="Check your fake news before submitting to the news-room."/>
+          desc="Check your fake news before submitting."/>
         <hr/>
         <p>{title}<br/>{story}</p>
         <FrameButton
@@ -50,9 +50,9 @@ class Review extends React.Component {
           onClick={this.handleClick} />
           <hr/>
           <FrameButton
-            desc="Go back to change your title / story."
+            desc="Want to update your fake news?"
             linkto={"/write/story"}
-            buttonLabel={"Back"}/>  
+            buttonLabel={"Change"}/>
         <hr/>
       </section>
     </div>)

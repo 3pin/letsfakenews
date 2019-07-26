@@ -15,7 +15,9 @@ const mapStateToProps = (state) => {
 // which props do we want to inject, given the global store state?
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStore: (story) => {dispatch(actions.updateStory(story))}
+    updateStore: (story) => {
+      dispatch(actions.updateStory(story))
+    }
   }
 }
 class WriteStory extends React.Component {
@@ -23,19 +25,18 @@ class WriteStory extends React.Component {
     current: "/write/story",
     next: "/write/title",
     rows: "4",
-    minLength: "50",
+    minLength: "5",
     maxLength: "280"
   }
   handleSubmit = (story) => {
-    if (story.length >= this.state.minLength) {
-      //update the store
-      this.props.updateStore(story)
-      //goto the next page
-      this.props.history.push(this.state.next)
-    } else {
-      window.alert('What you wrote is too short')
-      this.props.history.push(this.state.current)
-    }
+    console.log('this.props.story.length: ' + story.length)
+    //goto the next page
+    this.props.history.push(this.state.next)
+    //update the store
+    this.props.updateStore(story)
+  }
+  componentDidMount() {
+    console.log(this.props)
   }
   render() {
     return (<div>
