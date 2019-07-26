@@ -32,7 +32,6 @@ export default class FrameForm extends React.Component {
     this.processSubmit()
   }
   processSubmit = () => {
-    //e.preventDefault()
     if (this.state.content.length >= this.props.minLength) {
       this.props.handleSubmit(this.state.content);
     } else {
@@ -42,7 +41,10 @@ export default class FrameForm extends React.Component {
   componentWillMount() {
     this.setState((state) => ({
       content: this.props.content
-    }));
+    }))
+  }
+  componentWillUnmount() {
+    this.props.handleSubmit(this.state.content);
   }
   render() {
     // setup char-counter

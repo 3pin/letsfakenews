@@ -21,11 +21,11 @@ import { createBrowserHistory } from 'history';
 
 export const browserHistory = createBrowserHistory();
 
-//action listeners
+/* action listeners
 store.subscribe(() => {
   console.log('Store updated...')
   console.log(store.getState());
-})
+}) */
 
 const App = () => (
   <Provider store={store}>

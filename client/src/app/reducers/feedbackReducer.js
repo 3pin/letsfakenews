@@ -13,7 +13,6 @@ const feedbackReducer = (state = initialState, action) => {
   case "SUBMIT_ENDED":
     {
       return { ...state,
-        feedback: "",
         submitting: false
       }
     }

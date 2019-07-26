@@ -2,21 +2,24 @@ import React from 'react';
 import {
   connect
 } from 'react-redux';
+import {
+  withRouter
+} from "react-router-dom"
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
 import * as actions from "../../actions/creatingNews"
 
-// which props do we want to inject, given the global store state?
+/* which props do we want to inject, given the global store state? */
 const mapStateToProps = (state) => {
   return {
     story: state.newsReducer.story
   };
 }
-// which props do we want to inject, given the global store state?
+/* which props do we want to inject, given the global store state? */
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStore: (story) => {
-      dispatch(actions.updateStory(story))
+    updateStore: (story, history) => {
+      dispatch(actions.updateStory(story, history))
     }
   }
 }
@@ -29,14 +32,10 @@ class WriteStory extends React.Component {
     maxLength: "280"
   }
   handleSubmit = (story) => {
-    console.log('this.props.story.length: ' + story.length)
-    //goto the next page
-    this.props.history.push(this.state.next)
-    //update the store
-    this.props.updateStore(story)
-  }
-  componentDidMount() {
-    console.log(this.props)
+    /* goto the next page */
+    //this.props.history.push(this.state.next)
+    /* update the store */
+    this.props.updateStore(story, this.props.history)
   }
   render() {
     return (<div>
@@ -57,4 +56,4 @@ class WriteStory extends React.Component {
       </div>)
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(WriteStory);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(WriteStory))

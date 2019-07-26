@@ -20,10 +20,12 @@ module.exports = (req, res) => {
   const process_client_story = require('../../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
     // 'result' contains: story/title/storylive/time/words/urls
-    //debug(result);
-    debug(result.urls[0]);
-    if (result.urls[0] === undefined) {
-      res.send('Failure');
+    debug(result);
+    //debug(result.urls[0]);
+    if (result === null) {
+      res.send('NO_NOUNS');
+    } else if (result.urls[0] === undefined) {
+      res.send('NO_URLS');
     }
     else {
       let story = new Story({ ...result});

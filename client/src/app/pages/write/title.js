@@ -3,6 +3,9 @@ import {
   connect
 } from 'react-redux';
 import * as actions from "../../actions/creatingNews"
+import {
+  withRouter
+} from "react-router-dom"
 
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
@@ -13,10 +16,12 @@ const mapStateToProps = (state) => {
     title: state.newsReducer.title,
   };
 }
-// which props do we want to inject, given the global store state?
+/* which props do we want to inject, given the global store state? */
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateStore: (title) => {dispatch(actions.updateTitle(title))},
+    updateStore: (title, history) => {
+      dispatch(actions.updateTitle(title, history))
+    }
   }
 }
 class WriteTitle extends React.Component {
@@ -28,21 +33,12 @@ class WriteTitle extends React.Component {
     maxLength: "25"
   }
   handleSubmit = (title) => {
-    if (title.length >= this.state.minLength) {
-      //update the store
-      this.props.updateStore(title)
-      //goto the next page
-      this.props.history.push(this.state.next)
-    } else {
-      window.alert('What you wrote is too short')
-      this.props.history.push(this.state.current)
-    }
+    /* goto the next page */
+    //this.props.history.push(this.state.next)
+    /* update the store */
+    this.props.updateStore(title, this.props.history)
   }
   render() {
-    /*
-    subject="title"
-    stateToSubmit={["story","title"]}
-    */
     return (<div>
       <section>
         <FrameBanner
@@ -61,4 +57,4 @@ class WriteTitle extends React.Component {
     </div>)
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(WriteTitle);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(WriteTitle))

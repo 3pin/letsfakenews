@@ -32,7 +32,9 @@ const mapDispatchToProps = (dispatch) => {
 }
 class Review extends React.Component {
   handleClick = () => {
+    /* dipatch action to change button-UI */
     this.props.submitStarted();
+    /* dispatch API submit action */
     this.props.submit(this.props.story, this.props.title, this.props.history);
   }
   render() {

@@ -37,15 +37,10 @@ class WriteFeedback extends React.Component {
     maxLength: "280"
   }
   handleSubmit = (feedback) => {
-    console.log('feedback about to be tested')
-    if (feedback.length >= this.state.minLength) {
-      console.log('feedback long enough')
-      this.props.submitStarted();
-      this.props.submit(feedback, this.props.history);
-    } else {
-      window.alert('What you wrote is too short')
-      this.props.history.push(this.state.current)
-    }
+    /* dipatch action to change button-UI */
+    this.props.submitStarted();
+    /* dispatch API submit action */
+    this.props.submit(feedback, this.props.history);
   }
   render() {
     console.log(this.props)
