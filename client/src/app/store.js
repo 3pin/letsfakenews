@@ -5,7 +5,7 @@ import thunk from "redux-thunk";  //middleware... pretty logging
 
 //middlwares
 let middleware;
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   middleware = applyMiddleware(thunk, logger);
 } else {
   middleware = applyMiddleware(thunk);
