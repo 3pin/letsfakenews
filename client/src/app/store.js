@@ -4,7 +4,12 @@ import logger from "redux-logger";  //middleware... pretty logging
 import thunk from "redux-thunk";  //middleware... pretty logging
 
 //middlwares
-const middleware = applyMiddleware(thunk, logger);
+let middleware;
+if (process.env.NODE_ENV !== 'production') {
+  middleware = applyMiddleware(thunk, logger);
+} else {
+  middleware = applyMiddleware(thunk);
+}
 
 //store
 export default createStore(reducer, middleware);
