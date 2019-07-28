@@ -10,6 +10,7 @@ const FrameBanner = (props) => {
   }
   return (<div className="banner">
       <Tag>{props.title}</Tag>
+    <hr/>
       <p>{props.desc}</p>
     </div>);
 }

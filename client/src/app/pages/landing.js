@@ -3,6 +3,7 @@ import {
   connect
 } from 'react-redux'
 import FrameBanner from '../../app/components/frameBanner';
+import Desc from '../../app/components/desc';
 import FrameButton from '../../app/components/frameButton';
 
 connect((store) => {
@@ -14,13 +15,21 @@ connect((store) => {
 const Landing = () => {
   return (<div>
       <section>
-        <FrameBanner title="About..." desc="Welcome to the LetsFakeNews service, broadcasting live from the El-Jazeera news-room."/>
+        <FrameBanner
+          title="LetsFakeNews..."
+          desc="Would you like to watch fake-news? Better still would you like to create it? Well now is your chance..."/>
+        <Desc
+          desc="LetsFakeNews is broadcasting live from the El-Jazeera news-room. To watch use a desktop computer. To create use any second-screen device."/>
         <hr/>
-        <FrameButton linkto="/write" buttonLabel="Create" desc="Create fakenews"/>
+        <FrameButton
+          linkto="/watch"
+          buttonLabel="Display"
+          desc="Display fakenews (desktop only)"/>
         <hr/>
-        <FrameButton linkto="/watch" buttonLabel="Watch" desc="Display fakenews (desktop only)"/>
-        <hr/>
-        <FrameButton linkto="/admin" buttonLabel="Admin" desc="Moderate fakenews (admin only)"/>
+        <FrameButton
+          linkto="/write"
+          buttonLabel="Create"
+          desc="Create fakenews (any device)"/>
         <hr/>
       </section>
     </div>)
