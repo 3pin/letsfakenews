@@ -214,7 +214,7 @@ export default class Watch extends React.Component {
       <div >
         <FrameButton
           buttonLabel='PLAY'
-          handleClick={this.goFullscreen.bind(this.outerContainer)}
+          onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr/>
         <div className="media" id="outerContainer" ref={outerContainer => { this.outerContainer=outerContainer }}>
