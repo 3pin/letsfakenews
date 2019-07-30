@@ -83,23 +83,26 @@ export default class Watch extends React.Component {
     /* load new story into this.state */
     this.apiGet('/watch/request_new_story')
       .then((res) => this.setState({
+        url_index: 0,
         title: res.data.title.toUpperCase(),
         story: res.data.story,
         urls: metadata(res.data, this.state.image_duration, this.state.imagesStart).urls,
         markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers
       }))
-      .then(() => console.log(this.state))
-      .catch(err => console.log(err))
+      .then(() => {
+        console.log(this.state)
+      }).catch(err => console.log(err))
   }
   onProgress(e) {
     /* change url-image according to markers... */
     let currentSec = e.playedSeconds;
-    if (currentSec >= this.state.markers[this.state.url_index]) {
-      //console.log('marker passed');
+    if (currentSec >= this.state.markers[this.state.url_index] && this.state.url_index < this.state.markers.length - 1) {
+      console.log('marker passed secs:' + this.state.markers[this.state.url_index] + ' current url index:' + this.state.url_index);
       this.setState({
         url_index: this.state.url_index + 1
       });
-      //console.log(this.state.urls[this.state.url_index]);
+      console.log('new url index: ' + this.state.url_index);
+      console.log('new url: ' + this.state.urls[this.state.url_index]);
     }
     /* change interface according to markers */
     if (currentSec >= this.state.popupStart && currentSec <= this.state.popupEnd) {
@@ -213,7 +216,7 @@ export default class Watch extends React.Component {
     return (
       <div >
         <FrameButton
-          buttonLabel='PLAY'
+          buttonLabel='Play'
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr/>

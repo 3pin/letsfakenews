@@ -36,7 +36,7 @@ const FrameButton = (props) => {
     disabled = false
   }
   if (props.linkto) {
-    console.log("button type: linkto")
+    //console.log("button type: linkto")
     return (
       <div>
         <p>{props.desc}</p>
@@ -46,7 +46,7 @@ const FrameButton = (props) => {
       </div>
     )
   } else if (props.onClick) {
-    console.log("button type: connect-API")
+    //console.log("button type: connect-API")
     return (
       <div>
         <p>{props.desc}</p>
@@ -54,8 +54,7 @@ const FrameButton = (props) => {
       </div>
     )
   } else {
-    //form-submit buttons
-    console.log("button type: onsubmit-form")
+    //console.log("button type: onsubmit-form")
     return (
       <div>
         <p>{props.desc}</p>
