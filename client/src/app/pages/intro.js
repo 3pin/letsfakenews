@@ -8,22 +8,35 @@ import {
 } from 'react-router-dom';
 
 class Intro extends React.Component {
+  state = {
+    playing: false,
+    volume: 1,
+    muted: true
+  }
+  componentWillMount = () => {
+    this.setState({
+      playing: true
+    });
+    console.log(this.state)
+  }
   onEnded = () => {
     this.props.history.push("/landing")
   }
   render() {
+    console.log(this.state)
     return (<div>
       <div id="introContainer">
         <ReactPlayer
           url='https://res.cloudinary.com/hi58qepi6/video/upload/v1564506559/Screengrab_Video_Snipped_Web-desktop.mp4'
           className='introContent react-player'
           id="introVideoPlayer"
-          autoPlay={true}
-          playing={true}
-          volume={1}
+          playing={this.state.playing}
+          volume={this.state.volume}
+          muted={this.state.muted}
           width='100%'
           height='100%'
           ref={player => { this.player=player }}
+          onReady={this.onReady}
           onEnded={this.onEnded}
         />
       <div>
