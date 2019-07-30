@@ -10,10 +10,10 @@ import {
 class Intro extends React.Component {
   state = {
     playing: false,
-    volume: 1,
+    volume: 0,
     muted: true
   }
-  componentWillMount = () => {
+  onReady = () => {
     this.setState({
       playing: true
     });
@@ -41,7 +41,7 @@ class Intro extends React.Component {
         />
       <div>
         <Link to="/landing">
-          <Button id='introButton' size="lg" variant='outline-primary'>LetsFakeNews</Button>
+          <Button id='introButton' size="lg" variant='outline-primary'>ENTER</Button>
         </Link>
       </div>
     </div>
