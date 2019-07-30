@@ -9,14 +9,14 @@ const Landing = () => {
       <section>
         <FrameBanner
           title="LetsFakeNews..."
-          desc="Would you like to try fake-news? Well, now is your chance... LetsFakeNews is broadcasting live from the El-Jazeera news-room."/>
+          desc="Welcome to LetsFakeNews, broadcasting live from the El-Jazeera news room"/>
         <Desc
-          desc="Write fake news your phone, then watch it on your laptop."/>
+          desc="Write a fake story on your phone then watch it reported on a computer/TV"/>
         <hr/>
         <FrameButton
           linkto="/write"
           buttonLabel="Write"
-          desc="Write fakenews (phone, etc.)"/>
+          desc="Write fakenews (phone etc.)"/>
         <hr/>
         <FrameButton
           linkto="/watch"
