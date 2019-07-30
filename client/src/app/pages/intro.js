@@ -28,7 +28,9 @@ class Intro extends React.Component {
     this.props.history.push("/landing")
   }
   render() {
-    let url=this.props.isMobile ? 'https://res.cloudinary.com/hi58qepi6/video/upload/v1564527739/Screengrab_Video_Snipped_Web-iPhone-cell.3gp' : 'https://res.cloudinary.com/hi58qepi6/video/upload/v1564506559/Screengrab_Video_Snipped_Web-desktop.mp4'
+    let url=this.props.isMobile ?
+    'https://res.cloudinary.com/hi58qepi6/video/upload/v1564526516/Screengrab_Video_Snipped_Web-iPhone.mp4' : 
+    'https://res.cloudinary.com/hi58qepi6/video/upload/v1564506559/Screengrab_Video_Snipped_Web-desktop.mp4'
     console.log(url)
     return (<div>
       <div id="introContainer">
