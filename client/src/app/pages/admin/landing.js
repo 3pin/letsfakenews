@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import FrameBanner from '../../../app/components/frameBanner';
 import FrameButton from '../../../app/components/frameButton';
 
