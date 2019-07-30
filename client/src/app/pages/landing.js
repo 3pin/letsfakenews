@@ -1,16 +1,8 @@
 import React from 'react';
-import {
-  connect
-} from 'react-redux'
+//
 import FrameBanner from '../../app/components/frameBanner';
 import Desc from '../../app/components/desc';
 import FrameButton from '../../app/components/frameButton';
-
-connect((store) => {
-  return {
-    store: store
-  }
-})
 
 const Landing = () => {
   return (<div>
