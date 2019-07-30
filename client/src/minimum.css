@@ -97,6 +97,36 @@ h6 {
   position: relative;
 }
 
+#introContainer {
+  /* border: 2px solid red; */
+  background: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+}
+
+#introContent {
+  /* border: 2px solid blue; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+#introButton {
+  /* border: 2px solid green; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+
 #videoContainer {
   /* display element */
   /*border: 2px solid red;

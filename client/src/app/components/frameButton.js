@@ -35,10 +35,16 @@ const FrameButton = (props) => {
   } else {
     disabled = false
   }
+  let className
+  if (props.className) {
+    className=props.className
+  } else {
+    className=""
+  }
   if (props.linkto) {
     //console.log("button type: linkto")
     return (
-      <div>
+      <div className={className}>
         <p>{props.desc}</p>
         <Link to={props.linkto}>
           <Button variant={variant} size={buttonSize}>{buttonLabel}</Button>
