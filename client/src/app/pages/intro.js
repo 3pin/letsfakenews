@@ -23,13 +23,13 @@ class Intro extends React.Component {
     this.props.history.push("/landing")
   }
   render() {
-    console.log(this.state)
     return (<div>
       <div id="introContainer">
         <ReactPlayer
           url='https://res.cloudinary.com/hi58qepi6/video/upload/v1564506559/Screengrab_Video_Snipped_Web-desktop.mp4'
           className='introContent react-player'
           id="introVideoPlayer"
+          playsinline
           playing={this.state.playing}
           volume={this.state.volume}
           muted={this.state.muted}
@@ -41,7 +41,7 @@ class Intro extends React.Component {
         />
       <div>
         <Link to="/landing">
-          <Button id='introButton' size="lg" variant='outline-primary'>ENTER</Button>
+          <Button id='introButton' size="lg" variant='outline-secondary'>ENTER</Button>
         </Link>
       </div>
     </div>
