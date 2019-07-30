@@ -97,38 +97,34 @@ h6 {
   position: relative;
 }
 
-#_intro {
-  background-image: url('./app/images/screen.jpg');
-  position: relative;
-  width: 100%;
-}
-
-.introContainer {
-  border: 2px solid red;
+#introContainer {
+  /* border: 2px solid red; */
+  background: black;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   overflow: auto;
-  background: rgba(51, 51, 51, 0.6);
 }
 
-.introContent {
-  border: 2px solid blue;
+#introContent {
+  /* border: 2px solid blue; */
   position: absolute;
   top: 50%;
+  left: 50%;
+  height: 100%;
   width: 100%;
-  transform: translateY(-50%);
+  object-fit: contain;
+  transform: translateY(-50%) translateX(-50%);
 }
 
-.introButton {
-  border: 2px solid green;
+#introButton {
+  /* border: 2px solid green; */
   position: absolute;
+  top: 50%;
   left: 50%;
-  margin-left: -42px;
-  top: 80%;
-  margin-top: -15px;
+  transform: translateY(-50%) translateX(-50%);
 }
 
 #videoContainer {

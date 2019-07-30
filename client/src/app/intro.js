@@ -13,11 +13,11 @@ class Intro extends React.Component {
   }
   render() {
     return (<div>
-      <div className="introContainer">
+      <div id="introContainer">
         <ReactPlayer
           url='https://res.cloudinary.com/hi58qepi6/video/upload/v1564406783/TEI_Beers.mov'
           className='introContent react-player'
-          id="videoPlayer"
+          id="introVideoPlayer"
           autoPlay={true}
           playing={true}
           volume={0}
@@ -27,7 +27,7 @@ class Intro extends React.Component {
         />
       <div>
         <Link to="/landing">
-          <Button className='introButton' variant='secondary'>ENTER</Button>
+          <Button id='introButton' size="lg" variant='outline-primary'>LetsFakeNews</Button>
         </Link>
       </div>
     </div>
