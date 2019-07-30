@@ -79,7 +79,7 @@ export default class Watch extends React.Component {
     return body;
   }
   onReady() {
-    console.log('Media ready');
+    console.log("Media ready");
     /* load new story into this.state */
     this.apiGet('/watch/request_new_story')
       .then((res) => this.setState({
