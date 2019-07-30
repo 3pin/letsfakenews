@@ -13,6 +13,7 @@ import {
 import withAuth from '.././components/withAuth';
 import checkDevice from '.././components/checkDevice';
 // pages
+import Intro from './intro';
 import Landing from './landing';
 import RoutesWrite from './write/routes';
 import RoutesAdmin from './admin/routes';
@@ -29,7 +30,8 @@ const Routes = () => {
           <Col as='aside' xs={1} sm={1} md={1} lg={1} xl={1}/>
           <Col as='article' xs={10} sm={10} md={10} lg={10} xl={10}>
             <Switch>
-              <Route exact path='/landing' component={Landing}/>
+              <Route exact path='/' component={Intro}/>
+              <Route path='/landing' component={Landing}/>
               <Route path='/write' component={RoutesWrite}/>
               <Route path='/watch' component={checkDevice(RoutesWatch)}/>
               <Route path='/admin' component={withAuth(RoutesAdmin)}/>

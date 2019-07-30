@@ -16,7 +16,7 @@ import {
   Provider
 } from "react-redux";
 import store from "./app/store";
-import Routes from './app/routes';
+import Routes from './app/pages/routes';
 
 /*
 import { createBrowserHistory } from 'history';

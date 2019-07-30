@@ -43,7 +43,7 @@ export default function checkDevice(ComponentToProtect) {
         return null;
       }
       if (this.state.redirect) {
-        return <Redirect to="/"/>;
+        return <Redirect to="/landing"/>;
       }
       return (
         <React.Fragment>
