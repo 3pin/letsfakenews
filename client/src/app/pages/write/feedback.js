@@ -46,7 +46,7 @@ class WriteFeedback extends React.Component {
           <FrameForm
             rows="2"
             minLength="5"
-            maxLength="280"
+            maxLength="180"
             content={this.props.feedback}
             submitting={this.props.submitting}
             handleSubmit={this.handleSubmit}/>
