@@ -1,15 +1,24 @@
 'use strict';
 
 const debug = require('debug')('routes_admin');
+// load update module
+const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
 // import mongoose 'Story' schema
 const Story = require('../../models/story.model');
 
 module.exports = (req, res) => {
   debug('/routes/story/remove');
-  // remove entry from activelist
+  // remove entry from activelist in dB
   let dbSettings = req.dbSettings;
+  debug(dbSettings.activelist);
   dbSettings.activelist = dbSettings.activelist.filter(item => item != req.body._id);
-  // delete entry from db
+  debug(dbSettings.activelist);
+  // offset the next-story-to-read to account for deleted entry
+  dbSettings.entry_to_read = dbSettings.entry_to_read - 1;
+  dbSettingsUpdate(dbSettings).then((docs) => {
+    debug(docs);
+  })
+  // delete entry from actual db
   const query = {
     _id: req.body._id
   };

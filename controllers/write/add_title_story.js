@@ -2,6 +2,8 @@
 const debug = require('debug')('routes_write');
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');
+// load update module
+const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
 // import mongoose schemas
 const Settings = require('../../models/settings.model');
 const Story = require('../../models/story.model');
@@ -44,9 +46,8 @@ module.exports = (req, res) => {
             dbSettings.activelist.push(docs[docs.length - 1]._id);
             dbSettings.entry_to_read = dbSettings.activelist.length - 1;
             dbSettings.db_mode = 'next';
-            const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
             dbSettingsUpdate(dbSettings).then((docs) => {
-              //debug(docs);
+              debug(docs);
             })
           }
         });

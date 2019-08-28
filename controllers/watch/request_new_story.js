@@ -44,6 +44,6 @@ module.exports = (req, res) => {
     });
   }
   else {
-    //
+    debug('Mobile device attempted to access /routes/watch')
   }
 }

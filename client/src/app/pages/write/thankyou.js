@@ -2,7 +2,6 @@ import React from 'react';
 
 import FrameBanner from '../../components/frameBanner';
 import FrameButton from '../../../app/components/frameButton';
-import Desc from '../../components/desc';
 
 const Thankyou = () => {
   return (<div>

@@ -27,7 +27,7 @@ function next_entry(array_of_ids, entry_to_read) {
   entry_to_read = parseInt(entry_to_read);
   debug('entered db_fetch_mode(next_entry)... array_length:' + array_of_ids.length + ' activelist_entry_to_read:' + entry_to_read)
   if (entry_to_read > array_of_ids.length-1 || entry_to_read < 0) {
-    db_mode = 'random';
+    //db_mode = 'random';
     id = array_of_ids[0];
     entry_to_read = 1;
   } else {
