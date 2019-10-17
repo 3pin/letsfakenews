@@ -1,15 +1,12 @@
 import React from 'react';
 //
 import FrameBanner from '../../app/components/frameBanner';
-//import Desc from '../../app/components/desc';
 import FrameButton from '../../app/components/frameButton';
 
 const Landing = () => {
   return (<div>
       <section>
-        <FrameBanner
-          title="LetsFakeNews..."
-          desc="Welcome to LetsFakeNews, broadcasting live from the El-Jazeera news room. Write a fake story on your phone, then watch it reported on flatscreen or computer."/>
+        <FrameBanner title="LetsFakeNews..." desc="Welcome to LetsFakeNews, broadcasting live from the El-Jazeera news room. Write a fake story on your phone, then watch it reported on flatscreen or computer."/>
         <hr/>
         <FrameButton
           linkto="/write"
