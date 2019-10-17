@@ -10,7 +10,7 @@ const Landing = () => {
         <FrameBanner title="Create..." desc="You're a journalist with a deadline but no news"/>
         <hr/>
         <Desc
-          desc="Trick the news room into broadcasting a fake story. To ensure its accepted use correct spelling, grammar & punctuation."/>
+          desc="Trick the news room into broadcasting your fake-story. To ensure its accepted use correct spelling, grammar, punctuation etc."/>
         <FrameButton linkto="/write/story" buttonLabel="Start"/>
         <hr/>
       </section>

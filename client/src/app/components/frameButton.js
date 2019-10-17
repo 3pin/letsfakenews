@@ -13,7 +13,7 @@ const FrameButton = (props) => {
   if (props.variant) {
     variant = props.variant
   } else {
-    variant = 'secondary'
+    variant = 'primary'
   }
   let buttonLabel;
   if (props.submitting === true) {

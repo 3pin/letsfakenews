@@ -35,7 +35,7 @@ class WriteStory extends React.Component {
         <section>
           <FrameBanner
             title="Write a story..."
-            desc="Make up a fake-news story"/>
+            desc="Make up a fake-story"/>
           <hr/>
           <FrameForm
             rows="2"

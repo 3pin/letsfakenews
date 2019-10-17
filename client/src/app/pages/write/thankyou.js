@@ -8,9 +8,9 @@ const Thankyou = () => {
       <section>
         <FrameBanner title="Thank you..." desc="Thank you for your fake news story"/>
         <hr/>
-        <FrameButton buttonLabel="Write" linkto="/write/story" desc="Write more fake news"/>
+        <FrameButton buttonLabel="Home" linkto="/landing" desc="Return to homepage"/>
         <hr/>
-        <FrameButton buttonLabel="Feedback" linkto="/write/feedback" desc="Leave feedback for the service"/>
+        <FrameButton variant='secondary' buttonLabel="Feedback" linkto="/write/feedback" desc="Leave your feedback"/>
         <hr/>
       </section>
     </div>)

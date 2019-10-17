@@ -39,10 +39,10 @@ export const submit = (story, title, history) => {
       }).then(() => {
         console.log(response)
         if (response === "NO_NOUNS") {
-          window.alert("Try again... make sure to include NOUNS this time")
+          window.alert("Try again... make sure to include NOUNS in your story")
           history.push("/write/story");
         } else if (response === "NO_URLS") {
-          window.alert("Try again... we couldn't find images for that story")
+          window.alert("Try again... couldn't find images to match your story")
           history.push("/write/story");
         } else {
           //window.alert("Thanks for your fake news")
