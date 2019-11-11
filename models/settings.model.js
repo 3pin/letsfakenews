@@ -28,4 +28,4 @@ let SettingsSchema = new Schema({
 });
 
 // Export the model
-module.exports = Base.discriminator('Settings', SettingsSchema, );
+module.exports = Base.discriminator('Settings', SettingsSchema);

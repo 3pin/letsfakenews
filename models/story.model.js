@@ -28,4 +28,4 @@ let StorySchema = new Schema({
 });
 
 // Export the model
-module.exports = Base.discriminator('Story', StorySchema, );
+module.exports = Base.discriminator('Story', StorySchema);
