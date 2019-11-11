@@ -43,7 +43,7 @@ class Review extends React.Component {
         <section>
           <FrameBanner
             title="Review..."
-            desc="Choose whether to submit or update your fake-story?"
+            desc="Happy with your fake-news?"
           />
           <hr />
           <p>

@@ -7,7 +7,7 @@ import FrameButton from '../../../app/components/frameButton';
 const Landing = () => {
   return (<div>
       <section>
-        <FrameBanner title="Create..." desc="Imagine you're a journalist with a deadline but no news to report, so trick us all with a fake-story. To ensure its accepted use correct spelling, grammar, punctuation etc."/>
+        <FrameBanner title="Create..." desc="You're a journalist with nothing to report, so you're going to trick the news room with a fake story. To ensure its accepted use correct spelling, grammar & punctuation."/>
         <hr/>
         <FrameButton linkto="/write/story" buttonLabel="Start"/>
         <hr/>

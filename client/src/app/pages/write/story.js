@@ -34,9 +34,7 @@ class WriteStory extends React.Component {
     return (<div>
         <section>
           <FrameBanner
-            title="Write a story..."
-            desc="Create your fake-story"/>
-          <hr/>
+            title="Write a story..."/>
           <FrameForm
             rows="2"
             minLength="100"
