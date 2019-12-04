@@ -211,25 +211,6 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
             Settings.find({}).then((result) => {
               activelist = result[0].activelist
             })
-
-            /*
-            // load _ids of all live-stories into activelist[]
-            let activelist = [];
-            const Story = require('./models/story.model');
-            Story.find({}, {storylive: true}, function (e, docs) {
-                docs.forEach((entry) => {
-                  activelist.push(entry._id);
-                });
-              })
-              .then(() => {
-                settingsObj.activelist = activelist;
-                const dbSettingsUpdate = require('./controllers/middleware/dbSettingsUpdate');
-                dbSettingsUpdate(settingsObj).then((res) => {
-                  debug(res);
-                });
-              });
-              */
-
             break;
           }
           // if there is no matching collection...
