@@ -12,16 +12,19 @@ module.exports = (req, res) => {
   debug('/POST routes/add_title_story');
   // fetch db settings
   let dbSettings = req.dbSettings;
+  debug('dbSettings...');
   debug(dbSettings);
   // preprocess 'title' to CAPS & add 'storylive' attribute
   let client_JSON = req.body;
+  debug('Unprocessed news...');
+  debug(client_JSON);
+  // process... add storylive, add NLP_words, add matching urls
   client_JSON.title = req.body.title.toUpperCase();
   client_JSON.storylive = dbSettings.autolive;
-  debug(client_JSON);
-  // process JSON... add NLP_words & matching urls
   const process_client_story = require('../../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
     // 'result' contains: story/title/storylive/time/words/urls
+    debug('Processed news...');
     debug(result);
     //debug(result.urls[0]);
     if (result === null) {
@@ -31,19 +34,19 @@ module.exports = (req, res) => {
     }
     else {
       let story = new Story({ ...result});
-      story.save().then((result) => {
-        //debug(result);
-        debug('Document inserted to db successfully');
+      debug(story.storylive)
+      debug(story._id)
+      story.save().then((saved) => {
+        debug('Document inserted to db successfully...');
         res.send('Success');
-        // fetch updated db to then pass onto frontend
+        // fetch all entries matching the Story-model from db...
         Story.find({}).then((docs) => {
-          //debug(docs);
           // tell eventbus about a new-story to trigger refresh of admin-frontend
           bus.emit('story', docs);
           debug('SSE event triggered by New_Story');
-          //if autolive is TRUE, then new-story should be auto added to activelist
-          if (dbSettings.autolive == true) {
-            dbSettings.activelist.push(docs[docs.length - 1]._id);
+          // if storylive is TRUE, then should be auto added to activelist
+          if (story.storylive === true) {
+            dbSettings.activelist.push(story._id);
             dbSettings.entry_to_read = dbSettings.activelist.length - 1;
             dbSettings.db_mode = 'next';
             dbSettingsUpdate(dbSettings).then((docs) => {
