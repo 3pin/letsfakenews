@@ -41,6 +41,9 @@ export default class FrameForm extends React.Component {
   componentWillMount() {
     this.setState((state) => ({content: this.props.content}))
   }
+  componentDidMount() {
+    this.nameInput.focus();
+  }
   componentWillUnmount() {
     //this.props.handleSubmit(this.state.content);
   }
@@ -58,6 +61,7 @@ export default class FrameForm extends React.Component {
     return (<div>
       <Form onSubmit={this.handleSubmit}>
           <textarea
+            ref={(input) => { this.nameInput = input; }}
             className="form-control form-responsive"
             required="required"
             rows={this.props.rows}
