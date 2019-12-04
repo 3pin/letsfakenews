@@ -204,16 +204,22 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
                 debug("Auth Entry: ", doc);
               });
             })
+
+            //load activelist from dbSettings into activelist
+            let activelist = [];
+            const Settings = require('./models/settings.model');
+            Settings.find({}).then((result) => {
+              //debug(result[0].activelist)
+              activelist = result[0].activelist
+            })
+
+            /*
             // load _ids of all live-stories into activelist[]
             let activelist = [];
             const Story = require('./models/story.model');
-            Story.find({}, {
-                storylive: true
-              }, function (e, docs) {
+            Story.find({}, {storylive: true}, function (e, docs) {
                 docs.forEach((entry) => {
-                  if (entry.storylive === true) {
-                    activelist.push(entry._id);
-                  }
+                  activelist.push(entry._id);
                 });
               })
               .then(() => {
@@ -223,6 +229,8 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
                   debug(res);
                 });
               });
+              */
+
             break;
           }
           // if there is no matching collection...
