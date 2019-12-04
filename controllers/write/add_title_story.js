@@ -39,8 +39,10 @@ module.exports = (req, res) => {
       story.save().then((saved) => {
         debug('Document inserted to db successfully...');
         res.send('Success');
-        // fetch all entries matching the Story-model from db...
-        Story.find({}).then((docs) => {
+        // fetch all entries matching the Story-model from db sorted by ascending key '_id' ...
+        Story.find({}).sort([['_id', 1]]).then((docs) => {
+          debug('stories in db are ...')
+          debug(docs)
           // tell eventbus about a new-story to trigger refresh of admin-frontend
           bus.emit('story', docs);
           debug('SSE event triggered by New_Story');
