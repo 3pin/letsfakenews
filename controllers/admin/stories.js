@@ -8,7 +8,7 @@ module.exports = (req, res) => {
   debug('/GET /admin/stories');
   let dbSettings = req.dbSettings;
   //debug(dbSettings);
-  Story.find({}).then((docs) => {
+  Story.find({}).sort([['_id', 1]]).then((docs) => {
     //res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
       autolive: dbSettings.autolive,
