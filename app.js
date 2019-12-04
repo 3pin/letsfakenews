@@ -209,7 +209,6 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
             let activelist = [];
             const Settings = require('./models/settings.model');
             Settings.find({}).then((result) => {
-              //debug(result[0].activelist)
               activelist = result[0].activelist
             })
 
