@@ -8,7 +8,7 @@ const Story = require('../../models/story.model');
 module.exports = (req, res) => {
   debug('/routes/databases/refresh');
   //fetch the array of story _id's
-  Story.find({}, '_id').then((docs, err) => {
+  Story.find({}).sort([['_id', 1]]).then((docs, err) => {
     //bulk replace the collection
     debug(docs);
     let idArray = [];

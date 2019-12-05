@@ -18,8 +18,9 @@ module.exports = (req, res) => {
   let client_JSON = req.body;
   debug('Unprocessed news...');
   debug(client_JSON);
+  // set title toUpperCase
+  //client_JSON.title = req.body.title.toUpperCase();
   // process... add storylive, add NLP_words, add matching urls
-  client_JSON.title = req.body.title.toUpperCase();
   client_JSON.storylive = dbSettings.autolive;
   const process_client_story = require('../../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {

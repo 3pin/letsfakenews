@@ -34,8 +34,8 @@ class Review extends React.Component {
     this.props.submit(this.props.story, this.props.title, this.props.history);
   };
   render() {
-    let title = this.props.title;
-    let story = this.props.story;
+    let title = 'Title: ' + this.props.title;
+    let story = 'Story: ' + this.props.story;
     //let title = "TITLE: " + this.props.title;
     //let story = "STORY: " + this.props.story;
     return (

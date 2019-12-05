@@ -31,7 +31,7 @@ module.exports = (req, res) => {
     }
   }).then(() => {
     // fetch the db to refresh the frontend
-    Story.find({}).then((docs,err) => {
+    Story.find({}).sort([['_id', 1]]).then((docs, err) => {
       debug(docs);
       res.json({
         stories: docs

@@ -27,7 +27,7 @@ module.exports = (req, res) => {
       new: true
     }).then(() => {
       // send new db to frontend to update REACT state
-      Story.find({}).then((docs, err) => {
+      Story.find({}).sort([['_id', 1]]).then((docs, err) => {
         debug(docs);
         res.json({
           stories: docs
@@ -51,7 +51,7 @@ module.exports = (req, res) => {
       new: true
     }).then(() => {
       // send new db to frontend to update REACT state
-      Story.find({}).then((docs, err) => {
+      Story.find({}).sort([['_id', 1]]).then((docs, err) => {
         debug(docs);
         res.json({
           stories: docs
