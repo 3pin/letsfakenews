@@ -136,7 +136,7 @@ render() {
           <tr>
             <td>Refresh imagery for all stories</td>
             <td>
-              <Button variant="outline-warning" onClick={this.handleRefresh.bind(this)}></Button>
+              <Button variant="outline-warning" onClick={() => { window.confirm('Are you sure you wish to refresh all images in the database?') ? this.handleRefresh() : document.activeElement.blur() } }></Button>
             </td>
           </tr>
           <tr>
