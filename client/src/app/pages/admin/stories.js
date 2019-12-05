@@ -1,7 +1,10 @@
 import React from 'react';
 import FrameBanner from '../../../app/components/frameBanner';
 import 'eventsource-polyfill';
-import {Table, Button} from 'react-bootstrap';
+import {
+  Table,
+  Button
+} from 'react-bootstrap';
 
 export default class Stories extends React.Component {
   constructor(props) {
@@ -19,10 +22,11 @@ export default class Stories extends React.Component {
     this.handleClear = this.handleClear.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.handleStorylive = this.handleStorylive.bind(this);
+    this.handleVisualise = this.handleVisualise.bind(this);
     //
     this.state = {
       stories: [],
-      autolive: false
+      autolive: false,
     };
   }
   apiGet = async (endpoint) => {
@@ -46,6 +50,16 @@ export default class Stories extends React.Component {
       throw Error(body.message);
     return body;
   };
+  handleVisualise(e) {
+    console.log(`onInput fired with value: '${e.currentTarget.value}'`);
+    let data = {
+      visualise: e.currentTarget.value
+    }
+    // connect to API to update db
+    this.apiPost(this.props.apiVisualise, data).then((res) => this.setState({
+      visualise: JSON.parse(res.visualise)
+    })).catch(err => console.log(err));
+  }
   handleAutolive(isChecked) {
     /* update status of autolive */
     this.apiGet(this.props.apiAutolive).then((res) => this.setState({
@@ -81,47 +95,70 @@ export default class Stories extends React.Component {
       stories: res.stories
     })).catch(err => console.log(err));
   }
-  componentDidMount() {
+  componentWillMount() {
+    /* load autolive-status & stories from Db */
+    this.apiGet(this.props.apiHello)
+      .then((res) => {
+        this.setState({
+          autolive: JSON.parse(res.autolive),
+          stories: res.stories,
+          visualise: res.visualise
+        })
+        console.log(res);
+      }).catch(err => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('story', (e) => {
       console.log('A new story was processed by the backend');
-      this.setState({stories: JSON.parse(e.data)});
+      this.setState({
+        stories: JSON.parse(e.data)
+      });
     });
     // Catches errors
     this.eventSource.onerror = (e) => {
       console.log("--- SSE EVENTSOURCE ERROR: ", e);
     };
-    /* load autolive-status & stories from Db */
-    this.apiGet(this.props.apiHello)
-    .then((res) => {
-      this.setState({autolive: JSON.parse(res.autolive), stories: res.stories})
-      console.log(res);
-    }).catch(err => console.log(err));
-}
-componentWillUnmount() {
-  /* close sse listener */
-  this.eventSource.close();
-}
-render() {
-  const tableStyle = {
-    backgroundColor: "white"
   }
-  // eslint-disable-next-line
-  let variant;
-  if (this.props.variant) {
-    variant = this.props.variant
-  } else {
-    variant = 'danger'
+  componentWillUnmount() {
+    /* close sse listener */
+    this.eventSource.close();
   }
-  return (<div>
+  render() {
+    const tableStyle = {
+      backgroundColor: "white"
+    }
+    // eslint-disable-next-line
+    let variant;
+    if (this.props.variant) {
+      variant = this.props.variant
+    } else {
+      variant = 'danger'
+    }
+    return (<div>
       <FrameBanner desc={this.props.desc} title={this.props.title}/>
+      <hr/>
+      <Table bordered style={tableStyle}>
+        <thead className="thead-dark">
+          <tr>
+            <th style={{width: "90%"}}>Control of Visuals</th>
+            <th style={{width: "10%"}}>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Max number of stories to visualise</td>
+            <td>
+              <input type='number' defaultValue={this.state.visualise} onInput={this.handleVisualise}/>
+            </td>
+          </tr>
+        </tbody>
+      </Table>
       <hr/>
       <Table bordered style={tableStyle}>
         <thead className="thead-dark">
           <tr>
             <th style={{
                 width: "95%"
-              }}>Command</th>
+              }}>Database Moderation</th>
             <th style={{
                 width: "5%"
               }}>Action</th>
@@ -172,16 +209,17 @@ render() {
           {
             (this.state.stories.length > 0)
               ? this.state.stories.map((entry, index) => {
-                return (<tr key={index}>
-                  <td style={{display:'none'}}>{entry._id}</td>
-                  <td>{index + 1}</td>
-                  <td>{entry.title}</td>
-                  <td>{entry.story}</td>
-                  <td>
+                return (
+                  <tr key={index}>
+                    <td style={{display:'none'}}>{entry._id}</td>
+                    <td>{index + 1}</td>
+                    <td>{entry.title}</td>
+                    <td>{entry.story}</td>
+                    <td>
                     <Button variant="outline-danger" onClick={() => this.handleRemove(entry)}></Button>
-                  </td>
-                  <td style={{textAlign:'center'}}><input type="checkbox" checked={entry.storylive===true ? true : false} onChange={() => this.handleStorylive(entry)} className="form-check-input show_tip autolive"/></td>
-                </tr>)
+                    </td>
+                    <td style={{textAlign:'center'}}><input type="checkbox" checked={entry.storylive===true ? true : false} onChange={() => this.handleStorylive(entry)} className="form-check-input show_tip autolive"/></td>
+                  </tr>)
               })
               : <tr></tr>
           }
@@ -189,5 +227,5 @@ render() {
       </Table>
       <hr/>
     </div>)
-}
+  }
 }

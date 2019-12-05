@@ -26,6 +26,7 @@
           title="Stories"
           desc="Use this page to moderate fakenews stories in realtime"
           apiHello="/admin/stories"
+          apiVisualise="/admin/stories/visualise"
           apiAutolive="/admin/stories/autolive"
           apiRefresh="/admin/stories/refresh"
           apiClear="/admin/clear"

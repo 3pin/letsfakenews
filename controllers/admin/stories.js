@@ -12,7 +12,8 @@ module.exports = (req, res) => {
     //res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
       autolive: dbSettings.autolive,
-      stories: docs
+      visualise: dbSettings.visualise,
+      stories: docs,
     });
   });
 };

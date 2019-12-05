@@ -14,6 +14,8 @@ const autolive = require('../controllers/admin/autolive');
 const refresh = require('../controllers/admin/refresh');
 const remove = require('../controllers/admin/remove');
 const storylive = require('../controllers/admin/storylive');
+const storyvisualise = require('../controllers/admin/visualise');
+
 //
 // admin landing
 admin.get('/', (req, res) => {
@@ -33,5 +35,7 @@ admin.get('/stories/refresh', refresh);
 // stories row-ops
 admin.post('/story/remove', remove);
 admin.post('/story/storylive', storylive);
+// visualise stories settings
+admin.post('/stories/visualise', storyvisualise);
 
 module.exports = admin;

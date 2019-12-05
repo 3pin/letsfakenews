@@ -7,6 +7,10 @@ let SettingsSchema = new Schema({
     type: Number,
     required: true
   },
+  visualise: {
+    type: Number,
+    required: true
+  },
   autolive: {
     type: Boolean,
     required: true

@@ -10,6 +10,8 @@ const LandingWatch = () => {
         <hr/>
         <FrameButton buttonLabel="Watch" linkto="/watch/display"/>
         <hr/>
+        <FrameButton variant="secondary" buttonLabel="Visualise" linkto="/watch/visualise"/>
+        <hr/>
       </section>
     </div>)
 }
