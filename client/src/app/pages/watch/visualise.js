@@ -57,21 +57,6 @@ export default class Visualise extends React.Component {
     }
   }
   render() {
-    console.log(this.state.visualise)
-    console.log(this.state.activelist.length);
-    let livelist = [];
-    if (this.state.visualise < this.state.activelist.length) {
-      console.log('bingo');
-      livelist = this.state.activelist.slice(this.state.activelist.length - this.state.visualise, this.state.activelist.length)
-      this.setState({
-        livelist: livelist,
-      })
-    } else {
-      console.log('pongo')
-      this.setState({
-        livelist: this.state.activelist,
-      })
-    }
     return (<div>
         <section>
           <FrameBanner title={this.props.title} desc={this.props.desc}/>
