@@ -43,9 +43,9 @@ module.exports = (req, res) => {
         // fetch all entries matching the Story-model from db sorted by ascending key '_id' ...
         Story.find({}).sort([['_id', 1]]).then((docs) => {
           debug('stories in db are ...')
-          debug(docs)
           // tell eventbus about a new-story to trigger refresh of admin-frontend
           bus.emit('story', docs);
+          bus.emit('activelistLength', dbSettings.activelist.length + 1);
           debug('SSE event triggered by New_Story');
           // if storylive is TRUE, then should be auto added to activelist
           if (story.storylive === true) {

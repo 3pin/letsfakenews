@@ -38,11 +38,9 @@ export default class FrameForm extends React.Component {
       window.alert('What you wrote is too short')
     }
   }
-  componentWillMount() {
-    this.setState((state) => ({content: this.props.content}))
-  }
   componentDidMount() {
     this.nameInput.focus();
+    this.setState((state) => ({content: this.props.content}))
   }
   componentWillUnmount() {
     //this.props.handleSubmit(this.state.content);

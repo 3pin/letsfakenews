@@ -28,7 +28,8 @@ module.exports = (req, res) => {
       //debug(docs.result.n + " document(s) deleted");
     }
     res.json({
-      data: []
+      stories: [],
+      activelistLength: 0
     });
   }).then(() => {
     /* empty the active activelist if we are clearing stories */

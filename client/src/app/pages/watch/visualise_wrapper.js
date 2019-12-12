@@ -1,6 +1,7 @@
 import React from "react";
 import FrameButton from "../../../app/components/frameButton";
-import Sketch from "react-p5";
+import P5Wrapper from "react-p5-wrapper";
+import sketch from "./sketches/sketch";
 
 export default class Visualise extends React.Component {
   constructor(props) {
@@ -8,17 +9,12 @@ export default class Visualise extends React.Component {
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
-    /*
     this.exitFullscreen = this.exitFullscreen.bind(this);
     this.onEnded = this.onEnded.bind(this);
-    */
     this.state = {
       activelist: [],
       visualsAmount: 0,
-      visualsList: [],
-      windowWidth: window.screen.width,
-      windowHeight: window.screen.height,
-      radius: 50
+      visualsList: []
     };
   }
   apiGet = async endpoint => {
@@ -43,8 +39,7 @@ export default class Visualise extends React.Component {
     document.activeElement.blur();
     console.log("fullscreen entered");
     this.setState({
-      windowWidth: window.screen.width,
-      windowHeight: window.screen.height,
+      playing: true
     });
     let i = this.innerContainer;
     // go full-screen with cross-browser support
@@ -58,14 +53,11 @@ export default class Visualise extends React.Component {
       i.msRequestFullscreen();
     }
   }
-  /*
   exitFullscreen() {
     if (!document.fullscreenElement) {
       console.log("fullscreen exited");
       this.setState({
-        playing: false,
-        innerWidth: window.innerWidth,
-        innerHeight: window.innerHeight,
+        playing: false
       });
       this.onEnded();
     }
@@ -73,7 +65,6 @@ export default class Visualise extends React.Component {
   onEnded() {
     console.log("Word-Track Ended");
   }
-  */
   componentDidMount() {
     /* load database into this.state */
     this.apiGet(this.props.apiHello)
@@ -81,13 +72,14 @@ export default class Visualise extends React.Component {
         this.setState({
           activelist: res.activelist,
           visualsAmount: res.visualsAmount,
-          visualsList: res.livelist,
+          visualsList: res.livelist
         });
-        //console.log(res);
-      }).catch(err => console.log(err));
+        console.log(res);
+      })
+      .catch(err => console.log(err));
+    //
   }
   render() {
-    //console.log(this.state)
     return (
       <div>
         <FrameButton
@@ -96,24 +88,8 @@ export default class Visualise extends React.Component {
         />
         <hr />
         <div id="outerContainer" ref={outerContainer => {this.outerContainer = outerContainer;}}>
-          <div id="innerContainer" ref={innerContainer => {this.innerContainer = innerContainer;}}>
-            <Sketch
-              setup={(p5, parent) => {
-                p5.canvas = p5.createCanvas(this.state.windowWidth, this.state.windowHeight).parent(parent);
-              }}
-              draw={p5 => {
-                p5.canvas.resize(this.state.windowWidth,this.state.windowWidth);
-                p5.background(0);
-  							p5.fill(150);
-  							p5.ellipse(0,0, this.state.radius, this.state.radius);
-                p5.ellipse(this.state.windowWidth/2, this.state.windowHeight/2, this.state.radius,this.state.radius);
-                p5.ellipse(this.state.windowWidth, this.state.windowHeight, this.state.radius, this.state.radius);
-  							p5.fill(255);
-  							p5.textFont('Helvetica')
-  							p5.textSize(32);
-  							p5.text('Hello', this.state.windowWidth/2, this.state.windowHeight/2);
-  						}}
-            />
+          <div id="innerContainer" font="Arial" fontSize="32" ref={innerContainer => {this.innerContainer = innerContainer;}}>
+            <P5Wrapper sketch={sketch} color='100'/>
           </div>
         </div>
       </div>

@@ -34,7 +34,8 @@ module.exports = (req, res) => {
     Story.find({}).sort([['_id', 1]]).then((docs, err) => {
       debug(docs);
       res.json({
-        stories: docs
+        stories: docs,
+        activelistLength: dbSettings.activelist.length
       });
     });
   }).catch((err) => {

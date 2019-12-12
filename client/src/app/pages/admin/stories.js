@@ -27,6 +27,7 @@ export default class Stories extends React.Component {
     this.state = {
       stories: [],
       autolive: false,
+      activelistLength: 0,
     };
   }
   apiGet = async (endpoint) => {
@@ -79,20 +80,23 @@ export default class Stories extends React.Component {
       subject: this.props.title
     }
     this.apiPost(this.props.apiClear, data).then(res => this.setState({
-      stories: res.data
+      stories: res.stories,
+      activelistLength: res.activelistLength
     })).catch(err => console.log(err));
   }
   handleRemove(row) {
     document.activeElement.blur();
     /* Connect to API and delete single entry from database */
     this.apiPost(this.props.apiRemove, row).then((res) => this.setState({
-      stories: res.stories
+      stories: res.stories,
+      activelistLength: res.activelistLength
     })).catch(err => console.log(err));
   }
   handleStorylive(row) {
     /* Connect to API to update storylive-setting for entry in database */
     this.apiPost(this.props.apiStorylive, row).then((res) => this.setState({
-      stories: res.stories
+      stories: res.stories,
+      activelistLength: res.activelistLength
     })).catch(err => console.log(err));
   }
   componentWillMount() {
@@ -102,15 +106,23 @@ export default class Stories extends React.Component {
         this.setState({
           autolive: JSON.parse(res.autolive),
           stories: res.stories,
-          visualise: res.visualise
+          visualise: res.visualise,
+          activelistLength: res.activelistLength
         })
         console.log(res);
       }).catch(err => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('story', (e) => {
-      console.log('A new story was processed by the backend');
+      console.log('A new story triggered refresh of the stories');
       this.setState({
         stories: JSON.parse(e.data)
+      });
+    });
+    /* open sse listener */
+    this.eventSource.addEventListener('activelistLength', (e) => {
+      console.log('A new story triggered refresh of the activelistLength');
+      this.setState({
+        activelistLength: JSON.parse(e.data)
       });
     });
     // Catches errors
@@ -145,9 +157,13 @@ export default class Stories extends React.Component {
         </thead>
         <tbody>
           <tr>
+            <td>Number of stories in Activelist</td>
+            <td>{this.state.activelistLength}</td>
+          </tr>
+          <tr>
             <td>Max number of stories to visualise</td>
             <td>
-              <input type='number' defaultValue={this.state.visualise} onInput={this.handleVisualise}/>
+              <input type='number' min='1' max={this.state.activelistLength} defaultValue={this.state.visualise} onInput={this.handleVisualise}/>
             </td>
           </tr>
         </tbody>

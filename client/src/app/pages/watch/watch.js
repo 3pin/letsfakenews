@@ -152,10 +152,8 @@ export default class Watch extends React.Component {
   goFullscreen() {
     document.activeElement.blur();
     console.log('fullscreen entered');
-    this.setState({
-      playing: true
-    });
     let i = this.container;
+    console.log(i)
     // go full-screen with cross-browser support
     if (i.requestFullscreen) {
       i.requestFullscreen();
@@ -176,8 +174,9 @@ export default class Watch extends React.Component {
       this.onEnded()
     }
   }
-  componentWillMount() {
-    console.log('componentWillMount');
+  componentDidMount() {
+    console.log('componentDidMount');
+    document.addEventListener("fullscreenchange", this.exitFullscreen, false);
     // load db settings... load 'mode' into localStorage
     this.apiGet('/settings/mode').then(res => {
       //console.log(res);
@@ -206,9 +205,6 @@ export default class Watch extends React.Component {
       image_duration: diff(this.state.imagesStart, this.state.imagesEnd)
     });
   }
-  componentDidMount() {
-    document.addEventListener("fullscreenchange", this.exitFullscreen, false);
-  }
   componentWillUnmount() {
     document.removeEventListener("fullscreenchange", this.exitFullscreen, false);
   }
@@ -220,8 +216,8 @@ export default class Watch extends React.Component {
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr/>
-        <div className="media" id="outerContainer" ref={outerContainer => { this.outerContainer=outerContainer }}>
-          <div id="videoContainer" ref={container => { this.container=container }} className="media-player">
+        <div className="media" ref={outerContainer => {this.outerContainer=outerContainer}} >
+          <div className="media-player" ref={container => {this.container=container}} >
             <ReactPlayer
             id="videoPlayer"
             className='react-player'
