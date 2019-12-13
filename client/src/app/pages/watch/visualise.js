@@ -16,8 +16,10 @@ export default class Visualise extends React.Component {
       activelist: [],
       visualsAmount: 0,
       visualsList: [],
-      windowWidth: window.screen.width,
-      windowHeight: window.screen.height,
+      initialWidth: 400,
+      initialHeight: 300,
+      fullscreenWidth: 400,
+      fullscreenHeight: 300,
       radius: 50
     };
   }
@@ -41,10 +43,10 @@ export default class Visualise extends React.Component {
   };
   goFullscreen() {
     document.activeElement.blur();
-    console.log("fullscreen entered");
+    //console.log("fullscreen entered");
     this.setState({
-      windowWidth: window.screen.width,
-      windowHeight: window.screen.height,
+      fullscreenWidth: window.screen.width,
+      fullscreenHeight: window.screen.height,
     });
     let i = this.innerContainer;
     // go full-screen with cross-browser support
@@ -58,22 +60,6 @@ export default class Visualise extends React.Component {
       i.msRequestFullscreen();
     }
   }
-  /*
-  exitFullscreen() {
-    if (!document.fullscreenElement) {
-      console.log("fullscreen exited");
-      this.setState({
-        playing: false,
-        innerWidth: window.innerWidth,
-        innerHeight: window.innerHeight,
-      });
-      this.onEnded();
-    }
-  }
-  onEnded() {
-    console.log("Word-Track Ended");
-  }
-  */
   componentDidMount() {
     /* load database into this.state */
     this.apiGet(this.props.apiHello)
@@ -83,7 +69,7 @@ export default class Visualise extends React.Component {
           visualsAmount: res.visualsAmount,
           visualsList: res.livelist,
         });
-        //console.log(res);
+        console.log(res);
       }).catch(err => console.log(err));
   }
   render() {
@@ -99,20 +85,33 @@ export default class Visualise extends React.Component {
           <div id="innerContainer" ref={innerContainer => {this.innerContainer = innerContainer;}}>
             <Sketch
               setup={(p5, parent) => {
-                p5.canvas = p5.createCanvas(this.state.windowWidth, this.state.windowHeight).parent(parent);
+                p5.canvas = p5.createCanvas(this.state.initialWidth, this.state.initialHeight).parent(parent);
               }}
-              draw={p5 => {
-                p5.canvas.resize(this.state.windowWidth,this.state.windowWidth);
+              draw={(p5) => {
                 p5.background(0);
   							p5.fill(150);
   							p5.ellipse(0,0, this.state.radius, this.state.radius);
-                p5.ellipse(this.state.windowWidth/2, this.state.windowHeight/2, this.state.radius,this.state.radius);
-                p5.ellipse(this.state.windowWidth, this.state.windowHeight, this.state.radius, this.state.radius);
+                p5.ellipse(this.state.fullscreenWidth/2, this.state.fullscreenHeight/2, this.state.radius,this.state.radius);
+                p5.ellipse(this.state.fullscreenWidth, this.state.fullscreenHeight, this.state.radius, this.state.radius);
   							p5.fill(255);
   							p5.textFont('Helvetica')
   							p5.textSize(32);
-  							p5.text('Hello', this.state.windowWidth/2, this.state.windowHeight/2);
+  							p5.text('Hello', this.state.fullscreenWidth/2, this.state.fullscreenHeight/2);
   						}}
+              windowResized={(p5) => {
+                console.log('window resized')
+                if (document.fullscreenElement) {
+                  console.log('Entered fullscreen');
+                  p5.canvas.resize(this.state.fullscreenWidth,this.state.fullscreenWidth);
+                } else {
+                  console.log('Exited fullscreen');
+                  this.setState({
+                    fullscreenWidth: this.state.initialWidth,
+                    fullscreenHeight: this.state.initialHeight,
+                  });
+                  p5.canvas.resize(this.state.initialWidth, this.state.initialHeight);
+                }
+              }}
             />
           </div>
         </div>
