@@ -14,9 +14,9 @@ export default class Visualise extends React.Component {
       apiHello: "/watch/visualise",
       story: "Initial Story",
       radius: 50,
-      fontSizeFactor: 4,
+      fontSizeFactor: 4
     };
-  };
+  }
   apiGet = async endpoint => {
     const response = await fetch(endpoint);
     const body = await response.json();
@@ -41,22 +41,25 @@ export default class Visualise extends React.Component {
     this.apiGet(this.state.apiHello)
       .then(res => {
         this.setState({
-          story: res.data.story,
+          story: res.data.story
         });
         //console.log(res.data.story);
-      }).catch(err => console.log(err));
-  };
+      })
+      .catch(err => console.log(err));
+  }
   onEndOne() {
-    //console.log('Textline Ended');
-    /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then(res => {
+    return new Promise((resolve, reject) => {
+      //console.log('Textline Ended');
+      /* load  story from database into state */
+      this.apiGet(this.state.apiHello).then(res => {
         this.setState({
-          story: res.data.story,
+          story: res.data.story
         });
         console.log(res.data.story);
-      }).catch(err => console.log(err));
-  };
+        resolve(res.data.story);
+      });
+    }).catch(err => console.log(err));
+  }
   goFullscreen() {
     document.activeElement.blur();
     console.log("fullscreen entered");
@@ -70,17 +73,18 @@ export default class Visualise extends React.Component {
     } else if (i.msRequestFullscreen) {
       i.msRequestFullscreen();
     }
-  };
+  }
   componentDidMount() {
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
       .then(res => {
         this.setState({
-          story: res.data.story,
+          story: res.data.story
         });
         console.log(res.data.story);
-      }).catch(err => console.log(err));
-  };
+      })
+      .catch(err => console.log(err));
+  }
   render() {
     //console.log(this.state)
     return (
@@ -90,8 +94,18 @@ export default class Visualise extends React.Component {
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr />
-        <div id="outerContainer" ref={outerContainer => {this.outerContainer = outerContainer;}}>
-          <div id="innerContainer" ref={innerContainer => {this.innerContainer = innerContainer;}}>
+        <div
+          id="outerContainer"
+          ref={outerContainer => {
+            this.outerContainer = outerContainer;
+          }}
+        >
+          <div
+            id="innerContainer"
+            ref={innerContainer => {
+              this.innerContainer = innerContainer;
+            }}
+          >
             <P5Wrapper
               sketch={Sketch}
               fontSizeFactor={this.state.fontSizeFactor}

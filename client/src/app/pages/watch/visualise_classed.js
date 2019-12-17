@@ -37,23 +37,23 @@ export default class Visualise extends React.Component {
     return body;
   };
   onStartAll() {
-    console.log("All Lines are starting... ");
-    /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then(res => {
-        return { story: res.data.story };
-      })
-      .catch(err => console.log(err));
+    console.log("All Lines have started... ");
+    return new Promise((resolve, reject) => {
+      /* load  story from database into state */
+      this.apiGet(this.state.apiHello)
+        .then(res => {
+          resolve(res.data.story)
+        })
+    }).catch(err => console.log(err));
   }
   onEndOne() {
-    console.log("A textline has ended...");
-    /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then(res => {
-        console.log(res.data.story);
-        return { story: res.data.story };
-      })
-      .catch(err => console.log(err));
+    console.log("One textline has ended...");
+    return new Promise((resolve, reject) => {
+      /* load  story from database into state */
+      this.apiGet(this.state.apiHello).then(res => {
+        resolve(res.data.story);
+      });
+    }).catch(err => console.log(err));
   }
   goFullscreen() {
     document.activeElement.blur();

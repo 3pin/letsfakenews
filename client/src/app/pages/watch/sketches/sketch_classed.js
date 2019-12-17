@@ -2,17 +2,21 @@ export default function sketch(p) {
   let initialWidth = 400;
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
-  let radius = 50;
-  let fontSizeFactor = 20;
-  let numLines = 1;
+  let fontSizeFactor = 10;
+  let numLines = 6;
+  let incRange = 7;
+  let incOffset = 3;
   let lines = [];
   let onStartAll;
   let onEndOne;
-  //
+  let location1 = 'https://res.cloudinary.com/hi58qepi6/image/upload/v1576621480/bgd.jpg'
+  let img;
+
   p.Calc = (canvasWidth, canvasHeight, fontSizeFactor) => {
+    img.resize(canvasWidth, canvasHeight);
     let fontSize = Math.floor(Math.random() * Math.floor(canvasHeight / fontSizeFactor));
     let xPos = canvasWidth;
-    let yPos =Math.floor(Math.random() * Math.floor(canvasHeight - fontSize)) + fontSize;
+    let yPos = Math.floor(Math.random() * Math.floor(canvasHeight - fontSize)) + fontSize;
     console.log(fontSize, xPos, yPos);
     return {
       fontSize: fontSize,
@@ -20,76 +24,60 @@ export default function sketch(p) {
       yPos: yPos
     };
   };
-  p.onStartAll = () => {
-    console.log("onStartAll");
-    onStartAll();
-  };
-  /*
-  p.onEndOne = async () => {
-    console.log("onEndOne");
-    onEndOne();
-    //this.line.story = p.onEndOne().story;
-    //console.log(this.line.story);
-  };
-  */
-  p.myCustomRedrawAccordingToNewPropsHandler = props => {
-    console.log("PROPS");
-    console.log(props);
-    if (
-      props.radius ||
-      props.fontSizeFactor ||
-      props.onStartAll ||
-      props.onEndOne
-    ) {
-      radius = props.radius;
-      fontSizeFactor = props.fontSizeFactor;
-      onStartAll = props.onStartAll;
-      onEndOne = props.onEndOne;
-    }
-    if (props.onStartAll) {
-      onStartAll = props.onStartAll;
-      /*
-      for (let i = 0; i < numLines; i++) {
-        // randomly pull stories from db's livelist[] and push into stories[]
-        console.log(lines[i].story);
-        lines[i].story = p.onStartAll();
-        //p.loop();
-      }
-      */
-    }
-    if (props.onEndOne) {
-      onEndOne = props.onEndOne;
-    }
+  p.resizeImg = (img) => {
+    console.log('success');
+    img.resize(canvasWidth, canvasHeight);
   };
   p.setup = () => {
-    //p.noLoop();
-    console.log("SETUP")
+    console.log("SETUP");
+    img = p.loadImage(location1, p.resizeImg);
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     p.createCanvas(canvasWidth, canvasHeight);
     for (let i = 0; i < numLines; i++) {
       // randomly pull stories from db's livelist[] and push into stories[]
-      //let startingStory = p.onStartAll();
-      lines.push(new StoryLine(p, canvasWidth, canvasHeight, fontSizeFactor, "Empty", 5));
+      lines.push(
+        new StoryLine(p, canvasWidth, canvasHeight, fontSizeFactor)
+      );
     }
   };
   p.draw = () => {
-    console.log("DRAW")
-    p.noSmooth();
-    p.background(0);
-    p.fill(150);
-    p.ellipse(0, 0, radius, radius);
-    p.ellipse(canvasWidth / 2, canvasHeight / 2, radius, radius);
-    p.ellipse(canvasWidth, canvasHeight, radius, radius);
+    console.log("DRAW");
+    // Draw Background
+    p.background(img);
+    // Draw Storylines... if they have stories
     lines.forEach(line => {
-      //console.log(line.story);
-      //console.log(line.storyLength);
-      line.show();
-      line.move();
+      if (line.story) {
+        line.show();
+        line.move();
+      }
     });
   };
+  p.myCustomRedrawAccordingToNewPropsHandler = props => {
+    //console.log("PROPS");
+    console.log(props);
+    if (props.fontSizeFactor || props.onEndOne) {
+      fontSizeFactor = props.fontSizeFactor;
+      onEndOne = props.onEndOne;
+    }
+    if (props.onStartAll) {
+      onStartAll = props.onStartAll;
+      if (!lines[0].story) {
+        //console.log('LOADING STORIES...')
+        for (let i = 0; i < numLines; i++) {
+          // randomly pull stories from db's livelist[] and push into stories[]
+          onStartAll().then(data => {
+            lines[i].story = data;
+            lines[i].storyLength = Math.round(p.textWidth(data));
+            console.log(lines[i].story);
+            console.log(lines[i].storyLength);
+          });
+        }
+      }
+    }
+  };
   window.onresize = () => {
-    console.log("WINDOW-RESIZE")
+    console.log("WINDOW-RESIZE");
     if (!window.screenTop && !window.screenY) {
       canvasWidth = window.screen.width;
       canvasHeight = window.screen.height;
@@ -97,52 +85,55 @@ export default function sketch(p) {
       canvasWidth = initialWidth;
       canvasHeight = initialHeight;
     }
+    img.resize(canvasWidth, canvasHeight);
     p.resizeCanvas(canvasWidth, canvasHeight);
   };
+  //
   class StoryLine {
-    constructor(p, canvasWidth, canvasHeight, fontSizeFactor, story, storyLength, onStartAll, onEndOne) {
+    constructor(p, canvasWidth, canvasHeight, fontSizeFactor) {
       this.p = p;
-      //this.canvasWidth = p.canvasWidth;
-      //this.canvasHeight = p.canvasHeight;
       this.fontSizeFactor = p.fontSizeFactor;
-      const { fontSize, xPos, yPos } = p.Calc(canvasWidth,canvasHeight,fontSizeFactor);
+      const {
+        fontSize,
+        xPos,
+        yPos
+      } = p.Calc(canvasWidth, canvasHeight, fontSizeFactor);
       this.fontSize = fontSize;
       this.xPos = xPos;
       this.yPos = yPos;
-      this.story = story;
-      this.storyLength = storyLength;
-    }
-    onEnded = async () => {
-      console.log('This class has ended');
-      const { fontSize, xPos, yPos } = p.Calc(canvasWidth,canvasHeight,fontSizeFactor);
-      this.fontSize = fontSize;
-      this.xPos = xPos;
-      this.yPos = yPos;
-      let response = await onEndOne();
-      return this.callback(response);
-      /*
-      let response = new Promise(function(resolve,reject) {
-        resolve(onEndOne());
-        console.log(response);
-      })
-      */
-      //this.story = response.story;
-      //console.log(this.line.story);
-    }
-    callback(response) {
-      console.log('boom');
-      console.log(response);
+      this.incAmount = Math.floor(Math.random() * incRange) + incOffset
+      console.log('fontSize: ' + this.fontSize);
+      console.log('incAmount: ' + this.incAmount);
     }
     move() {
-      if (this.xPos < -this.storyLength) {
-        this.onEnded('ended', this.callback);
+      let inv = this.storyLength * -1
+      if (this.xPos < inv) {
+        console.log(this.xPos);
+        const {
+          fontSize,
+          xPos,
+          yPos
+        } = p.Calc(canvasWidth, canvasHeight, fontSizeFactor);
+        this.fontSize = fontSize;
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.incAmount = Math.floor(Math.random() * incRange) + incOffset
+        console.log('fontSize: ' + this.fontSize);
+        console.log('incAmount: ' + this.incAmount);
+        onEndOne().then(data => {
+          //console.log(data);
+          this.story = data;
+          this.storyLength = Math.round(p.textWidth(data));
+          console.log('story: ' + this.story);
+          console.log('storyLength: ' + this.storyLength);
+        });
       } else {
-        this.xPos = this.xPos - 5;
+        this.xPos = this.xPos - this.incAmount;
       }
     }
     show() {
       p.smooth();
-      p.fill(255);
+      p.fill(0);
       p.textFont("Helvetica");
       p.textSize(this.fontSize);
       p.text(this.story, this.xPos, this.yPos);

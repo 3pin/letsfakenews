@@ -21,9 +21,11 @@ export default function sketch(p) {
     }
   }
   p.onEndOne = () => {
-    //console.log(finished);
+    /*
+    console.log(finished);
     ({ fontSize, xPos, yPos } = p.Calc(canvasWidth, canvasHeight, fontSizeFactor));
     finished();
+    */
   }
   p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
     console.log("PROPS received...")
@@ -46,7 +48,11 @@ export default function sketch(p) {
   }
   p.move = () => {
     if (xPos < -storyLength) {
-      p.onEndOne();
+      //p.onEndOne();
+      ({ fontSize, xPos, yPos } = p.Calc(canvasWidth, canvasHeight, fontSizeFactor));
+      finished().then((data) => {
+        console.log(data);
+      });
     } else {
       xPos = xPos-30;
     }
