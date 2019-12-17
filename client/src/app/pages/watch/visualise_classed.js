@@ -1,7 +1,7 @@
 import React from "react";
 import FrameButton from "../../../app/components/frameButton";
 import P5Wrapper from "react-p5-wrapper";
-import Sketch from "./sketches/sketch";
+import Sketch from "./sketches/sketch_classed";
 
 export default class Visualise extends React.Component {
   constructor(props) {
@@ -9,14 +9,15 @@ export default class Visualise extends React.Component {
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
+    this.onStartAll = this.onStartAll.bind(this);
     this.onEndOne = this.onEndOne.bind(this);
     this.state = {
       apiHello: "/watch/visualise",
       story: "Initial Story",
       radius: 50,
-      fontSizeFactor: 4,
+      fontSizeFactor: 4
     };
-  };
+  }
   apiGet = async endpoint => {
     const response = await fetch(endpoint);
     const body = await response.json();
@@ -36,27 +37,24 @@ export default class Visualise extends React.Component {
     return body;
   };
   onStartAll() {
-    //console.log('Textline Ended');
+    console.log("All Lines are starting... ");
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
       .then(res => {
-        this.setState({
-          story: res.data.story,
-        });
-        //console.log(res.data.story);
-      }).catch(err => console.log(err));
-  };
+        return { story: res.data.story };
+      })
+      .catch(err => console.log(err));
+  }
   onEndOne() {
-    //console.log('Textline Ended');
+    console.log("A textline has ended...");
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
       .then(res => {
-        this.setState({
-          story: res.data.story,
-        });
         console.log(res.data.story);
-      }).catch(err => console.log(err));
-  };
+        return { story: res.data.story };
+      })
+      .catch(err => console.log(err));
+  }
   goFullscreen() {
     document.activeElement.blur();
     console.log("fullscreen entered");
@@ -70,9 +68,10 @@ export default class Visualise extends React.Component {
     } else if (i.msRequestFullscreen) {
       i.msRequestFullscreen();
     }
-  };
+  }
   componentDidMount() {
     /* load  story from database into state */
+    /*
     this.apiGet(this.state.apiHello)
       .then(res => {
         this.setState({
@@ -80,7 +79,8 @@ export default class Visualise extends React.Component {
         });
         console.log(res.data.story);
       }).catch(err => console.log(err));
-  };
+      */
+  }
   render() {
     //console.log(this.state)
     return (
@@ -90,16 +90,24 @@ export default class Visualise extends React.Component {
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr />
-        <div id="outerContainer" ref={outerContainer => {this.outerContainer = outerContainer;}}>
-          <div id="innerContainer" ref={innerContainer => {this.innerContainer = innerContainer;}}>
+        <div
+          id="outerContainer"
+          ref={outerContainer => {
+            this.outerContainer = outerContainer;
+          }}
+        >
+          <div
+            id="innerContainer"
+            ref={innerContainer => {
+              this.innerContainer = innerContainer;
+            }}
+          >
             <P5Wrapper
               sketch={Sketch}
               fontSizeFactor={this.state.fontSizeFactor}
               radius={this.state.radius}
-              story={this.state.story}
               onStartAll={this.onStartAll}
               onEndOne={this.onEndOne}
-              finished={this.onEndOne}
             />
           </div>
         </div>

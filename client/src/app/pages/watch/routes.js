@@ -7,20 +7,14 @@ import {
 
 import Landing from './landing';
 import Watch from './watch';
-import Visualise from './visualise';
+import Visualise from './visualise_classed';
 
 const RoutesWatch = () => {
   return (<div className="layout">
       <Switch>
         <Route exact path="/watch" component={Landing}/>
         <Route path="/watch/display" component={Watch}/>
-        <Route path="/watch/visualise" render={() =>
-          <Visualise
-          title="Visualise"
-          desc="Use this page to visualise stories in realtime"
-          apiHello="/watch/visualise"
-          />
-        }/>
+        <Route path="/watch/visualise" component={Visualise}/>
         <Redirect to="/watch"/>
       </Switch>
     </div>)
