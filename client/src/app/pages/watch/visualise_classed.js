@@ -1,7 +1,7 @@
 import React from "react";
 import FrameButton from "../../../app/components/frameButton";
 import P5Wrapper from "react-p5-wrapper";
-import Sketch from "./sketches/sketch_classed";
+import Sketch from "./sketches/sketch_classIncl_v01";
 
 export default class Visualise extends React.Component {
   constructor(props) {
@@ -37,21 +37,29 @@ export default class Visualise extends React.Component {
     return body;
   };
   onStartAll() {
-    console.log("All Lines have started... ");
+    console.log("onStartAll() triggered... ");
     return new Promise((resolve, reject) => {
       /* load  story from database into state */
       this.apiGet(this.state.apiHello)
         .then(res => {
-          resolve(res.data.story)
+          let data = {
+            story: res.data.story,
+          }
+          resolve(data)
         })
     }).catch(err => console.log(err));
   }
-  onEndOne() {
-    console.log("One textline has ended...");
+  onEndOne(index) {
+    console.log("onEndOne() triggered...");
+    console.log("INDEX ENDED:" + index);
     return new Promise((resolve, reject) => {
       /* load  story from database into state */
       this.apiGet(this.state.apiHello).then(res => {
-        resolve(res.data.story);
+        let data = {
+          story: res.data.story,
+          index: index
+        }
+        resolve(data);
       });
     }).catch(err => console.log(err));
   }
@@ -86,7 +94,7 @@ export default class Visualise extends React.Component {
     return (
       <div>
         <FrameButton
-          buttonLabel="Play"
+          buttonLabel="fullscreen"
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr />
@@ -104,8 +112,6 @@ export default class Visualise extends React.Component {
           >
             <P5Wrapper
               sketch={Sketch}
-              fontSizeFactor={this.state.fontSizeFactor}
-              radius={this.state.radius}
               onStartAll={this.onStartAll}
               onEndOne={this.onEndOne}
             />
