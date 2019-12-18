@@ -15,9 +15,9 @@ import checkDevice from '.././components/checkDevice';
 // pages
 import Intro from './intro';
 import Landing from './landing';
-import RoutesWrite from './write/routes';
-import RoutesAdmin from './admin/routes';
-import RoutesWatch from './watch/routes';
+import RoutesWrite from './write';
+import RoutesAdmin from './admin';
+import RoutesWatch from './watch';
 import Login from './admin/login';
 // components
 import FrameNavbar from '.././components/frameNavbar';
