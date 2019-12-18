@@ -36,7 +36,7 @@ export default class Visualise extends React.Component {
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
-  onStartAll() {
+  onStartAll(index) {
     console.log("onStartAll() triggered... ");
     return new Promise((resolve, reject) => {
       /* load  story from database into state */
@@ -44,6 +44,7 @@ export default class Visualise extends React.Component {
         .then(res => {
           let data = {
             story: res.data.story,
+            index: index
           }
           resolve(data)
         })
@@ -114,6 +115,7 @@ export default class Visualise extends React.Component {
               sketch={Sketch}
               onStartAll={this.onStartAll}
               onEndOne={this.onEndOne}
+              numLines={2}
             />
           </div>
         </div>

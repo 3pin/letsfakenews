@@ -8,7 +8,7 @@ export default function sketch(p) {
   let fontSizeOffsetFactor = 5;
   let incMin = 3;
   let incMax = 9;
-  let numLines = 1;
+  //let numLines = 2;
   let lines = [];
   let fillDark = 0;
   let fillLight = 120;
@@ -23,12 +23,14 @@ export default function sketch(p) {
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     p.createCanvas(canvasWidth, canvasHeight);
+    /*
     for (let i = 0; i < numLines; i++) {
       lines.push(new StoryLine(p, i, 'Empty', canvasWidth, canvasHeight, fontSizeFactor, fontSizeOffsetFactor, i));
     }
     lines.forEach(line => {
       console.log(line);
     });
+    */
   };
   p.draw = () => {
     //console.log("DRAW");
@@ -41,28 +43,21 @@ export default function sketch(p) {
   };
   p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
     console.log("PROPS");
-    if (props.onEndOne) {
-      console.log("prop.onEndOne received");
-      onEndOne = props.onEndOne;
-      lines.forEach(line => {
-        line.onEndOne = onEndOne;
-        console.log(line);
-      });
-    }
-    if (props.onStartAll) {
-      console.log("prop.onStartAll received");
+    if (props.onStartAll && props.onEndOne && props.numLines) {
+      console.log(props.onStartAll + ', ' + props.onEndOne + ', ' + props.numLines)
       onStartAll = props.onStartAll;
-      lines.forEach(line => {
-        line.onStartAll = onStartAll;
-        console.log(line);
-      });
-      console.log('Loading Stories...')
-      for (let i = 0; i < numLines; i++) {
-        // randomly pull stories from db's livelist[] and push into stories[]
+      onEndOne = props.onEndOne;
+      for (let i = 0; i < props.numLines; i++) {
+        lines.push(new StoryLine(p, i, 'Empty', canvasWidth, canvasHeight, fontSizeFactor, fontSizeOffsetFactor, onStartAll, onEndOne));
+      }
+      for (let i = 0; i < props.numLines; i++) {
         onStartAll().then(data => {
-          lines[i].story = data.story;
-          lines[i].storyLength = Math.round(p.textWidth(data.story));
-          console.log(lines[i].storyLength + ', ' + lines[i].story);
+          if (data.index === i) {
+            lines[i].story = data.story;
+            lines[i].storyLength = Math.ceil(p.textWidth(data.story));
+            //console.log(lines[i].storyLength + ', ' + lines[i].story);
+            console.log(lines[i]);
+          }
         });
       }
     }
@@ -84,7 +79,7 @@ export default function sketch(p) {
   };
   //
   class StoryLine {
-    constructor(p, index, story, canvasWidth, canvasHeight, fontSizeFactor, fontSizeOffsetFactor) {
+    constructor(p, index, story, canvasWidth, canvasHeight, fontSizeFactor, fontSizeOffsetFactor, onStartAll, onEndOne) {
       this.p = p;
       this.arrayIndex = index;
       this.story = story;
@@ -92,6 +87,8 @@ export default function sketch(p) {
       this.canvasHeight = canvasHeight;
       this.fontSizeFactor = fontSizeFactor;
       this.fontSizeOffsetFactor = fontSizeOffsetFactor;
+      this.onStartAll = onStartAll;
+      this.onEndOne = onEndOne;
       const {
         fontSizeMax,
         fontSizeMin,
@@ -104,14 +101,14 @@ export default function sketch(p) {
       this.fontSizeMax = fontSizeMax;
       this.fontSizeMin = fontSizeMin;
       this.fontSize = fontSize;
-      this.incAmount = Math.floor(this.p.map(this.fontSize, this.fontSizeMin, this.fontSizeMax, incMin, incMax));
+      this.incAmount = Math.ceil(this.p.map(this.fontSize, this.fontSizeMin, this.fontSizeMax, incMin, incMax));
       this.p.textFont("Helvetica");
       this.p.textSize(this.fontSize);
-      this.storyLength = Math.round(this.p.textWidth(this.story));
+      this.storyLength = Math.ceil(this.p.textWidth(this.story));
     }
     show() {
       this.p.smooth();
-      this.p.fill(Math.floor(p.map(this.fontSize, this.fontSizeMin, this.fontSizeMax, fillLight, fillDark)));
+      this.p.fill(Math.ceil(p.map(this.fontSize, this.fontSizeMin, this.fontSizeMax, fillLight, fillDark)));
       //this.p.textFont("Helvetica");
       //this.p.textSize(this.fontSize);
       this.p.text(this.story, this.xPos, this.yPos);
@@ -138,7 +135,7 @@ export default function sketch(p) {
             this.story = data.story;
             this.p.textFont("Helvetica");
             this.p.textSize(this.fontSize);
-            this.storyLength = Math.round(this.p.textWidth(data.story));
+            this.storyLength = Math.ceil(this.p.textWidth(data.story));
             console.log('story: ' + this.story);
             console.log('storyLength: ' + this.storyLength);
             console.log(this);
