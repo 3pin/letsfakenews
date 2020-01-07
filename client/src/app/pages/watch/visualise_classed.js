@@ -13,7 +13,6 @@ export default class Visualise extends React.Component {
     this.onEndOne = this.onEndOne.bind(this);
     this.state = {
       apiHello: "/watch/visualise",
-      story: "Initial Story",
       radius: 50,
       fontSizeFactor: 4
     };
@@ -115,7 +114,6 @@ export default class Visualise extends React.Component {
               sketch={Sketch}
               onStartAll={this.onStartAll}
               onEndOne={this.onEndOne}
-              numLines={2}
             />
           </div>
         </div>

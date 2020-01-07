@@ -54,7 +54,7 @@ export default function sketch(p) {
         console.log(data);
       });
     } else {
-      xPos = xPos-30;
+      xPos = xPos-10;
     }
   }
   p.draw = () => {

@@ -8,8 +8,7 @@ import {
 import Landing from './landing';
 import Watch from './watch';
 //import Visualise from './visualise';
-import Visualise from './visualise_classed';
-
+import Visualise from './visualise';
 
 const RoutesWatch = () => {
   return (<div className="layout">

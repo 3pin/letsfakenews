@@ -22,7 +22,7 @@ export default class Stories extends React.Component {
     this.handleClear = this.handleClear.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.handleStorylive = this.handleStorylive.bind(this);
-    this.handleVisualise = this.handleVisualise.bind(this);
+    this.handleVisualsLength = this.handleVisualsLength.bind(this);
     //
     this.state = {
       stories: [],
@@ -51,7 +51,7 @@ export default class Stories extends React.Component {
       throw Error(body.message);
     return body;
   };
-  handleVisualise(e) {
+  handleVisualsLength(e) {
     console.log(`onInput fired with value: '${e.currentTarget.value}'`);
     let data = {
       visualise: e.currentTarget.value
@@ -99,7 +99,7 @@ export default class Stories extends React.Component {
       activelistLength: res.activelistLength
     })).catch(err => console.log(err));
   }
-  componentWillMount() {
+  componentDidMount() {
     /* load autolive-status & stories from Db */
     this.apiGet(this.props.apiHello)
       .then((res) => {
@@ -113,14 +113,14 @@ export default class Stories extends React.Component {
       }).catch(err => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('story', (e) => {
-      console.log('A new story triggered refresh of the stories');
+      console.log('A new story triggered a refresh of the stories');
       this.setState({
         stories: JSON.parse(e.data)
       });
     });
     /* open sse listener */
     this.eventSource.addEventListener('activelistLength', (e) => {
-      console.log('A new story triggered refresh of the activelistLength');
+      console.log('A new story triggered a refresh of the activelistLength');
       this.setState({
         activelistLength: JSON.parse(e.data)
       });
@@ -163,7 +163,7 @@ export default class Stories extends React.Component {
           <tr>
             <td>Max number of stories to visualise</td>
             <td>
-              <input type='number' min='1' max={this.state.activelistLength} defaultValue={this.state.visualise} onInput={this.handleVisualise}/>
+              <input type='number' min='1' max={this.state.activelistLength} defaultValue={this.state.visualise} onInput={this.handleVisualsLength}/>
             </td>
           </tr>
         </tbody>

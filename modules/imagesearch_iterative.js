@@ -11,7 +11,7 @@ const searchSettings = {
   searchType: 'image',
   safe: 'high'
 }
-const imagesearch = require('../modules/imagesearch.js');
+const imagesearch = require('../modules/imagesearch');
 
 module.exports = {
 
