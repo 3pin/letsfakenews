@@ -5,6 +5,8 @@ const debug = require('debug')('routes_admin');
 const Story = require('../../models/story.model');
 // import function
 const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
+// tap into an sse event-bus
+const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/routes/admin/storylive');
@@ -12,6 +14,7 @@ module.exports = (req, res) => {
   let storySettings = req.body;
   /* update an entries display-checkbox */
   debug('_id: ' + storySettings._id + ' currently set to: ' + storySettings.storylive);
+  bus.emit('activelistChange');
   // check checkbox is true/false... add/remove from activelist
   if (storySettings.storylive === true) {
     debug('Must set to FALSE');
@@ -31,7 +34,7 @@ module.exports = (req, res) => {
         debug(docs);
         res.json({
           stories: docs,
-          activelistLength: dbSettings.activelist.length
+          activelistLength: dbSettings.activelist.length,
         });
       });
     }).catch((err) => {
@@ -56,7 +59,7 @@ module.exports = (req, res) => {
         debug(docs);
         res.json({
           stories: docs,
-          activelistLength: dbSettings.activelist.length
+          activelistLength: dbSettings.activelist.length,
         });
       });
     }).catch((err) => {

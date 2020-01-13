@@ -89,6 +89,15 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
+  /* send a 'activelistLength' message */
+  bus.on('activelistChange', (data) => {
+    if (!res.finished) {
+      //debug(data);
+      debug('SSE activelistChange-msg to be emmitted from eventbus');
+      res.write(`event: activelistChange`);
+      res.write(`\n\n`);
+    }
+  });
 
   /* send an 'feedback' message */
   bus.on('feedback', (data) => {

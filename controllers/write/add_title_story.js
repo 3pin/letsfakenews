@@ -46,6 +46,7 @@ module.exports = (req, res) => {
           // tell eventbus about a new-story to trigger refresh of admin-frontend
           bus.emit('story', docs);
           bus.emit('activelistLength', dbSettings.activelist.length + 1);
+          bus.emit('activelistChange');
           debug('SSE event triggered by New_Story');
           // if storylive is TRUE, then should be auto added to activelist
           if (story.storylive === true) {

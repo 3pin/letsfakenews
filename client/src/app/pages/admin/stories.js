@@ -28,6 +28,7 @@ export default class Stories extends React.Component {
       stories: [],
       autolive: false,
       activelistLength: 0,
+      visualise: undefined
     };
   }
   apiGet = async (endpoint) => {
@@ -52,7 +53,7 @@ export default class Stories extends React.Component {
     return body;
   };
   handleVisualsLength(e) {
-    console.log(`onInput fired with value: '${e.currentTarget.value}'`);
+    //console.log(`onInput fired with value: '${e.currentTarget.value}'`);
     let data = {
       visualise: e.currentTarget.value
     }
@@ -81,7 +82,8 @@ export default class Stories extends React.Component {
     }
     this.apiPost(this.props.apiClear, data).then(res => this.setState({
       stories: res.stories,
-      activelistLength: res.activelistLength
+      activelistLength: res.activelistLength,
+      visualise: 0
     })).catch(err => console.log(err));
   }
   handleRemove(row) {
@@ -89,14 +91,16 @@ export default class Stories extends React.Component {
     /* Connect to API and delete single entry from database */
     this.apiPost(this.props.apiRemove, row).then((res) => this.setState({
       stories: res.stories,
-      activelistLength: res.activelistLength
+      activelistLength: res.activelistLength,
+      visualise: res.activelistLength
     })).catch(err => console.log(err));
   }
   handleStorylive(row) {
     /* Connect to API to update storylive-setting for entry in database */
     this.apiPost(this.props.apiStorylive, row).then((res) => this.setState({
       stories: res.stories,
-      activelistLength: res.activelistLength
+      activelistLength: res.activelistLength,
+      visualise: res.activelistLength
     })).catch(err => console.log(err));
   }
   componentDidMount() {

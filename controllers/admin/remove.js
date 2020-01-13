@@ -5,6 +5,8 @@ const debug = require('debug')('routes_admin');
 const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
 // import mongoose 'Story' schema
 const Story = require('../../models/story.model');
+// tap into an sse event-bus
+const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/routes/story/remove');
@@ -33,6 +35,7 @@ module.exports = (req, res) => {
     // fetch the db to refresh the frontend
     Story.find({}).sort([['_id', 1]]).then((docs, err) => {
       debug(docs);
+      bus.emit('activelistChange');
       res.json({
         stories: docs,
         activelistLength: dbSettings.activelist.length

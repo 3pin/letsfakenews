@@ -4,6 +4,8 @@ const debug = require('debug')('routes_admin');
 // import mongoose 'Story' schema
 const Base = require('../../models/base.model');
 const Settings = require('../../models/settings.model');
+// tap into an sse event-bus
+const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/DELETE /routes/admin/clear')
@@ -27,9 +29,11 @@ module.exports = (req, res) => {
       debug(docs);
       //debug(docs.result.n + " document(s) deleted");
     }
+    bus.emit('activelistChange');
     res.json({
       stories: [],
-      activelistLength: 0
+      activelistLength: 0,
+      visualise: 0
     });
   }).then(() => {
     /* empty the active activelist if we are clearing stories */

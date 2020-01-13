@@ -8,7 +8,7 @@ const watch = require('express').Router();
 
 /* routes */
 const request_new_story = require('../controllers/watch/request_new_story');
-const visualise = require('../controllers/watch/visualise');
+const visualise = require('../controllers/watch/visualise_calc_frontend');
 
 // REACT connection
 watch.get('/', (req, res) => {

@@ -8,11 +8,11 @@ module.exports = (req, res) => {
   debug('/GET /watch/visualise');
   // use middleware to fetch db settings
   let activelist = req.dbSettings.activelist;
-  let visualsAmount = req.dbSettings.visualise;
+  let visualise = req.dbSettings.visualise;
   let livelist;
-  if (visualsAmount < activelist.length) {
+  if (visualise < activelist.length) {
     console.log('amount < list');
-    livelist = activelist.slice(activelist.length - visualsAmount, activelist.length);
+    livelist = activelist.slice(activelist.length - visualise, activelist.length);
   } else {
     console.log('amount >= list');
     livelist = activelist;
@@ -31,7 +31,7 @@ module.exports = (req, res) => {
   /*
   res.json({
     activelist: activelist,
-    visualsAmount: visualsAmount,
+    visualise: visualise,
     visualsList: livelist
   });
   */

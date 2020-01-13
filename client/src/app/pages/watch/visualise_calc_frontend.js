@@ -2,19 +2,24 @@ import React from "react";
 import FrameButton from "../../../app/components/frameButton";
 import P5Wrapper from "react-p5-wrapper";
 import Sketch from "./sketches/sketch";
+import 'eventsource-polyfill';
 
 export default class Visualise extends React.Component {
   constructor(props) {
     super(props);
+    if (process.env.NODE_ENV === 'production') {
+      this.eventSource = new EventSource('/settings/sse');
+    } else {
+      this.eventSource = new EventSource(`http://localhost:5000/settings/sse`);
+    }
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
-    this.onEndOne = this.onEndOne.bind(this);
+    this.onEnded = this.onEnded.bind(this);
+    this.refreshList = this.refreshList.bind(this);
     this.state = {
       apiHello: "/watch/visualise",
-      story: "Initial Story",
-      radius: 50,
-      fontSizeFactor: 4
+      liveList: [],
     };
   }
   apiGet = async endpoint => {
@@ -35,28 +40,15 @@ export default class Visualise extends React.Component {
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
-  onStartAll() {
-    //console.log('Textline Ended');
-    /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then(res => {
-        this.setState({
-          story: res.data.story
-        });
-        //console.log(res.data.story);
-      })
-      .catch(err => console.log(err));
-  }
-  onEndOne() {
+  onEnded() {
     return new Promise((resolve, reject) => {
       //console.log('Textline Ended');
       /* load  story from database into state */
       this.apiGet(this.state.apiHello).then(res => {
         this.setState({
-          story: res.data.story
+          liveList: res.liveList
         });
-        console.log(res.data.story);
-        resolve(res.data.story);
+        resolve(res.liveList);
       });
     }).catch(err => console.log(err));
   }
@@ -74,16 +66,34 @@ export default class Visualise extends React.Component {
       i.msRequestFullscreen();
     }
   }
-  componentDidMount() {
+  refreshList() {
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
       .then(res => {
+        //console.log(res.liveList);
         this.setState({
-          story: res.data.story
+          liveList: res.liveList
         });
-        console.log(res.data.story);
-      })
-      .catch(err => console.log(err));
+      }).catch(err => console.log(err));
+  }
+  componentDidMount() {
+    /* open sse listener */
+    this.eventSource.addEventListener('activeChange', (e) => {
+      console.log('Backend changes triggered a refresh of the activelist');
+      this.refreshList();
+    });
+    // Catches errors
+    this.eventSource.onerror = (e) => {
+      console.log("--- SSE EVENTSOURCE ERROR: ", e);
+    };
+    /* load  story from database into state */
+    this.apiGet(this.state.apiHello)
+      .then(res => {
+        //console.log(res.liveList);
+        this.setState({
+          liveList: res.liveList
+        });
+      }).catch(err => console.log(err));
   }
   render() {
     //console.log(this.state)
@@ -108,12 +118,8 @@ export default class Visualise extends React.Component {
           >
             <P5Wrapper
               sketch={Sketch}
-              fontSizeFactor={this.state.fontSizeFactor}
-              radius={this.state.radius}
-              story={this.state.story}
-              onStartAll={this.onStartAll}
-              onEndOne={this.onEndOne}
-              finished={this.onEndOne}
+              finished={this.onEnded}
+              liveList={this.state.liveList}
             />
           </div>
         </div>
