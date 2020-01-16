@@ -11,9 +11,9 @@ const chai = require('chai'),
 
 const refresh_urls_iterative = require('../../modules/refresh_urls_iterative.js');
 
-describe('When button-pressed... refresh each stories urls', () => {
-  it('for every db_entry: fetch nouns... match with urls... replace old_urls', (done) => {
-    let JSON_array = [{
+describe('Refresh the urls in all stories', () => {
+  it('for every db_entry: fetch nouns... match with new urls... replace old_urls', (done) => {
+    let array = [{
         "words": ["tuesday", "wednesday"],
         "urls": ["https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg", "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg"]
       },
@@ -22,8 +22,8 @@ describe('When button-pressed... refresh each stories urls', () => {
         "urls": ["https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg", "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg"]
       }
     ];
-    refresh_urls_iterative.process(JSON_array).then((result) => {
-      expect(result.length).to.equal(JSON_array.length);
+    refresh_urls_iterative.process(array).then((result) => {
+      expect(result.length).to.equal(array.length);
     }).catch(function(error) {
       debug("Failed!", error);
     }).finally(done)
