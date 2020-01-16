@@ -1,9 +1,11 @@
+import Calc from "./functions/calc";
+
 export default function sketch(p) {
   let initialWidth = 400;
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
   let xPos, yPos, textSize;
-  let testAlignment = 'TRUE';
+  let testAlignment = "TRUE";
   let inc = -5;
   let radius = 50;
   let storyLength;
@@ -11,56 +13,46 @@ export default function sketch(p) {
   let story = "Initial Story";
   let liveList;
   //
-  p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
-    console.log("PROPS received...")
+  p.myCustomRedrawAccordingToNewPropsHandler = props => {
+    console.log("PROPS received...");
     if (props.liveList) {
       liveList = props.liveList;
       console.log(liveList);
     }
-  }
-  p.Calc = (canvasWidth, canvasHeight, textSizeFactor) => {
-    let textSize = Math.floor(Math.random() * Math.floor(canvasHeight / textSizeFactor));
-    let xPos = canvasWidth;
-    let yPos = Math.floor(Math.random() * Math.floor(canvasHeight - textSize)) + textSize;
-    return {
-      textSize: textSize,
-      xPos: xPos,
-      yPos: yPos
-    }
-  }
+  };
   p.setup = () => {
-    console.log('SETUP started...')
+    console.log("SETUP started...");
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     p.createCanvas(canvasWidth, canvasHeight);
     storyLength = Math.floor(p.textWidth(story));
     console.log(storyLength);
-    ({
-      textSize,
-      xPos,
-      yPos
-    } = p.Calc(canvasWidth, canvasHeight, textSizeFactor));
+    ({ textSize, xPos, yPos } = Calc(
+      canvasWidth,
+      canvasHeight,
+      textSizeFactor
+    ));
     p.textSize(textSize);
-  }
+  };
   p.move = () => {
     //console.log(xPos)
     if (xPos < -storyLength) {
-      console.log('Reached Storylength:' + xPos);
-      ({
-        textSize,
-        xPos,
-        yPos
-      } = p.Calc(canvasWidth, canvasHeight, textSizeFactor));
+      console.log("Reached Storylength:" + xPos);
+      ({ textSize, xPos, yPos } = Calc(
+        canvasWidth,
+        canvasHeight,
+        textSizeFactor
+      ));
       p.textSize(textSize);
       p.Ended();
     } else {
       xPos = xPos + inc;
     }
-  }
+  };
   p.draw = () => {
     p.noSmooth();
     p.background(0);
-    if (testAlignment === 'TRUE') {
+    if (testAlignment === "TRUE") {
       p.fill(160);
       p.ellipse(0, 0, radius, radius);
       p.ellipse(canvasWidth, 0, radius, radius);
@@ -68,20 +60,19 @@ export default function sketch(p) {
       p.ellipse(canvasWidth, canvasHeight, radius, radius);
     }
     p.fill(255);
-    p.textFont('Helvetica')
+    p.textFont("Helvetica");
     p.textSize(textSize);
     p.smooth();
     p.text(story, xPos, yPos);
     p.move();
-  }
+  };
   p.Ended = () => {
     // pick a random story from liveList
-    let randomEntry = Math.floor(Math.random() * (liveList.length));
+    let randomEntry = Math.floor(Math.random() * liveList.length);
     story = liveList[randomEntry].story;
     storyLength = Math.floor(p.textWidth(story));
     console.log(`StoryLength:${storyLength} \n Story:${story}`);
-
-  }
+  };
   window.onresize = () => {
     if (!window.screenTop && !window.screenY) {
       canvasWidth = window.screen.width;
@@ -93,5 +84,5 @@ export default function sketch(p) {
     xPos = canvasWidth;
     yPos = canvasHeight / 2;
     p.resizeCanvas(canvasWidth, canvasHeight);
-  }
+  };
 }
