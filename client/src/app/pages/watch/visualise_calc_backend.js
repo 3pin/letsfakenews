@@ -24,7 +24,7 @@ export default class Visualise extends React.Component {
       stories: [],
       autolive: false,
       activelist: [],
-      activelistLength: 0,
+      activelistChange: 0,
       visualise: undefined,
     };
   }

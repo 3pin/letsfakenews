@@ -14,14 +14,14 @@ module.exports = (req, res) => {
   let storySettings = req.body;
   /* update an entries display-checkbox */
   debug('_id: ' + storySettings._id + ' currently set to: ' + storySettings.storylive);
-  bus.emit('activelistChange');
   // check checkbox is true/false... add/remove from activelist
   if (storySettings.storylive === true) {
     debug('Must set to FALSE');
     // remove from activelist
     dbSettings.activelist = dbSettings.activelist.filter(item => item != storySettings._id);
     dbSettingsUpdate(dbSettings).then((doc) => {
-      debug(doc);
+      debug(`db updated to: ${doc}`);
+      bus.emit('activelistChange', dbSettings.activelist.length);
     });
     // update db storylive entry
     Story.findByIdAndUpdate(storySettings._id, {
@@ -34,7 +34,7 @@ module.exports = (req, res) => {
         debug(docs);
         res.json({
           stories: docs,
-          activelistLength: dbSettings.activelist.length,
+          activelistChange: dbSettings.activelist.length,
         });
       });
     }).catch((err) => {
@@ -46,7 +46,8 @@ module.exports = (req, res) => {
     dbSettings.entry_to_read = dbSettings.activelist.length - 1;
     dbSettings.db_mode = 'next';
     dbSettingsUpdate(dbSettings).then((doc) => {
-      debug(doc);
+      debug(`dd updated to: ${doc}`);
+      bus.emit('activelistChange', dbSettings.activelist.length);
     });
     // update db storylive entry
     Story.findByIdAndUpdate(storySettings._id, {
@@ -59,7 +60,7 @@ module.exports = (req, res) => {
         debug(docs);
         res.json({
           stories: docs,
-          activelistLength: dbSettings.activelist.length,
+          activelistChange: dbSettings.activelist.length,
         });
       });
     }).catch((err) => {

@@ -38,7 +38,7 @@ module.exports = (req, res) => {
     }
   });
 
-  /* send a 'dummy' message */
+  /* send a 'dummy' message... which is being done above */
   bus.on('keepalive', (data) => {
     if (!res.finished) {
       debug('SSE keepalive-msg to be emmitted from eventbus');
@@ -79,22 +79,13 @@ module.exports = (req, res) => {
     }
   });
 
-  /* send a 'activelistLength' message */
-  bus.on('activelistLength', (data) => {
-    if (!res.finished) {
-      //debug(data);
-      debug('SSE activelistLength-msg to be emmitted from eventbus');
-      res.write(`event: activelistLength\n`);
-      res.write(`data: ${JSON.stringify(data)}`);
-      res.write(`\n\n`);
-    }
-  });
-  /* send a 'activelistLength' message */
+  /* send a 'activelistChange' message */
   bus.on('activelistChange', (data) => {
     if (!res.finished) {
-      //debug(data);
+      debug(data);
       debug('SSE activelistChange-msg to be emmitted from eventbus');
-      res.write(`event: activelistChange`);
+      res.write(`event: activelistChange\n`);
+      res.write(`data: ${JSON.stringify(data)}`);
       res.write(`\n\n`);
     }
   });

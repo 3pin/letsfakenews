@@ -29,10 +29,10 @@ module.exports = (req, res) => {
       debug(docs);
       //debug(docs.result.n + " document(s) deleted");
     }
-    bus.emit('activelistChange');
+    bus.emit('activelistChange', 0);
     res.json({
       stories: [],
-      activelistLength: 0,
+      activelistChange: 0,
       visualise: 0
     });
   }).then(() => {

@@ -5,6 +5,8 @@ const debug = require('debug')('routes_admin');
 const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
 // import mongoose Settings model
 const Settings = require('../../models/settings.model');
+// tap into an sse event-bus
+const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   let visualise = req.body.visualise;
@@ -15,5 +17,6 @@ module.exports = (req, res) => {
   });
   dbSettingsUpdate(dbSettings).then((docs) => {
     debug(docs);
+    bus.emit('activelistChange', dbSettings.activelist.length);
   })
 }

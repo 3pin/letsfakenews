@@ -3,6 +3,7 @@ export default function sketch(p) {
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
   let xPos, yPos, fontSize;
+  let inc = -1;
   //let radius = 50;
   let storyLength;
   let fontSizeFactor = 20;
@@ -50,7 +51,7 @@ export default function sketch(p) {
       ({ fontSize, xPos, yPos } = p.Calc(canvasWidth, canvasHeight, fontSizeFactor));
       p.Ended();
     } else {
-      xPos = xPos-10;
+      xPos = xPos + inc;
     }
   }
   p.draw = () => {

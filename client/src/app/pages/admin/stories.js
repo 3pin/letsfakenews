@@ -57,7 +57,7 @@ export default class Stories extends React.Component {
     let data = {
       visualise: e.currentTarget.value
     }
-    // connect to API to update db
+    // connect to API to update db and then update this component
     this.apiPost(this.props.apiVisualise, data).then((res) => this.setState({
       visualise: JSON.parse(res.visualise)
     })).catch(err => console.log(err));
@@ -82,7 +82,7 @@ export default class Stories extends React.Component {
     }
     this.apiPost(this.props.apiClear, data).then(res => this.setState({
       stories: res.stories,
-      activelistLength: res.activelistLength,
+      activelistLength: res.activelistChange,
       visualise: 0
     })).catch(err => console.log(err));
   }
@@ -91,16 +91,14 @@ export default class Stories extends React.Component {
     /* Connect to API and delete single entry from database */
     this.apiPost(this.props.apiRemove, row).then((res) => this.setState({
       stories: res.stories,
-      activelistLength: res.activelistLength,
-      visualise: res.activelistLength
+      activelistLength: res.activelistChange
     })).catch(err => console.log(err));
   }
   handleStorylive(row) {
     /* Connect to API to update storylive-setting for entry in database */
     this.apiPost(this.props.apiStorylive, row).then((res) => this.setState({
       stories: res.stories,
-      activelistLength: res.activelistLength,
-      visualise: res.activelistLength
+      activelistChange: res.activelistChange
     })).catch(err => console.log(err));
   }
   componentDidMount() {
@@ -108,23 +106,24 @@ export default class Stories extends React.Component {
     this.apiGet(this.props.apiHello)
       .then((res) => {
         this.setState({
-          autolive: JSON.parse(res.autolive),
-          stories: res.stories,
+          activelistLength: res.activelistChange,
           visualise: res.visualise,
-          activelistLength: res.activelistLength
+          autolive: JSON.parse(res.autolive),
+          stories: res.stories
         })
         console.log(res);
       }).catch(err => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('story', (e) => {
-      console.log('A new story triggered a refresh of the stories');
+      console.log('A new story triggered a refresh of the stories_list');
       this.setState({
         stories: JSON.parse(e.data)
       });
     });
     /* open sse listener */
-    this.eventSource.addEventListener('activelistLength', (e) => {
-      console.log('A new story triggered a refresh of the activelistLength');
+    this.eventSource.addEventListener('activelistChange', (e) => {
+      console.log('A change triggered a refresh of the activelist');
+      console.log(e);
       this.setState({
         activelistLength: JSON.parse(e.data)
       });

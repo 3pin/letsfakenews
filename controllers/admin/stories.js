@@ -13,7 +13,7 @@ module.exports = (req, res) => {
     //res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
       stories: docs,
-      activelistLength: dbSettings.activelist.length,
+      activelistChange: dbSettings.activelist.length,
       visualise: dbSettings.visualise,
       autolive: dbSettings.autolive,
     });

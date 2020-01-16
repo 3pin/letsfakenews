@@ -70,15 +70,23 @@ export default class Visualise extends React.Component {
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
       .then(res => {
-        //console.log(res.liveList);
+        console.log(res.liveList);
         this.setState({
           liveList: res.liveList
         });
       }).catch(err => console.log(err));
   }
   componentDidMount() {
+    /* load  story from database into state */
+    this.apiGet(this.state.apiHello)
+      .then(res => {
+        console.log(res.liveList);
+        this.setState({
+          liveList: res.liveList
+        });
+      }).catch(err => console.log(err));
     /* open sse listener */
-    this.eventSource.addEventListener('activeChange', (e) => {
+    this.eventSource.addEventListener('activelistChange', (e) => {
       console.log('Backend changes triggered a refresh of the activelist');
       this.refreshList();
     });
@@ -86,14 +94,6 @@ export default class Visualise extends React.Component {
     this.eventSource.onerror = (e) => {
       console.log("--- SSE EVENTSOURCE ERROR: ", e);
     };
-    /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then(res => {
-        //console.log(res.liveList);
-        this.setState({
-          liveList: res.liveList
-        });
-      }).catch(err => console.log(err));
   }
   render() {
     //console.log(this.state)

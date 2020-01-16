@@ -10,17 +10,19 @@ module.exports = (req, res) => {
   // use middleware to fetch db settings
   let visualise = req.dbSettings.visualise;
   let activelist = req.dbSettings.activelist;
+  let liveList;
   // fetch activelist... ie. all stories with storylive:true
   Story.find({"storylive":"true"}).sort([['_id', 1]]).then((activeStories) => {
     debug(activeStories);
     // create livelist as a subset of activeStories via the 'visualise' setting
-    let liveList;
     if (visualise < activeStories.length) {
+      // the default... no_stories_to_visualise is < activelist
       console.log('amount < list');
       liveList = activeStories.slice(activeStories.length - visualise, activeStories.length);
     } else {
+      // the exception... no_stories_to_visualise is >= activelist
       console.log('amount >= list');
-      liveList = Livelist;
+      liveList = activeStories;
     }
     // send to frontend
     res.json({

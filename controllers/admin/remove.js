@@ -35,10 +35,10 @@ module.exports = (req, res) => {
     // fetch the db to refresh the frontend
     Story.find({}).sort([['_id', 1]]).then((docs, err) => {
       debug(docs);
-      bus.emit('activelistChange');
+      bus.emit('activelistChange', dbSettings.activelist.length);
       res.json({
         stories: docs,
-        activelistLength: dbSettings.activelist.length
+        activelistChange: dbSettings.activelist.length
       });
     });
   }).catch((err) => {

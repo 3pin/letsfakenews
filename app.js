@@ -162,7 +162,8 @@ const options = {
   keepAlive: true,
   keepAliveInitialDelay: 300000,
   promiseLibrary: Promise,
-  useFindAndModify: false
+  useFindAndModify: false,
+  useUnifiedTopology: true
 };
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
