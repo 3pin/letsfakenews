@@ -28,7 +28,7 @@ module.exports = {
               }
             ).then((res) => {
               debug(res);
-              resolve("Story_Updated");
+              resolve(res);
             });
           });
         })
