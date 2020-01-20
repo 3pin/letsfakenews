@@ -6,6 +6,7 @@ const Base = require('../../models/base.model');
 const Settings = require('../../models/settings.model');
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');
+const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
 
 module.exports = (req, res) => {
   debug('/DELETE /routes/admin/clear')
@@ -13,15 +14,13 @@ module.exports = (req, res) => {
   let dbSettings = req.dbSettings;
   let query;
   if (req.body.subject == 'Feedback') {
-    query = {
-      __type: 'Feedback'
+    query = {__type: 'Feedback'
     }
   } else if (req.body.subject == 'Stories') {
-    query = {
-      __type: 'Story'
+    query = {__type: 'Story'
     }
   }
-  /* delete a db entry */
+  /* delete all db entries */
   Base.deleteMany(query).then((docs, err) => {
     if (err) {
       debug(err);
@@ -39,7 +38,6 @@ module.exports = (req, res) => {
     /* empty the active activelist if we are clearing stories */
     dbSettings.activelist = [];
     dbSettings.entry_to_read = 0;
-    const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
     dbSettingsUpdate(dbSettings);
   }).catch((err) => {
     debug("Err: ", err);

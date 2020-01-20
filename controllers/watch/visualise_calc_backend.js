@@ -6,20 +6,16 @@ const Story = require('../../models/story.model');
 
 module.exports = (req, res) => {
   debug('/GET /watch/visualise');
-  // use middleware to fetch db settings
-  let activelist = req.dbSettings.activelist;
-  let visualise = req.dbSettings.visualise;
   let livelist;
-  if (visualise < activelist.length) {
+  if (req.dbSettings.visualise < req.dbSettings.activelist.length) {
     console.log('amount < list');
-    livelist = activelist.slice(activelist.length - visualise, activelist.length);
+    livelist = req.dbSettings.activelist.slice(req.dbSettings.activelist.length - req.dbSettings.visualise, req.dbSettings.activelist.length);
   } else {
     console.log('amount >= list');
-    livelist = activelist;
+    livelist = req.dbSettings.activelist;
   }
   console.log(livelist);
   // pick a random entry from [livelist] and fetch its story
-  //
   let id = randomCalc.random_entry(livelist).id;
   debug(id);
   Story.findById(id, (err, data) => {
@@ -28,11 +24,4 @@ module.exports = (req, res) => {
       data: data
     });
   })
-  /*
-  res.json({
-    activelist: activelist,
-    visualise: visualise,
-    visualsList: livelist
-  });
-  */
 };

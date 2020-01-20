@@ -9,14 +9,13 @@ const Settings = require('../../models/settings.model');
 const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
-  let visualise = req.body.visualise;
-  let dbSettings = req.dbSettings;
-  dbSettings.visualise = visualise;
-  res.json({
-    visualise: visualise
-  });
-  dbSettingsUpdate(dbSettings).then((docs) => {
+  req.dbSettings.visualise = req.body.visualise;
+  dbSettingsUpdate(req.dbSettings).then((docs) => {
     debug(docs);
-    bus.emit('activelistChange', dbSettings.activelist.length);
+    bus.emit('activelistChange', req.dbSettings.activelist.length);
+  }).then(() => {
+    res.json({
+      visualise: req.body.visualise
+    });
   })
 }

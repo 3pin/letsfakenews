@@ -10,7 +10,6 @@ const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/routes/admin/storylive');
-  let dbSettings = req.dbSettings;
   let storySettings = req.body;
   /* update an entries display-checkbox */
   debug('_id: ' + storySettings._id + ' currently set to: ' + storySettings.storylive);
@@ -18,10 +17,10 @@ module.exports = (req, res) => {
   if (storySettings.storylive === true) {
     debug('Must set to FALSE');
     // remove from activelist
-    dbSettings.activelist = dbSettings.activelist.filter(item => item != storySettings._id);
-    dbSettingsUpdate(dbSettings).then((doc) => {
+    req.dbSettings.activelist = req.dbSettings.activelist.filter(item => item != storySettings._id);
+    dbSettingsUpdate(req.dbSettings).then((doc) => {
       debug(`db updated to: ${doc}`);
-      bus.emit('activelistChange', dbSettings.activelist.length);
+      bus.emit('activelistChange', req.dbSettings.activelist.length);
     });
     // update db storylive entry
     Story.findByIdAndUpdate(storySettings._id, {
@@ -34,7 +33,7 @@ module.exports = (req, res) => {
         debug(docs);
         res.json({
           stories: docs,
-          activelistChange: dbSettings.activelist.length,
+          activelistChange: req.dbSettings.activelist.length,
         });
       });
     }).catch((err) => {
@@ -42,12 +41,12 @@ module.exports = (req, res) => {
     });
   } else {
     debug('Must set to TRUE');
-    dbSettings.activelist.push(storySettings._id);
-    dbSettings.entry_to_read = dbSettings.activelist.length - 1;
-    dbSettings.db_mode = 'next';
-    dbSettingsUpdate(dbSettings).then((doc) => {
+    req.dbSettings.activelist.push(storySettings._id);
+    req.dbSettings.entry_to_read = req.dbSettings.activelist.length - 1;
+    req.dbSettings.db_mode = 'next';
+    dbSettingsUpdate(req.dbSettings).then((doc) => {
       debug(`dd updated to: ${doc}`);
-      bus.emit('activelistChange', dbSettings.activelist.length);
+      bus.emit('activelistChange', req.dbSettings.activelist.length);
     });
     // update db storylive entry
     Story.findByIdAndUpdate(storySettings._id, {
@@ -60,7 +59,7 @@ module.exports = (req, res) => {
         debug(docs);
         res.json({
           stories: docs,
-          activelistChange: dbSettings.activelist.length,
+          activelistChange: req.dbSettings.activelist.length,
         });
       });
     }).catch((err) => {

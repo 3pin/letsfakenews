@@ -6,16 +6,15 @@ const Story = require('../../models/story.model');
 
 module.exports = (req, res) => {
   debug('/GET /admin/stories');
-  let dbSettings = req.dbSettings;
-  debug(dbSettings.visualise)
-  //debug(dbSettings);
+  debug(req.dbSettings.visualise)
+  //debug(req.dbSettings);
   Story.find({}).sort([['_id', 1]]).then((docs) => {
     //res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
       stories: docs,
-      activelistChange: dbSettings.activelist.length,
-      visualise: dbSettings.visualise,
-      autolive: dbSettings.autolive,
+      activelistChange: req.dbSettings.activelist.length,
+      visualise: req.dbSettings.visualise,
+      autolive: req.dbSettings.autolive,
     });
   });
 };

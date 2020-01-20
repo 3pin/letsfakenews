@@ -7,20 +7,17 @@ const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('SSE activity');
-
   /* setup */
   res.set({
     Connection: "keep-alive",
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache'
   });
-
-  // send startup message
+  /* send startup message */
   res.write(`event: joined\n`);
   res.write(`data: Server received your /sse request`);
   res.write(`\n\n`);
-
-  // send a repeating dummy event to keep the connection from timing-out
+  /* send a repeating dummy event to keep the connection from timing-out */
   setInterval(function () {
     if (!res.finished) {
       res.write(`event: keepalive\n`);
@@ -28,7 +25,6 @@ module.exports = (req, res) => {
       debug('Emmitted an SSE keep-alive event');
     }
   }, process.env.KEEPALIVE);
-
   /* stop listening to SSE when the client closes frontend connection */
   req.on("close", () => {
     debug("SSE req.close");
@@ -37,7 +33,6 @@ module.exports = (req, res) => {
       debug("Stopped sending events.");
     }
   });
-
   /* send a 'dummy' message... which is being done above */
   bus.on('keepalive', (data) => {
     if (!res.finished) {
@@ -47,7 +42,6 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-
   /* send an 'admin' message */
   bus.on('joined', (data) => {
     if (!res.finished) {
@@ -57,7 +51,6 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-
   /* send an 'admin' message */
   bus.on('admin', (data) => {
     if (!res.finished) {
@@ -67,7 +60,6 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-
   /* send a 'story' message */
   bus.on('story', (data) => {
     if (!res.finished) {
@@ -89,7 +81,6 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-
   /* send an 'feedback' message */
   bus.on('feedback', (data) => {
     if (!res.finished) {
@@ -100,7 +91,6 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-
   /* send an 'feedback' message */
   bus.on('error', (err) => {
     //debug(data);

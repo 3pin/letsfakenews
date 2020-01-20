@@ -12,12 +12,12 @@ module.exports = (req, res) => {
   debug('/routes/story/remove');
   // remove entry from activelist in dB
   let dbSettings = req.dbSettings;
-  debug(dbSettings.activelist);
-  dbSettings.activelist = dbSettings.activelist.filter(item => item != req.body._id);
-  debug(dbSettings.activelist);
+  debug(req.dbSettings.activelist);
+  req.dbSettings.activelist = req.dbSettings.activelist.filter(item => item != req.body._id);
+  debug(req.dbSettings.activelist);
   // offset the next-story-to-read to account for deleted entry
-  dbSettings.entry_to_read = dbSettings.entry_to_read - 1;
-  dbSettingsUpdate(dbSettings).then((docs) => {
+  req.dbSettings.entry_to_read = req.dbSettings.entry_to_read - 1;
+  dbSettingsUpdate(req.dbSettings).then((docs) => {
     debug(docs);
   })
   // delete entry from actual db
@@ -26,11 +26,7 @@ module.exports = (req, res) => {
   };
   debug(req.body._id);
   Story.findOneAndDelete(query).then((docs, err) => {
-    if (err) {
-      debug(err);
-    } else {
-      debug(docs);
-    }
+    debug(docs);
   }).then(() => {
     // fetch the db to refresh the frontend
     Story.find({}).sort([['_id', 1]]).then((docs, err) => {
