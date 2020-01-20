@@ -11,7 +11,8 @@ const imagesearch_iterative = require("../modules/imagesearch_iterative.js");
 const Story = require("../models/story.model");
 
 module.exports = {
-  process: function(id) {
+  process: function (id) {
+    debug(id);
     return new Promise((resolve, reject) => {
       Story.findById(id).then(doc => {
           //debug(doc);
@@ -19,14 +20,11 @@ module.exports = {
           //debug(words);
           imagesearch_iterative.process(words).then(result => {
             //debug(result);
-            Story.updateOne(
-              {
-                _id: id
-              },
-              {
-                urls: result
-              }
-            ).then((res) => {
+            Story.updateOne({
+              _id: id
+            }, {
+              urls: result
+            }).then((res) => {
               debug(res);
               resolve(res);
             });

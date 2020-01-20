@@ -12,12 +12,14 @@ const imagesearch_iterative = require("../modules/imagesearch_iterative.js");
 
 module.exports = {
   process: function(obj) {
-    //debug(obj);
+    debug(obj);
     return new Promise(function(resolve, reject) {
       let words = obj.words;
+      debug(words);
       imagesearch_iterative.process(words).then(urls => {
+        debug(urls);
         obj.urls = urls;
-        //debug(obj);
+        debug(obj);
         resolve(obj);
       });
     });

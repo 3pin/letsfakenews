@@ -10,7 +10,7 @@ const chai = require('chai'),
 
 const db_fetch_mode = require('../../modules/db_fetch_mode.js');
 
-describe('testing functions controlling fetch-mode of stories from the db...', () => {
+describe('db-fetch-mode: testing random and sequential reading-from-db modes', () => {
   it('should take an array, select a random entry in array, return its value with key:id in a jsonOBJ...', () => {
     let result = db_fetch_mode.random_entry(['a','b','c'])
     debug(result)

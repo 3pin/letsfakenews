@@ -11,8 +11,8 @@ const chai = require('chai'),
 
 const nlp = require('../../modules/nlp.js');
 
-describe('When a new fakenewsreport (story) is received...', () => {
-  
+describe('NLP: testing parsing of nouns...', () => {
+
   it('should NLP the story(string) to an array of nouns...', (done) => {
     nlp.parse_nouns('Shit the cat ran under the bus fuck').then(result => {
       expect(result).to.be.an('array');
