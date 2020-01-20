@@ -9,13 +9,13 @@ export default function sketch(p) {
   let inc = -5;
   let radius = 50;
   let storyLength;
-  let textSizeFactor = 20;
+  let textSizeFactor = 8;
   let story = "Initial Story";
   let liveList;
   //
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     console.log("PROPS received...");
-    if (props.liveList) {
+    if (props.liveList.length > 0) {
       liveList = props.liveList;
       console.log(liveList);
     }
@@ -25,14 +25,17 @@ export default function sketch(p) {
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     p.createCanvas(canvasWidth, canvasHeight);
-    storyLength = Math.floor(p.textWidth(story));
-    console.log(storyLength);
+    p.textFont("Helvetica");
     ({ textSize, xPos, yPos } = Calc(
       canvasWidth,
       canvasHeight,
       textSizeFactor
     ));
+    console.log(p.textSize());
     p.textSize(textSize);
+    console.log(p.textSize());
+    storyLength = Math.floor(p.textWidth(story));
+    console.log(storyLength);
   };
   p.move = () => {
     //console.log(xPos)
@@ -44,7 +47,11 @@ export default function sketch(p) {
         textSizeFactor
       ));
       p.textSize(textSize);
-      p.Ended();
+      //p.Ended();
+      let randomEntry = Math.floor(Math.random() * liveList.length);
+      story = liveList[randomEntry].story;
+      storyLength = Math.floor(p.textWidth(story));
+      console.log(`StoryLength:${storyLength} \n Story:${story}`);
     } else {
       xPos = xPos + inc;
     }
@@ -60,12 +67,13 @@ export default function sketch(p) {
       p.ellipse(canvasWidth, canvasHeight, radius, radius);
     }
     p.fill(255);
-    p.textFont("Helvetica");
-    p.textSize(textSize);
+    console.log(p.textSize());
+    //p.textSize(textSize);
     p.smooth();
     p.text(story, xPos, yPos);
     p.move();
   };
+  /*
   p.Ended = () => {
     // pick a random story from liveList
     let randomEntry = Math.floor(Math.random() * liveList.length);
@@ -73,6 +81,7 @@ export default function sketch(p) {
     storyLength = Math.floor(p.textWidth(story));
     console.log(`StoryLength:${storyLength} \n Story:${story}`);
   };
+  */
   window.onresize = () => {
     if (!window.screenTop && !window.screenY) {
       canvasWidth = window.screen.width;

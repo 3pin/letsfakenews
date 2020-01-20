@@ -1,7 +1,8 @@
 import React from "react";
 import FrameButton from "../../../app/components/frameButton";
 import P5Wrapper from "react-p5-wrapper";
-import Sketch from "./sketches/sketch";
+//import Sketch from "./sketches/sketch";
+import Sketch from "./sketches/sketch4class";
 import 'eventsource-polyfill';
 
 export default class Visualise extends React.Component {
@@ -15,7 +16,6 @@ export default class Visualise extends React.Component {
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
-    this.onEnded = this.onEnded.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.state = {
       apiHello: "/watch/visualise",
@@ -40,18 +40,16 @@ export default class Visualise extends React.Component {
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
-  onEnded() {
-    return new Promise((resolve, reject) => {
-      //console.log('Textline Ended');
-      /* load  story from database into state */
-      this.apiGet(this.state.apiHello).then(res => {
+  refreshList() {
+    /* load  story from database into state */
+    this.apiGet(this.state.apiHello)
+      .then(res => {
+        console.log(res.liveList);
         this.setState({
           liveList: res.liveList
         });
-        resolve(res.liveList);
-      });
-    }).catch(err => console.log(err));
-  }
+      }).catch(err => console.log(err));
+  };
   goFullscreen() {
     document.activeElement.blur();
     console.log("fullscreen entered");
@@ -65,17 +63,7 @@ export default class Visualise extends React.Component {
     } else if (i.msRequestFullscreen) {
       i.msRequestFullscreen();
     }
-  }
-  refreshList() {
-    /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then(res => {
-        console.log(res.liveList);
-        this.setState({
-          liveList: res.liveList
-        });
-      }).catch(err => console.log(err));
-  }
+  };
   componentDidMount() {
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
@@ -118,7 +106,6 @@ export default class Visualise extends React.Component {
           >
             <P5Wrapper
               sketch={Sketch}
-              finished={this.onEnded}
               liveList={this.state.liveList}
             />
           </div>
