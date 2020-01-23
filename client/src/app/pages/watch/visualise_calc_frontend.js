@@ -1,8 +1,8 @@
 import React from "react";
 import FrameButton from "../../../app/components/frameButton";
 import P5Wrapper from "react-p5-wrapper";
-//import Sketch from "./sketches/sketch";
-import Sketch from "./sketches/sketch4class";
+import Sketch from "./sketches/sketch";
+//import Sketch from "./sketches/sketch4class";
 import 'eventsource-polyfill';
 
 export default class Visualise extends React.Component {

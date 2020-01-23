@@ -22,7 +22,9 @@ let StorySchema = new Schema({
     required: true
   },
   words: Array,
-  urls: Array
+  urls: Array,
+  words_title: Array,
+  urls_title: Array,
 }, {
   collection: process.env.DATABASE
 });

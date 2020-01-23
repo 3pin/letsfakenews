@@ -5,13 +5,15 @@ export default function sketch(p) {
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
   let xPos, yPos, textSize;
-  let testAlignment = "TRUE";
+  let testAlignment = "FALSE";
   let inc = -5;
   let radius = 50;
   let storyLength;
   let textSizeFactor = 8;
   let story = "Initial Story";
   let liveList;
+  let img;
+  let imgUrl = "../../images/bgd.jpg";
   //
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     console.log("PROPS received...");
@@ -25,8 +27,13 @@ export default function sketch(p) {
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     p.createCanvas(canvasWidth, canvasHeight);
+    img = p.loadImage(imgUrl);
     p.textFont("Helvetica");
-    ({ textSize, xPos, yPos } = Calc(
+    ({
+      textSize,
+      xPos,
+      yPos
+    } = Calc(
       canvasWidth,
       canvasHeight,
       textSizeFactor
@@ -41,7 +48,11 @@ export default function sketch(p) {
     //console.log(xPos)
     if (xPos < -storyLength) {
       console.log("Reached Storylength:" + xPos);
-      ({ textSize, xPos, yPos } = Calc(
+      ({
+        textSize,
+        xPos,
+        yPos
+      } = Calc(
         canvasWidth,
         canvasHeight,
         textSizeFactor
@@ -50,6 +61,7 @@ export default function sketch(p) {
       //p.Ended();
       let randomEntry = Math.floor(Math.random() * liveList.length);
       story = liveList[randomEntry].story;
+      console.log(story);
       storyLength = Math.floor(p.textWidth(story));
       console.log(`StoryLength:${storyLength} \n Story:${story}`);
     } else {
@@ -59,6 +71,7 @@ export default function sketch(p) {
   p.draw = () => {
     p.noSmooth();
     p.background(0);
+    p.image(img, 0, 0);
     if (testAlignment === "TRUE") {
       p.fill(160);
       p.ellipse(0, 0, radius, radius);
@@ -66,22 +79,13 @@ export default function sketch(p) {
       p.ellipse(0, canvasHeight, radius, radius);
       p.ellipse(canvasWidth, canvasHeight, radius, radius);
     }
-    p.fill(255);
+    p.fill(0);
     console.log(p.textSize());
     //p.textSize(textSize);
     p.smooth();
     p.text(story, xPos, yPos);
     p.move();
   };
-  /*
-  p.Ended = () => {
-    // pick a random story from liveList
-    let randomEntry = Math.floor(Math.random() * liveList.length);
-    story = liveList[randomEntry].story;
-    storyLength = Math.floor(p.textWidth(story));
-    console.log(`StoryLength:${storyLength} \n Story:${story}`);
-  };
-  */
   window.onresize = () => {
     if (!window.screenTop && !window.screenY) {
       canvasWidth = window.screen.width;

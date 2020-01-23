@@ -30,7 +30,11 @@ describe('Processing: user_input -> OBJ ready for saving to db', () => {
     };
     process_client_story.process(client_JSON).then((result) => {
       debug(result);
+      expect(result).to.have.property('time');
+      expect(result).to.have.property('words');
       expect(result).to.have.property('urls');
+      expect(result).to.have.property('words_title');
+      expect(result).to.have.property('urls_title');
       done();
     }).catch(function (err) {
       debug("Failed!", err);

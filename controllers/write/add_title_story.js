@@ -14,11 +14,10 @@ module.exports = (req, res) => {
   let dbSettings = req.dbSettings;
   debug('dbSettings...');
   debug(dbSettings);
-  // preprocess 'title' to CAPS & add 'storylive' attribute
   let client_JSON = req.body;
   debug('Unprocessed news...');
+  // preprocess 'title' to CAPS
   debug(client_JSON);
-  // set title toUpperCase
   //client_JSON.title = req.body.title.toUpperCase();
   // process... add storylive, add NLP_words, add matching urls
   client_JSON.storylive = dbSettings.autolive;
