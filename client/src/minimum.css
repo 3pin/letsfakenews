@@ -83,7 +83,6 @@ h6 {
 }
 
 #button_div {
-  /* display element */
   position: relative;
 }
 
@@ -118,7 +117,6 @@ h6 {
 }
 
 #videoContainer {
-  /* display element */
   /*border: 2px solid red;
   background: pink;*/
   position: relative;
@@ -128,15 +126,13 @@ h6 {
   width: 100%;
 }
 
-#videoPlayer {
-  /* display element */
-  /*border: 2px solid green;*/
+#videoPlayer, #imagePlayer {
+  /* border: 2px solid green; */
   width: 100%;
   margin: auto;
 }
 
 #image_frame {
-  /* display element */
   /*border: 2px solid blue;
   background: pink;*/
   position: absolute;
@@ -147,15 +143,22 @@ h6 {
 }
 
 #image {
-  /* display element */
   position: absolute;
   height: 100%;
   width: 100%;
   object-fit: contain;
 }
 
+#images {
+  /* border: 2px solid blue; */
+  background: pink;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
 #popup_title {
-  /* display element */
   position: absolute;
   align-self: center;
   /*margin: auto;*/
@@ -163,8 +166,7 @@ h6 {
   bottom: 14%;
 }
 
-.scroll-left {
-  /* display element */
+#scroll-left {
   /*border: 1px solid white;*/
   /*margin: 25px auto;*/
   /* location */
@@ -180,8 +182,7 @@ h6 {
   padding-right: 1.5rem;
 }
 
-.scroll-left p {
-  /* display element */
+#scroll-left p {
   width: 110%;
   height: 100%;
   /*line-height: 100px;*/

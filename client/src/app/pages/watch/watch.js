@@ -30,12 +30,12 @@ export default class Watch extends React.Component {
   constructor(props) {
     super(props);
     //
-    this.exitFullscreen = this.exitFullscreen.bind(this);
     this.apiGet = this.apiGet.bind(this);
-    this.goFullscreen = this.goFullscreen.bind(this);
     this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onEnded = this.onEnded.bind(this);
+    this.goFullscreen = this.goFullscreen.bind(this);
+    this.exitFullscreen = this.exitFullscreen.bind(this);
     //
     this.state = {
       mode: "",
@@ -216,11 +216,10 @@ export default class Watch extends React.Component {
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr/>
-        <div className="media" ref={outerContainer => {this.outerContainer=outerContainer}} >
-          <div className="media-player" ref={container => {this.container=container}} >
+        <div ref={outerContainer => {this.outerContainer=outerContainer}} >
+          <div ref={container => {this.container=container}} >
             <ReactPlayer
             id="videoPlayer"
-            className='react-player'
             volume={this.state.volume}
             width='100%'
             height='100%'
@@ -239,7 +238,7 @@ export default class Watch extends React.Component {
             <div id="image_frame" style={this.state.image_frame}>
               <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image}/>
             </div>
-            <div id="scroller" className="scroll-left" style={this.state.scroller}>
+            <div id="scroll-left" style={this.state.scroller}>
               <p id="scroller_text">{this.state.story}</p>
             </div>
           </div>
