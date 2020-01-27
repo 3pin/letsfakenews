@@ -217,21 +217,21 @@ export default class Watch extends React.Component {
         />
         <hr/>
         <div ref={outerContainer => {this.outerContainer=outerContainer}} >
-          <div ref={container => {this.container=container}} >
+          <div id="videoContainer" ref={container => {this.container=container}} >
             <ReactPlayer
-            id="videoPlayer"
-            volume={this.state.volume}
-            width='100%'
-            height='100%'
-            ref={player => { this.player=player }}
-            controls={this.state.controls}
-            progressInterval = {this.state.progressInterval}
-            playing={this.state.playing}
-            onReady={this.onReady.bind(this)}
-            onProgress={this.onProgress.bind(this)}
-            onEnded={this.onEnded.bind(this)}
-            url={this.state.url}
-            />
+              id="videoPlayer"
+              volume={this.state.volume}
+              width='100%'
+              height='100%'
+              ref={player => { this.player=player }}
+              controls={this.state.controls}
+              progressInterval = {this.state.progressInterval}
+              playing={this.state.playing}
+              onReady={this.onReady.bind(this)}
+              onProgress={this.onProgress.bind(this)}
+              onEnded={this.onEnded.bind(this)}
+              url={this.state.url}
+              />
             <div id="popup_title" style={this.state.popup_title}>
               <p id="popup_title_text">{this.state.title}</p>
             </div>
