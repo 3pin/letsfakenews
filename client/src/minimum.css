@@ -150,18 +150,18 @@ h6 {
 }
 
 #imagePlayer {
-  /* border: 2px solid green; */
+  border: 2px solid green;
   width: 100%;
   margin: auto;
 }
 
 #images {
-  /* border: 2px solid blue; */
+  border: 2px solid blue;
   background: pink;
   position: relative;
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 #popup_title {

@@ -1,5 +1,4 @@
 import React from "react";
-import CrossfadeImage from "react-crossfade-image";
 import FrameButton from "../../../app/components/frameButton";
 //import Sketch from "./sketches/sketch4class";
 import 'eventsource-polyfill';
@@ -26,11 +25,20 @@ export default class Visualise extends React.Component {
       liveList: [],
       imageSet: ["../../images/bgd.jpg"],
       imageIndex: 0,
-      style: {
-        position: 'relative',
-        height: '100%',
+      imagecontainerStyle: {
+        /*border: '2px solid green',
+        background: 'green',*/
         width: '100%',
-        objectFit: 'cover',
+        height: '100%',
+        margin: 'auto'
+      },
+      imgStyle: {
+        /*border: '2px solid blue',
+        background: 'pink',*/
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        objectFit: 'contain',
       }
     };
   }
@@ -43,7 +51,8 @@ export default class Visualise extends React.Component {
   goFullscreen() {
     document.activeElement.blur();
     console.log("fullscreen entered");
-    let i = this.innerContainer;
+    let i = this.container;
+    console.log(i);
     if (i.requestFullscreen) {
       i.requestFullscreen();
     } else if (i.webkitRequestFullscreen) {
@@ -88,15 +97,15 @@ export default class Visualise extends React.Component {
       this.pickImages();
     }
   };
-  startTimer(id) {
-    id = setInterval(() => this.changeImage(), 2000);
-    //console.log(id);
+  startTimer(delay) {
+    let id = setInterval(() => this.changeImage(), delay);
+    console.log(id);
     return {
       id: id
     };
   }
   endTimer(id) {
-    //console.log(id);
+    console.log(id);
     clearInterval(id);
   }
   componentDidMount() {
@@ -124,7 +133,7 @@ export default class Visualise extends React.Component {
           this.pickImages();
         }).then(() => {
           /* start the changeImage-timer */
-          timerId = this.startTimer().id;
+          timerId = this.startTimer(3000).id;
         }).catch(err => console.log(err));
     }
   }
@@ -134,7 +143,7 @@ export default class Visualise extends React.Component {
     this._isMounted = false;
   }
   render() {
-    console.log(this.state)
+    //console.log(this.state)
     return (
       <div >
         <FrameButton
@@ -142,8 +151,8 @@ export default class Visualise extends React.Component {
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr/>
-        <div id="imagePlayer" style={this.state.image_frame} ref={container => {this.innerContainer=container}}>
-          <CrossfadeImage style={this.state.style} alt="" src={this.state.imageSet[this.state.imageIndex]}/>
+        <div style={this.state.imagecontainerStyle} ref={container => {this.container=container}}>
+          <img style={this.state.imgStyle} src={this.state.imageSet[this.state.imageIndex]} alt=""/>
         </div>
       </div>
     );
