@@ -7,9 +7,17 @@ matches searchterm:image via google-image-search
 const debug = require('debug')('imagesearch')
 const GoogleImages = require('google-images');
 const client = new GoogleImages(process.env.CUSTOM_SEARCH_ENGINE_ID, process.env.CUSTOM_SEARCH_APIKEY);
+/*
+GoogleImages size-options: icon, small, medium, large, xlarge, xxlarge, huge
+(cc_publicdomain | cc_attribute%7Ccc_sharealike | cc_nonderived ! cc_noncommercial
+imgType: photo, face, stock
+*/
 const searchSettings = {
   searchType: 'image',
-  safe: 'high'
+  safe: 'high',
+  imgSize: 'huge',
+  imgType: 'photo',
+  rights: '!cc_noncommercial'
 }
 
 module.exports = {

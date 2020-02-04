@@ -60,7 +60,7 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-  /* send a 'story' message */
+  /* 'story' message to update admin page */
   bus.on('story', (data) => {
     if (!res.finished) {
       //debug(data);
@@ -70,8 +70,7 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-
-  /* send a 'activelistChange' message */
+  /* 'activelistChange' message to update visualise pages */
   bus.on('activelistChange', (data) => {
     if (!res.finished) {
       debug(data);
@@ -81,7 +80,7 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-  /* send an 'feedback' message */
+  /* 'feedback' message to update admin page */
   bus.on('feedback', (data) => {
     if (!res.finished) {
       //debug(data);
@@ -91,7 +90,7 @@ module.exports = (req, res) => {
       res.write(`\n\n`);
     }
   });
-  /* send an 'feedback' message */
+  /* error message */
   bus.on('error', (err) => {
     //debug(data);
     debug('SSE bus err', err);

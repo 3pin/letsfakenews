@@ -5,22 +5,24 @@ const debug = require('debug')('routes_admin');
 const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
 // import mongoose 'Story' schema
 const Story = require('../../models/story.model');
+// import mongoose 'Auth' schema
+const Settings = require('../../models/settings.model');
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/routes/story/remove');
-  // remove entry from activelist in dB
+  // remove entry from activevisualiselist in dB
   let dbSettings = req.dbSettings;
-  debug(req.dbSettings.activelist);
-  req.dbSettings.activelist = req.dbSettings.activelist.filter(item => item != req.body._id);
-  debug(req.dbSettings.activelist);
+  debug(dbSettings.activelist);
+  dbSettings.activelist = dbSettings.activelist.filter(item => item != req.body._id);
+  debug(dbSettings.activelist);
   // offset the next-story-to-read to account for deleted entry
-  req.dbSettings.entry_to_read = req.dbSettings.entry_to_read - 1;
-  dbSettingsUpdate(req.dbSettings).then((docs) => {
+  dbSettings.entry_to_read = dbSettings.entry_to_read - 1;
+  dbSettingsUpdate(dbSettings).then((docs) => {
     debug(docs);
   })
-  // delete entry from actual db
+  // delete entry from acreq.tual db
   const query = {
     _id: req.body._id
   };
@@ -31,10 +33,20 @@ module.exports = (req, res) => {
     // fetch the db to refresh the frontend
     Story.find({}).sort([['_id', 1]]).then((docs, err) => {
       debug(docs);
+      /* tell visualise-pages about activeListChange */
       bus.emit('activelistChange', dbSettings.activelist.length);
+      /* check if activelist.length < visualise.length */
+      if (dbSettings.activelist.length <= dbSettings.visualise) {
+        debug(`activelist:${dbSettings.activelist.length} is less than visualise amount:${dbSettings.visualise}`);
+        dbSettings.visualise = dbSettings.activelist.length;
+        dbSettingsUpdate(dbSettings).then((docs) => {
+          debug(docs);
+        })
+      }
       res.json({
         stories: docs,
-        activelistChange: dbSettings.activelist.length
+        activelistChange: dbSettings.activelist.length,
+        visualise: dbSettings.visualise
       });
     });
   }).catch((err) => {

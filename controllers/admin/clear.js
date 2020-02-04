@@ -28,7 +28,6 @@ module.exports = (req, res) => {
       debug(docs);
       //debug(docs.result.n + " document(s) deleted");
     }
-    bus.emit('activelistChange', 0);
     res.json({
       stories: [],
       activelistChange: 0,
@@ -39,6 +38,8 @@ module.exports = (req, res) => {
     dbSettings.activelist = [];
     dbSettings.entry_to_read = 0;
     dbSettingsUpdate(dbSettings);
+    /* tell visualise-pages about activeListChange */
+    bus.emit('activelistChange', 0);
   }).catch((err) => {
     debug("Err: ", err);
   });

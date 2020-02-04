@@ -28,7 +28,7 @@ export default class Stories extends React.Component {
       stories: [],
       autolive: false,
       activelistLength: 0,
-      visualise: undefined
+      visualise: 0
     };
   }
   apiGet = async (endpoint) => {
@@ -82,7 +82,7 @@ export default class Stories extends React.Component {
     }
     this.apiPost(this.props.apiClear, data).then(res => this.setState({
       stories: res.stories,
-      activelistLength: res.activelistChange,
+      activelistLength: res.activelistLength,
       visualise: 0
     })).catch(err => console.log(err));
   }
@@ -91,22 +91,24 @@ export default class Stories extends React.Component {
     /* Connect to API and delete single entry from database */
     this.apiPost(this.props.apiRemove, row).then((res) => this.setState({
       stories: res.stories,
-      activelistLength: res.activelistChange
+      activelistLength: res.activelistLength,
+      visualise: JSON.parse(res.visualise)
     })).catch(err => console.log(err));
   }
   handleStorylive(row) {
     /* Connect to API to update storylive-setting for entry in database */
     this.apiPost(this.props.apiStorylive, row).then((res) => this.setState({
       stories: res.stories,
-      activelistChange: res.activelistChange
-    })).catch(err => console.log(err));
+      activelistLength: res.activelistLength,
+      visualise: JSON.parse(res.visualise)
+    }, () => {console.log(this.state)})).catch(err => console.log(err));
   }
   componentDidMount() {
     /* load autolive-status & stories from Db */
     this.apiGet(this.props.apiHello)
       .then((res) => {
         this.setState({
-          activelistLength: res.activelistChange,
+          activelistLength: res.activelistLength,
           visualise: res.visualise,
           autolive: JSON.parse(res.autolive),
           stories: res.stories
@@ -128,7 +130,7 @@ export default class Stories extends React.Component {
         activelistLength: JSON.parse(e.data)
       });
     });
-    // Catches errors
+    /* Catches errors */
     this.eventSource.onerror = (e) => {
       console.log("--- SSE EVENTSOURCE ERROR: ", e);
     };
@@ -166,7 +168,7 @@ export default class Stories extends React.Component {
           <tr>
             <td>Max number of stories to visualise</td>
             <td>
-              <input type='number' min='1' max={this.state.activelistLength} defaultValue={this.state.visualise} onInput={this.handleVisualsLength}/>
+              <input type='number' min='0' max={this.state.activelistLength} value={this.state.visualise} onChange={this.handleVisualsLength}/>
             </td>
           </tr>
         </tbody>

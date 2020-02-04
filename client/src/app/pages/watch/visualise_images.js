@@ -24,6 +24,7 @@ export default class Visualise extends React.Component {
       apiHello: "/watch/visualise",
       liveList: [],
       imageSet: ["../../images/bgd.jpg"],
+      imageSetIndex: 0,
       imageIndex: 0,
       imagecontainerStyle: {
         /*border: '2px solid green',
@@ -77,13 +78,21 @@ export default class Visualise extends React.Component {
   pickImages() {
     console.log('pickImages')
     /* randomly pick imageSet from this.state.liveList */
+    /*
     let randomSet = Math.floor(Math.random() * this.state.liveList.length);
     return new Promise(() => {
       this.setState({
-        imageSet: this.state.liveList[randomSet].urls_title
-      }, this.setState({
+        imageSet: this.state.liveList[randomSet].urls_title,
         imageIndex: 0
-      }))
+      })
+    })
+    */
+    /* sequentially pick imageSet from this.state.liveList */
+    return new Promise(() => {
+      this.setState({
+        imageSet: this.state.liveList[this.state.imageSetIndex].urls_title,
+        imageIndex: 0
+      })
     })
   };
   changeImage() {
@@ -94,18 +103,28 @@ export default class Visualise extends React.Component {
         imageIndex: this.state.imageIndex + 1
       })
     } else {
-      this.pickImages();
+      /* if imageSetIndex reached the end of imageSet then reset */
+      if (this.state.imageSetIndex === this.state.liveList.length - 1) {
+        this.setState({
+          imageSetIndex: 0
+        }, () => {this.pickImages()})
+      } else {
+        /* increment imageSetIndex */
+        this.setState({
+          imageSetIndex: this.state.imageSetIndex + 1
+        }, () => {this.pickImages()})
+      }
     }
   };
   startTimer(delay) {
     let id = setInterval(() => this.changeImage(), delay);
-    console.log(id);
+    console.log(`timerid: ${id}`);
     return {
       id: id
     };
   }
   endTimer(id) {
-    console.log(id);
+    console.log(`timerid: ${id}`);
     clearInterval(id);
   }
   componentDidMount() {
@@ -119,7 +138,7 @@ export default class Visualise extends React.Component {
     this.eventSource.onerror = (e) => {
       console.log("--- SSE EVENTSOURCE ERROR: ", e);
     };
-    /* connect to API */
+    /* connect to API ONLY when component is mounted */
     if (this._isMounted) {
       this.apiGet(this.state.apiHello)
         .then(res => {
@@ -128,19 +147,26 @@ export default class Visualise extends React.Component {
           this.setState({
             liveList: res.liveList
           });
-        }).then(() => {
+        })
+        .then(() => {
           /* randomly pick imageSet from liveList */
+          console.log('first pickImages')
           this.pickImages();
-        }).then(() => {
+        })
+        .then(() => {
           /* start the changeImage-timer */
-          timerId = this.startTimer(3000).id;
+          console.log('first startTimer')
+          timerId = this.startTimer(4000).id;
         }).catch(err => console.log(err));
     }
   }
   componentWillUnmount() {
     /* cancel the changeImage-timer */
     this.endTimer(timerId);
+    //
     this._isMounted = false;
+    /* close sse listener */
+    this.eventSource.close();
   }
   render() {
     //console.log(this.state)

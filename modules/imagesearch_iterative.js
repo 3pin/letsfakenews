@@ -7,12 +7,6 @@ matches searchterm:image via google-image-search
 const debug = require('debug')('imagesearch_iterative')
 const GoogleImages = require('google-images');
 const client = new GoogleImages(process.env.CUSTOM_SEARCH_ENGINE_ID, process.env.CUSTOM_SEARCH_APIKEY);
-// GoogleImages size-options: icon, small, medium, large, xlarge, xxlarge, huge
-const searchSettings = {
-  searchType: 'image',
-  safe: 'high',
-  imgSize: 'huge'
-}
 const imagesearch = require('../modules/imagesearch');
 
 module.exports = {
