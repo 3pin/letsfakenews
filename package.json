@@ -14,14 +14,13 @@
     "test_react": "cd client && npm run test",
     "test_coverage_text": "nyc --reporter=text mocha ./test --recursive",
     "test_coverage_html": "nyc --reporter=html mocha ./test --recursive",
-    "test": "mocha ./test --recursive",
+    "test": "snyk test && mocha ./test --recursive",
     "test_nlp": "mocha ./test/modules/nlp.test.js",
     "test_imagesearch": "mocha ./test/modules/imagesearch.test.js",
     "test_process": "mocha ./test/modules/process.test.js",
     "test_time_ops": "mocha ./test/modules/time_ops.test.js",
     "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js",
     "test_refresh": "mocha ./test/modules/refresh.test.js"
-
   },
   "dependencies": {
     "async": "^3.1.0",
@@ -50,7 +49,7 @@
     "mongoose": "^5.8.0",
     "morgan": "^1.9.1",
     "node": "^10.17.0",
-    "npm": "^6.13.4",
+    "npm": "^6.13.7",
     "popper.js": "^1.16.0",
     "pos": "^0.4.2",
     "serve-favicon": "^2.5.0",
@@ -59,7 +58,8 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
-    "nodemon": "^2.0.2",
-    "nyc": "^14.1.1"
+    "nodemon": "^1.18.10",
+    "nyc": "^14.1.1",
+    "snyk": "^1.290.2"
   }
 }

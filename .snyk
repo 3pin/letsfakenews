@@ -1,0 +1,447 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.5
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-DOTPROP-543489:
+    - configstore > dot-prop:
+        reason: no current fix
+        expires: '2020-03-08T11:53:05.592Z'
+    - nodemon > update-notifier > configstore > dot-prop:
+        reason: no current fix
+        expires: '2020-03-08T11:53:05.592Z'
+    - npm > update-notifier > configstore > dot-prop:
+        reason: None given
+        expires: '2020-03-08T11:55:08.108Z'
+    - npm > libnpx > update-notifier > configstore > dot-prop:
+        reason: None given
+        expires: '2020-03-08T11:55:08.108Z'
+  SNYK-JS-KINDOF-537849:
+    - anymatch > micromatch > kind-of:
+        reason: no current fix
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > readdirp > micromatch > kind-of:
+        reason: no current fix
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > nanomatch > kind-of:
+        reason: no current fix
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > anymatch > micromatch > kind-of:
+        reason: no current fix
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > define-property > is-descriptor > kind-of:
+        reason: no current fix
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > anymatch > micromatch > nanomatch > kind-of:
+        reason: no current fix
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > readdirp > micromatch > nanomatch > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > anymatch > micromatch > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > nanomatch > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > readdirp > micromatch > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > braces > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > extglob > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > braces > snapdragon-node > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > braces > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > anymatch > micromatch > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > braces > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > readdirp > micromatch > nanomatch > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > anymatch > micromatch > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > readdirp > micromatch > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > anymatch > micromatch > nanomatch > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > extglob > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > braces > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > readdirp > micromatch > extglob > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > anymatch > micromatch > extglob > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > braces > snapdragon-node > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > extglob > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > braces > snapdragon-node > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > extglob > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - chokidar > braces > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.592Z'
+    - anymatch > micromatch > braces > snapdragon-node > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - anymatch > micromatch > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - anymatch > micromatch > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - anymatch > micromatch > nanomatch > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - chokidar > readdirp > micromatch > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - chokidar > anymatch > micromatch > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - chokidar > readdirp > micromatch > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - anymatch > micromatch > nanomatch > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - chokidar > readdirp > micromatch > extglob > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - anymatch > micromatch > braces > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.593Z'
+    - chokidar > readdirp > micromatch > extglob > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > extglob > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > braces > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > extglob > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > braces > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > braces > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > braces > snapdragon-node > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > nanomatch > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > braces > snapdragon-node > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > extglob > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > nanomatch > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > nanomatch > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > extglob > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > extglob > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > braces > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > braces > snapdragon-node > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > braces > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > braces > snapdragon-node > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > extglob > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > nanomatch > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > nanomatch > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > nanomatch > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > nanomatch > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > readdirp > micromatch > nanomatch > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > extglob > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > braces > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - chokidar > anymatch > micromatch > braces > snapdragon-node > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.594Z'
+    - anymatch > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > braces > snapdragon-node > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - anymatch > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > braces > snapdragon-node > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - anymatch > micromatch > braces > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > braces > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > braces > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > extglob > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - anymatch > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > extglob > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > extglob > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > extglob > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > nanomatch > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - anymatch > micromatch > braces > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > nanomatch > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > nanomatch > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > braces > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - anymatch > micromatch > extglob > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > nanomatch > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - anymatch > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > braces > snapdragon-node > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > braces > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > braces > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > braces > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > anymatch > micromatch > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - anymatch > micromatch > extglob > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - anymatch > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.595Z'
+    - chokidar > readdirp > micromatch > extglob > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > anymatch > micromatch > extglob > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > readdirp > micromatch > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - anymatch > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > readdirp > micromatch > braces > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > anymatch > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - anymatch > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > readdirp > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > anymatch > micromatch > extglob > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > anymatch > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > anymatch > micromatch > braces > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > readdirp > micromatch > extglob > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > readdirp > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > anymatch > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > anymatch > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > readdirp > micromatch > nanomatch > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > readdirp > micromatch > extglob > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > anymatch > micromatch > extglob > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.596Z'
+    - chokidar > readdirp > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+    - chokidar > readdirp > micromatch > braces > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+    - chokidar > anymatch > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+    - chokidar > anymatch > micromatch > braces > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+    - chokidar > readdirp > micromatch > extglob > expand-brackets > to-regex > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+    - chokidar > anymatch > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+    - chokidar > readdirp > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > is-data-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+    - chokidar > readdirp > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+    - chokidar > anymatch > micromatch > extglob > expand-brackets > snapdragon > base > define-property > is-descriptor > is-accessor-descriptor > kind-of:
+        reason: None given
+        expires: '2020-03-08T11:53:05.597Z'
+  SNYK-JS-USERAGENT-174737:
+    - express-device > device > useragent:
+        reason: None given
+        expires: '2020-03-08T11:55:08.108Z'
+  'npm:utile:20180614':
+    - htdigest > prompt > utile:
+        reason: None given
+        expires: '2020-03-08T11:55:08.108Z'
+patch: {}
