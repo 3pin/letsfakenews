@@ -12,3 +12,4 @@ tmp
 database
 htpasswd
 client/build
+.snyk

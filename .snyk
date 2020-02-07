@@ -1,0 +1,20 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.5
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-DOTPROP-543489:
+    - npm > update-notifier > configstore > dot-prop:
+        reason: None given
+        expires: '2020-03-08T10:52:58.506Z'
+    - npm > libnpx > update-notifier > configstore > dot-prop:
+        reason: None given
+        expires: '2020-03-08T10:52:58.506Z'
+  SNYK-JS-USERAGENT-174737:
+    - express-device > device > useragent:
+        reason: None given
+        expires: '2020-03-08T10:52:58.506Z'
+  'npm:utile:20180614':
+    - htdigest > prompt > utile:
+        reason: None given
+        expires: '2020-03-08T10:52:58.506Z'
+patch: {}
