@@ -22,6 +22,7 @@ const options = {
 };
 describe("Refresh: refreshing urls for stories", () => {
   before((done) => {
+    /* open db connection for tests */
     mongoose.connect(process.env.MONGODB_URI_TESTS, options);
     mongoose.connection.once("open", () => {
       debug("db-connected");
@@ -31,15 +32,17 @@ describe("Refresh: refreshing urls for stories", () => {
     });
   });
   after(() => {
+    /* close db connection */
     mongoose.connection.close(() => {
       debug("db-disconnected");
       process.exit(0);
     })
   });
   beforeEach((done) => {
+    /* create 2 db entries */
     let story1 = new Story({
-      story: "Let's talk about Thursday and Friday",
-      title: "Thursday & Friday",
+      story: "Let's talk about the week",
+      title: "Monday & Tuesday",
       time: "11:24:41",
       storylive: true,
       words: ["Thursday", "Friday"],
@@ -48,7 +51,17 @@ describe("Refresh: refreshing urls for stories", () => {
         "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg"
       ]
     });
-    let story2 = story1;
+    let story2 = new Story({
+      story: "Let's talk about the weekend",
+      title: "Saturday & Sunday",
+      time: "11:24:41",
+      storylive: true,
+      words: ["Thursday", "Friday"],
+      urls: [
+        "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg",
+        "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg"
+      ]
+    });
     story1.save().then(() => {
       story2.save().then(() => {
         done();
@@ -58,7 +71,11 @@ describe("Refresh: refreshing urls for stories", () => {
     });
   });
   afterEach(() => {
-    mongoose.connection.collections.testing.drop();
+    /* create 2 db entries */
+    //mongoose.connection.collections.development.drop();
+    mongoose.connection.collection(process.env.DATABASE, function (err, collection) {
+      collection.drop()
+    })
   });
   it("refresh the urls in 1 story", done => {
     const refresh_urls = require("../../modules/refresh_urls.js");
