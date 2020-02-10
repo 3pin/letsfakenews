@@ -1,4 +1,4 @@
-import Calc from './func_Calc.js';
+import Calc from './functions/calc.js';
 
 export default function sketch(p) {
   let initialWidth = 500;

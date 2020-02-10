@@ -4,15 +4,13 @@ export default function sketch(p) {
   let initialWidth = 400;
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
-  let testAlignment = "TRUE";
   let inc = -5;
-  let radius = 50;
-  let textSizeFactor = 10;
+  let textSizeFactor = 8;
   let story = "Initial Story";
   let liveList = [];
-  let numLines = 2;
+  let numLines = 4;
   let lines = [];
-  //
+  /* function connecting to props */
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     console.log("PROPS received...");
     if (props.liveList.length > 0) {
@@ -22,31 +20,27 @@ export default function sketch(p) {
       }
     }
   };
+  /* function run once at startup... where objects are initialised from class */
   p.setup = () => {
     console.log("SETUP started...");
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     p.createCanvas(canvasWidth, canvasHeight);
     for (let i = 0; i < numLines; i++) {
-      lines.push(new StoryLine(p, canvasWidth, canvasHeight, textSizeFactor, inc, radius, story));
+      lines.push(new StoryLine(p, canvasWidth, canvasHeight, textSizeFactor, inc, story));
     }
   }
+  /* function running throughout... where objects are updated */
   p.draw = () => {
     p.noSmooth();
     p.background(0);
-    if (testAlignment === "TRUE") {
-      p.fill(160);
-      p.ellipse(0, 0, radius, radius);
-      p.ellipse(canvasWidth, 0, radius, radius);
-      p.ellipse(0, canvasHeight, radius, radius);
-      p.ellipse(canvasWidth, canvasHeight, radius, radius);
-    }
     p.fill(255);
     for (const line of lines) {
       line.show();
       line.move(liveList);
     }
   };
+  /* function to deal with fullscreen */
   window.onresize = () => {
     if (!window.screenTop && !window.screenY) {
       canvasWidth = window.screen.width;
