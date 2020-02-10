@@ -19,7 +19,8 @@ module.exports = (req, res) => {
   debug('Unprocessed news...');
   /* preprocess 'title' to CAPS */
   //client_JSON.title = client_JSON.title.toUpperCase();
-  /* preprocess 'story' removing linebreaks */
+  /* preprocess 'title' & 'story' removing linebreaks */
+  client_JSON.title = client_JSON.title.replace(/(\r\n|\n|\r)/gm, " ");
   client_JSON.story = client_JSON.story.replace(/(\r\n|\n|\r)/gm, " ");
   /* process... add storylive, add NLP_words, add matching urls */
   client_JSON.storylive = dbSettings.autolive;
