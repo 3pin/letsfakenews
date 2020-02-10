@@ -10,20 +10,22 @@ const Story = require('../../models/story.model');
 
 module.exports = (req, res) => {
   debug('/POST routes/add_title_story');
-  // fetch db settings
+  /* fetch db settings */
   let dbSettings = req.dbSettings;
   debug('dbSettings...');
   debug(dbSettings);
   let client_JSON = req.body;
-  debug('Unprocessed news...');
-  // preprocess 'title' to CAPS
   debug(client_JSON);
-  //client_JSON.title = req.body.title.toUpperCase();
-  // process... add storylive, add NLP_words, add matching urls
+  debug('Unprocessed news...');
+  /* preprocess 'title' to CAPS */
+  //client_JSON.title = client_JSON.title.toUpperCase();
+  /* preprocess 'story' removing linebreaks */
+  client_JSON.story = client_JSON.story.replace(/(\r\n|\n|\r)/gm, " ");
+  /* process... add storylive, add NLP_words, add matching urls */
   client_JSON.storylive = dbSettings.autolive;
   const process_client_story = require('../../modules/process_client_story.js');
   process_client_story.process(client_JSON).then((result) => {
-    // 'result' contains: story/title/storylive/time/words/urls
+    /* 'result' now contains: story/title/storylive/time/words/urls */
     debug('Processed news...');
     debug(result);
     //debug(result.urls[0]);
