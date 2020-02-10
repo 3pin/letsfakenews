@@ -5,10 +5,10 @@ export default function sketch(p) {
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
   let inc = -5;
-  let textSizeFactor = 8;
+  let textSizeFactor = 13;
   let story = "Initial Story";
   let liveList = [];
-  let numLines = 4;
+  let numLines = 3;
   let lines = [];
   /* function connecting to props */
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
