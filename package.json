@@ -44,7 +44,7 @@
     "express-device": "^0.4.2",
     "google-images": "^2.1.0",
     "helmet": "^3.21.2",
-    "htdigest": "^2.2.3",
+    "htdigest": "^2.2.6",
     "http-auth": "^4.1.2",
     "jquery": "^3.4.1",
     "jsonwebtoken": "^8.5.1",
