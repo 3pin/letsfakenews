@@ -51,7 +51,7 @@
     "lodash": "^4.17.15",
     "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
-    "popper.js": "^1.14.7",
+    "popper.js": "^1.16.1",
     "pos": "^0.4.2",
     "serve-favicon": "^2.5.0",
     "to-boolean": "^1.0.0"
