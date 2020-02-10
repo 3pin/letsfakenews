@@ -1,10 +1,10 @@
 'use strict';
 const debug = require('debug')('routes_write');
-// tap into an sse event-bus
+/* tap into an sse event-bus */
 const bus = require('../../modules/eventbus');
-// load update module
+/* load update module */
 const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
-// import mongoose schemas
+/* import mongoose schemas */
 const Settings = require('../../models/settings.model');
 const Story = require('../../models/story.model');
 
@@ -42,15 +42,15 @@ module.exports = (req, res) => {
       story.save().then((saved) => {
         debug('Document inserted to db successfully...');
         res.send('Success');
-        // fetch all entries matching the Story-model from db sorted by ascending key '_id' ...
+        /* fetch all entries matching the Story-model from db sorted by ascending key '_id' ... */
         Story.find({}).sort([['_id', 1]]).then((docs) => {
           debug('stories in db are ...')
-          // tell eventbus about a new-story to trigger refresh of admin-frontend
+          /* tell eventbus about a new-story to trigger refresh of admin-frontend */
           bus.emit('story', docs);
-          // tell eventbus about a new-story to trigger update of activeList
+          /* tell eventbus about a new-story to trigger update of activeList */
           bus.emit('activelistChange', dbSettings.activelist.length + 1);
           debug('SSE event triggered by New_Story');
-          // if storylive is TRUE, then should be auto added to activelist
+          /* if storylive is TRUE, then should be auto added to activelist */
           if (story.storylive === true) {
             dbSettings.activelist.push(story._id);
             dbSettings.entry_to_read = dbSettings.activelist.length - 1;
