@@ -21,7 +21,10 @@ const options = {
   useUnifiedTopology: true
 };
 describe("Refresh: refreshing urls for stories", () => {
+  debug('started')
+  //
   before((done) => {
+    debug('before entered...')
     /* open db connection for tests */
     mongoose.connect(process.env.MONGODB_URI_TESTS, options);
     mongoose.connection.once("open", () => {
@@ -32,6 +35,7 @@ describe("Refresh: refreshing urls for stories", () => {
     });
   });
   after(() => {
+    debug('after entered...')
     /* close db connection */
     mongoose.connection.close(() => {
       debug("db-disconnected");
@@ -39,6 +43,7 @@ describe("Refresh: refreshing urls for stories", () => {
     })
   });
   beforeEach((done) => {
+    debug('beforeEach entered...')
     /* create 2 db entries */
     let story1 = new Story({
       story: "Let's talk about the week",
@@ -70,17 +75,28 @@ describe("Refresh: refreshing urls for stories", () => {
       });
     });
   });
-  afterEach(() => {
+  afterEach((done) => {
+    debug('afterEach entered')
     /* create 2 db entries */
     //mongoose.connection.collections.development.drop();
+    /*
     mongoose.connection.collection(process.env.DATABASE, function (err, collection) {
-      collection.drop()
+      collection.drop().then(() => {
+        debug("collection dropped");
+        done();
+      });
+    })
+    */
+    mongoose.connection.db.dropCollection(process.env.DATABASE, function (err, result) {
+      debug("Collection dropped")
+      done();
     })
   });
-  it("refresh the urls in 1 story", done => {
+  //
+  it("refresh the urls in 1 story", (done) => {
+    debug('test1 entered');
     const refresh_urls = require("../../modules/refresh_urls.js");
     Story.find({}).then((obj) => {
-      debug(obj);
       refresh_urls.process(obj[0]).then(result => {
         expect(result.urls.length).to.equal(obj[0].words.length);
         done();
@@ -90,6 +106,7 @@ describe("Refresh: refreshing urls for stories", () => {
     })
   });
   it('refresh the urls in multiple stories', (done) => {
+    debug('test2 entered');
     const refresh_urls_iterative = require('../../modules/refresh_urls_iterative.js');
     Story.find({}).then((objects) => {
       refresh_urls_iterative.process(objects).then(result => {
@@ -100,10 +117,10 @@ describe("Refresh: refreshing urls for stories", () => {
       })
     })
   });
-  it("refresh & save the urls for 1 story", done => {
+  it("refresh & save the urls for 1 story", (done) => {
+    debug('test3 entered');
     const refresh_save_urls = require("../../modules/refresh_save_urls.js");
     Story.find({}).then((stories) => {
-      debug(stories);
       refresh_save_urls.process(stories[0]._id)
         .then((res) => {
           expect(res.nModified).to.equal(1);
@@ -111,7 +128,8 @@ describe("Refresh: refreshing urls for stories", () => {
         })
     });
   });
-  it("refresh & save the urls for multiple stories", done => {
+  it("refresh & save the urls for multiple stories", (done) => {
+    debug('test4 entered');
     const refresh_save_urls_iterative = require("../../modules/refresh_save_urls_iterative.js");
     refresh_save_urls_iterative.process()
       .then((res) => {
