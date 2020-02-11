@@ -19,8 +19,8 @@ export default class Stories extends React.Component {
     this.handleVisualsLength = this.handleVisualsLength.bind(this);
     //
     this.state = {
-      activelistLength: 2,
-      visualiseNum: 1
+      activelistLength: 0,
+      visualiseNum: 0
     };
   }
   apiGet = async (endpoint) => {
@@ -45,7 +45,7 @@ export default class Stories extends React.Component {
     return body;
   };
   handleVisualsLength(e) {
-    //console.log(`onInput fired with value: '${e.currentTarget.value}'`);
+    console.log(`onInput fired with value: '${e.currentTarget.value}'`);
     let data = {
       visualiseNum: e.currentTarget.value
     }
@@ -71,7 +71,7 @@ export default class Stories extends React.Component {
       if (JSON.parse(e.data) < this.state.visualiseNum) {
         this.setState({
           activelistLength: JSON.parse(e.data),
-          visualiseNum: JSON.parse(e.data) - 1
+          visualiseNum: JSON.parse(e.data)
         });
       } else {
         this.setState({
@@ -89,6 +89,7 @@ export default class Stories extends React.Component {
     this.eventSource.close();
   }
   render() {
+    console.log(this.state);
     const tableStyle = {
       backgroundColor: "white"
     }
@@ -117,7 +118,7 @@ export default class Stories extends React.Component {
           <tr>
             <td>Max number of stories to visualise</td>
             <td>
-              <input type='number' min='0' max={this.state.activelistLength} defaultValue={this.state.visualiseNum} onInput={this.handleVisualsLength}/>
+              <input type='number' min='0' max={this.state.activelistLength} value={this.state.visualiseNum} onChange={this.handleVisualsLength}/>
             </td>
           </tr>
         </tbody>

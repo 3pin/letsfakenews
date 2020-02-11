@@ -9,10 +9,12 @@ const bus = require('../../../modules/eventbus');
 module.exports = (req, res) => {
   debug('/POST /admin/visualise/num');
   let dbSettings = req.dbSettings;
-  dbSettings.visualise = req.data;
-  dbSettingsUpdate(dbSettings).then(() => {
+  debug(req.body.visualiseNum);
+  dbSettings.visualise = req.body.visualiseNum;
+  dbSettingsUpdate(dbSettings).then((result) => {
+    debug(result);
     res.json({
-      visualiseNum: dbSettings.visualise
+      visualiseNum: result.visualise
     });
   })
 }
