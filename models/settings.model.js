@@ -3,6 +3,14 @@ const Schema = mongoose.Schema;
 const Base = require('./base.model');
 
 let SettingsSchema = new Schema({
+  image_duration: {
+    type: Number,
+    required: true
+  },
+  text_scrollers: {
+    type: Number,
+    required: true
+  },
   entry_to_read: {
     type: Number,
     required: true

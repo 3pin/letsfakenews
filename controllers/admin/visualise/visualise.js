@@ -11,6 +11,8 @@ module.exports = (req, res) => {
   let dbSettings = req.dbSettings;
   res.json({
     activelistLength: dbSettings.activelist.length,
-    visualiseNum: dbSettings.visualise
+    visualiseNum: dbSettings.visualise,
+    textScrollers: dbSettings.text_scrollers,
+    imageDuration: dbSettings.image_duration
   });
 }

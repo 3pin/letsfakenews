@@ -41,6 +41,8 @@
           desc="Use this page to control the visualisations in realtime"
           apiHello="/admin/visualise"
           apiVisualiseNum="/admin/visualise/num"
+          apiDurationChange="/admin/visualise/duration"
+          apiScrollerChange="/admin/visualise/scroller"
           />
         }/>
         <Redirect to="/admin"/>

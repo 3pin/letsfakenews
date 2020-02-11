@@ -151,7 +151,9 @@ const settingsObj = {
   activelist: [],
   db_mode: process.env.DB_MODE,
   node_mode: process.env.NODE_ENV,
-  visualise: process.env.VISUALISE
+  visualise: process.env.VISUALISE,
+  image_duration: process.env.IMAGE_DURATION,
+  text_scrollers: process.env.TEXT_SCROLLERS
 }
 const authObj = {
   username: process.env.USERNAME,

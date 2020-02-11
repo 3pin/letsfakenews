@@ -19,7 +19,8 @@ const feedback_clear = require('../controllers/admin/feedback/clear');
 //
 const visualise = require('../controllers/admin/visualise/visualise');
 const visualise_num = require('../controllers/admin/visualise/num');
-
+const visualise_duration = require('../controllers/admin/visualise/duration');
+const visualise_scroller = require('../controllers/admin/visualise/scroller');
 //
 // admin landing
 admin.get('/', (req, res) => {
@@ -46,5 +47,7 @@ admin.post('/feedback/clear', feedback_clear);
 /* display visualise controls */
 admin.get('/visualise', visualise);
 admin.post('/visualise/num', visualise_num);
+admin.post('/visualise/duration', visualise_duration);
+admin.post('/visualise/scroller', visualise_scroller);
 
 module.exports = admin;
