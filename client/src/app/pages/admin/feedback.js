@@ -42,11 +42,8 @@ export default class Feedback extends React.Component {
     /* Connect to API and clear all from database */
     document.activeElement.blur();
     /* Connect to API and clear feedback from database */
-    let data = {
-      subject: this.props.title
-    }
-    this.apiPost(this.props.apiClear, data).then(res => this.setState({
-      feedback: res.data
+    this.apiPost(this.props.apiClear).then(res => this.setState({
+      feedback: res.feedback
     })).catch(err => console.log(err));
   }
   componentDidMount() {

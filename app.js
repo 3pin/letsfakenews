@@ -206,11 +206,11 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
                 debug("Auth Entry: ", doc);
               });
             })
-
             //load activelist from dbSettings into activelist
             let activelist = [];
             const Settings = require('./models/settings.model');
             Settings.find({}).then((result) => {
+              debug(result);
               activelist = result[0].activelist
             })
             break;

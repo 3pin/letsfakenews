@@ -1,9 +1,9 @@
 'use strict';
 
 const debug = require('debug')('routes_admin');
-const refresh_save_urls_iterative = require('../../modules/refresh_save_urls_iterative.js');
+const refresh_save_urls_iterative = require('../../../modules/refresh_save_urls_iterative.js');
 // import mongoose 'Story' schema
-const Story = require('../../models/story.model');
+const Story = require('../../../models/story.model');
 
 module.exports = (req, res) => {
   debug('/routes/databases/refresh');

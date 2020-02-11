@@ -25,6 +25,13 @@ const Landing = () => {
           desc="View feedback in real-time"
         />
         <hr />
+        <FrameButton
+          variant="secondary"
+          linkto="/admin/visualise"
+          buttonLabel="Visualisation"
+          desc="Control the visualisations in real-time"
+        />
+        <hr />
       </section>
     </div>
   );

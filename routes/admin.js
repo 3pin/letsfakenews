@@ -7,14 +7,18 @@ const debug = require('debug')('routes_admin');
 const admin = require('express').Router();
 
 /* routes */
-const feedback = require('../controllers/admin/feedback');
-const clear = require('../controllers/admin/clear');
-const stories = require('../controllers/admin/stories');
-const autolive = require('../controllers/admin/autolive');
-const refresh = require('../controllers/admin/refresh');
-const remove = require('../controllers/admin/remove');
-const storylive = require('../controllers/admin/storylive');
-const storyvisualise = require('../controllers/admin/visualise');
+const stories = require('../controllers/admin/stories/stories');
+const stories_clear = require('../controllers/admin/stories/clear');
+const stories_autolive = require('../controllers/admin/stories/autolive');
+const stories_refresh = require('../controllers/admin/stories/refresh');
+const stories_remove = require('../controllers/admin/stories/remove');
+const stories_storylive = require('../controllers/admin/stories/storylive');
+//
+const feedback = require('../controllers/admin/feedback/feedback');
+const feedback_clear = require('../controllers/admin/feedback/clear');
+//
+const visualise = require('../controllers/admin/visualise/visualise');
+const visualise_num = require('../controllers/admin/visualise/num');
 
 //
 // admin landing
@@ -22,20 +26,25 @@ admin.get('/', (req, res) => {
   debug("'REACT /admin' says 'Hello' ");
   res.send({express: "Hello 'REACT... route admin' "});
 });
-
+//
+/* display stories database */
+admin.get('/stories/', stories);
+// stories macro-ops
+admin.get('/stories/autolive', stories_autolive);
+admin.get('/stories/refresh', stories_refresh);
+/* clear a database */
+admin.post('/stories/clear', stories_clear);
+// stories row-ops
+admin.post('/stories/remove', stories_remove);
+admin.post('/stories/storylive', stories_storylive);
+//
 /* display feedback database */
 admin.get('/feedback', feedback);
-/* display stories database */
-admin.get('/stories', stories);
 /* clear a database */
-admin.post('/clear', clear);
-// stories macro-ops
-admin.get('/stories/autolive', autolive);
-admin.get('/stories/refresh', refresh);
-// stories row-ops
-admin.post('/story/remove', remove);
-admin.post('/story/storylive', storylive);
-// visualise stories settings
-admin.post('/stories/visualise', storyvisualise);
+admin.post('/feedback/clear', feedback_clear);
+//
+/* display visualise controls */
+admin.get('/visualise', visualise);
+admin.post('/visualise/num', visualise_num);
 
 module.exports = admin;

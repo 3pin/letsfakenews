@@ -47,11 +47,11 @@ module.exports = (req, res) => {
           debug('stories in db are ...')
           /* tell eventbus about a new-story to trigger refresh of admin-frontend */
           bus.emit('story', docs);
-          /* tell eventbus about a new-story to trigger update of activeList */
-          bus.emit('activelistChange', dbSettings.activelist.length + 1);
-          debug('SSE event triggered by New_Story');
           /* if storylive is TRUE, then should be auto added to activelist */
           if (story.storylive === true) {
+            /* tell eventbus about a new-story to trigger update of activeList */
+            debug('SSE event triggered by New_Story');
+            bus.emit('activelistChange', dbSettings.activelist.length + 1);
             dbSettings.activelist.push(story._id);
             dbSettings.entry_to_read = dbSettings.activelist.length - 1;
             dbSettings.db_mode = 'next';

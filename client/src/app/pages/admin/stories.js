@@ -17,18 +17,16 @@ export default class Stories extends React.Component {
     //
     this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
+    //
     this.handleAutolive = this.handleAutolive.bind(this);
     this.handleRefresh = this.handleRefresh.bind(this);
     this.handleClear = this.handleClear.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.handleStorylive = this.handleStorylive.bind(this);
-    this.handleVisualsLength = this.handleVisualsLength.bind(this);
     //
     this.state = {
       stories: [],
       autolive: false,
-      activelistLength: 0,
-      visualise: 0
     };
   }
   apiGet = async (endpoint) => {
@@ -52,21 +50,15 @@ export default class Stories extends React.Component {
       throw Error(body.message);
     return body;
   };
-  handleVisualsLength(e) {
-    //console.log(`onInput fired with value: '${e.currentTarget.value}'`);
-    let data = {
-      visualise: e.currentTarget.value
-    }
-    // connect to API to update db and then update this component
-    this.apiPost(this.props.apiVisualise, data).then((res) => this.setState({
-      visualise: JSON.parse(res.visualise)
-    })).catch(err => console.log(err));
-  }
-  handleAutolive(isChecked) {
+  handleAutolive() {
     /* update status of autolive */
-    this.apiGet(this.props.apiAutolive).then((res) => this.setState({
-      autolive: JSON.parse(res.autolive)
-    })).catch(err => console.log(err));
+    this.apiGet(this.props.apiAutolive)
+      .then((res) => {
+        this.setState({
+          autolive: JSON.parse(res.autolive)
+        })
+        console.log(res);
+      }).catch(err => console.log(err));
   }
   handleRefresh() {
     /* Connect to API to refresh imagery */
@@ -77,10 +69,7 @@ export default class Stories extends React.Component {
     /* Connect to API and clear all from database */
     document.activeElement.blur();
     /* Connect to API and clear feedback from database */
-    let data = {
-      subject: this.props.title
-    }
-    this.apiPost(this.props.apiClear, data).then(res => this.setState({
+    this.apiPost(this.props.apiClear).then(res => this.setState({
       stories: res.stories,
       activelistLength: res.activelistLength,
       visualise: 0
@@ -101,15 +90,15 @@ export default class Stories extends React.Component {
       stories: res.stories,
       activelistLength: res.activelistLength,
       visualise: JSON.parse(res.visualise)
-    }, () => {console.log(this.state)})).catch(err => console.log(err));
+    }, () => {
+      console.log(this.state)
+    })).catch(err => console.log(err));
   }
   componentDidMount() {
     /* load autolive-status & stories from Db */
     this.apiGet(this.props.apiHello)
       .then((res) => {
         this.setState({
-          activelistLength: res.activelistLength,
-          visualise: res.visualise,
           autolive: JSON.parse(res.autolive),
           stories: res.stories
         })
@@ -120,14 +109,6 @@ export default class Stories extends React.Component {
       console.log('A new story triggered a refresh of the stories_list');
       this.setState({
         stories: JSON.parse(e.data)
-      });
-    });
-    /* open sse listener */
-    this.eventSource.addEventListener('activelistChange', (e) => {
-      console.log('A change triggered a refresh of the activelist');
-      console.log(e);
-      this.setState({
-        activelistLength: JSON.parse(e.data)
       });
     });
     /* Catches errors */
@@ -152,27 +133,6 @@ export default class Stories extends React.Component {
     }
     return (<div>
       <FrameBanner desc={this.props.desc} title={this.props.title}/>
-      <hr/>
-      <Table bordered style={tableStyle}>
-        <thead className="thead-dark">
-          <tr>
-            <th style={{width: "90%"}}>Control of Visuals</th>
-            <th style={{width: "10%"}}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Number of stories in Activelist</td>
-            <td>{this.state.activelistLength}</td>
-          </tr>
-          <tr>
-            <td>Max number of stories to visualise</td>
-            <td>
-              <input type='number' min='0' max={this.state.activelistLength} value={this.state.visualise} onChange={this.handleVisualsLength}/>
-            </td>
-          </tr>
-        </tbody>
-      </Table>
       <hr/>
       <Table bordered style={tableStyle}>
         <thead className="thead-dark">

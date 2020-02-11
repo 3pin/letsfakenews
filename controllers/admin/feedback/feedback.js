@@ -2,7 +2,7 @@
 
 const debug = require('debug')('routes_admin');
 // import mongoose 'Story' schema
-const Feedback = require('../../models/feedback.model');
+const Feedback = require('../../../models/feedback.model');
 
 module.exports = (req, res) => {
   debug('/GET /admin/feedback');

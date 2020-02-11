@@ -8,11 +8,11 @@ const LandingWatch = () => {
       <section>
         <FrameBanner title="Watch..." desc="Use these buttons to display stories as fake-news or visualise them as word-tracks... both will display in fullscreen."/>
         <hr/>
-        <FrameButton buttonLabel="Watch" linkto="/watch/news"/>
+        <FrameButton buttonLabel="News" linkto="/watch/news" desc="Watch fake-news broadcast live by 'El-Jazeera'"/>
         <hr/>
-        <FrameButton variant="secondary" buttonLabel="Visualise Text" linkto="/watch/text"/>
+        <FrameButton variant="secondary" buttonLabel="Scroller" linkto="/watch/text" desc="Visualise news-stories as scrolling-text"/>
         <hr/>
-        <FrameButton variant="secondary" buttonLabel="Visualise Images" linkto="/watch/images"/>
+        <FrameButton variant="secondary" buttonLabel="Slideshow" linkto="/watch/images" desc="Visualise news-headlines as an image-slideshow"/>
         <hr/>
       </section>
     </div>)

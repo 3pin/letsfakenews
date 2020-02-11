@@ -2,13 +2,13 @@
 
 const debug = require('debug')('routes_admin');
 // load update module
-const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
+const dbSettingsUpdate = require('../../middleware/dbSettingsUpdate');
 // import mongoose 'Story' schema
-const Story = require('../../models/story.model');
+const Story = require('../../../models/story.model');
 // import mongoose 'Auth' schema
-const Settings = require('../../models/settings.model');
+const Settings = require('../../../models/settings.model');
 // tap into an sse event-bus
-const bus = require('../../modules/eventbus');
+const bus = require('../../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/routes/story/remove');

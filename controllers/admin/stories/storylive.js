@@ -2,11 +2,11 @@
 
 const debug = require('debug')('routes_admin');
 /* import mongoose schemas */
-const Story = require('../../models/story.model');
+const Story = require('../../../models/story.model');
 /* import function */
-const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
+const dbSettingsUpdate = require('../../middleware/dbSettingsUpdate');
 /* tap into an sse event-bus */
-const bus = require('../../modules/eventbus');
+const bus = require('../../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/routes/admin/storylive');
