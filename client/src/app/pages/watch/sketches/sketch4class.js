@@ -39,12 +39,9 @@ export default function sketch(p) {
     p.noSmooth();
     p.background(0);
     p.fill(255);
-    for (let entry=0; entry<numScrollersDisplay; entry++) {
+    for (let entry = 0; entry < numScrollersDisplay; entry++) {
       lines[entry].show();
-    }
-    for (const line of lines) {
-      //line.show();
-      line.move(liveList);
+      lines[entry].move(liveList);
     }
   };
   /* function to deal with fullscreen */
