@@ -39,7 +39,7 @@ describe("Refresh: refreshing urls for stories", () => {
     /* close db connection */
     mongoose.connection.close(() => {
       debug("db-disconnected");
-      process.exit(0);
+      //process.exit(0);
     })
   });
   beforeEach((done) => {
