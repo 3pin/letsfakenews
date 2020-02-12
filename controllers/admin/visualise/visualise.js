@@ -9,6 +9,7 @@ const bus = require('../../../modules/eventbus');
 module.exports = (req, res) => {
   debug('/GET /admin/visualise');
   let dbSettings = req.dbSettings;
+  bus.emit('activelistChange', dbSettings.activelist.length);
   res.json({
     activelistLength: dbSettings.activelist.length,
     visualiseNum: dbSettings.visualise,

@@ -176,9 +176,9 @@ export default class Stories extends React.Component {
         </thead>
         <tbody>
           <tr>
-            <td>Num of Lines of Text</td>
+            <td>Num of Lines of Text (max 5)</td>
             <td>
-              <input type='number' min='1' value={this.state.textScrollers} onChange={this.handleScrollerChange}/>
+              <input type='number' min='1' max='5' value={this.state.textScrollers} onChange={this.handleScrollerChange}/>
             </td>
           </tr>
         </tbody>

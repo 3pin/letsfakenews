@@ -13,8 +13,9 @@ module.exports = (req, res) => {
   dbSettings.text_scrollers = req.body.textScrollers;
   dbSettingsUpdate(dbSettings).then((result) => {
     debug(result);
+    bus.emit('activelistChange', dbSettings.activelist.length);
     res.json({
-      textScrollers: result.text_scrollers
+      textScrollers: dbSettings.text_scrollers
     });
   })
 }

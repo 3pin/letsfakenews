@@ -13,6 +13,7 @@ module.exports = (req, res) => {
   dbSettings.image_duration = req.body.imageDuration;
   dbSettingsUpdate(dbSettings).then((result) => {
     debug(result);
+    bus.emit('activelistChange', dbSettings.activelist.length);
     res.json({
       imageDuration: result.image_duration
     });

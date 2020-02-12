@@ -2,7 +2,7 @@ import React from "react";
 import FrameButton from "../../../app/components/frameButton";
 //import Sketch from "./sketches/sketch4class";
 import 'eventsource-polyfill';
-var timerId;
+var timerId = 1;
 
 export default class Visualise extends React.Component {
   constructor(props) {
@@ -40,7 +40,8 @@ export default class Visualise extends React.Component {
         width: '100%',
         height: '100%',
         objectFit: 'contain',
-      }
+      },
+      imageDuration: 2
     };
   }
   apiGet = async endpoint => {
@@ -66,17 +67,24 @@ export default class Visualise extends React.Component {
   };
   refreshList() {
     console.log('refreshList')
+    /* cancel timer and restart timer */
+    this.endTimer(timerId);
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
       .then(res => {
         console.log(res.liveList);
         this.setState({
-          liveList: res.liveList
+          liveList: res.liveList,
+          imageDuration: res.imageDuration
         });
+      }).then(() => {
+        /* start new timer to run changeImage */
+        console.log('post-refresh startTimer');
+        timerId = this.startTimer(this.state.imageDuration * 1000).id;
       }).catch(err => console.log(err));
   };
   pickImages() {
-    console.log('pickImages')
+    console.log('pickImages.. change Image Set')
     /* randomly pick imageSet from this.state.liveList */
     /*
     let randomSet = Math.floor(Math.random() * this.state.liveList.length);
@@ -97,7 +105,7 @@ export default class Visualise extends React.Component {
   };
   changeImage() {
     /* every Xsecs step through the this.state.imageSet until end... then pickImages() */
-    console.log('changing imageSet url');
+    console.log('changeImage... display next Image in set');
     if (this.state.imageIndex < this.state.imageSet.length - 1) {
       this.setState({
         imageIndex: this.state.imageIndex + 1
@@ -107,12 +115,16 @@ export default class Visualise extends React.Component {
       if (this.state.imageSetIndex === this.state.liveList.length - 1) {
         this.setState({
           imageSetIndex: 0
-        }, () => {this.pickImages()})
+        }, () => {
+          this.pickImages()
+        })
       } else {
         /* increment imageSetIndex */
         this.setState({
           imageSetIndex: this.state.imageSetIndex + 1
-        }, () => {this.pickImages()})
+        }, () => {
+          this.pickImages()
+        })
       }
     }
   };
@@ -129,7 +141,7 @@ export default class Visualise extends React.Component {
   }
   componentDidMount() {
     this._isMounted = true;
-    /* open sse listener */
+    /* open sse listener to trigger a refresh:response which will update this.state.liveList */
     this.eventSource.addEventListener('activelistChange', (e) => {
       console.log('Backend changes triggered a refresh of the activelist');
       this.refreshList();
@@ -140,24 +152,7 @@ export default class Visualise extends React.Component {
     };
     /* connect to API ONLY when component is mounted */
     if (this._isMounted) {
-      this.apiGet(this.state.apiHello)
-        .then(res => {
-          console.log(res.liveList);
-          /* load liveList from database into state */
-          this.setState({
-            liveList: res.liveList
-          });
-        })
-        .then(() => {
-          /* randomly pick imageSet from liveList */
-          console.log('first pickImages')
-          this.pickImages();
-        })
-        .then(() => {
-          /* start the changeImage-timer */
-          console.log('first startTimer')
-          timerId = this.startTimer(4000).id;
-        }).catch(err => console.log(err));
+      this.refreshList();
     }
   }
   componentWillUnmount() {

@@ -8,8 +8,9 @@ export default function sketch(p) {
   let textSizeFactor = 13;
   let story = "Initial Story";
   let liveList = [];
-  let numLines = 3;
+  let numLines = 5;
   let lines = [];
+  let numScrollersDisplay = 1;
   /* function connecting to props */
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     console.log("PROPS received...");
@@ -18,6 +19,9 @@ export default function sketch(p) {
       for (let entry in props.liveList) {
         liveList.push(props.liveList[entry].story);
       }
+    }
+    if (props.textScrollers) {
+      numScrollersDisplay = props.textScrollers
     }
   };
   /* function run once at startup... where objects are initialised from class */
@@ -35,8 +39,11 @@ export default function sketch(p) {
     p.noSmooth();
     p.background(0);
     p.fill(255);
+    for (let entry=0; entry<numScrollersDisplay; entry++) {
+      lines[entry].show();
+    }
     for (const line of lines) {
-      line.show();
+      //line.show();
       line.move(liveList);
     }
   };

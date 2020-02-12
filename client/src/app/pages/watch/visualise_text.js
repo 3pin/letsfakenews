@@ -19,6 +19,7 @@ export default class Visualise extends React.Component {
     this.state = {
       apiHello: "/watch/visualise",
       liveList: [],
+      textScrollers: 1
     };
   }
   apiGet = async endpoint => {
@@ -31,9 +32,10 @@ export default class Visualise extends React.Component {
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
       .then(res => {
-        console.log(res.liveList);
+        console.log(res);
         this.setState({
-          liveList: res.liveList
+          liveList: res.liveList,
+          textScrollers: res.textScrollers
         });
       }).catch(err => console.log(err));
   };
@@ -57,7 +59,8 @@ export default class Visualise extends React.Component {
       .then(res => {
         console.log(res.liveList);
         this.setState({
-          liveList: res.liveList
+          liveList: res.liveList,
+          textScrollers: res.textScrollers
         });
       }).catch(err => console.log(err));
     /* open sse listener */
@@ -94,6 +97,7 @@ export default class Visualise extends React.Component {
             <P5Wrapper
               sketch={Sketch}
               liveList={this.state.liveList}
+              textScrollers={this.state.textScrollers}
             />
           </div>
         </div>
