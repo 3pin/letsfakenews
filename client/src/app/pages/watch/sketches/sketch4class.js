@@ -23,6 +23,14 @@ export default function sketch(p) {
     if (props.textScrollers) {
       numScrollersDisplay = props.textScrollers
     }
+    if (props.width) {
+      initialWidth = props.width;
+      initialHeight = Math.floor((props.width/16)*9);
+      p.resizeCanvas(initialWidth, initialHeight);
+      for (const line of lines) {
+        line.resize(initialWidth, initialHeight);
+      }
+    }
   };
   /* function run once at startup... where objects are initialised from class */
   p.setup = () => {

@@ -32,8 +32,10 @@ export default class StoryLine {
     if (this.xPos < -this.storyLength) {
       console.log("Reached Storylength:" + this.xPos);
       // pick a random story from liveList
-      let randomEntry = Math.floor(Math.random() * liveList.length);
-      this.story = liveList[randomEntry];
+      if (liveList.length > 0) {
+        let randomEntry = Math.floor(Math.random() * liveList.length);
+        this.story = liveList[randomEntry];
+      }
       //
       let textSize, xPos, yPos;
       ({textSize,xPos,yPos} = Calc(this.canvasWidth, this.canvasHeight, this.textSizeFactor));

@@ -22,7 +22,7 @@ export default class Stories extends React.Component {
     //
     this.state = {
       activelistLength: 0,
-      visualiseNum: 0,
+      visualiseNum: 1,
       imageDuration: 2,
       textScrollers: 1
     };

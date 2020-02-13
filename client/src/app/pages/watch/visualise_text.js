@@ -19,7 +19,8 @@ export default class Visualise extends React.Component {
     this.state = {
       apiHello: "/watch/visualise",
       liveList: [],
-      textScrollers: 1
+      textScrollers: 1,
+      width: 400
     };
   }
   apiGet = async endpoint => {
@@ -54,6 +55,10 @@ export default class Visualise extends React.Component {
     }
   };
   componentDidMount() {
+    var width = this.refs.parent.offsetWidth;
+    this.setState({
+      width: width
+    });
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
       .then(res => {
@@ -74,9 +79,8 @@ export default class Visualise extends React.Component {
     };
   }
   render() {
-    //console.log(this.state)
     return (
-      <div>
+      <div ref="parent">
         <FrameButton
           buttonLabel="Play"
           onClick={this.goFullscreen.bind(this.outerContainer)}
@@ -98,6 +102,7 @@ export default class Visualise extends React.Component {
               sketch={Sketch}
               liveList={this.state.liveList}
               textScrollers={this.state.textScrollers}
+              width={this.state.width}
             />
           </div>
         </div>

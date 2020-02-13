@@ -13,15 +13,20 @@ GoogleImages size-options: icon, small, medium, large, xlarge, xxlarge, huge
 imgType: photo, face, stock
 */
 const searchSettings = {
-  searchType: 'image',
-  safe: 'high',
+  c2coff: '1',
+  fileType: 'jpg ',
   imgSize: 'huge',
   imgType: 'photo',
-  rights: '!cc_noncommercial'
+  linkSite: 'yes',
+  lr: 'lang_en',
+  rights: '!cc_noncommercial',
+  safe: 'high',
+  searchType: 'image',
+  siteSearch: 'https://www.facebook.com/',
+  siteSearchFilter: 'e'
 }
 
 module.exports = {
-
   //find an image-url to match a noun
   single_url_search: function(input_text) {
     return new Promise(function(resolve, reject) {
