@@ -153,20 +153,19 @@ export default class Stories extends React.Component {
       <Table bordered style={tableStyle}>
         <thead className="thead-dark">
           <tr>
-            <th style={{width: "90%"}}>Slide-Show Control</th>
+            <th style={{width: "90%"}}>Slideshow Control</th>
             <th style={{width: "10%"}}>Num</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Image display time (in secs)</td>
+            <td>Image Display Duration (in seconds)</td>
             <td>
-              <input type='number' min='1' max='10' value={this.state.imageDuration} onChange={this.handleDurationChange}/>
+              <input type='number' min='1' value={this.state.imageDuration} onChange={this.handleDurationChange}/>
             </td>
           </tr>
         </tbody>
       </Table>
-      <hr/>
       <hr/>
       <Table bordered style={tableStyle}>
         <thead className="thead-dark">
