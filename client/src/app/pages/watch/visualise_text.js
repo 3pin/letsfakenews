@@ -82,7 +82,7 @@ export default class Visualise extends React.Component {
     return (
       <div ref="parent">
         <FrameButton
-          buttonLabel="Play"
+          buttonLabel="Fullscreen"
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr />
