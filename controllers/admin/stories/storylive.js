@@ -37,10 +37,7 @@ module.exports = (req, res) => {
     }).then(() => {
       /* send new db to frontend to update REACT state */
       Story.find({}).sort([['_id', 1]]).then((docs, err) => {
-        debug('docs...');
         debug(docs);
-        debug('dbSettings.visualise...');
-        debug(dbSettings.visualise)
         res.json({
           stories: docs,
           activelistLength: dbSettings.activelist.length,
@@ -68,7 +65,6 @@ module.exports = (req, res) => {
       /* send new db to frontend to update REACT state */
       Story.find({}).sort([['_id', 1]]).then((docs, err) => {
         debug(docs);
-        debug(dbSettings.visualise)
         res.json({
           stories: docs,
           activelistLength: dbSettings.activelist.length,
