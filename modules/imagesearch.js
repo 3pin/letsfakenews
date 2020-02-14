@@ -14,7 +14,6 @@ imgType: photo, face, stock
 */
 const searchSettings = {
   c2coff: '1',
-  fileType: 'jpg ',
   imgSize: 'huge',
   imgType: 'photo',
   linkSite: 'yes',

@@ -1,11 +1,10 @@
 import React from "react";
 import FrameButton from "../../../app/components/frameButton";
 import P5Wrapper from "react-p5-wrapper";
-//import Sketch from "./sketches/sketch";
-import Sketch from "./sketches/sketch4class";
+import Sketch from "./sketches/text4class";
 import 'eventsource-polyfill';
 
-export default class Visualise extends React.Component {
+export default class Visualise_Text extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.NODE_ENV === 'production') {
@@ -20,7 +19,7 @@ export default class Visualise extends React.Component {
       apiHello: "/watch/visualise",
       liveList: [],
       textScrollers: 1,
-      width: 400
+      componentWidth: undefined
     };
   }
   apiGet = async endpoint => {
@@ -43,7 +42,7 @@ export default class Visualise extends React.Component {
   goFullscreen() {
     document.activeElement.blur();
     console.log("fullscreen entered");
-    let i = this.innerContainer;
+    let i = this.container;
     if (i.requestFullscreen) {
       i.requestFullscreen();
     } else if (i.webkitRequestFullscreen) {
@@ -55,9 +54,10 @@ export default class Visualise extends React.Component {
     }
   };
   componentDidMount() {
-    var width = this.refs.parent.offsetWidth;
+    /* pass in the rendered componentWidth to state */
+    console.log(this.refs.parent.offsetWidth);
     this.setState({
-      width: width
+      componentWidth: this.refs.parent.offsetWidth
     });
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
@@ -83,29 +83,17 @@ export default class Visualise extends React.Component {
       <div ref="parent">
         <FrameButton
           buttonLabel="Fullscreen"
-          onClick={this.goFullscreen.bind(this.outerContainer)}
+          onClick={this.goFullscreen.bind(this.container)}
         />
         <hr />
-        <div
-          id="outerContainer"
-          ref={outerContainer => {
-            this.outerContainer = outerContainer;
-          }}
-        >
-          <div
-            id="innerContainer"
-            ref={innerContainer => {
-              this.innerContainer = innerContainer;
-            }}
-          >
+          <div ref={container => {this.container = container;}}>
             <P5Wrapper
               sketch={Sketch}
               liveList={this.state.liveList}
               textScrollers={this.state.textScrollers}
-              width={this.state.width}
+              componentWidth={this.state.componentWidth}
             />
           </div>
-        </div>
       </div>
     );
   }

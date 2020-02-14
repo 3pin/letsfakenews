@@ -5,7 +5,7 @@ import '../node_modules/react-bootstrap/dist/react-bootstrap.min.js';
 // styles
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './minimum.css';
-//import registerServiceWorker from './registerServiceWorker'
+import registerServiceWorker from './registerServiceWorker'
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -26,4 +26,4 @@ const App = () => (
   </Provider>);
 
 ReactDOM.render(<App/>, document.getElementById('react'));
-//registerServiceWorker();
+registerServiceWorker();

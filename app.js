@@ -55,8 +55,10 @@ app.use(device.capture());
 
 //cors
 if (process.env.CORS === 'whitelist') {
+  debug('CORS:whitelist')
   const cors = require('cors');
-  var whitelist = [process.env.WHITELIST]
+  var whitelist = []
+  whitelist.push(process.env.WHITELIST)
   debug('whitelist: ' + whitelist);
   var corsOptions = {
     origin: function (origin, callback) {
@@ -69,10 +71,11 @@ if (process.env.CORS === 'whitelist') {
   }
   app.use(cors(corsOptions));
 } else if (process.env.CORS === 'all') {
+  debug('CORS:all')
   const cors = require('cors');
   app.use(cors());
 } else {
-  debug('NOT running CORS')
+  debug('CORS:none')
 }
 
 // force HSTS on the clients requests
