@@ -1,5 +1,3 @@
-//import Aspect from './functions/aspect';
-
 export default function sketch(p) {
   let initialWidth = 534;
   let initialHeight = 300;
@@ -8,13 +6,16 @@ export default function sketch(p) {
   let img;
   let imgWidth, imgHeight;
   let setupCount = 0;
+  let initialAspectRatio = 1.78;
+  let aspectRatio = initialAspectRatio;
   //
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     console.log("PROPS received...");
     if (props.componentWidth && setupCount<1) {
       setupCount = setupCount + 1;
       initialWidth = props.componentWidth;
-      initialHeight = Math.floor((props.componentWidth / 1.78));
+      /* 1.78 sets aspect_ratio for component @16:9 */
+      initialHeight = Math.floor((props.componentWidth / aspectRatio));
       canvasWidth = initialWidth;
       canvasHeight = initialHeight;
       console.log(`canvasWidth:${canvasWidth} canvasHeight:${canvasHeight}`)
@@ -23,7 +24,7 @@ export default function sketch(p) {
     if (props.src) {
       imgUrl = props.src;
       img = p.loadImage(imgUrl, (img) => {
-        if (img.width / img.height < 1.78) {
+        if (img.width / img.height < aspectRatio) {
           //console.log('aspect: portrait');
           imgHeight = canvasHeight;
           imgWidth = (img.width * canvasHeight) / img.height;
@@ -42,7 +43,7 @@ export default function sketch(p) {
     p.imageMode(p.CENTER);
     p.createCanvas(canvasWidth, canvasHeight);
     img = p.loadImage(imgUrl, (img) => {
-      if (img.width / img.height < 1.78) {
+      if (img.width / img.height < aspectRatio) {
         //console.log('aspect: portrait');
         imgHeight = canvasHeight;
         imgWidth = (img.width * canvasHeight) / img.height;
@@ -64,8 +65,9 @@ export default function sketch(p) {
       console.log('condition:A')
       canvasWidth = window.screen.width;
       canvasHeight = window.screen.height;
+      aspectRatio = window.screen.width / window.screen.height;
       img = p.loadImage(imgUrl, (img) => {
-        if (img.width / img.height < 1.78) {
+        if (img.width / img.height < aspectRatio) {
           //console.log('aspect: portrait');
           imgHeight = canvasHeight;
           imgWidth = (img.width * canvasHeight) / img.height;
@@ -79,8 +81,9 @@ export default function sketch(p) {
       console.log('condition:B')
       canvasWidth = initialWidth;
       canvasHeight = initialHeight;
+      aspectRatio = initialAspectRatio;
       img = p.loadImage(imgUrl, (img) => {
-        if (img.width / img.height < 1.78) {
+        if (img.width / img.height < aspectRatio) {
           //console.log('aspect: portrait');
           imgHeight = canvasHeight;
           imgWidth = (img.width * canvasHeight) / img.height;

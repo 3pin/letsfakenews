@@ -12,6 +12,8 @@ export default function sketch(p) {
   let lines = [];
   let numScrollersDisplay = 1;
   let setupCount = 0;
+  let intialAspectRatio = 1.78;
+  let aspectRatio = intialAspectRatio;
   /* function connecting to props */
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     console.log("PROPS received...");
@@ -28,7 +30,8 @@ export default function sketch(p) {
     if (props.componentWidth && setupCount < 1) {
       setupCount = setupCount + 1
       initialWidth = props.componentWidth;
-      initialHeight = Math.floor((props.componentWidth/1.78));
+      /* 1.78 aspectRatio to setup component as 16:9 */
+      initialHeight = Math.floor((props.componentWidth/aspectRatio));
       p.resizeCanvas(initialWidth, initialHeight);
       for (const line of lines) {
         line.resize(initialWidth, initialHeight);
@@ -60,9 +63,11 @@ export default function sketch(p) {
     if (!window.screenTop && !window.screenY) {
       canvasWidth = window.screen.width;
       canvasHeight = window.screen.height;
+      aspectRatio = window.screen.width / window.screen.height;
     } else {
       canvasWidth = initialWidth;
       canvasHeight = initialHeight;
+      aspectRatio = intialAspectRatio;
     }
     p.resizeCanvas(canvasWidth, canvasHeight);
     for (const line of lines) {
