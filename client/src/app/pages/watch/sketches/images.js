@@ -1,3 +1,19 @@
+function Aspect(img, aspectRatio, canvasWidth, canvasHeight) {
+  let imgWidth, imgHeight;
+  if (img.width / img.height < aspectRatio) {
+    //console.log('aspect: portrait');
+    imgHeight = canvasHeight;
+    imgWidth = (img.width * canvasHeight) / img.height;
+  } else {
+    //console.log('aspect:landscape');
+    imgWidth = canvasWidth;
+    imgHeight = (canvasWidth * img.height) / img.width;
+  }
+  return {
+    imgWidth: imgWidth,
+    imgHeight: imgHeight
+  }
+}
 export default function sketch(p) {
   let initialWidth = 534;
   let initialHeight = 300;
@@ -23,16 +39,8 @@ export default function sketch(p) {
     }
     if (props.src) {
       imgUrl = props.src;
-      img = p.loadImage(imgUrl, (img) => {
-        if (img.width / img.height < aspectRatio) {
-          //console.log('aspect: portrait');
-          imgHeight = canvasHeight;
-          imgWidth = (img.width * canvasHeight) / img.height;
-        } else {
-          //console.log('aspect:landscape');
-          imgWidth = canvasWidth;
-          imgHeight = (canvasWidth * img.height) / img.width;
-        }
+      img = p.loadImage(imgUrl, () => {
+        ({imgWidth,imgHeight} = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
       });
     }
   };
@@ -42,17 +50,10 @@ export default function sketch(p) {
     canvasHeight = initialHeight;
     p.imageMode(p.CENTER);
     p.createCanvas(canvasWidth, canvasHeight);
-    img = p.loadImage(imgUrl, (img) => {
-      if (img.width / img.height < aspectRatio) {
-        //console.log('aspect: portrait');
-        imgHeight = canvasHeight;
-        imgWidth = (img.width * canvasHeight) / img.height;
-      } else {
-        //console.log('aspect:landscape');
-        imgWidth = canvasWidth;
-        imgHeight = (canvasWidth * img.height) / img.width;
-      }
-    });
+    //
+    img = p.loadImage(imgUrl, () => {
+      ({imgWidth,imgHeight} = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
+    })
   };
   p.draw = () => {
     p.noSmooth();
@@ -66,32 +67,16 @@ export default function sketch(p) {
       canvasWidth = window.screen.width;
       canvasHeight = window.screen.height;
       aspectRatio = window.screen.width / window.screen.height;
-      img = p.loadImage(imgUrl, (img) => {
-        if (img.width / img.height < aspectRatio) {
-          //console.log('aspect: portrait');
-          imgHeight = canvasHeight;
-          imgWidth = (img.width * canvasHeight) / img.height;
-        } else {
-          //console.log('aspect:landscape');
-          imgWidth = canvasWidth;
-          imgHeight = (canvasWidth * img.height) / img.width;
-        }
+      img = p.loadImage(imgUrl, () => {
+        ({imgWidth,imgHeight} = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
       });
     } else {
       console.log('condition:B')
       canvasWidth = initialWidth;
       canvasHeight = initialHeight;
       aspectRatio = initialAspectRatio;
-      img = p.loadImage(imgUrl, (img) => {
-        if (img.width / img.height < aspectRatio) {
-          //console.log('aspect: portrait');
-          imgHeight = canvasHeight;
-          imgWidth = (img.width * canvasHeight) / img.height;
-        } else {
-          //console.log('aspect:landscape');
-          imgWidth = canvasWidth;
-          imgHeight = (canvasWidth * img.height) / img.width;
-        }
+      img = p.loadImage(imgUrl, () => {
+        ({imgWidth,imgHeight} = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
       });
     }
     p.resizeCanvas(canvasWidth, canvasHeight);
