@@ -1,14 +1,13 @@
-export default function Aspect(img, canvasWidth, canvasHeight) {
-  this.img = img;
+export default function Aspect(img, aspectRatio, canvasWidth, canvasHeight) {
   let imgWidth, imgHeight;
-  if (this.img.width / this.img.height < 1.78) {
-    console.log('aspect: portrait');
-    imgWidth = (this.img.width * canvasHeight) / this.img.height;
+  if (img.width / img.height < aspectRatio) {
+    //console.log('aspect: portrait');
     imgHeight = canvasHeight;
+    imgWidth = (img.width * canvasHeight) / img.height;
   } else {
-    console.log('aspect:landscape');
+    //console.log('aspect:landscape');
     imgWidth = canvasWidth;
-    imgHeight = (canvasWidth * this.img.height) / this.img.width;
+    imgHeight = (canvasWidth * img.height) / img.width;
   }
   return {
     imgWidth: imgWidth,
