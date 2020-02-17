@@ -26,7 +26,7 @@ const metadata = (data, image_duration, imagesStart) => {
   }
 }
 
-export default class Watch extends React.Component {
+export default class Visualise_News extends React.Component {
   constructor(props) {
     super(props);
     //

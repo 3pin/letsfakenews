@@ -50,7 +50,7 @@ export default class StoryLine {
     }
   }
   resize(w,h) {
-    console.log('RESIZE command received');
+    console.log('Class recevied RESIZE command');
     this.canvasWidth = w;
     this.canvasHeight = h;
   }

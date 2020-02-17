@@ -1,7 +1,7 @@
-import StoryLine from "./classes/class";
+import StoryLine from "./classes/text";
 
 export default function sketch(p) {
-  let initialWidth = 400;
+  let initialWidth = 534;
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
   let inc = -5;
@@ -11,9 +11,13 @@ export default function sketch(p) {
   let numLines = 5;
   let lines = [];
   let numScrollersDisplay = 1;
+  let setupCount = 0;
+  let intialAspectRatio = 1.78;
+  let aspectRatio = intialAspectRatio;
   /* function connecting to props */
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     console.log("PROPS received...");
+    console.log(props);
     if (props.liveList.length > 0) {
       liveList = [];
       for (let entry in props.liveList) {
@@ -23,9 +27,11 @@ export default function sketch(p) {
     if (props.textScrollers) {
       numScrollersDisplay = props.textScrollers
     }
-    if (props.width) {
-      initialWidth = props.width;
-      initialHeight = Math.floor((props.width/16)*9);
+    if (props.componentWidth && setupCount < 1) {
+      setupCount = setupCount + 1
+      initialWidth = props.componentWidth;
+      /* 1.78 aspectRatio to setup component as 16:9 */
+      initialHeight = Math.floor((props.componentWidth/aspectRatio));
       p.resizeCanvas(initialWidth, initialHeight);
       for (const line of lines) {
         line.resize(initialWidth, initialHeight);
@@ -57,9 +63,11 @@ export default function sketch(p) {
     if (!window.screenTop && !window.screenY) {
       canvasWidth = window.screen.width;
       canvasHeight = window.screen.height;
+      aspectRatio = window.screen.width / window.screen.height;
     } else {
       canvasWidth = initialWidth;
       canvasHeight = initialHeight;
+      aspectRatio = intialAspectRatio;
     }
     p.resizeCanvas(canvasWidth, canvasHeight);
     for (const line of lines) {
