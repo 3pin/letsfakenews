@@ -4,6 +4,12 @@
   "private": true,
   "homepage": "https://letsfakenews.com/",
   "proxy": "http://localhost:5000",
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "axios": "^0.19.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
@@ -33,12 +39,6 @@
   "devDependencies": {
     "typescript": "^3.5.3",
     "jquery": "^3.4.1"
-  },
-  "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
