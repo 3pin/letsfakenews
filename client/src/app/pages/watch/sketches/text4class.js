@@ -4,8 +4,8 @@ export default function sketch(p) {
   let initialWidth = 534;
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
-  let inc = -5;
-  let textSizeFactor = 13;
+  let inc = -6;
+  let textSizeFactor = 8;
   let story = "Initial Story";
   let liveList = [];
   let numLines = 5;
