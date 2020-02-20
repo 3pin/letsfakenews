@@ -174,26 +174,26 @@ export default class Visualise_News extends React.Component {
   componentDidMount() {
     console.log('componentDidMount');
     document.addEventListener("fullscreenchange", this.exitFullscreen, false);
-    /* calculate durations */
-    this.setState({
-      popup_duration: diff(this.state.popupStart, this.state.popupEnd),
-      image_duration: diff(this.state.imagesStart, this.state.imagesEnd)
-    });
-    // load db settings... load 'mode' into localStorage
-    this.apiGet('/settings/mode').then(res => {
-      console.log(res);
+    /* calculate durations && */
+    /* load db settings... */
+    this.apiGet('/settings/mode').then((res) => {
+      console.log(`route /settings/mode has given a response`);
       console.log(res.dbSettings);
       if (res.dbSettings.node_mode === 'production') {
-        console.log(`mode is PRODUCTION`);
+        console.log(`mode is ${res.dbSettings.node_mode}`);
         this.setState({
+          popup_duration: diff(this.state.popupStart, this.state.popupEnd),
+          image_duration: diff(this.state.imagesStart, this.state.imagesEnd),
           mode: res.dbSettings.node_mode,
           playing: true,
           controls: false,
           volume: 1
         });
       } else if (res.dbSettings.node_mode === 'development') {
-        console.log(`mode is DEVELOPMENT`);
+        console.log(`mode is: ${res.dbSettings.node_mode}`);
         this.setState({
+          popup_duration: diff(this.state.popupStart, this.state.popupEnd),
+          image_duration: diff(this.state.imagesStart, this.state.imagesEnd),
           mode: res.dbSettings.node_mode,
           playing: true,
           controls: true,
