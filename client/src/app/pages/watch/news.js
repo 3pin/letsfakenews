@@ -79,7 +79,6 @@ export default class Visualise_News extends React.Component {
     return body;
   }
   onReady() {
-    console.log("Media ready");
     /* load new story into this.state */
     this.apiGet('/watch/request_new_story')
       .then((res) => this.setState({
@@ -90,7 +89,8 @@ export default class Visualise_News extends React.Component {
         markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers
       }))
       .then(() => {
-        console.log(this.state)
+        console.log(this.state);
+        console.log("Media ready");
       }).catch(err => console.log(err))
   }
   onProgress(e) {
