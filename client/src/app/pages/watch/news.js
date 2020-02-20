@@ -90,7 +90,7 @@ export default class Visualise_News extends React.Component {
       }))
       .then(() => {
         console.log(this.state);
-        console.log("Media ready");
+        console.log("Media now ready");
       }).catch(err => console.log(err))
   }
   onProgress(e) {
@@ -168,38 +168,36 @@ export default class Visualise_News extends React.Component {
   exitFullscreen() {
     if (!document.fullscreenElement) {
       console.log('fullscreen exited');
+      this.onEnded();
     }
   }
   componentDidMount() {
     console.log('componentDidMount');
     document.addEventListener("fullscreenchange", this.exitFullscreen, false);
+    /* calculate durations */
+    this.setState({
+      popup_duration: diff(this.state.popupStart, this.state.popupEnd),
+      image_duration: diff(this.state.imagesStart, this.state.imagesEnd)
+    });
     // load db settings... load 'mode' into localStorage
     this.apiGet('/settings/mode').then(res => {
       //console.log(res);
-      //sessionStorage.setItem('node_mode', res.dbSettings.node_mode);
-      this.setState({
-        mode: res.dbSettings.node_mode
-      });
-    }).then(() => {
       if (this.state.mode === 'production') {
         this.setState({
+          mode: res.dbSettings.node_mode,
           playing: true,
           controls: false,
           volume: 1
         });
       } else {
         this.setState({
+          mode: res.dbSettings.node_mode,
           playing: true,
           controls: true,
           volume: 0
         });
       }
     }).catch(err => console.log(err));
-    /* calculate durations */
-    this.setState({
-      popup_duration: diff(this.state.popupStart, this.state.popupEnd),
-      image_duration: diff(this.state.imagesStart, this.state.imagesEnd)
-    });
   }
   componentWillUnmount() {
     document.removeEventListener("fullscreenchange", this.exitFullscreen, false);
