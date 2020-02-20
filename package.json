@@ -38,12 +38,13 @@
     "google-images": "^2.1.0",
     "helmet": "^3.21.2",
     "http-auth": "^4.1.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.0.0-rc1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.1",
     "morgan": "^1.9.1",
     "node": "^10.17.0",
     "npm": "^6.13.7",
+    "popper.js": "^1.16.1",
     "pos": "^0.4.2",
     "serve-favicon": "^2.5.0",
     "to-boolean": "^1.0.0"
@@ -53,7 +54,6 @@
     "mocha": "^7.0.1",
     "nodemon": "^1.18.10",
     "nyc": "^15.0.0",
-    "popper.js": "^1.16.1",
     "snyk": "^1.290.0"
   }
 }
