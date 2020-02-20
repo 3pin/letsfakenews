@@ -168,10 +168,6 @@ export default class Visualise_News extends React.Component {
   exitFullscreen() {
     if (!document.fullscreenElement) {
       console.log('fullscreen exited');
-      this.setState({
-        playing: false
-      });
-      this.onEnded()
     }
   }
   componentDidMount() {
@@ -187,7 +183,7 @@ export default class Visualise_News extends React.Component {
     }).then(() => {
       if (this.state.mode === 'production') {
         this.setState({
-          playing: false,
+          playing: true,
           controls: false,
           volume: 1
         });
