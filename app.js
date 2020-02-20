@@ -215,6 +215,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
             let activelist = [];
             const Settings = require('./models/settings.model');
             Settings.find({}).then((result) => {
+              debug('current dbSettings are...');
               debug(result);
               activelist = result[0].activelist;
               /* load NODE_ENV (development/production) from .env into db into */
@@ -223,6 +224,7 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
               debug(result[0].node_mode);
               let settings = new Settings(result[0]);
               settings.save().then((res) => {
+                debug('updated dbSettings are...');
                 debug(res);
               });
             })

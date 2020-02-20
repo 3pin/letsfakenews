@@ -181,8 +181,9 @@ export default class Visualise_News extends React.Component {
     });
     // load db settings... load 'mode' into localStorage
     this.apiGet('/settings/mode').then(res => {
-      //console.log(res);
-      if (this.state.mode === 'production') {
+      console.log(res);
+      console.log(res.dbSettings);
+      if (res.dbSettings.node_mode === 'production') {
         console.log(`mode is PRODUCTION`);
         this.setState({
           mode: res.dbSettings.node_mode,
@@ -190,7 +191,7 @@ export default class Visualise_News extends React.Component {
           controls: false,
           volume: 1
         });
-      } else {
+      } else if (res.dbSettings.node_mode === 'development') {
         console.log(`mode is DEVELOPMENT`);
         this.setState({
           mode: res.dbSettings.node_mode,
