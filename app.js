@@ -216,7 +216,15 @@ mongoose.connect(process.env.MONGODB_URI, options, function (err, client) {
             const Settings = require('./models/settings.model');
             Settings.find({}).then((result) => {
               debug(result);
-              activelist = result[0].activelist
+              activelist = result[0].activelist;
+              /* load NODE_ENV (development/production) from .env into db into */
+              debug(result[0].node_mode);
+              result[0].node_mode = process.env.NODE_ENV;
+              debug(result[0].node_mode);
+              let settings = new Settings(result[0]);
+              settings.save().then((res) => {
+                debug(res);
+              });
             })
             break;
           }
