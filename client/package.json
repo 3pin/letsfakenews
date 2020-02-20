@@ -6,14 +6,11 @@
   "proxy": "http://localhost:5000",
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts --expose-gc --max-old-space-size=8192 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^7.2.1",
     "axios": "^0.19.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "bootstrap": "^4.3.1",
@@ -39,8 +36,12 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "typescript": "^3.5.3",
-    "jquery": "^3.4.1"
+    "eslint-plugin-flowtype": "^3.13.0",
+    "fibers": "^4.0.2",
+    "jquery": "^3.4.1",
+    "node-sass": "^4.13.1",
+    "sass": "^1.25.0",
+    "typescript": "^3.5.3"
   },
   "eslintConfig": {
     "extends": "react-app"
