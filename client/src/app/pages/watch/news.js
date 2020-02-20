@@ -183,6 +183,7 @@ export default class Visualise_News extends React.Component {
     this.apiGet('/settings/mode').then(res => {
       //console.log(res);
       if (this.state.mode === 'production') {
+        console.log(`mode is PRODUCTION`);
         this.setState({
           mode: res.dbSettings.node_mode,
           playing: true,
@@ -190,6 +191,7 @@ export default class Visualise_News extends React.Component {
           volume: 1
         });
       } else {
+        console.log(`mode is DEVELOPMENT`);
         this.setState({
           mode: res.dbSettings.node_mode,
           playing: true,
