@@ -209,7 +209,7 @@ export default class Visualise_News extends React.Component {
     return (
       <div >
         <FrameButton
-          buttonLabel='Play'
+          buttonLabel='Fullscreen'
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
         <hr/>

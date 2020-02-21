@@ -19,7 +19,6 @@ export default function sketch(p) {
     console.log("PROPS received...");
     console.log(props);
     if (props.liveList.length > 0) {
-      liveList = [];
       for (let entry in props.liveList) {
         liveList.push(props.liveList[entry].story);
       }
