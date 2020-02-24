@@ -42,6 +42,7 @@ export default class Visualise_News extends React.Component {
     this.state = {
       mode: "",
       //timings
+      playedSeconds: 0,
       popupStart: 6.2,
       popupEnd: 11.3,
       imagesStart: 17.6,
@@ -71,15 +72,6 @@ export default class Visualise_News extends React.Component {
       volume: 1,
       progressInterval: 500,
       url: "https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4",
-      imagecontainerStyle: {
-        border: '2px solid yellow',
-        background: 'blue',
-        width: '100%',
-        height: '100%',
-        margin: 'auto',
-        position: 'absolute',
-        alignSelf: 'center'
-      }
     }
   }
   apiGet = async (endpoint) => {
@@ -105,6 +97,10 @@ export default class Visualise_News extends React.Component {
       }).catch(err => console.log(err))
   }
   onProgress(e) {
+    //console.log(e.playedSeconds.toFixed(2));
+    this.setState({
+      playedSeconds: e.playedSeconds.toFixed(2)
+    })
     /* change url-image according to markers... */
     let currentSec = e.playedSeconds;
     if (currentSec >= this.state.markers[this.state.url_index] && this.state.url_index < this.state.markers.length - 1) {
@@ -252,6 +248,7 @@ export default class Visualise_News extends React.Component {
               image={this.state.urls[this.state.url_index]}
               scroll-left={this.state.scroller}
               scroller_text={this.state.story}
+              playedSeconds={this.state.playedSeconds}
             />
           </div>
         </div>
