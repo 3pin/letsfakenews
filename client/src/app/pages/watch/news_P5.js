@@ -89,7 +89,7 @@ export default class Visualise_News extends React.Component {
         title: res.data.title.toUpperCase(),
         story: res.data.story,
         urls: metadata(res.data, this.state.image_duration, this.state.imagesStart).urls,
-        markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers
+        markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers,
       }))
       .then(() => {
         console.log(this.state);
@@ -249,6 +249,16 @@ export default class Visualise_News extends React.Component {
               scroll-left={this.state.scroller}
               scroller_text={this.state.story}
               playedSeconds={this.state.playedSeconds}
+              title={this.state.title}
+              story={this.state.story}
+              timings={{
+                popupStart: this.state.popupStart,
+                popupEnd: this.state.popupEnd,
+                popupduration: this.state.popupEnd-this.state.popupStart,
+                imagesStart: this.state.imagesStart,
+                imagesEnd: this.state.imagesEnd,
+                imagesDuration: this.state.imagesEnd-this.state.imagesStart
+              }}
             />
           </div>
         </div>

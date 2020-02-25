@@ -1,4 +1,5 @@
 import Aspect from "./functions/aspect";
+import Layout from "./functions/layout";
 
 export default function sketch(p) {
   let initialWidth = 534;
@@ -7,95 +8,147 @@ export default function sketch(p) {
   let setupCount = 0;
   let initialAspectRatio = 1.78;
   let aspectRatio = initialAspectRatio;
-  let containerWidth, containerHeight;
   let playedSeconds = 0;
-  let textFrame_xOrigin, textFrame_yOrigin, textFrame_Width, textFrame_Height, textFrame_Border;
-  let imgUrl = "../../../images/bgd.jpg";
-  let img, imgWidth, imgHeight, image_Xcentre, image_Ycentre;
-  let imageFrame_Xoffset, imageFrame_xOrigin, imageFrame_yOrigin, imageFrame_Width, imageFrame_Height, imageFrame_Border;
-  let xOffsetFactor = 0.025
-  let imageBorder = 0.02
-  let imageHeightFactory = 0.77
-  let textBorderFactor = 0.01
-  let textHeightFactor = 0.15
+  let imgUrl;
+  let containerWidth, containerHeight;
+  let title;
+  let story, storyLength, storyXpos, storyXinc;
+  let font;
+  let fontUrl = './Arial.ttf';
+  let img, imgWidth, imgHeight;
+  let timings = {};
+  let textLayout = {
+    borderFactor: 0.01,
+    yOffsetFactor: 0.755,
+    heightFactor: 0.143,
+    textFrame_xOrigin: undefined,
+    textFrame_yOrigin: undefined,
+    textFrame_Width: undefined,
+    textFrame_Height: undefined,
+    textFrame_Border: undefined,
+  };
+  let imageLayout = {
+    borderFactor: 0.02,
+    xOffsetFactor: 0.00,
+    heightFactor: 0.77,
+    widthFactor: 0.58,
+    imageFrame_Xoffset: undefined,
+    imageFrame_xOrigin: undefined,
+    imageFrame_yOrigin: undefined,
+    imageFrame_Width: undefined,
+    imageFrame_Height: undefined,
+    imageFrame_Border: undefined,
+    image_Xcentre: undefined,
+    image_Ycentre: undefined
+  };
   //
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     //console.log("PROPS received...");
-    if (props.componentWidth && setupCount < 1) {
-      setupCount = setupCount + 1;
+    if (props.componentWidth && props.timings && setupCount < 1) {
+      setupCount = 1;
+      timings = props.timings;
       initialWidth = props.componentWidth;
-      /* A value of 1.78 sets starting aspect_ratio @16:9 */
       initialHeight = Math.round((props.componentWidth / aspectRatio));
       canvasWidth = initialWidth;
       canvasHeight = initialHeight;
       containerWidth = canvasWidth;
       containerHeight = canvasHeight;
-      console.log(`containerWidth:${containerWidth} containerHeight:${containerHeight}`)
+      //console.log(`containerWidth:${containerWidth} containerHeight:${containerHeight}`)
       p.resizeCanvas(initialWidth, initialHeight);
-      //
-      imageFrame_Xoffset = Math.round(canvasWidth * xOffsetFactor); /* set image in from left edge */
-      imageFrame_Border = Math.round(canvasWidth * imageBorder); /* set image in from all edges */
-      imageFrame_xOrigin = imageFrame_Xoffset + Math.round((canvasWidth - containerWidth) / 2) + imageFrame_Border;
-      imageFrame_yOrigin = Math.round((canvasHeight - containerHeight) / 2) + imageFrame_Border;
-      imageFrame_Width = imageFrame_Xoffset + Math.round(canvasWidth / 2) - Math.round(2 * imageFrame_Border);
-      imageFrame_Height = Math.round(containerHeight * imageHeightFactory) - Math.round(2 * imageFrame_Border);
-      image_Xcentre = imageFrame_xOrigin + Math.round(imageFrame_Width / 2);
-      image_Ycentre = imageFrame_yOrigin + Math.round(imageFrame_Height / 2);
-      //
-      textFrame_Border = Math.round(canvasWidth * textBorderFactor); /* set text in from all edges */
-      textFrame_xOrigin = Math.round((canvasWidth - containerWidth) / 2) + textFrame_Border;
-      textFrame_yOrigin = Math.round(containerHeight * imageHeightFactory) + textFrame_Border;
-      textFrame_Width = containerWidth + Math.round((canvasWidth - containerWidth) / 2) - Math.round(2 * textFrame_Border);
-      textFrame_Height = Math.round(containerHeight * textHeightFactor) - Math.round(2 * textFrame_Border);
-      //
-    }
-    if (props.playedSeconds) {
-      playedSeconds = props.playedSeconds;
-      //console.log(playedSeconds);
-    }
-    if (props.image) {
-      if (imgUrl !== props.image) {
-        imgUrl = props.image;
-        console.log(`imgUrl: ${imgUrl}`);
-        img = p.loadImage(imgUrl, (img) => {
-          ({
-            imgWidth,
-            imgHeight
-          } = Aspect(img, imageFrame_Width / imageFrame_Height, imageFrame_Width, imageFrame_Height));
-        });
+      ({imageLayout,textLayout} = Layout(imageLayout, textLayout, aspectRatio, canvasWidth, canvasHeight, containerWidth, containerHeight));
+    } else {
+      if (props.playedSeconds) {
+        playedSeconds = props.playedSeconds;
+        //console.log(playedSeconds);
+      }
+      if (props.image) {
+        if (imgUrl !== props.image) {
+          imgUrl = props.image;
+          //console.log(`imgUrl: ${imgUrl}`);
+          img = p.loadImage(imgUrl, (img) => {
+            ({
+              imgWidth,
+              imgHeight
+            } = Aspect(img, imageLayout.imageFrame_Width / imageLayout.imageFrame_Height, imageLayout.imageFrame_Width, imageLayout.imageFrame_Height));
+          });
+        }
+      }
+      if (props.title) {
+        if (title !== props.title) {
+          title = props.title;
+          //console.log(`title: ${title}`);
+          //fontSize = Math.round(textLayout.textFrame_Height/1.7);
+        }
+      }
+      if (props.story) {
+        if (story !== props.story) {
+          story = props.story;
+          //console.log(`story: ${story}`);
+          storyLength = p.textWidth(story);
+          storyXpos = containerWidth;
+          let noFrames = 60*timings.imagesDuration;
+          let totalLength = containerWidth + storyLength;
+          storyXinc = Math.ceil((totalLength/noFrames).toFixed(2));
+          //console.log(storyXinc);
+        }
       }
     }
   };
   p.setup = () => {
-    console.log(`SETUP started... imgUrl: ${imgUrl}`);
+    //console.log(`SETUP started...`);
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     containerWidth = canvasWidth;
     containerHeight = canvasHeight;
-    //console.log(`containerWidth:${containerWidth} containerHeight:${containerHeight}`)
     p.createCanvas(canvasWidth, canvasHeight);
-    p.stroke(0, 0, 255);
-    p.noFill();
     p.rectMode(p.CORNER);
     p.imageMode(p.CENTER);
+    p.smooth();
+    font = p.loadFont(fontUrl);
+    p.textFont(font);
   };
   p.draw = () => {
-    p.noSmooth();
-    /* visible: title */
-    if (playedSeconds > 6.2 && playedSeconds < 11.3) {
-      /* titleBGD */
-      p.rect(textFrame_xOrigin, textFrame_yOrigin, textFrame_Width, textFrame_Height);
-    }
-    /* visible: text & image */
-    else if (playedSeconds > 17.6 && playedSeconds < 41.1) {
-      /* textBGD */
-      p.rect(textFrame_xOrigin, textFrame_yOrigin, textFrame_Width, textFrame_Height);
-      /* imageBGD */
-      p.fill(50);
-      p.rect(imageFrame_xOrigin, imageFrame_yOrigin, imageFrame_Width, imageFrame_Height);
-      p.noFill();
-      //console.log(`imgWidth:${imgWidth} imgHeight:${imgHeight}`)
-      p.image(img, image_Xcentre, image_Ycentre, imgWidth, imgHeight);
+    if (setupCount > 0) {
+      p.clear();
+      p.push();
+      let translateX = Math.round(canvasWidth - containerWidth) / 2;
+      let translateY = Math.round(canvasHeight - containerHeight) / 2;
+      p.translate(translateX, translateY);
+      if (playedSeconds > timings.popupStart && playedSeconds < timings.popupEnd) {
+        /* region-title
+        p.noFill();
+        p.stroke(255, 0, 0);
+        p.rect(textLayout.textFrame_xOrigin, textLayout.textFrame_yOrigin, textLayout.textFrame_Width, textLayout.textFrame_Height);
+        */
+        /* title */
+        p.noStroke();
+        p.fill(0);
+        p.textSize(textLayout.fontSize);
+        p.textAlign(p.CENTER, p.CENTER);
+        p.text(title, Math.round(textLayout.textFrame_Width / 2), textLayout.textFrame_yOrigin + Math.round(textLayout.textFrame_Height / 2));
+      } else if (playedSeconds > timings.imagesStart && playedSeconds < timings.imagesEnd) {
+        //console.log('SHOW IMAGES & STORY')
+        /* region-image
+        p.stroke(0, 255, 0);
+        p.noFill();
+        p.rect(imageLayout.imageFrame_xOrigin, imageLayout.imageFrame_yOrigin, imageLayout.imageFrame_Width, imageLayout.imageFrame_Height);
+        */
+        /* image */
+        p.image(img, imageLayout.image_Xcentre, imageLayout.image_Ycentre, imgWidth, imgHeight);
+        /* region story
+        p.noFill();
+        p.stroke(0, 0, 255);
+        p.rect(textLayout.textFrame_xOrigin, textLayout.textFrame_yOrigin, textLayout.textFrame_Width, textLayout.textFrame_Height);
+        */
+        /* story */
+        p.noStroke();
+        p.fill(0);
+        p.textSize(textLayout.fontSize);
+        p.textAlign(p.LEFT, p.CENTER);
+        p.text(story, storyXpos, textLayout.textFrame_yOrigin + Math.round(textLayout.textFrame_Height / 2) );
+        storyXpos = storyXpos - storyXinc;
+      }
+      p.pop();
     }
   };
   window.onresize = () => {
@@ -123,21 +176,9 @@ export default function sketch(p) {
       console.log(`containerWidth:${containerWidth} containerHeight:${containerHeight}`)
     }
     p.resizeCanvas(canvasWidth, canvasHeight);
-    //
-    imageFrame_Xoffset = Math.round(canvasWidth * xOffsetFactor); /* set image in from left edge */
-    imageFrame_Border = Math.round(canvasWidth * imageBorder); /* set image in from all edges */
-    imageFrame_xOrigin = imageFrame_Xoffset + Math.round((canvasWidth - containerWidth) / 2) + imageFrame_Border;
-    imageFrame_yOrigin = Math.round((canvasHeight - containerHeight) / 2) + imageFrame_Border;
-    imageFrame_Width = imageFrame_Xoffset + Math.round(canvasWidth / 2) - Math.round(2 * imageFrame_Border);
-    imageFrame_Height = Math.round(containerHeight * imageHeightFactory) - Math.round(2 * imageFrame_Border);
-    image_Xcentre = imageFrame_xOrigin + Math.round(imageFrame_Width / 2);
-    image_Ycentre = imageFrame_yOrigin + Math.round(imageFrame_Height / 2);
-    //
-    textFrame_Border = Math.round(canvasWidth * textBorderFactor); /* set text in from all edges */
-    textFrame_xOrigin = Math.round((canvasWidth - containerWidth) / 2) + textFrame_Border;
-    textFrame_yOrigin = Math.round(containerHeight * imageHeightFactory) + textFrame_Border;
-    textFrame_Width = containerWidth + Math.round((canvasWidth - containerWidth) / 2) - Math.round(2 * textFrame_Border);
-    textFrame_Height = Math.round(containerHeight * textHeightFactor) - Math.round(2 * textFrame_Border);
-    //
+    ({
+      imageLayout,
+      textLayout
+    } = Layout(imageLayout, textLayout, aspectRatio, canvasWidth, canvasHeight, containerWidth, containerHeight));
   };
 }
