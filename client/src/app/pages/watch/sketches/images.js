@@ -4,6 +4,7 @@ export default function sketch(p) {
   let initialWidth = 534;
   let initialHeight = 300;
   let canvasWidth, canvasHeight;
+  let corsUrl = "https://cors-anywhere.herokuapp.com/";
   let imgUrl = "../../images/bgd.jpg";
   let img;
   let imgWidth, imgHeight;
@@ -13,8 +14,9 @@ export default function sketch(p) {
   //
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
     console.log("PROPS received...");
-    if (props.componentWidth && setupCount<1) {
+    if (props.componentWidth && setupCount < 1) {
       setupCount = setupCount + 1;
+      console.log(`setupCount: ${setupCount}`)
       initialWidth = props.componentWidth;
       /* 1.78 sets aspect_ratio for component @16:9 */
       initialHeight = Math.floor((props.componentWidth / aspectRatio));
@@ -23,10 +25,16 @@ export default function sketch(p) {
       console.log(`canvasWidth:${canvasWidth} canvasHeight:${canvasHeight}`)
       p.resizeCanvas(initialWidth, initialHeight);
     }
-    if (props.src) {
-      imgUrl = props.src;
+    if (props.src !== undefined) {
+      setupCount = setupCount + 1;
+      console.log(`setupCount: ${setupCount}`)
+      imgUrl = corsUrl + props.src;
+      console.log(`imgUrl: ${imgUrl}`);
       img = p.loadImage(imgUrl, () => {
-        ({imgWidth,imgHeight} = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
+        ({
+          imgWidth,
+          imgHeight
+        } = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
       });
     }
   };
@@ -36,15 +44,13 @@ export default function sketch(p) {
     canvasHeight = initialHeight;
     p.imageMode(p.CENTER);
     p.createCanvas(canvasWidth, canvasHeight);
-    //
-    img = p.loadImage(imgUrl, () => {
-      ({imgWidth,imgHeight} = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
-    })
   };
   p.draw = () => {
     p.noSmooth();
     p.background(0);
-    p.image(img, canvasWidth / 2, canvasHeight / 2, imgWidth, imgHeight);
+    if (setupCount > 1) {
+      p.image(img, canvasWidth / 2, canvasHeight / 2, imgWidth, imgHeight);
+    }
   };
   window.onresize = () => {
     console.log('resize clicked')
@@ -54,7 +60,10 @@ export default function sketch(p) {
       canvasHeight = window.screen.height;
       aspectRatio = window.screen.width / window.screen.height;
       img = p.loadImage(imgUrl, () => {
-        ({imgWidth,imgHeight} = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
+        ({
+          imgWidth,
+          imgHeight
+        } = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
       });
     } else {
       console.log('condition:B')
@@ -62,7 +71,10 @@ export default function sketch(p) {
       canvasHeight = initialHeight;
       aspectRatio = initialAspectRatio;
       img = p.loadImage(imgUrl, () => {
-        ({imgWidth,imgHeight} = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
+        ({
+          imgWidth,
+          imgHeight
+        } = Aspect(img, aspectRatio, canvasWidth, canvasHeight));
       });
     }
     p.resizeCanvas(canvasWidth, canvasHeight);

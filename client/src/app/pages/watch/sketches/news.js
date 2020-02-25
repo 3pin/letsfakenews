@@ -9,6 +9,7 @@ export default function sketch(p) {
   let initialAspectRatio = 1.78;
   let aspectRatio = initialAspectRatio;
   let playedSeconds = 0;
+  let corsUrl = "https://cors-anywhere.herokuapp.com/";
   let imgUrl;
   let containerWidth, containerHeight;
   let title;
@@ -62,9 +63,8 @@ export default function sketch(p) {
         //console.log(playedSeconds);
       }
       if (props.image) {
-        if (imgUrl !== props.image) {
-          imgUrl = props.image;
-          //console.log(`imgUrl: ${imgUrl}`);
+        if (imgUrl !== corsUrl + props.image) {
+          imgUrl = corsUrl + props.image;
           img = p.loadImage(imgUrl, (img) => {
             ({
               imgWidth,

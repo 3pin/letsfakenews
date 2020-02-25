@@ -54,6 +54,32 @@ app.use(bodyParser.urlencoded({
 app.use(device.capture());
 
 //cors
+
+/*
+app.all('*', function(req, res, next) {
+     var origin = req.get('origin');
+     res.header('Access-Control-Allow-Origin', origin);
+     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+     res.header('Access-Control-Allow-Headers', 'Content-Type');
+     next();
+});
+*/
+
+/*
+var allowCrossDomain = function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  // intercept OPTIONS method
+  if ('OPTIONS' == req.method) {
+    res.send(200);
+  } else {
+    next();
+  }
+};
+app.use(allowCrossDomain);
+*/
+
 if (process.env.CORS === 'whitelist') {
   debug('CORS:whitelist')
   const cors = require('cors');
@@ -74,8 +100,10 @@ if (process.env.CORS === 'whitelist') {
   debug('CORS:all')
   const cors = require('cors');
   app.use(cors());
-} else {
+} else if (process.env.CORS === 'off')  {
   debug('CORS:none')
+} else {
+  debug('CORS:CORS not setup')
 }
 
 // force HSTS on the clients requests
@@ -127,10 +155,12 @@ app.use(dbSettingsFetch);
 // define that all routes are within the 'routes' folder
 const index = require('./routes/index');
 app.use('/', index);
+
 //=============================================================================
 // Error Handlers
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
