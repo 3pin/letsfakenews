@@ -25,7 +25,7 @@ export default class Visualise_Images extends React.Component {
     this.state = {
       apiHello: "/watch/visualise",
       liveList: [],
-      imageSet: ["../../images/bgd.jpg"],
+      imageSet: [],
       imageSetIndex: 0,
       imageIndex: 0,
       imagecontainerStyle: {
@@ -82,7 +82,7 @@ export default class Visualise_Images extends React.Component {
         });
       }).then(() => {
         /* start new timer to run changeImage */
-        console.log('post-refresh startTimer');
+        console.log('post-refresh.. starting startTimer');
         timerId = this.startTimer(this.state.imageDuration * 1000).id;
       }).catch(err => console.log(err));
   };
@@ -151,7 +151,7 @@ export default class Visualise_Images extends React.Component {
     /* open sse listener to trigger a refresh:response which will update this.state.liveList */
     this.eventSource.addEventListener('activelistChange', (e) => {
       console.log('Backend changes triggered a refresh of the activelist');
-      this.refreshList();
+      //this.refreshList();
     });
     /* Catches errors */
     this.eventSource.onerror = (e) => {

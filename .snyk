@@ -6,9 +6,15 @@ ignore:
     - configstore > dot-prop:
         reason: no current fix
         expires: '2020-03-08T11:53:05.592Z'
+      npm > update-notifier > configstore > dot-prop:
+        reason: No remediation available
+        expires: '2020-04-09T15:05:42.246Z'
     - nodemon > update-notifier > configstore > dot-prop:
         reason: no current fix
         expires: '2020-03-08T11:53:05.592Z'
+      npm > libnpx > update-notifier > configstore > dot-prop:
+        reason: No remediation available
+        expires: '2020-04-09T15:05:42.246Z'
     - npm > update-notifier > configstore > dot-prop:
         reason: None given
         expires: '2020-03-08T11:55:08.108Z'
@@ -438,8 +444,8 @@ ignore:
         expires: '2020-03-08T11:53:05.597Z'
   SNYK-JS-USERAGENT-174737:
     - express-device > device > useragent:
-        reason: None given
-        expires: '2020-03-08T11:55:08.108Z'
+        reason: No remediation available
+        expires: '2020-04-09T15:05:42.246Z'
   'npm:utile:20180614':
     - htdigest > prompt > utile:
         reason: None given

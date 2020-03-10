@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import Landing from './landing';
-import Visualise_News from './news';
+import Visualise_News from './news_P5';
 import Visualise_Text from './text_p5';
 import Visualise_Images from './images_p5';
 

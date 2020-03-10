@@ -1,6 +1,8 @@
 import React from 'react';
-import ReactPlayer from 'react-player';
 import FrameButton from '../../components/frameButton';
+import ReactPlayer from 'react-player';
+import P5Wrapper from "react-p5-wrapper";
+import Sketch from './sketches/news';
 
 // func to calc timing-durations
 const diff = (start, end) => {
@@ -40,6 +42,7 @@ export default class Visualise_News extends React.Component {
     this.state = {
       mode: "",
       //timings
+      playedSeconds: 0,
       popupStart: 6.2,
       popupEnd: 11.3,
       imagesStart: 17.6,
@@ -68,7 +71,7 @@ export default class Visualise_News extends React.Component {
       controls: false,
       volume: 1,
       progressInterval: 500,
-      url: "https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4"
+      url: "https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4",
     }
   }
   apiGet = async (endpoint) => {
@@ -86,7 +89,7 @@ export default class Visualise_News extends React.Component {
         title: res.data.title.toUpperCase(),
         story: res.data.story,
         urls: metadata(res.data, this.state.image_duration, this.state.imagesStart).urls,
-        markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers
+        markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers,
       }))
       .then(() => {
         console.log(this.state);
@@ -94,6 +97,10 @@ export default class Visualise_News extends React.Component {
       }).catch(err => console.log(err))
   }
   onProgress(e) {
+    //console.log(e.playedSeconds.toFixed(2));
+    this.setState({
+      playedSeconds: e.playedSeconds.toFixed(2)
+    })
     /* change url-image according to markers... */
     let currentSec = e.playedSeconds;
     if (currentSec >= this.state.markers[this.state.url_index] && this.state.url_index < this.state.markers.length - 1) {
@@ -151,9 +158,8 @@ export default class Visualise_News extends React.Component {
   }
   goFullscreen() {
     document.activeElement.blur();
-    console.log('fullscreen entered');
+    console.log('Entering fullscreen');
     let i = this.videoContainer;
-    console.log(i)
     // go full-screen with cross-browser support
     if (i.requestFullscreen) {
       i.requestFullscreen();
@@ -173,12 +179,15 @@ export default class Visualise_News extends React.Component {
   }
   componentDidMount() {
     console.log('componentDidMount');
+    /* pass in the rendered componentWidth to state */
+    this.setState({
+      componentWidth: this.refs.parent.offsetWidth
+    });
     document.addEventListener("fullscreenchange", this.exitFullscreen, false);
     /* calculate durations && */
     /* load db settings... */
     this.apiGet('/settings/mode').then((res) => {
-      console.log(`route /settings/mode has given a response`);
-      console.log(res.dbSettings);
+      //console.log(res.dbSettings);
       if (res.dbSettings.node_mode === 'production') {
         console.log(`mode is ${res.dbSettings.node_mode}`);
         this.setState({
@@ -207,19 +216,19 @@ export default class Visualise_News extends React.Component {
   }
   render() {
     return (
-      <div >
+      <div ref='parent'>
         <FrameButton
           buttonLabel='Fullscreen'
           onClick={this.goFullscreen.bind(this.videoContainer)}
         />
         <hr/>
-        <div id="videoContainer" ref={videoContainer => {this.videoContainer=videoContainer}} >
+        <div id='videoContainer' ref={videoContainer => {this.videoContainer=videoContainer}} >
           <ReactPlayer
             id="videoPlayer"
-            ref={player => { this.player=player }}
             volume={this.state.volume}
             width='100%'
             height='100%'
+            ref={player => { this.player=player }}
             controls={this.state.controls}
             progressInterval = {this.state.progressInterval}
             playing={this.state.playing}
@@ -228,14 +237,29 @@ export default class Visualise_News extends React.Component {
             onEnded={this.onEnded.bind(this)}
             url={this.state.url}
             />
-          <div id="popup_title" style={this.state.popup_title}>
-            <p id="popup_title_text">{this.state.title}</p>
-          </div>
-          <div id="image_frame" style={this.state.image_frame}>
-            <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image}/>
-          </div>
-          <div id="scroll-left" style={this.state.scroller}>
-            <p id="scroller_text">{this.state.story}</p>
+          <div id='p5_container' >
+            <P5Wrapper
+              sketch={Sketch}
+              vidUrl={this.state.url}
+              componentWidth={this.state.componentWidth}
+              popup_title={this.state.popup_title}
+              popup_title_text={this.state.title}
+              image_frame={this.state.image_frame}
+              image={this.state.urls[this.state.url_index]}
+              scroll-left={this.state.scroller}
+              scroller_text={this.state.story}
+              playedSeconds={this.state.playedSeconds}
+              title={this.state.title}
+              story={this.state.story}
+              timings={{
+                popupStart: this.state.popupStart,
+                popupEnd: this.state.popupEnd,
+                popupduration: this.state.popupEnd-this.state.popupStart,
+                imagesStart: this.state.imagesStart,
+                imagesEnd: this.state.imagesEnd,
+                imagesDuration: this.state.imagesEnd-this.state.imagesStart
+              }}
+            />
           </div>
         </div>
       </div>
