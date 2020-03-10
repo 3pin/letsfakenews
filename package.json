@@ -23,7 +23,7 @@
     "test_refresh": "mocha ./test/modules/refresh.test.js"
   },
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.0",
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
@@ -36,14 +36,14 @@
     "express": "^4.17.1",
     "express-device": "^0.4.2",
     "google-images": "^2.1.0",
-    "helmet": "^3.21.2",
+    "helmet": "^3.21.3",
     "http-auth": "^4.1.2",
     "jquery": "^3.4.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.1",
+    "mongoose": "^5.9.4",
     "morgan": "^1.9.1",
     "node": "^10.17.0",
-    "npm": "^6.13.7",
+    "npm": "^6.14.2",
     "popper.js": "^1.16.1",
     "pos": "^0.4.2",
     "serve-favicon": "^2.5.0",
@@ -51,9 +51,9 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.0.1",
+    "mocha": "^7.1.0",
     "nodemon": "^1.18.10",
     "nyc": "^15.0.0",
-    "snyk": "^1.290.0"
+    "snyk": "^1.298.1"
   }
 }
