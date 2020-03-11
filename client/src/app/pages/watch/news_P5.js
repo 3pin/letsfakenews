@@ -104,12 +104,12 @@ export default class Visualise_News extends React.Component {
     /* change url-image according to markers... */
     let currentSec = e.playedSeconds;
     if (currentSec >= this.state.markers[this.state.url_index] && this.state.url_index < this.state.markers.length - 1) {
-      console.log('marker passed secs:' + this.state.markers[this.state.url_index] + ' current url index:' + this.state.url_index);
+      //console.log('marker passed secs:' + this.state.markers[this.state.url_index] + ' current url index:' + this.state.url_index);
       this.setState({
         url_index: this.state.url_index + 1
       });
-      console.log('new url index: ' + this.state.url_index);
-      console.log('new url: ' + this.state.urls[this.state.url_index]);
+      //console.log('new url index: ' + this.state.url_index);
+      //console.log('new url: ' + this.state.urls[this.state.url_index]);
     }
     /* change interface according to markers */
     if (currentSec >= this.state.popupStart && currentSec <= this.state.popupEnd) {

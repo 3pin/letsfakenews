@@ -8,7 +8,7 @@ export default function Layout(imageLayout, textLayout, aspectRatio, canvasWidth
   textLayout.textFrame_yOrigin = Math.round(containerHeight * textLayout.yOffsetFactor) + textLayout.textFrame_Border;
   textLayout.textFrame_Width = containerWidth - Math.round(2 * textLayout.textFrame_Border);
   textLayout.textFrame_Height = Math.round(containerHeight * textLayout.heightFactor) - textLayout.textFrame_Border;
-  textLayout.fontSize = Math.round(textLayout.textFrame_Height/1.65);
+  textLayout.fontSize = Math.round(textLayout.textFrame_Height*0.6);
   //
   //
   /* set in from left edge */
