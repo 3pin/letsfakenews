@@ -6,21 +6,21 @@ ignore:
     - configstore > dot-prop:
         reason: no current fix
         expires: '2020-03-08T11:53:05.592Z'
-      npm > update-notifier > configstore > dot-prop:
-        reason: No remediation available
-        expires: '2020-04-09T15:05:42.246Z'
     - nodemon > update-notifier > configstore > dot-prop:
         reason: no current fix
         expires: '2020-03-08T11:53:05.592Z'
-      npm > libnpx > update-notifier > configstore > dot-prop:
-        reason: No remediation available
-        expires: '2020-04-09T15:05:42.246Z'
     - npm > update-notifier > configstore > dot-prop:
         reason: None given
         expires: '2020-03-08T11:55:08.108Z'
     - npm > libnpx > update-notifier > configstore > dot-prop:
         reason: None given
         expires: '2020-03-08T11:55:08.108Z'
+    - npm > update-notifier > configstore > dot-prop:
+        reason: No remediation available
+        expires: '2020-04-09T15:05:42.246Z'
+    - npm > libnpx > update-notifier > configstore > dot-prop:
+        reason: No remediation available
+        expires: '2020-04-09T15:05:42.246Z'
   SNYK-JS-KINDOF-537849:
     - anymatch > micromatch > kind-of:
         reason: no current fix
@@ -450,4 +450,11 @@ ignore:
     - htdigest > prompt > utile:
         reason: None given
         expires: '2020-03-08T11:55:08.108Z'
+  SNYK-JS-MINIMIST-559764:
+    - npm > libnpm > libnpmaccess > npm-registry-fetch > make-fetch-happen > cacache > move-concurrently > copy-concurrently > mkdirp > minimist:
+        reason: None given
+        expires: '2020-04-10T13:10:30.664Z'
+    - npm > libcipm > pacote > npm-registry-fetch > make-fetch-happen > cacache > move-concurrently > copy-concurrently > mkdirp > minimist:
+        reason: ''
+        expires: '2020-04-10T13:10:30.664Z'
 patch: {}

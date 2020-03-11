@@ -9,6 +9,7 @@ export default function sketch(p) {
   let initialAspectRatio = 1.78;
   let aspectRatio = initialAspectRatio;
   let playedSeconds = 0;
+  let fps = 60;
   let corsUrl = "https://cors-anywhere.herokuapp.com/";
   let imgUrl;
   let containerWidth, containerHeight;
@@ -27,6 +28,7 @@ export default function sketch(p) {
     textFrame_Width: undefined,
     textFrame_Height: undefined,
     textFrame_Border: undefined,
+    fontSize: undefined
   };
   let imageLayout = {
     borderFactor: 0.02,
@@ -66,30 +68,31 @@ export default function sketch(p) {
         if (imgUrl !== corsUrl + props.image) {
           imgUrl = corsUrl + props.image;
           img = p.loadImage(imgUrl, (img) => {
-            ({
-              imgWidth,
-              imgHeight
-            } = Aspect(img, imageLayout.imageFrame_Width / imageLayout.imageFrame_Height, imageLayout.imageFrame_Width, imageLayout.imageFrame_Height));
+            ({imgWidth,imgHeight} = Aspect(img, imageLayout.imageFrame_Width / imageLayout.imageFrame_Height, imageLayout.imageFrame_Width, imageLayout.imageFrame_Height));
           });
         }
       }
       if (props.title) {
         if (title !== props.title) {
           title = props.title;
-          //console.log(`title: ${title}`);
-          //fontSize = Math.round(textLayout.textFrame_Height/1.7);
         }
       }
       if (props.story) {
         if (story !== props.story) {
           story = props.story;
-          //console.log(`story: ${story}`);
+          console.log(`containerWidth ${containerWidth}`);
+          p.textSize(textLayout.fontSize);
           storyLength = p.textWidth(story);
-          storyXpos = containerWidth;
-          let noFrames = 60*timings.imagesDuration;
+          console.log(`storyLength ${storyLength}`);
           let totalLength = containerWidth + storyLength;
-          storyXinc = Math.ceil((totalLength/noFrames).toFixed(2));
-          //console.log(storyXinc);
+          console.log(`totalLength ${totalLength}`);
+          let noFrames = fps*timings.imagesDuration;
+          console.log(`noFrames ${noFrames}`);
+          let inc = (totalLength/noFrames).toFixed(2)
+          console.log(`inc ${inc}`);
+          storyXinc = Math.round(inc);
+          console.log(`storyXinc ${storyXinc}`);
+          storyXpos = containerWidth;
         }
       }
     }
@@ -115,11 +118,6 @@ export default function sketch(p) {
       let translateY = Math.round(canvasHeight - containerHeight) / 2;
       p.translate(translateX, translateY);
       if (playedSeconds > timings.popupStart && playedSeconds < timings.popupEnd) {
-        /* region-title
-        p.noFill();
-        p.stroke(255, 0, 0);
-        p.rect(textLayout.textFrame_xOrigin, textLayout.textFrame_yOrigin, textLayout.textFrame_Width, textLayout.textFrame_Height);
-        */
         /* title */
         p.noStroke();
         p.fill(0);
@@ -127,19 +125,8 @@ export default function sketch(p) {
         p.textAlign(p.CENTER, p.CENTER);
         p.text(title, Math.round(textLayout.textFrame_Width / 2), textLayout.textFrame_yOrigin + Math.round(textLayout.textFrame_Height / 2));
       } else if (playedSeconds > timings.imagesStart && playedSeconds < timings.imagesEnd) {
-        //console.log('SHOW IMAGES & STORY')
-        /* region-image
-        p.stroke(0, 255, 0);
-        p.noFill();
-        p.rect(imageLayout.imageFrame_xOrigin, imageLayout.imageFrame_yOrigin, imageLayout.imageFrame_Width, imageLayout.imageFrame_Height);
-        */
         /* image */
         p.image(img, imageLayout.image_Xcentre, imageLayout.image_Ycentre, imgWidth, imgHeight);
-        /* region story
-        p.noFill();
-        p.stroke(0, 0, 255);
-        p.rect(textLayout.textFrame_xOrigin, textLayout.textFrame_yOrigin, textLayout.textFrame_Width, textLayout.textFrame_Height);
-        */
         /* story */
         p.noStroke();
         p.fill(0);
@@ -152,7 +139,7 @@ export default function sketch(p) {
     }
   };
   window.onresize = () => {
-    console.log('resize clicked')
+    console.log('resize clicked');
     if (!window.screenTop && !window.screenY) {
       console.log('condition: ENTERING FULLSCREEN')
       canvasWidth = window.screen.width;
@@ -176,9 +163,6 @@ export default function sketch(p) {
       console.log(`containerWidth:${containerWidth} containerHeight:${containerHeight}`)
     }
     p.resizeCanvas(canvasWidth, canvasHeight);
-    ({
-      imageLayout,
-      textLayout
-    } = Layout(imageLayout, textLayout, aspectRatio, canvasWidth, canvasHeight, containerWidth, containerHeight));
+    ({imageLayout,textLayout} = Layout(imageLayout, textLayout, aspectRatio, canvasWidth, canvasHeight, containerWidth, containerHeight));
   };
 }
