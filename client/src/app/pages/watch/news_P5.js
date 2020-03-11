@@ -82,6 +82,7 @@ export default class Visualise_News extends React.Component {
     return body;
   }
   onReady() {
+    console.log(`ON-READY`)
     /* load new story into this.state */
     this.apiGet('/watch/request_new_story')
       .then((res) => this.setState({
@@ -154,6 +155,7 @@ export default class Visualise_News extends React.Component {
   }
   onEnded() {
     console.log('Media Ended');
+    /* the next line will rewind and then trigger this.onReady() */
     this.player.seekTo(0);
   }
   goFullscreen() {
@@ -170,10 +172,13 @@ export default class Visualise_News extends React.Component {
     } else if (i.msRequestFullscreen) {
       i.msRequestFullscreen()
     }
+    /* reset & restart */
+    this.onEnded();
   }
   exitFullscreen() {
     if (!document.fullscreenElement) {
       console.log('fullscreen exited');
+      /* reset & restart */
       this.onEnded();
     }
   }

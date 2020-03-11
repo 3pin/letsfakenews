@@ -119,14 +119,12 @@ export default function sketch(p) {
       p.translate(translateX, translateY);
       if (playedSeconds > timings.popupStart && playedSeconds < timings.popupEnd) {
         /* title */
-        console.log(`ONSCREEN:TITLE`);
         p.noStroke();
         p.fill(0);
         p.textSize(textLayout.fontSize);
         p.textAlign(p.CENTER, p.CENTER);
         p.text(title, Math.round(textLayout.textFrame_Width / 2), textLayout.textFrame_yOrigin + Math.round(textLayout.textFrame_Height / 2));
       } else if (playedSeconds > timings.imagesStart && playedSeconds < timings.imagesEnd) {
-        console.log(`ONSCREEN:IMAGE/TEXT`);
         /* image */
         p.image(img, imageLayout.image_Xcentre, imageLayout.image_Ycentre, imgWidth, imgHeight);
         /* story */
@@ -141,7 +139,7 @@ export default function sketch(p) {
     }
   };
   window.onresize = () => {
-    console.log('resize clicked')
+    console.log('resize clicked');
     if (!window.screenTop && !window.screenY) {
       console.log('condition: ENTERING FULLSCREEN')
       canvasWidth = window.screen.width;
