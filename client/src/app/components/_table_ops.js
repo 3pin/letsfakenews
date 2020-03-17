@@ -1,20 +1,21 @@
-import React from 'react';
-import {Table, Button} from 'react-bootstrap';
+import React from 'react'
+import { Table } from 'react-bootstrap'
 
 export default class TableOps extends React.Component {
-  constructor() {
-    super();
-    this.state = {tOpsData: {}}
+  constructor () {
+    super()
+    this.state = { tOpsData: {} }
   }
-  componentDidMount() {
-    //console.log(this.props);
-    //console.log(this.props.tHeaders.one.style)
-    const {tOpsData} = this.props.tOpsData;
-    this.setState({ tOpsData });
-    console.log(this.state.tOpsData)
 
+  componentDidMount () {
+    // console.log(this.props);
+    // console.log(this.props.tHeaders.one.style)
+    const { tOpsData } = this.props.tOpsData
+    this.setState({ tOpsData })
+    console.log(this.state.tOpsData)
   }
-  render() {
+
+  render () {
     /*
     const tButtons = this.props.tOpsData.tButtons;
     const tHeaderSize = this.props.tOpsData.tButtons;
@@ -23,46 +24,48 @@ export default class TableOps extends React.Component {
     console.log(tHeaders);
     */
 
-    //tHeadersObject_Test()
+    // tHeadersObject_Test()
     const TableHeadersObject = this.props.tOpsData.map((entry, i) => <p key={i}>{entry.tButtons[0]}</p>)
-    //const TableHeadersObject = tOpsData.map((entry, i) => <th key={i} style={{'width:50%'}}>{entry}</th>)
+    // const TableHeadersObject = tOpsData.map((entry, i) => <th key={i} style={{'width:50%'}}>{entry}</th>)
 
-    return (<div>
-      <Table bordered hover style={{
-          backgroundColor: "white"
-        }}>
-        <thead className="thead-dark">
-          <tr>
-          {TableHeadersObject}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Set new stories to go live automatically</td>
-            <td style={{
+    return (
+      <div>
+        <Table bordered hover style={{ backgroundColor: 'white' }}>
+          <thead className='thead-dark'>
+            <tr>
+              {TableHeadersObject}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Set new stories to go live automatically</td>
+              <td style={{
                 textAlign: 'center'
-              }}>
-              <input title="autolive" type="checkbox" className="form-check-input show_tip autolive"></input>
-            </td>
-          </tr>
-          <tr>
-            <td>Refresh imagery for all stories</td>
-            <td style={{
+              }}
+              >
+                <input title='autolive' type='checkbox' className='form-check-input show_tip autolive' />
+              </td>
+            </tr>
+            <tr>
+              <td>Refresh imagery for all stories</td>
+              <td style={{
                 textAlign: 'center'
-              }}>
-              <button title="refresh" type="button" className="btn btn-primary show_tip refresh "></button>
-            </td>
-          </tr>
-          <tr>
-            <td>Clear all stories from database</td>
-            <td style={{
+              }}
+              >
+                <button title='refresh' type='button' className='btn btn-primary show_tip refresh ' />
+              </td>
+            </tr>
+            <tr>
+              <td>Clear all stories from database</td>
+              <td style={{
                 textAlign: 'center'
-              }}>
-              <button title="clear" type="button" className="btn btn-danger show_tip clear "></button>
-            </td>
-          </tr>
-        </tbody>
-      </Table>
-    </div>)
+              }}
+              >
+                <button title='clear' type='button' className='btn btn-danger show_tip clear ' />
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>)
   }
 }

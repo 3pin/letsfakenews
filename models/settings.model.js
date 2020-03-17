@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const Base = require('./base.model');
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const Base = require('./base.model')
 
-let SettingsSchema = new Schema({
+const SettingsSchema = new Schema({
   image_duration: {
     type: Number,
     required: true
@@ -11,7 +11,7 @@ let SettingsSchema = new Schema({
     type: Number,
     required: true
   },
-  entry_to_read: {
+  entryToRead: {
     type: Number,
     required: true
   },
@@ -27,7 +27,7 @@ let SettingsSchema = new Schema({
     type: Array,
     required: true
   },
-  db_mode: {
+  dbMode: {
     type: String,
     required: true
   },
@@ -37,7 +37,7 @@ let SettingsSchema = new Schema({
   }
 }, {
   collection: process.env.DATABASE
-});
+})
 
 // Export the model
-module.exports = Base.discriminator('Settings', SettingsSchema);
+module.exports = Base.discriminator('Settings', SettingsSchema)

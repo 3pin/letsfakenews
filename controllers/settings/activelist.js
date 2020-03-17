@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-const debug = require('debug')('activelist');
-const Settings = require('../../models/settings.model');
+const debug = require('debug')('activelist')
+const Settings = require('../../models/settings.model')
 
 module.exports = (req, res) => {
-  debug('/GET /settings/activelist');
+  debug('/GET /settings/activelist')
   Settings.find({}).then((res) => {
-    debug(res.activelist);
+    debug(res.activelist)
     res.send({
       response: res.activelist
-    });
-  });
-};
+    })
+  })
+}

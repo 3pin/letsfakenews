@@ -1,17 +1,18 @@
-//banner component with TITLE and DESCRIPTION
-import React from 'react';
+// banner component with TITLE and DESCRIPTION
+import React from 'react'
 
 const FrameBanner = (props) => {
   let Tag
   if (props.hsize) {
     Tag = props.hsize
   } else {
-    Tag = "h2"
+    Tag = 'h2'
   }
-  return (<div className="banner">
+  return (
+    <div className='banner'>
       <Tag>{props.title}</Tag>
-    <hr/>
+      <hr />
       <p>{props.desc}</p>
-    </div>);
+    </div>)
 }
 export default FrameBanner

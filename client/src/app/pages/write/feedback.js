@@ -37,7 +37,8 @@ class WriteFeedback extends React.Component {
   }
   render() {
     console.log(this.props)
-    return (<div>
+    return (
+      <div>
         <section>
           <FrameBanner
             title="Feedback..."

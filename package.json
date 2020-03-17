@@ -6,6 +6,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "check": "standard 'client/**/*.js' --verbose | snazzy",
+    "fix": "standard --fix",
     "heroku-postbuild": "cd client && npm install && GENERATE_SOURCEMAP=false npm run build",
     "start": "node ./bin/www",
     "server": "nodemon ./bin/www",
@@ -19,8 +21,8 @@
     "test_nlp": "mocha ./test/modules/nlp.test.js",
     "test_imagesearch": "mocha ./test/modules/imagesearch.test.js",
     "test_process": "mocha ./test/modules/process.test.js",
-    "test_time_ops": "mocha ./test/modules/time_ops.test.js",
-    "test_db_fetch_mode": "mocha ./test/modules/db_fetch_mode.test.js",
+    "test_time_ops": "mocha ./test/modules/timeOps.test.js",
+    "test_db_fetch_mode": "mocha ./test/modules/dbFetchMode.test.js",
     "test_refresh": "mocha ./test/modules/refresh.test.js"
   },
   "dependencies": {
@@ -43,7 +45,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.4",
     "morgan": "^1.9.1",
-    "node": "13.7.0",
+    "node": "13.10.1",
     "npm": "^6.14.2",
     "popper.js": "^1.16.1",
     "pos": "^0.4.2",
@@ -55,6 +57,22 @@
     "mocha": "^7.1.0",
     "nodemon": "^1.18.10",
     "nyc": "^15.0.0",
-    "snyk": "^1.298.1"
+    "snazzy": "^8.0.0",
+    "snyk": "^1.298.1",
+    "standard": "^14.3.3"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "context",
+      "before",
+      "beforeEach",
+      "after",
+      "afterEach",
+      "it",
+      "expect",
+      "fetch",
+      "alert"
+    ]
   }
 }

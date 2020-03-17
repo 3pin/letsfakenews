@@ -119,21 +119,14 @@ export default class Stories extends React.Component {
     const tableStyle = {
       backgroundColor: "white"
     }
-    // eslint-disable-next-line
-    let variant;
-    if (this.props.variant) {
-      variant = this.props.variant
-    } else {
-      variant = 'danger'
-    }
     return (<div>
       <FrameBanner desc={this.props.desc} title={this.props.title}/>
       <hr/>
       <Table bordered style={tableStyle}>
         <thead className="thead-dark">
           <tr>
-            <th style={{width: "90%"}}>LiveList Control</th>
-            <th style={{width: "10%"}}>Num</th>
+            <th style={{width: "95%"}}>LiveList Control</th>
+            <th>Num</th>
           </tr>
         </thead>
         <tbody>
@@ -153,15 +146,15 @@ export default class Stories extends React.Component {
       <Table bordered style={tableStyle}>
         <thead className="thead-dark">
           <tr>
-            <th style={{width: "90%"}}>Slideshow Control</th>
-            <th style={{width: "10%"}}>Num</th>
+            <th style={{width: "95%"}}>Slide-Show Control</th>
+            <th>Num</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Image Display Duration (in seconds)</td>
             <td>
-              <input type='number' min='1' value={this.state.imageDuration} onChange={this.handleDurationChange}/>
+              <input type='number' min='1' max='10' value={this.state.imageDuration} onChange={this.handleDurationChange}/>
             </td>
           </tr>
         </tbody>
@@ -170,8 +163,8 @@ export default class Stories extends React.Component {
       <Table bordered style={tableStyle}>
         <thead className="thead-dark">
           <tr>
-            <th style={{width: "90%"}}>Text-Scroller Control</th>
-            <th style={{width: "10%"}}>Num</th>
+            <th style={{width: "95%"}}>Text-Scroller Control</th>
+            <th>Num</th>
           </tr>
         </thead>
         <tbody>

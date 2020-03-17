@@ -130,7 +130,8 @@ export default class Story extends React.Component {
   render() {
     //console.log(this.state.redirect)
     const val = this.loadStateSubject(this.state, this.props.subject);
-    return (<div>
+    return (
+      <div>
         {this.renderRedirect()}
         <section>
           <FrameBanner

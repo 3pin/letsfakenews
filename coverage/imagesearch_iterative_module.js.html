@@ -130,8 +130,8 @@ const imagesearch_module = require('../modules/imagesearch_module.js');
 module.exports = {
 &nbsp;
   //for an array of nouns: find an image-url to match a noun
-  iterative_url_search: function(input_array) {
-    let array = input_array
+  iterative_url_search: function(inputArray) {
+    let array = inputArray
     return new Promise((resolve, reject) =&gt; {
       var promises = array.map(imagesearch_module.single_url_search)
       Promise.all(promises).then((result) =&gt; {

@@ -110,7 +110,7 @@ returns the updated JSON-obj
 &nbsp;
 'use strict';
 const debug = require('debug')('refresh_urls');
-const imagesearch_iterative = require('../modules/imagesearch_iterative.js');
+const imagesearchIterative = require('../modules/imagesearchIterative.js');
 &nbsp;
 module.exports = {
 &nbsp;
@@ -118,7 +118,7 @@ module.exports = {
     debug(obj);
     return new Promise(function(resolve, reject) {
       let words = obj.words;
-      imagesearch_iterative.process(words).then(urls =&gt; {
+      imagesearchIterative.process(words).then(urls =&gt; {
         obj.urls = urls;
         debug(obj);
         resolve(obj);

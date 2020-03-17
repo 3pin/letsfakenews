@@ -1,32 +1,32 @@
-import Calc from "./functions/calc";
+import Calc from './functions/calc'
 
-export default function sketch(p) {
-  let initialWidth = 400;
-  let initialHeight = 300;
-  let canvasWidth, canvasHeight;
-  let xPos, yPos, textSize;
-  let inc = -5;
-  let storyLength;
-  let textSizeFactor = 8;
-  let story = "Initial Story";
-  let liveList;
-  let img;
-  let imgUrl = "../../images/bgd.jpg";
+export default function sketch (p) {
+  const initialWidth = 400
+  const initialHeight = 300
+  let canvasWidth, canvasHeight
+  let xPos, yPos, textSize
+  const inc = -5
+  let storyLength
+  const textSizeFactor = 8
+  let story = 'Initial Story'
+  let liveList
+  let img
+  const imgUrl = '../../images/bgd.jpg'
   //
   p.myCustomRedrawAccordingToNewPropsHandler = props => {
-    console.log("PROPS received...");
+    console.log('PROPS received...')
     if (props.liveList.length > 0) {
-      liveList = props.liveList;
-      console.log(liveList);
+      liveList = props.liveList
+      console.log(liveList)
     }
-  };
+  }
   p.setup = () => {
-    console.log("SETUP started...");
-    canvasWidth = initialWidth;
-    canvasHeight = initialHeight;
-    p.createCanvas(canvasWidth, canvasHeight);
-    img = p.loadImage(imgUrl);
-    p.textFont("Helvetica");
+    console.log('SETUP started...')
+    canvasWidth = initialWidth
+    canvasHeight = initialHeight
+    p.createCanvas(canvasWidth, canvasHeight)
+    img = p.loadImage(imgUrl)
+    p.textFont('Helvetica');
     ({
       textSize,
       xPos,
@@ -35,19 +35,19 @@ export default function sketch(p) {
       canvasWidth,
       canvasHeight,
       textSizeFactor
-    ));
-    console.log(p.textSize());
-    p.textSize(textSize);
-    console.log(p.textSize());
-    storyLength = Math.floor(p.textWidth(story));
-    console.log(storyLength);
-  };
+    ))
+    console.log(p.textSize())
+    p.textSize(textSize)
+    console.log(p.textSize())
+    storyLength = Math.floor(p.textWidth(story))
+    console.log(storyLength)
+  }
   p.move = () => {
-    //console.log(xPos)
+    // console.log(xPos)
     if (xPos < -storyLength) {
-      console.log("Reached Storylength:" + xPos);
-      let randomEntry = Math.floor(Math.random() * liveList.length);
-      story = liveList[randomEntry].story;
+      console.log('Reached Storylength:' + xPos)
+      const randomEntry = Math.floor(Math.random() * liveList.length)
+      story = liveList[randomEntry].story
       console.log(story);
       ({
         textSize,
@@ -57,35 +57,35 @@ export default function sketch(p) {
         canvasWidth,
         canvasHeight,
         textSizeFactor
-      ));
-      p.textSize(textSize);
-      storyLength = Math.floor(p.textWidth(story));
-      console.log(`StoryLength:${storyLength} \n Story:${story}`);
+      ))
+      p.textSize(textSize)
+      storyLength = Math.floor(p.textWidth(story))
+      console.log(`StoryLength:${storyLength} \n Story:${story}`)
     } else {
-      xPos = xPos + inc;
+      xPos = xPos + inc
     }
-  };
+  }
   p.draw = () => {
-    p.noSmooth();
-    p.background(0);
-    p.image(img, 0, 0);
-    p.fill(0);
-    console.log(p.textSize());
-    p.textSize(textSize);
-    p.smooth();
-    p.text(story, xPos, yPos);
-    p.move();
-  };
+    p.noSmooth()
+    p.background(0)
+    p.image(img, 0, 0)
+    p.fill(0)
+    console.log(p.textSize())
+    p.textSize(textSize)
+    p.smooth()
+    p.text(story, xPos, yPos)
+    p.move()
+  }
   window.onresize = () => {
     if (!window.screenTop && !window.screenY) {
-      canvasWidth = window.screen.width;
-      canvasHeight = window.screen.height;
+      canvasWidth = window.screen.width
+      canvasHeight = window.screen.height
     } else {
-      canvasWidth = initialWidth;
-      canvasHeight = initialHeight;
+      canvasWidth = initialWidth
+      canvasHeight = initialHeight
     }
-    xPos = canvasWidth;
-    yPos = canvasHeight / 2;
-    p.resizeCanvas(canvasWidth, canvasHeight);
-  };
+    xPos = canvasWidth
+    yPos = canvasHeight / 2
+    p.resizeCanvas(canvasWidth, canvasHeight)
+  }
 }

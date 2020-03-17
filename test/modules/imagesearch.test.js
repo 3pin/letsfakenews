@@ -1,34 +1,33 @@
-'use strict';
+'use strict'
 
 // load the ENVIRONMENT variables
-require('dotenv').config();
+require('dotenv').config()
 const debug = require('debug')('tests')
 
 // load assertion library
-const chai = require('chai'),
-  expect = chai.expect,
-  should = chai.should();
+const chai = require('chai')
+const expect = chai.expect
 
 describe('Imagesearches: matching nouns-2-urls via google-API', () => {
   //
   it('should fetch an imageURL-string for a noun...', (done) => {
-    const imagesearch = require('../../modules/imagesearch.js');
+    const imagesearch = require('../../modules/imagesearch.js')
     imagesearch.single_url_search('cat').then((result) => {
-      expect(result).to.be.a('string');
+      expect(result).to.be.a('string')
     }).then(() => {
-      done();
-    });
-  });
+      done()
+    })
+  })
   //
   it('should match each noun-from-array with an image-URL...', (done) => {
-    const imagesearch_iterative = require('../../modules/imagesearch_iterative.js');
-    let words = ['Pump', 'volume']
-    imagesearch_iterative.process(words).then((result) => {
-      expect(result).to.be.an('array');
+    const imagesearchIterative = require('../../modules/imagesearchIterative.js')
+    const words = ['Pump', 'volume']
+    imagesearchIterative.process(words).then((result) => {
+      expect(result).to.be.an('array')
     }).then(() => {
-      done();
+      done()
     }).catch(function (error) {
-      debug("Failed!", error);
+      debug('Failed!', error)
     })
-  });
-});
+  })
+})

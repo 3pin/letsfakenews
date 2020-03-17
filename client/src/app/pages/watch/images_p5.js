@@ -6,7 +6,7 @@ import Sketch from "./sketches/images";
 import 'eventsource-polyfill';
 var timerId = 1;
 
-export default class Visualise_Images extends React.Component {
+export default class visualiseImages extends React.Component {
   constructor(props) {
     super(props);
     this._isMounted = false;
@@ -93,7 +93,7 @@ export default class Visualise_Images extends React.Component {
     let randomSet = Math.floor(Math.random() * this.state.liveList.length);
     return new Promise(() => {
       this.setState({
-        imageSet: this.state.liveList[randomSet].urls_title,
+        imageSet: this.state.liveList[randomSet].urlsTitle,
         imageIndex: 0
       })
     })
@@ -101,7 +101,7 @@ export default class Visualise_Images extends React.Component {
     /* sequentially pick imageSet from this.state.liveList */
     return new Promise(() => {
       this.setState({
-        imageSet: this.state.liveList[this.state.imageSetIndex].urls_title,
+        imageSet: this.state.liveList[this.state.imageSetIndex].urlsTitle,
         imageIndex: 0
       })
     })

@@ -1,9 +1,10 @@
-//banner component with TITLE and DESCRIPTION
-import React from 'react';
+// banner component with TITLE and DESCRIPTION
+import React from 'react'
 
 const Desc = (props) => {
-  return (<div className="banner">
+  return (
+    <div className='banner'>
       <p>{props.desc}</p>
-    </div>);
+    </div>)
 }
 export default Desc

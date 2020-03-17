@@ -1,26 +1,28 @@
 const initialState = {
-  feedback: "",
+  feedback: '',
   submitting: false
 }
 const feedbackReducer = (state = initialState, action) => {
   switch (action.type) {
-  case "SUBMIT_STARTED":
+    case 'SUBMIT_STARTED':
     {
-      return { ...state,
+      return {
+        ...state,
         submitting: true
-      };
+      }
     }
-  case "SUBMIT_ENDED":
+    case 'SUBMIT_ENDED':
     {
-      return { ...state,
+      return {
+        ...state,
         submitting: false
       }
     }
-  default:
+    default:
     {
       return state
     }
   }
-  //return state
+  // return state
 }
 export default feedbackReducer

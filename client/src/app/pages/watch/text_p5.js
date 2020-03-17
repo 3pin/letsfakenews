@@ -4,7 +4,7 @@ import P5Wrapper from "react-p5-wrapper";
 import Sketch from "./sketches/text4class";
 import 'eventsource-polyfill';
 
-export default class Visualise_Text extends React.Component {
+export default class visualiseText extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.NODE_ENV === 'production') {

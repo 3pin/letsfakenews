@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 class WriteStory extends React.Component {
-  handleSubmit = (story) => {
+  onHandleSubmit = (story) => {
     /* goto the next page */
     //this.props.history.push(this.state.next)
     /* update the store */
@@ -41,7 +41,7 @@ class WriteStory extends React.Component {
             maxLength="180"
             buttonLabel="Next"
             content={this.props.story}
-            handleSubmit={this.handleSubmit}/>
+            handleSubmit={this.onHandleSubmit}/>
           <hr/>
         </section>
       </div>)

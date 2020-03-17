@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
 /* module debugging */
-const debug = require('debug')('routes_index');
+const debug = require('debug')('routes_index')
 
 /* declare a new router */
-const routes = require('express').Router();
+const routes = require('express').Router()
 
 /* routes */
-const write = require('./write');
-const watch = require('./watch');
-const admin = require('./admin');
-const settings = require('./settings');
+const write = require('./write')
+const watch = require('./watch')
+const admin = require('./admin')
+const settings = require('./settings')
 /*
 //=============================================================================
 // authenticate
@@ -26,10 +26,10 @@ function middleware_auth(req, res, next) {
   next();
 }
 */
-//=============================================================================
-routes.use('/', write);
-routes.use('/watch', watch);
-routes.use('/admin', admin);
-routes.use('/settings', settings);
+//= ============================================================================
+routes.use('/', write)
+routes.use('/watch', watch)
+routes.use('/admin', admin)
+routes.use('/settings', settings)
 
-module.exports = routes;
+module.exports = routes
