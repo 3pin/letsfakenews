@@ -5,56 +5,57 @@ fetch image-url per noun and add to JSON
 return JSON
 */
 
-'use strict'
-const debug = require('debug')('process_story')
-const nlp = require('../modules/nlp.js')
-const imagesearchIterative = require('../modules/imagesearchIterative.js')
-const timeOps = require('../modules/timeOps.js')
+
+const debug = require('debug')('process_story');
+const nlp = require('./nlp.js');
+const imagesearchIterative = require('./imagesearchIterative.js');
+const timeOps = require('./timeOps.js');
 
 module.exports = {
 
-  process: function (clientJSON) {
-    debug(clientJSON)
-    var today = new Date()
-    return new Promise(function (resolve, reject) {
+  process(client) {
+    const clientJSON = client
+    debug(clientJSON);
+    const today = new Date();
+    return new Promise(((resolve) => {
       timeOps.current_time(today).then((result) => {
         // add current-time to the JSON
-        clientJSON.time = result.time
+        clientJSON.time = result.time;
         nlp.parse_nouns(clientJSON.story).then((words) => {
           if (words[0] === undefined) {
-            debug('no words in story')
-            resolve(null)
+            debug('no words in story');
+            resolve(null);
           } else {
-            debug(words)
+            debug(words);
             // add nouns to the JSON
-            clientJSON.words = words
+            clientJSON.words = words;
             imagesearchIterative.process(words).then((urls) => {
-              debug(urls)
+              debug(urls);
               // add URLs to the JSON
-              clientJSON.urls = urls
+              clientJSON.urls = urls;
               // resolve(clientJSON)
               nlp.parse_nouns(clientJSON.title).then((wordsTitle) => {
                 if (wordsTitle[0] === undefined) {
-                  debug('no words in title')
-                  resolve(null)
+                  debug('no words in title');
+                  resolve(null);
                 } else {
-                  debug(wordsTitle)
+                  debug(wordsTitle);
                   // add nouns to the JSON
-                  clientJSON.wordsTitle = wordsTitle
+                  clientJSON.wordsTitle = wordsTitle;
                   imagesearchIterative.process(wordsTitle).then((urlsTitle) => {
-                    debug(urlsTitle)
+                    debug(urlsTitle);
                     // add URLs to the JSON
-                    clientJSON.urlsTitle = urlsTitle
-                    resolve(clientJSON)
-                  })
+                    clientJSON.urlsTitle = urlsTitle;
+                    resolve(clientJSON);
+                  });
                 }
-              })
-            })
+              });
+            });
           }
-        })
+        });
       }).catch((err) => {
-        debug('Err: ', err)
-      })
-    })
-  }
-}
+        debug('Err: ', err);
+      });
+    }));
+  },
+};

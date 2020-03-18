@@ -1,55 +1,55 @@
 // HOC... take a protected component,
 // ... and if client has valid token passes the component,
 // ... if not redirects them to login
-import React from 'react'
+import React from 'react';
 import {
-  Redirect
-} from 'react-router-dom'
+  Redirect,
+} from 'react-router-dom';
 
-export default function withAuth (ComponentToProtect) {
+export default function withAuth(ComponentToProtect) {
   return class extends React.Component {
-    constructor () {
-      super()
+    constructor() {
+      super();
       this.state = {
         loading: true,
-        redirect: false
-      }
+        redirect: false,
+      };
     }
 
-    componentDidMount () {
+    componentDidMount() {
       fetch('/settings/checkToken')
-        .then(res => {
+        .then((res) => {
           if (res.status === 200) {
             this.setState({
-              loading: false
-            })
+              loading: false,
+            });
           } else {
-            console.log('redirecting')
+            console.log('redirecting');
             this.setState({
               loading: false,
-              redirect: true
-            })
+              redirect: true,
+            });
             // const error = new Error(res.error);
             // throw error;
           }
         })
-        .catch(err => {
-          console.error(err)
-        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
 
-    render () {
+    render() {
       if (this.state.loading) {
-        return null
+        return null;
       }
       if (this.state.redirect) {
-        return <Redirect to='/login' />
+        return <Redirect to="/login" />;
       }
       return (
         <>
           <ComponentToProtect {...this.props} />
         </>
-      )
+      );
     }
-  }
+  };
 }

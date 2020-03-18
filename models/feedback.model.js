@@ -1,19 +1,20 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
-const Base = require('./base.model')
+const mongoose = require('mongoose');
+
+const { Schema } = mongoose;
+const Base = require('./base.model');
 
 const FeedbackSchema = new Schema({
   feedback: {
     type: String,
-    required: true
+    required: true,
   },
   time: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 }, {
-  collection: process.env.DATABASE
-})
+  collection: process.env.DATABASE,
+});
 
 // Export the model
-module.exports = Base.discriminator('Feedback', FeedbackSchema)
+module.exports = Base.discriminator('Feedback', FeedbackSchema);

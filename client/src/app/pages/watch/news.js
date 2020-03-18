@@ -3,30 +3,28 @@ import ReactPlayer from 'react-player';
 import FrameButton from '../../components/frameButton';
 
 // func to calc timing-durations
-const diff = (start, end) => {
-  return parseFloat((end - start).toFixed(1))
-}
+const diff = (start, end) => parseFloat((end - start).toFixed(1));
 // function process-multimedia-metadata
-const metadata = (data, image_duration, imagesStart) => {
+const metadata = (data, imageDuration, imagesStart) => {
   // load imge_URLS
-  let image_locations = data.urls;
-  let urls = []
-  for (var url in image_locations) {
-    urls.push(image_locations[url]);
+  const imageLocations = data.urls;
+  const urls = [];
+  for (const url in imageLocations) {
+    urls.push(imageLocations[url]);
   }
   // calculate multimedia metadata
-  let pic_duration = Math.round(image_duration / urls.length);
-  let markers = []
+  const picDuration = Math.round(imageDuration / urls.length);
+  const markers = [];
   for (let i = 1; i <= urls.length; i++) {
-    markers.push(Math.round(imagesStart + pic_duration * i));
+    markers.push(Math.round(imagesStart + picDuration * i));
   }
   return {
-    urls: urls,
-    markers: markers
-  }
-}
+    urls,
+    markers,
+  };
+};
 
-export default class Visualise_News extends React.Component {
+export default class VisualiseNews extends React.Component {
   constructor(props) {
     super(props);
     //
@@ -38,46 +36,47 @@ export default class Visualise_News extends React.Component {
     this.exitFullscreen = this.exitFullscreen.bind(this);
     //
     this.state = {
-      mode: "",
-      //timings
+      mode: '',
+      // timings
       popupStart: 6.2,
       popupEnd: 11.3,
       imagesStart: 17.6,
       imagesEnd: 41.1,
       // story data
-      title: "",
-      story: "",
+      title: '',
+      story: '',
       urls: [],
       markers: [],
       // array index for currently-displayed image from url-array
       url_index: 0,
       // interface elements visibility
       popup_title: {
-        display: 'none'
+        display: 'none',
       },
       image_frame: {
-        display: 'none'
+        display: 'none',
       },
       image: {
-        display: 'none'
+        display: 'none',
       },
       scroller: {
-        display: 'none'
+        display: 'none',
       },
       playing: false,
       controls: false,
       volume: 1,
       progressInterval: 500,
-      url: "https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4"
-    }
+      url: 'https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4',
+    };
   }
+
   apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
-    if (response.status !== 200)
-      throw Error(body.message);
+    if (response.status !== 200) { throw Error(body.message); }
     return body;
   }
+
   onReady() {
     /* load new story into this.state */
     this.apiGet('/watch/request_new_story')
@@ -85,75 +84,78 @@ export default class Visualise_News extends React.Component {
         url_index: 0,
         title: res.data.title.toUpperCase(),
         story: res.data.story,
-        urls: metadata(res.data, this.state.image_duration, this.state.imagesStart).urls,
-        markers: metadata(res.data, this.state.image_duration, this.state.imagesStart).markers
+        urls: metadata(res.data, this.state.imageDuration, this.state.imagesStart).urls,
+        markers: metadata(res.data, this.state.imageDuration, this.state.imagesStart).markers,
       }))
       .then(() => {
         console.log(this.state);
-        console.log("Media now ready");
-      }).catch(err => console.log(err))
+        console.log('Media now ready');
+      }).catch((err) => console.log(err));
   }
+
   onProgress(e) {
     /* change url-image according to markers... */
-    let currentSec = e.playedSeconds;
+    const currentSec = e.playedSeconds;
     if (currentSec >= this.state.markers[this.state.url_index] && this.state.url_index < this.state.markers.length - 1) {
-      console.log('marker passed secs:' + this.state.markers[this.state.url_index] + ' current url index:' + this.state.url_index);
+      console.log(`marker passed secs:${this.state.markers[this.state.url_index]} current url index:${this.state.url_index}`);
       this.setState({
-        url_index: this.state.url_index + 1
+        url_index: this.state.url_index + 1,
       });
-      console.log('new url index: ' + this.state.url_index);
-      console.log('new url: ' + this.state.urls[this.state.url_index]);
+      console.log(`new url index: ${this.state.url_index}`);
+      console.log(`new url: ${this.state.urls[this.state.url_index]}`);
     }
     /* change interface according to markers */
     if (currentSec >= this.state.popupStart && currentSec <= this.state.popupEnd) {
-      //console.log('popup & title should be visible');
+      // console.log('popup & title should be visible');
       this.setState({
         popup_title: {
-          display: 'block'
-        }
+          display: 'block',
+        },
       });
     } else if (currentSec >= this.state.imagesStart && currentSec <= this.state.imagesEnd) {
-      //console.log('images & scroller should be visible');
+      // console.log('images & scroller should be visible');
       this.setState({
         popup_title: {
-          display: 'none'
+          display: 'none',
         },
         image_frame: {
-          display: 'block'
+          display: 'block',
         },
         image: {
-          display: 'block'
+          display: 'block',
         },
         scroller: {
-          display: 'block'
-        }
+          display: 'block',
+        },
       });
     } else {
       this.setState({
         popup_title: {
-          display: 'none'
+          display: 'none',
         },
         image_frame: {
-          display: 'none'
+          display: 'none',
         },
         image: {
-          display: 'none'
+          display: 'none',
         },
         scroller: {
-          display: 'none'
-        }
+          display: 'none',
+        },
       });
     }
   }
+
   onEnded() {
     console.log('Media Ended');
     this.player.seekTo(0);
   }
+
   goFullscreen() {
     document.activeElement.blur();
     console.log('fullscreen entered');
-    let i = this.videoContainer;
-    console.log(i)
+    const i = this.videoContainer;
+    console.log(i);
     // go full-screen with cross-browser support
     if (i.requestFullscreen) {
       i.requestFullscreen();
@@ -162,83 +164,87 @@ export default class Visualise_News extends React.Component {
     } else if (i.mozRequestFullScreen) {
       i.mozRequestFullScreen();
     } else if (i.msRequestFullscreen) {
-      i.msRequestFullscreen()
+      i.msRequestFullscreen();
     }
   }
+
   exitFullscreen() {
     if (!document.fullscreenElement) {
       console.log('fullscreen exited');
       this.onEnded();
     }
   }
+
   componentDidMount() {
     console.log('componentDidMount');
-    document.addEventListener("fullscreenchange", this.exitFullscreen, false);
+    document.addEventListener('fullscreenchange', this.exitFullscreen, false);
     /* calculate durations && */
     /* load db settings... */
     this.apiGet('/settings/mode').then((res) => {
-      console.log(`route /settings/mode has given a response`);
+      console.log('route /settings/mode has given a response');
       console.log(res.dbSettings);
       if (res.dbSettings.node_mode === 'production') {
         console.log(`mode is ${res.dbSettings.node_mode}`);
         this.setState({
           popup_duration: diff(this.state.popupStart, this.state.popupEnd),
-          image_duration: diff(this.state.imagesStart, this.state.imagesEnd),
+          imageDuration: diff(this.state.imagesStart, this.state.imagesEnd),
           mode: res.dbSettings.node_mode,
           playing: true,
           controls: false,
-          volume: 1
+          volume: 1,
         });
       } else if (res.dbSettings.node_mode === 'development') {
         console.log(`mode is: ${res.dbSettings.node_mode}`);
         this.setState({
           popup_duration: diff(this.state.popupStart, this.state.popupEnd),
-          image_duration: diff(this.state.imagesStart, this.state.imagesEnd),
+          imageDuration: diff(this.state.imagesStart, this.state.imagesEnd),
           mode: res.dbSettings.node_mode,
           playing: true,
           controls: true,
-          volume: 0
+          volume: 0,
         });
       }
-    }).catch(err => console.log(err));
+    }).catch((err) => console.log(err));
   }
+
   componentWillUnmount() {
-    document.removeEventListener("fullscreenchange", this.exitFullscreen, false);
+    document.removeEventListener('fullscreenchange', this.exitFullscreen, false);
   }
+
   render() {
     return (
-      <div >
+      <div>
         <FrameButton
-          buttonLabel='Fullscreen'
+          buttonLabel="Fullscreen"
           onClick={this.goFullscreen.bind(this.videoContainer)}
         />
-        <hr/>
-        <div id="videoContainer" ref={videoContainer => {this.videoContainer=videoContainer}} >
+        <hr />
+        <div id="videoContainer" ref={(videoContainer) => { this.videoContainer = videoContainer; }}>
           <ReactPlayer
             id="videoPlayer"
-            ref={player => { this.player=player }}
+            ref={(player) => { this.player = player; }}
             volume={this.state.volume}
-            width='100%'
-            height='100%'
+            width="100%"
+            height="100%"
             controls={this.state.controls}
-            progressInterval = {this.state.progressInterval}
+            progressInterval={this.state.progressInterval}
             playing={this.state.playing}
             onReady={this.onReady.bind(this)}
             onProgress={this.onProgress.bind(this)}
             onEnded={this.onEnded.bind(this)}
             url={this.state.url}
-            />
+          />
           <div id="popup_title" style={this.state.popup_title}>
             <p id="popup_title_text">{this.state.title}</p>
           </div>
           <div id="image_frame" style={this.state.image_frame}>
-            <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image}/>
+            <img id="image" alt="" src={this.state.urls[this.state.url_index]} style={this.state.image} />
           </div>
           <div id="scroll-left" style={this.state.scroller}>
             <p id="scroller_text">{this.state.story}</p>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }

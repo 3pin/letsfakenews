@@ -1,54 +1,55 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
-const Base = require('./base.model')
-const debug = require('debug')('models')
+const debug = require('debug')('models');
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 
-const bcrypt = require('bcrypt')
-const saltRounds = 10
+const { Schema } = mongoose;
+const Base = require('./base.model');
+
+const saltRounds = 10;
 
 const UserSchema = new Schema({
   username: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 }, {
-  collection: process.env.DATABASE
-})
+  collection: process.env.DATABASE,
+});
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function presave(next) {
   // Check if document is new or a new password has been set
   if (this.isNew || this.isModified('password')) {
-    debug('Activating mongoose-hook pre-save')
+    debug('Activating mongoose-hook pre-save');
     // Saving reference to this because of changing scopes
-    const document = this
+    const document = this;
     bcrypt.hash(document.password, saltRounds,
-      function (err, hashedPassword) {
+      (err, hashedPassword) => {
         if (err) {
-          next(err)
+          next(err);
         } else {
-          document.password = hashedPassword
-          next()
+          document.password = hashedPassword;
+          next();
         }
-      })
+      });
   } else {
-    debug('Not activating hook pre-save')
-    next()
+    debug('Not activating hook pre-save');
+    next();
   }
-})
+});
 
-UserSchema.methods.isCorrectPassword = function (password, callback) {
-  bcrypt.compare(password, this.password, function (err, same) {
+UserSchema.methods.isCorrectPassword = function isCorrectPassword(password, callback) {
+  bcrypt.compare(password, this.password, (err, same) => {
     if (err) {
-      callback(err)
+      callback(err);
     } else {
-      callback(err, same)
+      callback(err, same);
     }
-  })
-}
+  });
+};
 
 // Export the model
-module.exports = Base.discriminator('User', UserSchema)
+module.exports = Base.discriminator('User', UserSchema);

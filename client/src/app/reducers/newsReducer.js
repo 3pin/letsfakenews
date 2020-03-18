@@ -1,30 +1,30 @@
 const initialState = {
   story: '',
   title: '',
-  submitting: false
-}
+  submitting: false,
+};
 const newsReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_STORY':
     {
       return {
         ...state,
-        story: action.payload
-      }
+        story: action.payload,
+      };
     }
     case 'UPDATE_TITLE':
     {
       return {
         ...state,
-        title: action.payload
-      }
+        title: action.payload,
+      };
     }
     case 'SUBMIT_STARTED':
     {
       return {
         ...state,
-        submitting: true
-      }
+        submitting: true,
+      };
     }
     case 'SUBMIT_ENDED':
     {
@@ -32,14 +32,14 @@ const newsReducer = (state = initialState, action) => {
         ...state,
         story: '',
         title: '',
-        submitting: false
-      }
+        submitting: false,
+      };
     }
     default:
     {
-      return state
+      return state;
     }
   }
   // return state
-}
-export default newsReducer
+};
+export default newsReducer;

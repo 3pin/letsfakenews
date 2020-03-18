@@ -1,31 +1,27 @@
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
-import * as actions from "../../actions/creatingNews";
+import * as actions from '../../actions/creatingNews';
 
-import FrameBanner from "../../../app/components/frameBanner";
-import FrameButton from "../../../app/components/frameButton";
+import FrameBanner from '../../components/frameBanner';
+import FrameButton from '../../components/frameButton';
 
 // which props do we want to inject, given the global store state?
-const mapStateToProps = state => {
-  return {
-    story: state.newsReducer.story,
-    title: state.newsReducer.title,
-    submitting: state.newsReducer.submitting
-  };
-};
+const mapStateToProps = (state) => ({
+  story: state.newsReducer.story,
+  title: state.newsReducer.title,
+  submitting: state.newsReducer.submitting,
+});
 // which props do we want to inject, given the global store state?
-const mapDispatchToProps = dispatch => {
-  return {
-    submitStarted: () => {
-      dispatch(actions.submitStarted());
-    },
-    submit: (story, title, history) => {
-      dispatch(actions.submit(story, title, history));
-    }
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  submitStarted: () => {
+    dispatch(actions.submitStarted());
+  },
+  submit: (story, title, history) => {
+    dispatch(actions.submit(story, title, history));
+  },
+});
 class Review extends React.Component {
   handleClick = () => {
     /* dipatch action to change button-UI */
@@ -33,11 +29,12 @@ class Review extends React.Component {
     /* dispatch API submit action */
     this.props.submit(this.props.story, this.props.title, this.props.history);
   };
+
   render() {
-    let title = 'Title: ' + this.props.title;
-    let story = 'Story: ' + this.props.story;
-    //let title = "TITLE: " + this.props.title;
-    //let story = "STORY: " + this.props.story;
+    const title = `Title: ${this.props.title}`;
+    const story = `Story: ${this.props.story}`;
+    // let title = "TITLE: " + this.props.title;
+    // let story = "STORY: " + this.props.story;
     return (
       <div>
         <section>
@@ -59,8 +56,8 @@ class Review extends React.Component {
           <hr />
           <FrameButton
             variant="secondary"
-            linkto={"/write/story"}
-            buttonLabel={"Update"}
+            linkto="/write/story"
+            buttonLabel="Update"
           />
           <hr />
         </section>
@@ -70,5 +67,5 @@ class Review extends React.Component {
 }
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withRouter(Review));

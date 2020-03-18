@@ -1,10 +1,11 @@
-const debug = require('debug')('eventbus')
+const debug = require('debug')('eventbus');
 
-const EventEmitter = require('events')
-const emitter = new EventEmitter()
+const EventEmitter = require('events');
 
-emitter.on('uncaughtException', function (err) {
-  debug(err)
-})
+const emitter = new EventEmitter();
 
-module.exports = emitter
+emitter.on('uncaughtException', (err) => {
+  debug(err);
+});
+
+module.exports = emitter;

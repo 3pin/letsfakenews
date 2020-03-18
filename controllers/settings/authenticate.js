@@ -1,51 +1,52 @@
-'use strict'
 
-const debug = require('debug')('authenticate')
-const toBoolean = require('to-boolean')
-const jwt = require('jsonwebtoken')
-const Auth = require('../../models/auth.model')
+const debug = require('debug')('authenticate');
+const toBoolean = require('to-boolean');
+const jwt = require('jsonwebtoken');
+const Auth = require('../../models/auth.model');
 
 module.exports = (req, res) => {
-  debug('/settings/authenticate')
+  debug('/settings/authenticate');
   // debug(req.body);
-  const { username, password } = req.body
-  Auth.findOne({ username }, function (err, user) {
+  const { username, password } = req.body;
+  Auth.findOne({ username }, (err, user) => {
     if (err) {
       res.status(500)
         .json({
-          error: 'Internal error please try again'
-        })
+          error: 'Internal error please try again',
+        });
     } else if (!user) {
       res.status(401)
         .json({
-          error: 'Incorrect username'
-        })
+          error: 'Incorrect username',
+        });
     } else {
-      debug(user)
-      user.isCorrectPassword(password, function (err, same) {
-        if (err) {
+      debug(user);
+      user.isCorrectPassword(password, (error, same) => {
+        if (error) {
           res.status(500)
             .json({
-              error: 'Internal error please try again'
-            })
+              error: 'Internal error please try again',
+            });
         } else if (!same) {
           res.status(401)
             .json({
-              error: 'Incorrect password'
-            })
+              error: 'Incorrect password',
+            });
         } else {
-          debug('same', same)
+          debug('same', same);
           // Setup token
-          const time = Number(process.env.TOKEN_AGE_MINS) * 60000
-          const payload = { username }
-          const secret = process.env.SECRET
-          const token = jwt.sign(payload, secret, { expiresIn: time })
+          const time = Number(process.env.TOKEN_AGE_MINS) * 60000;
+          const payload = { username };
+          const secret = process.env.SECRET;
+          const token = jwt.sign(payload, secret, { expiresIn: time });
           // Setup Cookie
-          const cookieOptions = { httpOnly: toBoolean(process.env.COOKIEOPTION_HTTPONLY), sameSite: toBoolean(process.env.COOKIEOPTION_SAMESITE), maxAge: time, secure: false, signed: false }
-          debug(cookieOptions)
-          res.cookie('token', token, cookieOptions).sendStatus(200)
+          const cookieOptions = {
+            httpOnly: toBoolean(process.env.COOKIEOPTION_HTTPONLY), sameSite: toBoolean(process.env.COOKIEOPTION_SAMESITE), maxAge: time, secure: false, signed: false,
+          };
+          debug(cookieOptions);
+          res.cookie('token', token, cookieOptions).sendStatus(200);
         }
-      })
+      });
     }
-  })
-}
+  });
+};

@@ -1,53 +1,52 @@
-'use strict'
 
 /* module debugging */
-const debug = require('debug')('routes_admin')
+const debug = require('debug')('routes_admin');
 
 /* declare a new router */
-const admin = require('express').Router()
+const admin = require('express').Router();
 
 /* routes */
-const stories = require('../controllers/admin/stories/stories')
-const storiesClear = require('../controllers/admin/stories/clear')
-const storiesAutolive = require('../controllers/admin/stories/autolive')
-const storiesRefresh = require('../controllers/admin/stories/refresh')
-const storiesRemove = require('../controllers/admin/stories/remove')
-const storiesStorylive = require('../controllers/admin/stories/storylive')
+const stories = require('../controllers/admin/stories/stories');
+const storiesClear = require('../controllers/admin/stories/clear');
+const storiesAutolive = require('../controllers/admin/stories/autolive');
+const storiesRefresh = require('../controllers/admin/stories/refresh');
+const storiesRemove = require('../controllers/admin/stories/remove');
+const storiesStorylive = require('../controllers/admin/stories/storylive');
 //
-const feedback = require('../controllers/admin/feedback/feedback')
-const feedbackClear = require('../controllers/admin/feedback/clear')
+const feedback = require('../controllers/admin/feedback/feedback');
+const feedbackClear = require('../controllers/admin/feedback/clear');
 //
-const visualise = require('../controllers/admin/visualise/visualise')
-const visualiseNum = require('../controllers/admin/visualise/num')
-const visualiseDuration = require('../controllers/admin/visualise/duration')
-const visualiseScroller = require('../controllers/admin/visualise/scroller')
+const visualise = require('../controllers/admin/visualise/visualise');
+const visualiseNum = require('../controllers/admin/visualise/num');
+const visualiseDuration = require('../controllers/admin/visualise/duration');
+const visualiseScroller = require('../controllers/admin/visualise/scroller');
 //
 // admin landing
 admin.get('/', (req, res) => {
-  debug("'REACT /admin' says 'Hello' ")
-  res.send({ express: "Hello 'REACT... route admin' " })
-})
+  debug("'REACT /admin' says 'Hello' ");
+  res.send({ express: "Hello 'REACT... route admin' " });
+});
 //
 /* display stories database */
-admin.get('/stories/', stories)
+admin.get('/stories/', stories);
 // stories macro-ops
-admin.get('/stories/autolive', storiesAutolive)
-admin.get('/stories/refresh', storiesRefresh)
+admin.get('/stories/autolive', storiesAutolive);
+admin.get('/stories/refresh', storiesRefresh);
 /* clear a database */
-admin.post('/stories/clear', storiesClear)
+admin.post('/stories/clear', storiesClear);
 // stories row-ops
-admin.post('/stories/remove', storiesRemove)
-admin.post('/stories/storylive', storiesStorylive)
+admin.post('/stories/remove', storiesRemove);
+admin.post('/stories/storylive', storiesStorylive);
 //
 /* display feedback database */
-admin.get('/feedback', feedback)
+admin.get('/feedback', feedback);
 /* clear a database */
-admin.post('/feedback/clear', feedbackClear)
+admin.post('/feedback/clear', feedbackClear);
 //
 /* display visualise controls */
-admin.get('/visualise', visualise)
-admin.post('/visualise/num', visualiseNum)
-admin.post('/visualise/duration', visualiseDuration)
-admin.post('/visualise/scroller', visualiseScroller)
+admin.get('/visualise', visualise);
+admin.post('/visualise/num', visualiseNum);
+admin.post('/visualise/duration', visualiseDuration);
+admin.post('/visualise/scroller', visualiseScroller);
 
-module.exports = admin
+module.exports = admin;

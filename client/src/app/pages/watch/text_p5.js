@@ -1,7 +1,7 @@
-import React from "react";
-import FrameButton from "../../../app/components/frameButton";
-import P5Wrapper from "react-p5-wrapper";
-import Sketch from "./sketches/text4class";
+import React from 'react';
+import P5Wrapper from 'react-p5-wrapper';
+import FrameButton from '../../components/frameButton';
+import Sketch from './sketches/text4class';
 import 'eventsource-polyfill';
 
 export default class visualiseText extends React.Component {
@@ -10,39 +10,42 @@ export default class visualiseText extends React.Component {
     if (process.env.NODE_ENV === 'production') {
       this.eventSource = new EventSource('/settings/sse');
     } else {
-      this.eventSource = new EventSource(`http://localhost:5000/settings/sse`);
+      this.eventSource = new EventSource('http://localhost:5000/settings/sse');
     }
     this.apiGet = this.apiGet.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.state = {
-      apiHello: "/watch/visualise",
+      apiHello: '/watch/visualise',
       liveList: [],
       textScrollers: 1,
-      componentWidth: undefined
+      componentWidth: undefined,
     };
   }
-  apiGet = async endpoint => {
+
+  apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
+
   refreshList() {
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.setState({
           liveList: res.liveList,
-          textScrollers: res.textScrollers
+          textScrollers: res.textScrollers,
         });
-      }).catch(err => console.log(err));
-  };
+      }).catch((err) => console.log(err));
+  }
+
   goFullscreen() {
     document.activeElement.blur();
-    console.log("fullscreen entered");
-    let i = this.container;
+    console.log('fullscreen entered');
+    const i = this.container;
     if (i.requestFullscreen) {
       i.requestFullscreen();
     } else if (i.webkitRequestFullscreen) {
@@ -52,22 +55,23 @@ export default class visualiseText extends React.Component {
     } else if (i.msRequestFullscreen) {
       i.msRequestFullscreen();
     }
-  };
+  }
+
   componentDidMount() {
     /* pass in the rendered componentWidth to state */
     console.log(this.refs.parent.offsetWidth);
     this.setState({
-      componentWidth: this.refs.parent.offsetWidth
+      componentWidth: this.refs.parent.offsetWidth,
     });
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
-      .then(res => {
+      .then((res) => {
         console.log(res.liveList);
         this.setState({
           liveList: res.liveList,
-          textScrollers: res.textScrollers
+          textScrollers: res.textScrollers,
         });
-      }).catch(err => console.log(err));
+      }).catch((err) => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('activelistChange', (e) => {
       console.log('Backend changes triggered a refresh of the activelist');
@@ -75,9 +79,10 @@ export default class visualiseText extends React.Component {
     });
     // Catches errors
     this.eventSource.onerror = (e) => {
-      console.log("--- SSE EVENTSOURCE ERROR: ", e);
+      console.log('--- SSE EVENTSOURCE ERROR: ', e);
     };
   }
+
   render() {
     return (
       <div ref="parent">
@@ -86,14 +91,14 @@ export default class visualiseText extends React.Component {
           onClick={this.goFullscreen.bind(this.container)}
         />
         <hr />
-          <div ref={container => {this.container = container;}}>
-            <P5Wrapper
-              sketch={Sketch}
-              liveList={this.state.liveList}
-              textScrollers={this.state.textScrollers}
-              componentWidth={this.state.componentWidth}
-            />
-          </div>
+        <div ref={(container) => { this.container = container; }}>
+          <P5Wrapper
+            sketch={Sketch}
+            liveList={this.state.liveList}
+            textScrollers={this.state.textScrollers}
+            componentWidth={this.state.componentWidth}
+          />
+        </div>
       </div>
     );
   }

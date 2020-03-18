@@ -6,8 +6,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "check": "standard 'client/**/*.js' --verbose | snazzy",
-    "fix": "standard --fix",
+    "lint": "eslint '**/*.js' --fix",
+    "lint_folders": "eslint 'models/*.js' 'modules/*.js' 'routes/*.js' 'test/modules/*.js' 'app.js' --fix",
     "heroku-postbuild": "cd client && npm install && GENERATE_SOURCEMAP=false npm run build",
     "start": "node ./bin/www",
     "server": "nodemon ./bin/www",
@@ -54,25 +54,13 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
     "mocha": "^7.1.0",
     "nodemon": "^1.18.10",
     "nyc": "^15.0.0",
     "snazzy": "^8.0.0",
-    "snyk": "^1.298.1",
-    "standard": "^14.3.3"
-  },
-  "standard": {
-    "globals": [
-      "describe",
-      "context",
-      "before",
-      "beforeEach",
-      "after",
-      "afterEach",
-      "it",
-      "expect",
-      "fetch",
-      "alert"
-    ]
+    "snyk": "^1.298.1"
   }
 }

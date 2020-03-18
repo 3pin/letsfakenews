@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Redirect
+  Redirect,
 } from 'react-router-dom';
 import FrameBanner from './frameBanner';
 import FrameForm from './frameForm';
@@ -12,58 +12,62 @@ export default class Story extends React.Component {
     this.apiPost = this.apiPost.bind(this);
     this.state = {
       redirect: false,
-      processing: false
-    }
+      processing: false,
+    };
   }
+
   apiPost = async (apiEndPoint, stateToSubmit) => {
     this.setState(() => ({
-      processing: true
-    }))
-    //fetch from Storage the data that needs to be POSTED to the API
-    const data = this.hydrateSomeStateWithStorage(stateToSubmit)
-    console.log(apiEndPoint, data)
+      processing: true,
+    }));
+    // fetch from Storage the data that needs to be POSTED to the API
+    const data = this.hydrateSomeStateWithStorage(stateToSubmit);
+    console.log(apiEndPoint, data);
     const response = await fetch(apiEndPoint, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     const body = await response.text();
     console.log(body);
     if (body === 'Failure') {
-      alert('Sorry, your story contained no useful words... try again.')
+      alert('Sorry, your story contained no useful words... try again.');
     } else {
-      alert('Thanks, your story reached the news-room.')
+      alert('Thanks, your story reached the news-room.');
     }
     /* empty the relevant state entries */
-    for (let entry of stateToSubmit) {
-      this.setState({[entry]: ''});
+    for (const entry of stateToSubmit) {
+      this.setState({ [entry]: '' });
     }
     /* trigger redirect to exit and render next component */
     this.setState(() => ({
-      redirect: true
-    }))
+      redirect: true,
+    }));
   };
+
   saveStateToStorage() {
     // for every item in React state
-    for (let key in this.state) {
+    for (const key in this.state) {
       // save to storage
       sessionStorage.setItem(key, JSON.stringify(this.state[key]));
     }
   }
+
   hydrateSomeStateWithStorage(array) {
     const data = {};
-    for (let entry in array) {
+    for (const entry in array) {
       // if the key exists in Storage
       if (sessionStorage.hasOwnProperty(array[entry])) {
         // get the key's value from Storage
-        let value = JSON.parse(sessionStorage.getItem(array[entry]));
+        const value = JSON.parse(sessionStorage.getItem(array[entry]));
         data[array[entry]] = value;
       }
     }
-    return data
+    return data;
   }
+
   hydrateStateWithStorage() {
     // if the key exists in Storage
     if (sessionStorage.hasOwnProperty(this.props.subject)) {
@@ -73,38 +77,43 @@ export default class Story extends React.Component {
       try {
         value = JSON.parse(value);
         this.setState({
-          [this.props.subject]: value
+          [this.props.subject]: value,
         });
       } catch (e) {
         // handle empty string
         this.setState({
-          [this.props.subject]: value
+          [this.props.subject]: value,
         });
       }
     }
   }
+
   handleChange = (value) => {
     this.setState({
-      [this.props.subject]: value
+      [this.props.subject]: value,
     });
   }
+
   handleSubmit = () => {
     if (this.props.stateToSubmit) {
-      //save state to storage
+      // save state to storage
       this.saveStateToStorage();
       this.apiPost(this.props.apiEndPoint, this.props.stateToSubmit);
     }
   }
+
   componentWillMount() {
     // add event listener to save state to Storage when user leaves/refreshes the page
-    window.addEventListener("beforeunload", this.saveStateToStorage.bind(this));
+    window.addEventListener('beforeunload', this.saveStateToStorage.bind(this));
   }
+
   componentDidMount() {
     // if Storage has values, pass them to this.state
     this.hydrateStateWithStorage();
   }
+
   componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.saveStateToStorage.bind(this));
+    window.removeEventListener('beforeunload', this.saveStateToStorage.bind(this));
     if (this.state.redirect) {
       /* empty storage */
       sessionStorage.clear();
@@ -113,22 +122,25 @@ export default class Story extends React.Component {
       this.saveStateToStorage();
     }
   }
+
   loadStateSubject(object, comparison) {
     let result;
-    Object.keys(object).forEach(function (key) {
+    Object.keys(object).forEach((key) => {
       if (key === comparison) {
-        result = object[key]
+        result = object[key];
       }
-    })
-    return result
+    });
+    return result;
   }
+
   renderRedirect() {
     if (this.state.redirect) {
-      return <Redirect to={this.props.redirect} />
+      return <Redirect to={this.props.redirect} />;
     }
   }
+
   render() {
-    //console.log(this.state.redirect)
+    // console.log(this.state.redirect)
     const val = this.loadStateSubject(this.state, this.props.subject);
     return (
       <div>
@@ -136,10 +148,11 @@ export default class Story extends React.Component {
         <section>
           <FrameBanner
             title={this.props.title}
-            desc={this.props.desc}/>
-          <hr/>
+            desc={this.props.desc}
+          />
+          <hr />
           <FrameForm
-            currentPathname = {this.props.currentPathname}
+            currentPathname={this.props.currentPathname}
             buttonLabel={this.props.buttonLabel}
             rows={this.props.rows}
             minLength={this.props.minLength}
@@ -148,9 +161,11 @@ export default class Story extends React.Component {
             value={val}
             processing={this.state.processing}
             handleChange={this.handleChange}
-            handleSubmit={this.handleSubmit}/>
-          <hr/>
+            handleSubmit={this.handleSubmit}
+          />
+          <hr />
         </section>
-      </div>)
+      </div>
+    );
   }
 }

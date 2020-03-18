@@ -6,22 +6,22 @@ replaces the urls field in the JSON
 returns the updated JSON-obj
 */
 
-'use strict'
-const debug = require('debug')('refresh_urls')
-const imagesearchIterative = require('../modules/imagesearchIterative.js')
+const debug = require('debug')('refresh_urls');
+const imagesearchIterative = require('./imagesearchIterative.js');
 
 module.exports = {
-  process: function (obj) {
-    debug(obj)
-    return new Promise(function (resolve, reject) {
-      const words = obj.words
-      debug(words)
-      imagesearchIterative.process(words).then(urls => {
-        debug(urls)
-        obj.urls = urls
-        debug(obj)
-        resolve(obj)
-      })
-    })
-  }
-}
+  process(object) {
+    const obj = object;
+    debug(obj);
+    return new Promise((resolve) => {
+      const { words } = obj;
+      debug(words);
+      imagesearchIterative.process(words).then((urls) => {
+        debug(urls);
+        obj.urls = urls;
+        debug(obj);
+        resolve(obj);
+      });
+    });
+  },
+};

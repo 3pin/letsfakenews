@@ -1,8 +1,9 @@
-import React from "react";
-import FrameButton from "../../../app/components/frameButton";
-//import Sketch from "./sketches/sketch4class";
+import React from 'react';
+import FrameButton from '../../components/frameButton';
+// import Sketch from "./sketches/sketch4class";
 import 'eventsource-polyfill';
-var timerId = 1;
+
+let timerId = 1;
 
 export default class Visualise extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class Visualise extends React.Component {
     if (process.env.NODE_ENV === 'production') {
       this.eventSource = new EventSource('/settings/sse');
     } else {
-      this.eventSource = new EventSource(`http://localhost:5000/settings/sse`);
+      this.eventSource = new EventSource('http://localhost:5000/settings/sse');
     }
     this.apiGet = this.apiGet.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
@@ -21,39 +22,41 @@ export default class Visualise extends React.Component {
     this.startTimer = this.startTimer.bind(this);
     this.endTimer = this.endTimer.bind(this);
     this.state = {
-      apiHello: "/watch/visualise",
+      apiHello: '/watch/visualise',
       liveList: [],
-      imageSet: ["../../images/bgd.jpg"],
+      imageSet: ['../../images/bgd.jpg'],
       imageSetIndex: 0,
       imageIndex: 0,
       imagecontainerStyle: {
-        /*border: '2px solid green',
-        background: 'green',*/
+        /* border: '2px solid green',
+        background: 'green', */
         width: '100%',
         height: '100%',
-        margin: 'auto'
+        margin: 'auto',
       },
       imgStyle: {
-        /*border: '2px solid blue',
-        background: 'pink',*/
+        /* border: '2px solid blue',
+        background: 'pink', */
         position: 'relative',
         width: '100%',
         height: '100%',
         objectFit: 'contain',
       },
-      imageDuration: 2
+      imageDuration: 2,
     };
   }
-  apiGet = async endpoint => {
+
+  apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     return body;
   };
+
   goFullscreen() {
     document.activeElement.blur();
-    console.log("fullscreen entered");
-    let i = this.container;
+    console.log('fullscreen entered');
+    const i = this.container;
     console.log(i);
     if (i.requestFullscreen) {
       i.requestFullscreen();
@@ -64,27 +67,29 @@ export default class Visualise extends React.Component {
     } else if (i.msRequestFullscreen) {
       i.msRequestFullscreen();
     }
-  };
+  }
+
   refreshList() {
-    console.log('refreshList')
+    console.log('refreshList');
     /* cancel timer and restart timer */
     this.endTimer(timerId);
     /* load  story from database into state */
     this.apiGet(this.state.apiHello)
-      .then(res => {
+      .then((res) => {
         console.log(res.liveList);
         this.setState({
           liveList: res.liveList,
-          imageDuration: res.imageDuration
+          imageDuration: res.imageDuration,
         });
       }).then(() => {
         /* start new timer to run changeImage */
         console.log('post-refresh startTimer');
         timerId = this.startTimer(this.state.imageDuration * 1000).id;
-      }).catch(err => console.log(err));
-  };
+      }).catch((err) => console.log(err));
+  }
+
   pickImages() {
-    console.log('pickImages.. change Image Set')
+    console.log('pickImages.. change Image Set');
     /* randomly pick imageSet from this.state.liveList */
     /*
     let randomSet = Math.floor(Math.random() * this.state.liveList.length);
@@ -99,46 +104,50 @@ export default class Visualise extends React.Component {
     return new Promise(() => {
       this.setState({
         imageSet: this.state.liveList[this.state.imageSetIndex].urlsTitle,
-        imageIndex: 0
-      })
-    })
-  };
+        imageIndex: 0,
+      });
+    });
+  }
+
   changeImage() {
     /* every Xsecs step through the this.state.imageSet until end... then pickImages() */
     console.log('changeImage... display next Image in set');
     if (this.state.imageIndex < this.state.imageSet.length - 1) {
       this.setState({
-        imageIndex: this.state.imageIndex + 1
-      })
+        imageIndex: this.state.imageIndex + 1,
+      });
     } else {
       /* if imageSetIndex reached the end of imageSet then reset */
       if (this.state.imageSetIndex === this.state.liveList.length - 1) {
         this.setState({
-          imageSetIndex: 0
+          imageSetIndex: 0,
         }, () => {
-          this.pickImages()
-        })
+          this.pickImages();
+        });
       } else {
         /* increment imageSetIndex */
         this.setState({
-          imageSetIndex: this.state.imageSetIndex + 1
+          imageSetIndex: this.state.imageSetIndex + 1,
         }, () => {
-          this.pickImages()
-        })
+          this.pickImages();
+        });
       }
     }
-  };
+  }
+
   startTimer(delay) {
-    let id = setInterval(() => this.changeImage(), delay);
+    const id = setInterval(() => this.changeImage(), delay);
     console.log(`timerid: ${id}`);
     return {
-      id: id
+      id,
     };
   }
+
   endTimer(id) {
     console.log(`timerid: ${id}`);
     clearInterval(id);
   }
+
   componentDidMount() {
     this._isMounted = true;
     /* open sse listener to trigger a refresh:response which will update this.state.liveList */
@@ -148,13 +157,14 @@ export default class Visualise extends React.Component {
     });
     /* Catches errors */
     this.eventSource.onerror = (e) => {
-      console.log("--- SSE EVENTSOURCE ERROR: ", e);
+      console.log('--- SSE EVENTSOURCE ERROR: ', e);
     };
     /* connect to API ONLY when component is mounted */
     if (this._isMounted) {
       this.refreshList();
     }
   }
+
   componentWillUnmount() {
     /* cancel the changeImage-timer */
     this.endTimer(timerId);
@@ -163,17 +173,18 @@ export default class Visualise extends React.Component {
     /* close sse listener */
     this.eventSource.close();
   }
+
   render() {
-    //console.log(this.state)
+    // console.log(this.state)
     return (
-      <div >
+      <div>
         <FrameButton
-          buttonLabel='Fullscreen'
+          buttonLabel="Fullscreen"
           onClick={this.goFullscreen.bind(this.outerContainer)}
         />
-        <hr/>
-        <div style={this.state.imagecontainerStyle} ref={container => {this.container=container}}>
-          <img style={this.state.imgStyle} src={this.state.imageSet[this.state.imageIndex]} alt=""/>
+        <hr />
+        <div style={this.state.imagecontainerStyle} ref={(container) => { this.container = container; }}>
+          <img style={this.state.imgStyle} src={this.state.imageSet[this.state.imageIndex]} alt="" />
         </div>
       </div>
     );

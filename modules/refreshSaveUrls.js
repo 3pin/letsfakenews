@@ -4,35 +4,36 @@ REFRESH the url field in the document
 UPDATE the document in the DB via _id/url
 */
 
-'use strict'
-const debug = require('debug')('refresh_save_urls')
-const imagesearchIterative = require('../modules/imagesearchIterative.js')
+
+const debug = require('debug')('refresh_save_urls');
+const imagesearchIterative = require('./imagesearchIterative.js');
 // import mongoose schemas
-const Story = require('../models/story.model')
+const Story = require('../models/story.model');
 
 module.exports = {
-  process: function (id) {
-    debug(id)
+  process(id) {
+    debug(id);
     return new Promise((resolve, reject) => {
-      Story.findById(id).then(doc => {
+      Story.findById(id).then((doc) => {
         // debug(doc);
-        const words = doc.words
+        const { words } = doc;
         // debug(words);
-        imagesearchIterative.process(words).then(result => {
+        imagesearchIterative.process(words).then((result) => {
           // debug(result);
           Story.updateOne({
-            _id: id
+            _id: id,
           }, {
-            urls: result
+            urls: result,
           }).then((res) => {
-            debug(res)
-            resolve(res)
-          })
-        })
+            debug(res);
+            resolve(res);
+          });
+        });
       })
-        .catch(error => {
-          debug('Failed!', error)
-        })
-    })
-  }
-}
+        .catch((error) => {
+          debug('Failed!', error);
+          reject(error)
+        });
+    });
+  },
+};
