@@ -46,6 +46,7 @@ if (toBoolean(process.env.COOKIEPARSER_SECURE)) {
   app.use(cookieParser());
 }
 
+/* populate the req.body param accordingly */
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
