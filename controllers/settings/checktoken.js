@@ -6,7 +6,7 @@ const { secret } = global.config;
 
 module.exports = (req, res, next) => {
   debug('Entered middleware to check token-authorisation');
-  debug(req);
+  // debug(req);
   const token = req.cookies.token
     || req.body.token
     || req.query.token
@@ -22,7 +22,9 @@ module.exports = (req, res, next) => {
       } else {
         debug('Matching token in client req');
         req.username = decoded.username;
-        res.sendStatus(200);
+        debug(req.username);
+        res.status(200).send(`Welcome back ${req.username}`);
+        // res.sendStatus(200);
       }
     });
   }

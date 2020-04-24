@@ -7,7 +7,6 @@ const _ = require('lodash');
 require('dotenv').config();
 
 const dbConfig = require('./dbConfig');
-
 const networkConfig = require('./networkConfig');
 const secretConfig = require('./secretConfig');
 const setupConfig = require('./setupConfig');

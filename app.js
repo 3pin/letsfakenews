@@ -82,6 +82,7 @@ if (global.config.cors === 'whitelist') {
 } else if (global.config.cors === 'off') {
   debug('CORS:none');
 } else {
+  // this is in response to cors === 'none'
   debug('CORS:CORS not setup');
 }
 
