@@ -5,7 +5,9 @@ const debug = require('debug')('tests');
 // load assertion library
 const chai = require('chai');
 
-const { expect } = chai;
+const {
+  expect,
+} = chai;
 
 // db-setup
 const mongoose = require('mongoose');
@@ -30,7 +32,7 @@ describe('Refresh: refreshing urls for stories', () => {
   before((done) => {
     debug('before entered...');
     /* open db connection for tests */
-    mongoose.connect(process.env.MONGODB_URI_TESTS, options);
+    mongoose.connect(global.config.mongodb_uri_tests, options);
     mongoose.connection.once('open', () => {
       debug('db-connected');
       done();
@@ -84,14 +86,14 @@ describe('Refresh: refreshing urls for stories', () => {
     /* create 2 db entries */
     // mongoose.connection.collections.development.drop();
     /*
-    mongoose.connection.collection(process.env.DATABASE, function (err, collection) {
+    mongoose.connection.collection(global.config.database, function (err, collection) {
       collection.drop().then(() => {
         debug("collection dropped");
         done();
       });
     })
     */
-    mongoose.connection.db.dropCollection(process.env.DATABASE, () => {
+    mongoose.connection.db.dropCollection(global.config.database, () => {
       debug('Collection dropped');
       done();
     });

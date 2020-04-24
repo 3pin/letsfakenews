@@ -1,7 +1,12 @@
 // Login... user logins then backend verifies credentials
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
+import {
+  Form,
+  Button,
+} from 'react-bootstrap';
+import {
+  Redirect,
+} from 'react-router-dom';
 import FrameBanner from '../../components/frameBanner';
 // import FormFrame from '../../../app/components/formframe';
 
@@ -15,8 +20,15 @@ export default class Login extends React.Component {
     };
   }
 
+  componentDidMount() {
+    // this.nameInput.focus()
+  }
+
   handleChange(event) {
-    const { value, name } = event.target;
+    const {
+      value,
+      name,
+    } = event.target;
     this.setState({
       [name]: value,
     });
@@ -39,7 +51,6 @@ export default class Login extends React.Component {
           this.setState(() => ({
             redirect: true,
           }));
-          console.log('redirect', this.state.redirect);
         } else {
           this.setState(() => ({
             username: '',
@@ -57,13 +68,13 @@ export default class Login extends React.Component {
   }
 
   renderRedirect() {
-    if (this.state.redirect) {
+    const {
+      redirect,
+    } = this.state;
+    if (redirect) {
       return <Redirect to="/admin" />;
     }
-  }
-
-  componentDidMount() {
-    // this.nameInput.focus()
+    return null;
   }
 
   render() {

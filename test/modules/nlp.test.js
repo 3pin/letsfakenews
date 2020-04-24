@@ -1,11 +1,12 @@
-
 // load the ENVIRONMENT variables
 require('dotenv').config();
 
 // load assertion library
 const chai = require('chai');
 
-const { expect } = chai;
+const {
+  expect,
+} = chai;
 
 const nlp = require('../../modules/nlp.js');
 

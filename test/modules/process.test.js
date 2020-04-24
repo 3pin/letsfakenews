@@ -1,4 +1,3 @@
-
 // load the ENVIRONMENT variables
 require('dotenv').config();
 const debug = require('debug')('tests');
@@ -6,7 +5,9 @@ const debug = require('debug')('tests');
 // load assertion library
 const chai = require('chai');
 
-const { expect } = chai;
+const {
+  expect,
+} = chai;
 
 const processStory = require('../../modules/processStory.js');
 const processClientStory = require('../../modules/processClientStory.js');

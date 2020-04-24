@@ -10,7 +10,7 @@ import Stories from './stories';
 import Feedback from './feedback';
 import Visualise from './visualise';
 
-const RoutesAdmin = (props) => (
+const RoutesAdmin = () => (
   <div className="layout">
     <Switch>
       <Route exact path="/admin" component={Landing} />

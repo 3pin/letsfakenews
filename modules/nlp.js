@@ -35,8 +35,8 @@ Eg...
 const debug = require('debug')('nlp');
 const pos = require('pos');
 
-const tags = process.env.POS_TAGS.split(',');
-const illegalWords = process.env.ILLEGAL_WORDS.split(',');
+const tags = global.config.pos_tags;
+const illegalWords = global.config.illegal_words;
 
 module.exports = {
 

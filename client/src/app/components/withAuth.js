@@ -29,8 +29,6 @@ export default function withAuth(ComponentToProtect) {
               loading: false,
               redirect: true,
             });
-            // const error = new Error(res.error);
-            // throw error;
           }
         })
         .catch((err) => {

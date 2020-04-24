@@ -37,7 +37,7 @@ const SettingsSchema = new Schema({
     required: true,
   },
 }, {
-  collection: process.env.DATABASE,
+  collection: global.config.database,
 });
 
 // Export the model

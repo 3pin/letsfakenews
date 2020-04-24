@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const BaseSchema = new Schema({}, {
   discriminatorKey: '__type',
-  collection: process.env.DATABASE,
+  collection: global.config.database,
 });
 
 // Export the model

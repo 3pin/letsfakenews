@@ -2,7 +2,7 @@
 const debug = require('debug')('checkToken');
 const jwt = require('jsonwebtoken');
 
-const secret = process.env.SECRET;
+const { secret } = global.config;
 
 module.exports = (req, res, next) => {
   debug('Entered middleware to check token-authorisation');

@@ -33,7 +33,11 @@ export default class Stories extends React.Component {
   apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
-    if (response.status !== 200) { throw Error(body.message); } else { return body; }
+    if (response.status !== 200) {
+      throw Error(body.message);
+    } else {
+      return body;
+    }
   }
 
   apiPost = async (endpoint, data) => {
@@ -45,7 +49,9 @@ export default class Stories extends React.Component {
       body: JSON.stringify(data),
     });
     const body = await response.json();
-    if (response.status !== 200) { throw Error(body.message); }
+    if (response.status !== 200) {
+      throw Error(body.message);
+    }
     return body;
   };
 

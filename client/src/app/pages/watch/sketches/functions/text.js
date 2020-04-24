@@ -1,6 +1,7 @@
-import Calc from './functions/calc';
+import Calc from './calc';
 
-export default function sketch(p) {
+export default function sketch(P) {
+  const p = P;
   const initialWidth = 400;
   const initialHeight = 300;
   let canvasWidth; let

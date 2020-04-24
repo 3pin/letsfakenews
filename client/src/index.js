@@ -4,7 +4,7 @@ import '../node_modules/react-dom/cjs/react-dom.production.min';
 import '../node_modules/react-bootstrap/dist/react-bootstrap.min';
 // styles
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import './minimum.css';
+import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

@@ -23,7 +23,7 @@ module.exports = (req, res) => {
       res.write(': SSE keep-alive dummy-comment\n\n');
       debug('Emmitted an SSE keep-alive event');
     }
-  }, process.env.KEEPALIVE);
+  }, global.config.keepalive);
   /* stop listening to SSE when the client closes frontend connection */
   req.on('close', () => {
     debug('SSE req.close');

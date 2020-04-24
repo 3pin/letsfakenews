@@ -8,7 +8,7 @@ export const submitStarted = () => ({
 export const submit = (feedback, history) => function (dispatch) {
   axios.post('/write/feedback', {
     feedback,
-  }).then((response) => {
+  }).then(() => {
     dispatch({
       type: 'SUBMIT_ENDED',
       payload: null,

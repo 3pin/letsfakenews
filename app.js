@@ -1,15 +1,5 @@
-// the main module of the app
+/* the main module of the app */
 
-// load the ENVIRONMENT variables
-require('dotenv').config();
-//= ============================================================================
-// module debugging
-const debug = require('debug')('app');
-
-if (process.env.NODE_ENV !== 'production') {
-  debug(`App Mode: ${process.env.NODE_ENV}`);
-  // debug(process.env);   // log all system env variables
-}
 //= ============================================================================
 // Module Dependencies
 const express = require('express');
@@ -19,28 +9,42 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const path = require('path');
 const device = require('express-device');
-const toBoolean = require('to-boolean');
 const helmet = require('helmet');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
+//= ============================================================================
+/* load the ENVIRONMENT variables for debug */
+require('dotenv').config();
+const debug = require('debug')('app');
+
+/* load global config */
+const config = require('./config');
+
+if (global.config.node_env !== 'production') {
+  debug(`App Mode: ${global.config.node_env}`);
+  /* log all system env variables */
+  // debug(process.env);
+}
 //= ============================================================================
 // initialize
 const app = express();
 debug(`App Name: ${process.env.npm_package_name}`);
 debug(
-  `Port:${process.env.PORT} mode:${process.env.NODE_ENV} db_uri:${process.env.MONGODB_URI} database:${process.env.DATABASE}`,
+  `Port:${global.config.port} mode:${global.config.node_env} db_uri:${global.config.MONGODB_URI} database:${global.config.DATABASE}`,
 );
 //= ============================================================================
 // middleware
 
 // You can set morgan to log differently depending on your environment
-if (process.env.NODE_ENV === 'development') {
+if (global.config.node_env === 'development') {
   app.use(morgan('combined'));
 }
 
 // adding cookies to req headers
-if (toBoolean(process.env.COOKIEPARSER_SECURE)) {
+if (global.config.cookieparser_secure) {
   debug('Cookies are secure');
-  app.use(cookieParser(process.env.SECRET));
+  app.use(cookieParser(global.config.secret));
 } else {
   debug('Cookies are NOT secure');
   app.use(cookieParser());
@@ -57,13 +61,10 @@ app.use(
 // add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
-// cors
-const cors = require('cors');
-
-if (process.env.CORS === 'whitelist') {
+if (global.config.cors === 'whitelist') {
   debug('CORS:whitelist');
   const whitelist = [];
-  whitelist.push(process.env.WHITELIST);
+  whitelist.push(global.config.whitelist);
   debug(`whitelist: ${whitelist}`);
   const corsOptions = {
     origin(origin, callback) {
@@ -75,36 +76,36 @@ if (process.env.CORS === 'whitelist') {
     },
   };
   app.use(cors(corsOptions));
-} else if (process.env.CORS === 'all') {
+} else if (global.config.cors === 'all') {
   debug('CORS:all');
   app.use(cors());
-} else if (process.env.CORS === 'off') {
+} else if (global.config.cors === 'off') {
   debug('CORS:none');
 } else {
   debug('CORS:CORS not setup');
 }
 
 // force HSTS on the clients requests
-if (toBoolean(process.env.HSTS)) {
+if (global.config.HSTS) {
   debug('Using helmet for HSTS');
   app.use(helmet());
 }
 
 // ... production mode => serve static files for React
-if (toBoolean(process.env.HTTPS_REDIRECT)) {
+if (global.config.https_redirect) {
   debug('Redirecting HTTP to HTTPS');
   app.use((req, res, next) => {
     const reqType = req.headers['x-forwarded-proto'];
-    reqType === 'https'
-      ? next()
-      : res.redirect(`https://${req.headers.host}${req.url}`);
+    reqType === 'https' ?
+      next() :
+      res.redirect(`https://${req.headers.host}${req.url}`);
   });
 } else {
   debug('NOT redirecting HTTP to HTTPS');
 }
 
 // ... production mode => serve static files for React
-if (process.env.NODE_ENV === 'production') {
+if (global.config.node_env === 'production') {
   debug(`Serving: ${__dirname}/client/build/index.html`);
   app.use(express.static(`${__dirname}/client/build`));
   app.use(favicon(path.join(__dirname, '/client/build', 'favicon.ico')));
@@ -123,8 +124,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Make our db accessible to our router
-const mongoose = require('mongoose');
-
 const db = mongoose.connection;
 app.use((req, res, next) => {
   req.db = db;
@@ -166,18 +165,18 @@ const Auth = require('./models/auth.model');
 const Settings = require('./models/settings.model');
 
 const settingsObj = {
-  entryToRead: parseInt(process.env.ENTRY_TO_READ, 10),
-  autolive: toBoolean(process.env.AUTOLIVE),
+  entryToRead: parseInt(global.config.entry_to_read, 10),
+  autolive: global.config.autolive,
   activelist: [],
-  dbMode: process.env.DB_MODE,
-  node_mode: process.env.NODE_ENV,
-  visualise: process.env.VISUALISE,
-  image_duration: process.env.IMAGE_DURATION,
-  text_scrollers: process.env.TEXT_SCROLLERS,
+  dbMode: global.config.db_mode,
+  node_mode: global.config.node_env,
+  visualise: global.config.visualise,
+  image_duration: global.config.image_duration,
+  text_scrollers: global.config.text_scrollers,
 };
 const authObj = {
-  username: process.env.USERNAME,
-  password: process.env.PASSWORD,
+  username: global.config.username,
+  password: global.config.password,
 };
 const options = {
   useNewUrlParser: true,
@@ -188,7 +187,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-mongoose.connect(process.env.MONGODB_URI, options, (err, client) => {
+mongoose.connect(global.config.mongodb_uri, options, (err, client) => {
   if (err) {
     debug('error coming...');
     debug(err);
@@ -203,7 +202,7 @@ mongoose.connect(process.env.MONGODB_URI, options, (err, client) => {
       // if there are no collections existing...
       if (collections.length === 0) {
         debug(
-          `No collections exist... creating database: ${process.env.DATABASE}`,
+          `No collections exist... creating database: ${global.config.database}`,
         );
         // create a user-entry for authorisation to backend...
         const auth = new Auth(authObj);
@@ -220,9 +219,9 @@ mongoose.connect(process.env.MONGODB_URI, options, (err, client) => {
         for (const [i, value] of collections.entries()) {
           // debug(value.name);
           // if there is a collection matching the current project...
-          if (value.name === process.env.DATABASE) {
+          if (value.name === global.config.database) {
             debug(
-              `Collection already exists... updating database: ${process.env.DATABASE}`,
+              `Collection already exists... updating database: ${global.config.database}`,
             );
             // replace default user entry
             Auth.deleteOne({}).then(() => {
@@ -236,7 +235,7 @@ mongoose.connect(process.env.MONGODB_URI, options, (err, client) => {
               debug(result);
               const settings = new Settings(result[0]);
               /* load NODE_ENV (development/production) from .env into db into */
-              settings.node_mode = process.env.NODE_ENV;
+              settings.node_mode = global.config.node_env;
               settings.save().then((res) => {
                 debug('updated dbSettings are...');
                 debug(res);
@@ -246,7 +245,7 @@ mongoose.connect(process.env.MONGODB_URI, options, (err, client) => {
           } else if (i === collections.length - 1) {
             // if there is no matching collection...
             debug(
-              `Existing collections dont match current project... creating database: ${process.env.DATABASE}`,
+              `Existing collections dont match current project... creating database: ${global.config.database}`,
             );
             const settings = new Settings(settingsObj);
             settings.save().then((res) => {

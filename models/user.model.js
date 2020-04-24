@@ -17,7 +17,7 @@ const UserSchema = new Schema({
     required: true,
   },
 }, {
-  collection: process.env.DATABASE,
+  collection: global.config.database,
 });
 
 UserSchema.pre('save', function presave(next) {

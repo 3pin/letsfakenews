@@ -21,6 +21,6 @@ module.exports = {
       "array": false,
       "object": true
     }],
-    "semi": 0
+    "semi": 0,
   }
 };

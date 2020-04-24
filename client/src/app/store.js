@@ -1,4 +1,7 @@
-import { applyMiddleware, createStore } from 'redux';
+import {
+  applyMiddleware,
+  createStore
+} from 'redux';
 import logger from 'redux-logger'; // middleware... pretty logging
 import thunk from 'redux-thunk'; // middleware... pretty logging
 import reducer from './reducers';

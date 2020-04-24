@@ -1,14 +1,17 @@
-
 const debug = require('debug')('authenticate');
-const toBoolean = require('to-boolean');
 const jwt = require('jsonwebtoken');
 const Auth = require('../../models/auth.model');
 
 module.exports = (req, res) => {
   debug('/settings/authenticate');
   // debug(req.body);
-  const { username, password } = req.body;
-  Auth.findOne({ username }, (err, user) => {
+  const {
+    username,
+    password,
+  } = req.body;
+  Auth.findOne({
+    username,
+  }, (err, user) => {
     if (err) {
       res.status(500)
         .json({
@@ -35,13 +38,23 @@ module.exports = (req, res) => {
         } else {
           debug('same', same);
           // Setup token
-          const time = Number(process.env.TOKEN_AGE_MINS) * 60000;
-          const payload = { username };
-          const secret = process.env.SECRET;
-          const token = jwt.sign(payload, secret, { expiresIn: time });
+          const time = Number(global.config.token_age_mins) * 60000;
+          const payload = {
+            username,
+          };
+          const {
+            secret,
+          } = global.config;
+          const token = jwt.sign(payload, secret, {
+            expiresIn: time,
+          });
           // Setup Cookie
           const cookieOptions = {
-            httpOnly: toBoolean(process.env.COOKIEOPTION_HTTPONLY), sameSite: toBoolean(process.env.COOKIEOPTION_SAMESITE), maxAge: time, secure: false, signed: false,
+            httpOnly: global.config.cookieoption_httponly,
+            sameSite: global.config.cookieoption_samesit,
+            maxAge: time,
+            secure: false,
+            signed: false,
           };
           debug(cookieOptions);
           res.cookie('token', token, cookieOptions).sendStatus(200);

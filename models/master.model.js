@@ -10,4 +10,4 @@ const MasterSchema = new Schema({
 });
 
 // Export the model
-module.exports = mongoose.model('Master', MasterSchema, process.env.DATABASE);
+module.exports = mongoose.model('Master', MasterSchema, global.config.database);

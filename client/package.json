@@ -6,7 +6,7 @@
   "proxy": "http://localhost:5000",
   "scripts": {
     "lint": "eslint . --fix",
-    "lintAll": "eslint --ext .js --ext .jsx .",
+    "lintAll": "eslint --ext .js --ext .jsx . --fix",
     "start": "react-app-rewired start",
     "build": "GENERATE_SOURCEMAP=false react-app-rewired build",
     "test": "eslint && react-app-rewired test",

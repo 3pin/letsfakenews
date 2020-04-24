@@ -7,7 +7,8 @@ matches searchterm:image via google-image-search
 const debug = require('debug')('imagesearch');
 const GoogleImages = require('google-images');
 
-const client = new GoogleImages(process.env.CUSTOM_SEARCH_ENGINE_ID, process.env.CUSTOM_SEARCH_APIKEY);
+const client = new GoogleImages(global.config.custom_search_engine_id, global.config.custom_search_apikey);
+// const client = new GoogleImages(global.config.custom_search_engine_id, global.config.custom_search_apikey);
 /*
 GoogleImages size-options: icon, small, medium, large, xlarge, xxlarge, huge
 (cc_publicdomain | cc_attribute%7Ccc_sharealike | cc_nonderived ! cc_noncommercial

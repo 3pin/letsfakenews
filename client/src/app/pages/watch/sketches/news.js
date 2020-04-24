@@ -1,11 +1,12 @@
 import Aspect from './functions/aspect';
 import Layout from './functions/layout';
 
-export default function sketch(p) {
+export default function sketch(P) {
+  const p = P;
   let initialWidth = 534;
   let initialHeight = 300;
-  let canvasWidth; let
-    canvasHeight;
+  let canvasWidth;
+  let canvasHeight;
   let setupCount = 0;
   const initialAspectRatio = 1.78;
   let aspectRatio = initialAspectRatio;
@@ -13,15 +14,18 @@ export default function sketch(p) {
   const fps = 60;
   const corsUrl = 'https://cors-anywhere.herokuapp.com/';
   let imgUrl;
-  let containerWidth; let
-    containerHeight;
+  let containerWidth;
+  let containerHeight;
   let title;
-  let story; let storyLength; let storyXpos; let
-    storyXinc;
+  let story;
+  let storyLength;
+  let storyXpos;
+  let storyXinc;
   let font;
   const fontUrl = './Arial.ttf';
-  let img; let imgWidth; let
-    imgHeight;
+  let img;
+  let imgWidth;
+  let imgHeight;
   let timings = {};
   let textLayout = {
     borderFactor: 0.01,
@@ -36,7 +40,7 @@ export default function sketch(p) {
   };
   let imageLayout = {
     borderFactor: 0.02,
-    xOffsetFactor: 0.00,
+    xOffsetFactor: 0.0,
     heightFactor: 0.77,
     widthFactor: 0.58,
     imageFrame_Xoffset: undefined,
@@ -55,14 +59,22 @@ export default function sketch(p) {
       setupCount = 1;
       timings = props.timings;
       initialWidth = props.componentWidth;
-      initialHeight = Math.round((props.componentWidth / aspectRatio));
+      initialHeight = Math.round(props.componentWidth / aspectRatio);
       canvasWidth = initialWidth;
       canvasHeight = initialHeight;
       containerWidth = canvasWidth;
       containerHeight = canvasHeight;
       // console.log(`containerWidth:${containerWidth} containerHeight:${containerHeight}`)
       p.resizeCanvas(initialWidth, initialHeight);
-      ({ imageLayout, textLayout } = Layout(imageLayout, textLayout, aspectRatio, canvasWidth, canvasHeight, containerWidth, containerHeight));
+      ({ imageLayout, textLayout } = Layout(
+        imageLayout,
+        textLayout,
+        aspectRatio,
+        canvasWidth,
+        canvasHeight,
+        containerWidth,
+        containerHeight,
+      ));
     } else {
       if (props.playedSeconds) {
         playedSeconds = props.playedSeconds;
@@ -71,8 +83,13 @@ export default function sketch(p) {
       if (props.image) {
         if (imgUrl !== corsUrl + props.image) {
           imgUrl = corsUrl + props.image;
-          img = p.loadImage(imgUrl, (img) => {
-            ({ imgWidth, imgHeight } = Aspect(img, imageLayout.imageFrame_Width / imageLayout.imageFrame_Height, imageLayout.imageFrame_Width, imageLayout.imageFrame_Height));
+          img = p.loadImage(imgUrl, (image) => {
+            ({ imgWidth, imgHeight } = Aspect(
+              image,
+              imageLayout.imageFrame_Width / imageLayout.imageFrame_Height,
+              imageLayout.imageFrame_Width,
+              imageLayout.imageFrame_Height,
+            ));
           });
         }
       }
@@ -121,22 +138,38 @@ export default function sketch(p) {
       const translateX = Math.round(canvasWidth - containerWidth) / 2;
       const translateY = Math.round(canvasHeight - containerHeight) / 2;
       p.translate(translateX, translateY);
-      if (playedSeconds > timings.popupStart && playedSeconds < timings.popupEnd) {
+      if (playedSeconds > timings.popupStart && playedSeconds < timings.popupEnd
+      ) {
         /* title */
         p.noStroke();
         p.fill(0);
         p.textSize(textLayout.fontSize);
         p.textAlign(p.CENTER, p.CENTER);
-        p.text(title, Math.round(textLayout.textFrame_Width / 2), textLayout.textFrame_yOrigin + Math.round(textLayout.textFrame_Height / 2));
-      } else if (playedSeconds > timings.imagesStart && playedSeconds < timings.imagesEnd) {
+        p.text(
+          title,
+          Math.round(textLayout.textFrame_Width / 2),
+          textLayout.textFrame_yOrigin + Math.round(textLayout.textFrame_Height / 2),
+        );
+      } else if (playedSeconds > timings.imagesStart && playedSeconds < timings.imagesEnd
+      ) {
         /* image */
-        p.image(img, imageLayout.image_Xcentre, imageLayout.image_Ycentre, imgWidth, imgHeight);
+        p.image(
+          img,
+          imageLayout.image_Xcentre,
+          imageLayout.image_Ycentre,
+          imgWidth,
+          imgHeight,
+        );
         /* story */
         p.noStroke();
         p.fill(0);
         p.textSize(textLayout.fontSize);
         p.textAlign(p.LEFT, p.CENTER);
-        p.text(story, storyXpos, textLayout.textFrame_yOrigin + Math.round(textLayout.textFrame_Height / 2));
+        p.text(
+          story,
+          storyXpos,
+          textLayout.textFrame_yOrigin + Math.round(textLayout.textFrame_Height / 2),
+        );
         storyXpos -= storyXinc;
       }
       p.pop();
@@ -167,6 +200,14 @@ export default function sketch(p) {
       console.log(`containerWidth:${containerWidth} containerHeight:${containerHeight}`);
     }
     p.resizeCanvas(canvasWidth, canvasHeight);
-    ({ imageLayout, textLayout } = Layout(imageLayout, textLayout, aspectRatio, canvasWidth, canvasHeight, containerWidth, containerHeight));
+    ({ imageLayout, textLayout } = Layout(
+      imageLayout,
+      textLayout,
+      aspectRatio,
+      canvasWidth,
+      canvasHeight,
+      containerWidth,
+      containerHeight,
+    ));
   };
 }

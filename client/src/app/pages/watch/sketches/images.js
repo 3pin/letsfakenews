@@ -1,6 +1,7 @@
 import Aspect from './functions/aspect';
 
-export default function sketch(p) {
+export default function sketch(P) {
+  const p = P;
   let initialWidth = 534;
   let initialHeight = 300;
   let canvasWidth; let

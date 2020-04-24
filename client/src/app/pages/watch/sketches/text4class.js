@@ -1,9 +1,11 @@
 import StoryLine from './classes/text';
 
-export default function sketch(p) {
+export default function sketch(P) {
+  const p = P;
   let initialWidth = 534;
   let initialHeight = 300;
-  let canvasWidth; let
+  let canvasWidth;
+  let
     canvasHeight;
   const inc = -6;
   const textSizeFactor = 8;
@@ -20,9 +22,15 @@ export default function sketch(p) {
     console.log('PROPS received...');
     console.log(props);
     if (props.liveList.length > 0) {
+      //
+      Object.entry(props.livelist).forEach((entry) => {
+        liveList.push(entry.story);
+      });
+      /*
       for (const entry in props.liveList) {
         liveList.push(props.liveList[entry].story);
       }
+      */
     }
     if (props.textScrollers) {
       numScrollersDisplay = props.textScrollers;
@@ -33,8 +41,15 @@ export default function sketch(p) {
       /* 1.78 aspectRatio to setup component as 16:9 */
       initialHeight = Math.floor((props.componentWidth / aspectRatio));
       p.resizeCanvas(initialWidth, initialHeight);
-      for (const line of lines) {
-        line.resize(initialWidth, initialHeight);
+      if (lines.length > 0) {
+        Object.entries(lines).forEach((line) => {
+          line.resize(initialWidth, initialHeight);
+        });
+        /*
+        for (const line of lines) {
+          line.resize(initialWidth, initialHeight);
+        }
+        */
       }
     }
   };
@@ -44,7 +59,7 @@ export default function sketch(p) {
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     p.createCanvas(canvasWidth, canvasHeight);
-    for (let i = 0; i < numLines; i++) {
+    for (let i = 0; i < numLines; i += 1) {
       lines.push(new StoryLine(p, canvasWidth, canvasHeight, textSizeFactor, inc, story));
     }
   };
@@ -53,7 +68,7 @@ export default function sketch(p) {
     p.noSmooth();
     p.background(0);
     p.fill(255);
-    for (let entry = 0; entry < numScrollersDisplay; entry++) {
+    for (let entry = 0; entry < numScrollersDisplay; entry += 1) {
       lines[entry].show();
       lines[entry].move(liveList);
     }
@@ -70,8 +85,15 @@ export default function sketch(p) {
       aspectRatio = intialAspectRatio;
     }
     p.resizeCanvas(canvasWidth, canvasHeight);
+    if (lines.length > 0) {
+      Object.entries(lines).forEach((line) => {
+        line.resize(canvasWidth, canvasHeight);
+      });
+    }
+    /*
     for (const line of lines) {
       line.resize(canvasWidth, canvasHeight);
     }
+    */
   };
 }
