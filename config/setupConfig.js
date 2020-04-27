@@ -5,6 +5,6 @@ module.exports = {
   pos_tags: ['NN', 'NNP', 'NNPS', 'NNS', 'JJ'],
   text_scrollers: 3,
   visualise: 1,
-  node_env: 'development',
+  node_env: process.env.NODE_ENV,
   port: 5000,
 };
