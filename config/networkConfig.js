@@ -3,7 +3,7 @@ module.exports = {
   cookieoption_httponly: false,
   cookieoption_samesite: false,
   cookieparser_secure: false,
-  cors: 'off',
+  cors: 'all',
   hsts: false,
   https: 'none',
   https_redirect: false,
