@@ -6,5 +6,5 @@ module.exports = {
   textScrollers: 3,
   visualise: 1,
   nodeEnv: process.env.NODE_ENV,
-  port: 5000,
+  port: process.env.PORT,
 };
