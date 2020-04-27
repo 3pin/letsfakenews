@@ -97,9 +97,9 @@ if (global.config.https_redirect) {
   debug('Redirecting HTTP to HTTPS');
   app.use((req, res, next) => {
     const reqType = req.headers['x-forwarded-proto'];
-    reqType === 'https' ?
-      next() :
-      res.redirect(`https://${req.headers.host}${req.url}`);
+    reqType === 'https'
+      ? next()
+      : res.redirect(`https://${req.headers.host}${req.url}`);
   });
 } else {
   debug('NOT redirecting HTTP to HTTPS');
