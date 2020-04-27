@@ -1,7 +1,5 @@
 import Calc from '../functions/calc';
 
-let calcResult;
-
 export default class StoryLine {
   constructor(p, canvasWidth, canvasHeight, textSizeFactor, inc, story) {
     this.p = p;
@@ -10,10 +8,12 @@ export default class StoryLine {
     this.textSizeFactor = textSizeFactor;
     this.inc = inc;
     this.story = story;
-    calcResult = Calc(this.canvasWidth, this.canvasHeight, this.textSizeFactor);
-    this.xPos = calcResult.xPos;
-    this.yPos = calcResult.yPos;
-    this.textSize = calcResult.textSize;
+    //
+    let textSize, xPos, yPos;
+    ({ textSize, xPos, yPos } = Calc(this.canvasWidth, this.canvasHeight, this.textSizeFactor));
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.textSize = textSize;
     /* declare textFont:textSize so we can correctly calculate textWidth */
     this.p.textFont('Helvetica', this.textSize);
     this.storyLength = Math.floor(this.p.textWidth(this.story));
@@ -32,16 +32,18 @@ export default class StoryLine {
 
   move(liveList) {
     if (this.xPos < -this.storyLength) {
-      console.log(`Reached Storylength:${this.xPos}`);
+      console.log(`Reached Storylength: ${this.xPos}`);
       // pick a random story from liveList
       if (liveList.length > 0) {
         const randomEntry = Math.floor(Math.random() * liveList.length);
         this.story = liveList[randomEntry];
       }
-      (calcResult = Calc(this.canvasWidth, this.canvasHeight, this.textSizeFactor));
-      this.xPos = calcResult.xPos;
-      this.yPos = calcResult.yPos;
-      this.textSize = calcResult.textSize;
+      //
+      let textSize, xPos, yPos;
+      ({ textSize, xPos, yPos } = Calc(this.canvasWidth, this.canvasHeight, this.textSizeFactor));
+      this.xPos = xPos;
+      this.yPos = yPos;
+      this.textSize = textSize;
       /* declare textFont:textSize so we can correctly calculate textWidth */
       this.p.textFont('Helvetica', this.textSize);
       this.storyLength = Math.floor(this.p.textWidth(this.story));

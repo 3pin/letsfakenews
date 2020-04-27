@@ -22,6 +22,12 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
+    "react/sort-comp": 0,
+    "prefer-const": 0,
+    "no-restricted-syntax": 0,
+    "guard-for-in": 0,
+    "one-var": 0,
+    "one-var-declaration-per-line": 0,
     "max-len": 0,
     "import/no-named-as-default": 0,
     "import/no-named-as-default-member": 0,

@@ -22,15 +22,14 @@ export default function sketch(P) {
     console.log('PROPS received...');
     console.log(props);
     if (props.liveList.length > 0) {
-      //
+      /*
       Object.entry(props.livelist).forEach((entry) => {
         liveList.push(entry.story);
       });
-      /*
+      */
       for (const entry in props.liveList) {
         liveList.push(props.liveList[entry].story);
       }
-      */
     }
     if (props.textScrollers) {
       numScrollersDisplay = props.textScrollers;
@@ -42,14 +41,14 @@ export default function sketch(P) {
       initialHeight = Math.floor((props.componentWidth / aspectRatio));
       p.resizeCanvas(initialWidth, initialHeight);
       if (lines.length > 0) {
+        /*
         Object.entries(lines).forEach((line) => {
           line.resize(initialWidth, initialHeight);
         });
-        /*
+        */
         for (const line of lines) {
           line.resize(initialWidth, initialHeight);
         }
-        */
       }
     }
   };
