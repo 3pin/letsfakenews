@@ -19,11 +19,11 @@ module.exports = (req, res) => {
   /* send a repeating dummy event to keep the connection from timing-out */
   setInterval(() => {
     if (!res.finished) {
-      res.write('event: keepalive\n');
+      res.write('event: keepAlive\n');
       res.write(': SSE keep-alive dummy-comment\n\n');
       debug('Emmitted an SSE keep-alive event');
     }
-  }, global.config.keepalive);
+  }, global.config.keepAlive);
   /* stop listening to SSE when the client closes frontend connection */
   req.on('close', () => {
     debug('SSE req.close');
@@ -33,10 +33,10 @@ module.exports = (req, res) => {
     }
   });
   /* send a 'dummy' message... which is being done above */
-  bus.on('keepalive', (data) => {
+  bus.on('keepAlive', (data) => {
     if (!res.finished) {
-      debug('SSE keepalive-msg to be emmitted from eventbus');
-      res.write('event: keepalive\n');
+      debug('SSE keepAlive-msg to be emmitted from eventbus');
+      res.write('event: keepAlive\n');
       res.write(`data: ${JSON.stringify(data)}`);
       res.write('\n\n');
     }

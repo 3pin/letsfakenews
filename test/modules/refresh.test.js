@@ -32,7 +32,7 @@ describe('Refresh: refreshing urls for stories', () => {
   before((done) => {
     debug('before entered...');
     /* open db connection for tests */
-    mongoose.connect(global.config.mongodb_uri_tests, options);
+    mongoose.connect(global.config.mongodbUriTests, options);
     mongoose.connection.once('open', () => {
       debug('db-connected');
       done();

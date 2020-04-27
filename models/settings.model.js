@@ -4,11 +4,11 @@ const { Schema } = mongoose;
 const Base = require('./base.model');
 
 const SettingsSchema = new Schema({
-  image_duration: {
+  imageDuration: {
     type: Number,
     required: true,
   },
-  text_scrollers: {
+  textScrollers: {
     type: Number,
     required: true,
   },
@@ -32,7 +32,7 @@ const SettingsSchema = new Schema({
     type: String,
     required: true,
   },
-  node_mode: {
+  nodeMode: {
     type: String,
     required: true,
   },

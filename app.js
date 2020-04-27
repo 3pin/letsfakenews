@@ -21,8 +21,8 @@ const debug = require('debug')('app');
 /* load global config */
 const config = require('./config');
 
-if (global.config.node_env !== 'production') {
-  debug(`App Mode: ${global.config.node_env}`);
+if (global.config.nodeEnv !== 'production') {
+  debug(`App Mode: ${global.config.nodeEnv}`);
   /* log all system env variables */
   // debug(process.env);
 }
@@ -31,18 +31,18 @@ if (global.config.node_env !== 'production') {
 const app = express();
 debug(`App Name: ${process.env.npm_package_name}`);
 debug(
-  `Port:${global.config.port} mode:${global.config.node_env} db_uri:${global.config.MONGODB_URI} database:${global.config.DATABASE}`,
+  `Port:${global.config.port} mode:${global.config.nodeEnv} db_uri:${global.config.mongodbUri} database:${global.config.DATABASE}`,
 );
 //= ============================================================================
 // middleware
 
 // You can set morgan to log differently depending on your environment
-if (global.config.node_env === 'development') {
+if (global.config.nodeEnv === 'development') {
   app.use(morgan('combined'));
 }
 
 // adding cookies to req headers
-if (global.config.cookieparser_secure) {
+if (global.config.cookieparserSecure) {
   debug('Cookies are secure');
   app.use(cookieParser(global.config.secret));
 } else {
@@ -93,7 +93,7 @@ if (global.config.HSTS) {
 }
 
 // ... production mode => serve static files for React
-if (global.config.https_redirect) {
+if (global.config.httpsRedirect) {
   debug('Redirecting HTTP to HTTPS');
   app.use((req, res, next) => {
     const reqType = req.headers['x-forwarded-proto'];
@@ -106,7 +106,7 @@ if (global.config.https_redirect) {
 }
 
 // ... production mode => serve static files for React
-if (global.config.node_env === 'production') {
+if (global.config.nodeEnv === 'production') {
   debug(`Serving: ${__dirname}/client/build/index.html`);
   app.use(express.static(`${__dirname}/client/build`));
   app.use(favicon(path.join(__dirname, '/client/build', 'favicon.ico')));
@@ -166,14 +166,14 @@ const Auth = require('./models/auth.model');
 const Settings = require('./models/settings.model');
 
 const settingsObj = {
-  entryToRead: parseInt(global.config.entry_to_read, 10),
+  entryToRead: parseInt(global.config.entryToRead, 10),
   autolive: global.config.autolive,
   activelist: [],
-  dbMode: global.config.db_mode,
-  node_mode: global.config.node_env,
+  dbMode: global.config.dbMode,
+  nodeMode: global.config.nodeEnv,
   visualise: global.config.visualise,
-  image_duration: global.config.image_duration,
-  text_scrollers: global.config.text_scrollers,
+  imageDuration: global.config.imageDuration,
+  textScrollers: global.config.textScrollers,
 };
 const authObj = {
   username: global.config.username,
@@ -188,7 +188,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-mongoose.connect(global.config.mongodb_uri, options, (err, client) => {
+mongoose.connect(global.config.mongodbUri, options, (err, client) => {
   if (err) {
     debug('error coming...');
     debug(err);
@@ -236,7 +236,7 @@ mongoose.connect(global.config.mongodb_uri, options, (err, client) => {
               debug(result);
               const settings = new Settings(result[0]);
               /* load NODE_ENV (development/production) from .env into db into */
-              settings.node_mode = global.config.node_env;
+              settings.nodeMode = global.config.nodeEnv;
               settings.save().then((res) => {
                 debug('updated dbSettings are...');
                 debug(res);

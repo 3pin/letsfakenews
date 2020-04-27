@@ -38,7 +38,7 @@ module.exports = (req, res) => {
         } else {
           debug('same', same);
           // Setup token
-          const time = Number(global.config.token_age_mins) * 60000;
+          const time = Number(global.config.tokenAgeMins) * 60000;
           const payload = {
             username,
           };
@@ -50,7 +50,7 @@ module.exports = (req, res) => {
           });
           // Setup Cookie
           const cookieOptions = {
-            httpOnly: global.config.cookieoption_httponly,
+            httpOnly: global.config.cookieoptionHttponly,
             sameSite: global.config.cookieoption_samesit,
             maxAge: time,
             secure: false,

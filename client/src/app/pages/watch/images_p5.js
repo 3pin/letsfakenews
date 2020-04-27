@@ -160,7 +160,7 @@ export default class visualiseImages extends React.Component {
     /* open sse listener to trigger a refresh:response which will update this.state.liveList */
     this.eventSource.addEventListener('activelistChange', (e) => {
       console.log('Backend changes triggered a refresh of the activelist');
-      // this.refreshList();
+      this.refreshList();
     });
     /* Catches errors */
     this.eventSource.onerror = (e) => {

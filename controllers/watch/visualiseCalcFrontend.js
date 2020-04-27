@@ -22,8 +22,8 @@ module.exports = (req, res) => {
     // send to frontend
     res.json({
       liveList,
-      imageDuration: dbSettings.image_duration,
-      textScrollers: dbSettings.text_scrollers,
+      imageDuration: dbSettings.imageDuration,
+      textScrollers: dbSettings.textScrollers,
     });
   });
 };

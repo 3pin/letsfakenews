@@ -10,7 +10,7 @@ module.exports = (req, res) => {
   res.json({
     activelistLength: dbSettings.activelist.length,
     visualiseNum: dbSettings.visualise,
-    textScrollers: dbSettings.text_scrollers,
-    imageDuration: dbSettings.image_duration,
+    textScrollers: dbSettings.textScrollers,
+    imageDuration: dbSettings.imageDuration,
   });
 };

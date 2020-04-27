@@ -9,7 +9,8 @@ export default class StoryLine {
     this.canvasHeight = canvasHeight;
     this.textSizeFactor = textSizeFactor;
     this.inc = inc;
-    this.story = story(calcResult = Calc(this.canvasWidth, this.canvasHeight, this.textSizeFactor));
+    this.story = story;
+    calcResult = Calc(this.canvasWidth, this.canvasHeight, this.textSizeFactor);
     this.xPos = calcResult.xPos;
     this.yPos = calcResult.yPos;
     this.textSize = calcResult.textSize;

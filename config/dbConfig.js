@@ -1,9 +1,9 @@
 module.exports = {
   database: process.env.DATABASE,
-  mongodb_uri: process.env.MONGODB_URI,
-  mongodb_uri_remote: process.env.MONGODB_URI_REMOTE,
-  mongodb_uri_tests: process.env.MONGODB_URI_TESTS,
-  mongolab_bronze_uri: process.env.MONGOLAB_BRONZE_URI,
-  db_mode: 'next',
-  entry_to_read: 0,
+  mongodbUri: process.env.MONGODB_URI,
+  mongodbUriRemote: process.env.MONGODB_URI_REMOTE,
+  mongodbUriTests: process.env.MONGODB_URI_TESTS,
+  mongolabBronzeUri: process.env.MONGOLAB_BRONZE_URI,
+  dbMode: 'next',
+  entryToRead: 0,
 };

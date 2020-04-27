@@ -9,12 +9,12 @@ module.exports = (req, res) => {
   debug('/POST /admin/visualise/scroller');
   const { dbSettings } = req;
   debug(req.body.textScrollers);
-  dbSettings.text_scrollers = req.body.textScrollers;
+  dbSettings.textScrollers = req.body.textScrollers;
   dbSettingsUpdate(dbSettings).then((result) => {
     debug(result);
     bus.emit('activelistChange', dbSettings.activelist.length);
     res.json({
-      textScrollers: dbSettings.text_scrollers,
+      textScrollers: dbSettings.textScrollers,
     });
   });
 };
