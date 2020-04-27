@@ -48,14 +48,14 @@ module.exports = (req, res) => {
           bus.emit('story', docs);
           /* if storylive is TRUE, then should be auto added to activelist */
           if (story.storylive === true) {
-            /* tell eventbus about a new-story to trigger update of activeList */
-            debug('SSE event triggered by New_Story');
-            bus.emit('activelistChange', dbSettings.activelist.length + 1);
             dbSettings.activelist.push(story._id);
             dbSettings.entryToRead = dbSettings.activelist.length - 1;
             dbSettings.dbMode = 'next';
             dbSettingsUpdate(dbSettings).then((output) => {
               debug(output);
+              /* tell eventbus about a new-story to trigger update of activeList */
+              debug('SSE event triggered by New_Story');
+              bus.emit('activelistChange', output.activelist.length);
             });
           }
         });

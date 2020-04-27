@@ -14,6 +14,7 @@ module.exports = {
     ecmaVersion: 2018
   },
   rules: {
+    "eqeqeq": 0,
     "no-unused-expressions": 0,
     "no-underscore-dangle": 0,
     "max-len": 0,

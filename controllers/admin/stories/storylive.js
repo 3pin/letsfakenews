@@ -12,12 +12,11 @@ module.exports = (req, res) => {
   const storySettings = req.body;
   const { dbSettings } = req;
   debug(`_id: ${storySettings._id} currently set to: ${storySettings.storylive}`);
-  debug(`activelist:${dbSettings.activelist.length} VS... visualise-amount:${dbSettings.visualise}`);
   /* checkbox true/false? -> add/remove from activelist */
   if (storySettings.storylive === true) {
     debug('Set to FALSE');
     /* remove entry from activelist */
-    dbSettings.activelist = dbSettings.activelist.filter((item) => item !== storySettings._id);
+    dbSettings.activelist = dbSettings.activelist.filter((item) => item != storySettings._id);
     debug(`activelist:${dbSettings.activelist.length} VS... visualise-amount:${dbSettings.visualise}`);
     /* check if activelist.length < visualise.length */
     if (dbSettings.activelist.length <= dbSettings.visualise) {

@@ -12,7 +12,7 @@ module.exports = (req, res) => {
   // remove entry from activevisualiselist in dB
   const { dbSettings } = req;
   debug(dbSettings.activelist);
-  dbSettings.activelist = dbSettings.activelist.filter((item) => item !== req.body._id);
+  dbSettings.activelist = dbSettings.activelist.filter((item) => item != req.body._id);
   debug(dbSettings.activelist);
   // offset the next-story-to-read to account for deleted entry
   dbSettings.entryToRead -= 1;
@@ -36,9 +36,7 @@ module.exports = (req, res) => {
       if (dbSettings.activelist.length <= dbSettings.visualise) {
         debug(`activelist:${dbSettings.activelist.length} is less than visualise amount:${dbSettings.visualise}`);
         dbSettings.visualise = dbSettings.activelist.length;
-        dbSettingsUpdate(dbSettings).then((documents) => {
-          debug(documents);
-        });
+        dbSettingsUpdate(dbSettings)
       }
       res.json({
         stories: docs,
