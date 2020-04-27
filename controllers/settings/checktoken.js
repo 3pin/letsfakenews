@@ -6,7 +6,7 @@ const Settings = require('../../models/settings.model');
 
 module.exports = (req, res, next) => {
   debug("Entered middleware to check token-authorisation");
-  debug(req);
+  // debug(req);
   const token =
     req.cookies.token ||
     req.body.token ||
