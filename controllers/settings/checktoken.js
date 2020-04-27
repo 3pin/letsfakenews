@@ -2,7 +2,9 @@
 const debug = require('debug')('checkToken');
 const jwt = require('jsonwebtoken');
 
-const { secret } = global.config;
+const {
+  secret,
+} = global.config;
 
 module.exports = (req, res, next) => {
   debug('Entered middleware to check token-authorisation');
@@ -13,20 +15,18 @@ module.exports = (req, res, next) => {
     || req.headers['x-access-token'];
   debug(token);
   if (!token) {
-    debug('No token in client req');
-    res.status(401).send('Unauthorized: No token provided');
-  } else {
-    jwt.verify(token, secret, (err, decoded) => {
-      if (err) {
-        res.status(401).send('Unauthorized: Invalid token');
-      } else {
-        debug('Matching token in client req');
-        req.username = decoded.username;
-        debug(req.username);
-        res.status(200).send(`Welcome back ${req.username}`);
-        // res.sendStatus(200);
-      }
-    });
+    debug('No token in client-req');
+    return res.status(401).send('Unauthorized: No token provided');
   }
-  next();
+  debug('Token in client-req');
+  jwt.verify(token, secret, (err, decoded) => {
+    if (err) {
+      debug('Token error');
+      return res.status(401).send('Unauthorized: Invalid token provided');
+    }
+    debug('Token good')
+    // req.username = decoded.username;
+    return res.status(200).send(`Welcome back: ${decoded.username}`);
+  });
+  return next;
 };
