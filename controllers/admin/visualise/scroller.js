@@ -1,4 +1,3 @@
-'use strict';
 
 const debug = require('debug')('routes_admin');
 // load dbSettingsUpdate module
@@ -8,14 +7,14 @@ const bus = require('../../../modules/eventbus');
 
 module.exports = (req, res) => {
   debug('/POST /admin/visualise/scroller');
-  let dbSettings = req.dbSettings;
+  const { dbSettings } = req;
   debug(req.body.textScrollers);
   dbSettings.text_scrollers = req.body.textScrollers;
   dbSettingsUpdate(dbSettings).then((result) => {
     debug(result);
     bus.emit('activelistChange', dbSettings.activelist.length);
     res.json({
-      textScrollers: dbSettings.text_scrollers
+      textScrollers: dbSettings.text_scrollers,
     });
-  })
-}
+  });
+};

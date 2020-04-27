@@ -3,10 +3,12 @@ takes a searchterm
 matches searchterm:image via google-image-search
 */
 
-'use strict';
-const debug = require('debug')('imagesearch')
+
+const debug = require('debug')('imagesearch');
 const GoogleImages = require('google-images');
-const client = new GoogleImages(process.env.CUSTOM_SEARCH_ENGINE_ID, process.env.CUSTOM_SEARCH_APIKEY);
+
+const client = new GoogleImages(global.config.custom_search_engine_id, global.config.custom_search_apikey);
+// const client = new GoogleImages(global.config.custom_search_engine_id, global.config.custom_search_apikey);
 /*
 GoogleImages size-options: icon, small, medium, large, xlarge, xxlarge, huge
 (cc_publicdomain | cc_attribute%7Ccc_sharealike | cc_nonderived ! cc_noncommercial
@@ -22,30 +24,30 @@ const searchSettings = {
   safe: 'high',
   searchType: 'image',
   siteSearch: 'https://www.facebook.com/',
-  siteSearchFilter: 'e'
-}
+  siteSearchFilter: 'e',
+};
 
 module.exports = {
-  //find an image-url to match a noun
-  single_url_search: function(input_text) {
-    return new Promise(function(resolve, reject) {
-      let searchterm = input_text
+  // find an image-url to match a noun
+  single_url_search(inputText) {
+    return new Promise(((resolve) => {
+      const searchterm = inputText;
       debug(searchterm);
       client.search(searchterm, searchSettings).then((result) => {
-        let urlArray = []
-        for (let value of result) {
-          let item = value;
+        const urlArray = [];
+        result.forEach((value) => {
+          const item = value;
           if (item.url) {
-            urlArray.push(item.url)
+            urlArray.push(item.url);
           }
-        }
-        let num_of_result = Math.floor(Math.random() * urlArray.length);
-        debug(urlArray[num_of_result])
-        resolve(urlArray[num_of_result])
-      }).catch(function(error) {
-        debug("Failed!", error);
+        })
+        const numOfResult = Math.floor(Math.random() * urlArray.length);
+        debug(urlArray[numOfResult]);
+        resolve(urlArray[numOfResult]);
+      }).catch((error) => {
+        debug('Failed!', error);
       });
-    });
-  }
+    }));
+  },
 
 };

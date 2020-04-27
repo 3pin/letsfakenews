@@ -1,42 +1,43 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const Base = require('./base.model');
 
-let SettingsSchema = new Schema({
+const SettingsSchema = new Schema({
   image_duration: {
     type: Number,
-    required: true
+    required: true,
   },
   text_scrollers: {
     type: Number,
-    required: true
+    required: true,
   },
-  entry_to_read: {
+  entryToRead: {
     type: Number,
-    required: true
+    required: true,
   },
   visualise: {
     type: Number,
-    required: true
+    required: true,
   },
   autolive: {
     type: Boolean,
-    required: true
+    required: true,
   },
   activelist: {
     type: Array,
-    required: true
+    required: true,
   },
-  db_mode: {
+  dbMode: {
     type: String,
-    required: true
+    required: true,
   },
   node_mode: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 }, {
-  collection: process.env.DATABASE
+  collection: global.config.database,
 });
 
 // Export the model

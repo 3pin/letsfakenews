@@ -130,7 +130,7 @@ UPDATE the document in the DB via _id/url
 &nbsp;
 "use strict";
 const debug = require("debug")("refresh_save_urls");
-const imagesearch_iterative = require("../modules/imagesearch_iterative.js");
+const imagesearchIterative = require("../modules/imagesearchIterative.js");
 // import mongoose schemas
 const Story = require("../models/story.model");
 &nbsp;
@@ -142,7 +142,7 @@ module.exports = {
           //debug(doc);
           let words = doc.words;
           //debug(words);
-          imagesearch_iterative.process(words).then(result =&gt; {
+          imagesearchIterative.process(words).then(result =&gt; {
             //debug(result);
             Story.updateOne({
               _id: id

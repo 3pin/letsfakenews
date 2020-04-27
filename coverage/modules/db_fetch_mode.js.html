@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for modules/db_fetch_mode.js</title>
+    <title>Code coverage report for modules/dbFetchMode.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -16,7 +16,7 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../index.html">All files</a> / <a href="index.html">modules</a> db_fetch_mode.js
+      <a href="../index.html">All files</a> / <a href="index.html">modules</a> dbFetchMode.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
@@ -142,51 +142,51 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// functions for how stories are fetched from the database... random/stepwise etc
 &nbsp;
-const debug = require('debug')('db_fetch_mode')
+const debug = require('debug')('dbFetchMode')
 &nbsp;
 // pick a random entry with which to pick an '_id' entry from the array
-function random_entry(array_of_ids) {
-  debug('entered db_fetch_mode(rand_entry)')
-  debug('lenght of array: ' + array_of_ids.length);
-  let randomnumber = Math.floor(Math.random() * (array_of_ids.length));
+function randomEntry(arrayOfIds) {
+  debug('entered dbFetchMode(rand_entry)')
+  debug('lenght of array: ' + arrayOfIds.length);
+  let randomnumber = Math.floor(Math.random() * (arrayOfIds.length));
   debug(randomnumber);
-  let entry_to_read = randomnumber
-  let id = array_of_ids[entry_to_read];
+  let entryToRead = randomnumber
+  let id = arrayOfIds[entryToRead];
   debug('About to read entry _id: ' + id)
   return {
     id: id,
-    db_mode: 'random',
-    entry_to_read: entry_to_read
+    dbMode: 'random',
+    entryToRead: entryToRead
   }
 }
 // pick next entry
-function next_entry(array_of_ids, entry_to_read) {
-  let id, db_mode;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (entry_to_read == null) {
-<span class="cstat-no" title="statement not covered" >    entry_to_read = 0;</span>
-<span class="cstat-no" title="statement not covered" >    debug('set entry_to_read from NULL to 0');</span>
+function nextEntry(arrayOfIds, entryToRead) {
+  let id, dbMode;
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (entryToRead == null) {
+<span class="cstat-no" title="statement not covered" >    entryToRead = 0;</span>
+<span class="cstat-no" title="statement not covered" >    debug('set entryToRead from NULL to 0');</span>
   }
-  entry_to_read = parseInt(entry_to_read);
-  debug('entered db_fetch_mode(next_entry)... array_length:' + array_of_ids.length + ' activelist_entry_to_read:' + entry_to_read)
-  <span class="missing-if-branch" title="else path not taken" >E</span>if (entry_to_read &gt; array_of_ids.length-1 || <span class="branch-1 cbranch-no" title="branch not covered" >entry_to_read &lt; 0)</span> {
-    //db_mode = 'random';
-    id = array_of_ids[0];
-    entry_to_read = 1;
+  entryToRead = parseInt(entryToRead);
+  debug('entered dbFetchMode(nextEntry)... array_length:' + arrayOfIds.length + ' activelist_entry_to_read:' + entryToRead)
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (entryToRead &gt; arrayOfIds.length-1 || <span class="branch-1 cbranch-no" title="branch not covered" >entryToRead &lt; 0)</span> {
+    //dbMode = 'random';
+    id = arrayOfIds[0];
+    entryToRead = 1;
   } else {
-<span class="cstat-no" title="statement not covered" >    db_mode = 'next';</span>
-<span class="cstat-no" title="statement not covered" >    id = array_of_ids[entry_to_read];</span>
-<span class="cstat-no" title="statement not covered" >    entry_to_read++;</span>
+<span class="cstat-no" title="statement not covered" >    dbMode = 'next';</span>
+<span class="cstat-no" title="statement not covered" >    id = arrayOfIds[entryToRead];</span>
+<span class="cstat-no" title="statement not covered" >    entryToRead++;</span>
   }
   debug('About to read entry id: ' + id);
-  debug('db_mode for next time: ' + db_mode);
+  debug('dbMode for next time: ' + dbMode);
   return {
     id: id,
-    db_mode: db_mode,
-    entry_to_read: entry_to_read
+    dbMode: dbMode,
+    entryToRead: entryToRead
   }
 }
-module.exports.random_entry = random_entry;
-module.exports.next_entry = next_entry;
+module.exports.randomEntry = randomEntry;
+module.exports.nextEntry = nextEntry;
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->

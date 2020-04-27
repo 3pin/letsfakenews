@@ -1,9 +1,12 @@
-import { applyMiddleware, createStore } from "redux";
-import reducer from "./reducers"
-import logger from "redux-logger";  //middleware... pretty logging
-import thunk from "redux-thunk";  //middleware... pretty logging
+import {
+  applyMiddleware,
+  createStore
+} from 'redux';
+import logger from 'redux-logger'; // middleware... pretty logging
+import thunk from 'redux-thunk'; // middleware... pretty logging
+import reducer from './reducers';
 
-//middlwares
+// middlwares
 let middleware;
 if (process.env.NODE_ENV === 'development') {
   middleware = applyMiddleware(thunk, logger);
@@ -11,7 +14,7 @@ if (process.env.NODE_ENV === 'development') {
   middleware = applyMiddleware(thunk);
 }
 
-//store
+// store
 export default createStore(reducer, middleware);
 
 /*

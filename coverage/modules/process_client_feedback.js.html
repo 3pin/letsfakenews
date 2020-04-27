@@ -94,14 +94,14 @@
 &nbsp;
 'use strict';
 const debug = require('debug')('process_feedback');
-const time_ops = require('../modules/time_ops.js');
+const timeOps = require('../modules/timeOps.js');
 &nbsp;
 module.exports = {
 &nbsp;
   process: function(feedbackJSON) {
     return new Promise(function(resolve, reject) {
       let today = new Date();
-      time_ops.current_time(today).then((result) =&gt; {
+      timeOps.current_time(today).then((result) =&gt; {
         debug(result);
         feedbackJSON.time = result.time;
         resolve(feedbackJSON);

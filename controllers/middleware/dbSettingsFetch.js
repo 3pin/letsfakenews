@@ -8,8 +8,8 @@ module.exports = (req, res, next) => {
     debug(data[0]);
     req.dbSettings = data[0];
     next();
-  }).catch(function (err) {
+  }).catch((err) => {
     res.status(500).end();
     next(err);
-  })
-}
+  });
+};

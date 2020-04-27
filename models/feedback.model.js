@@ -1,18 +1,19 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const Base = require('./base.model');
 
-let FeedbackSchema = new Schema({
+const FeedbackSchema = new Schema({
   feedback: {
     type: String,
-    required: true
+    required: true,
   },
   time: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 }, {
-  collection: process.env.DATABASE
+  collection: global.config.database,
 });
 
 // Export the model

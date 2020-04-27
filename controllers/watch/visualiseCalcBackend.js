@@ -1,7 +1,6 @@
-'use strict';
 
 const debug = require('debug')('routes_watch');
-const randomCalc = require('../../modules/db_fetch_mode');
+const randomCalc = require('../../modules/dbFetchMode');
 const Story = require('../../models/story.model');
 
 module.exports = (req, res) => {
@@ -16,12 +15,13 @@ module.exports = (req, res) => {
   }
   debug(livelist);
   // pick a random entry from [livelist] and fetch its story
-  let id = randomCalc.random_entry(livelist).id;
+  const { id } = randomCalc.randomEntry(livelist);
   debug(id);
   Story.findById(id, (err, data) => {
     debug(data);
     res.json({
-      data: data
+      data,
     });
-  })
+    debug(err);
+  });
 };

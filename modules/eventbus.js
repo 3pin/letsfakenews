@@ -1,9 +1,10 @@
 const debug = require('debug')('eventbus');
 
 const EventEmitter = require('events');
+
 const emitter = new EventEmitter();
 
-emitter.on('uncaughtException', function(err) {
+emitter.on('uncaughtException', (err) => {
   debug(err);
 });
 

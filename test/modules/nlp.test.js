@@ -1,20 +1,18 @@
-'use strict';
-
 // load the ENVIRONMENT variables
 require('dotenv').config();
-const debug = require('debug')('tests')
 
 // load assertion library
-const chai = require('chai'),
-  expect = chai.expect,
-  should = chai.should();
+const chai = require('chai');
+
+const {
+  expect,
+} = chai;
 
 const nlp = require('../../modules/nlp.js');
 
 describe('NLP: testing parsing of nouns...', () => {
-
   it('should NLP the story(string) to an array of nouns...', (done) => {
-    nlp.parse_nouns('Shit the cat ran under the bus fuck').then(result => {
+    nlp.parse_nouns('Shit the cat ran under the bus fuck').then((result) => {
       expect(result).to.be.an('array');
     }).finally(done);
   });
@@ -24,5 +22,4 @@ describe('NLP: testing parsing of nouns...', () => {
       expect(result).to.be.an('array');
     }).finally(done);
   });
-
 });

@@ -1,66 +1,82 @@
 // Login... user logins then backend verifies credentials
-import React from "react";
-import { Form, Button } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
-import FrameBanner from "../../../app/components/frameBanner";
-//import FormFrame from '../../../app/components/formframe';
+import React from 'react';
+import {
+  Form,
+  Button,
+} from 'react-bootstrap';
+import {
+  Redirect,
+} from 'react-router-dom';
+import FrameBanner from '../../components/frameBanner';
+// import FormFrame from '../../../app/components/formframe';
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
-      redirect: false
+      username: '',
+      password: '',
+      redirect: false,
     };
   }
+
+  componentDidMount() {
+    // this.nameInput.focus()
+  }
+
   handleChange(event) {
-    const { value, name } = event.target;
+    const {
+      value,
+      name,
+    } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
+
   handleSubmit(event) {
     event.preventDefault();
-    fetch("/settings/authenticate", {
+    fetch('/settings/authenticate', {
       body: JSON.stringify(this.state),
-      method: "POST",
-      credentials: "include",
-      cache: "no-cache",
+      method: 'POST',
+      credentials: 'include',
+      cache: 'no-cache',
       headers: {
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/json',
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
-          //this.props.history.push('/');
+          // this.props.history.push('/');
           this.setState(() => ({
-            redirect: true
+            redirect: true,
           }));
-          console.log("redirect", this.state.redirect);
         } else {
           this.setState(() => ({
-            username: "",
-            password: ""
+            username: '',
+            password: '',
           }));
           this.nameInput.focus();
-          alert("Error logging in please try again");
-          //const error = new Error(res.error);
-          //throw error;
+          alert('Error logging in please try again');
+          // const error = new Error(res.error);
+          // throw error;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
   }
+
   renderRedirect() {
-    if (this.state.redirect) {
+    const {
+      redirect,
+    } = this.state;
+    if (redirect) {
       return <Redirect to="/admin" />;
     }
+    return null;
   }
-  componentDidMount() {
-    //this.nameInput.focus()
-  }
+
   render() {
     return (
       <div>
@@ -72,7 +88,7 @@ export default class Login extends React.Component {
         <hr />
         <Form onSubmit={this.handleSubmit.bind(this)}>
           <input
-            ref={input => {
+            ref={(input) => {
               this.nameInput = input;
             }}
             autoFocus

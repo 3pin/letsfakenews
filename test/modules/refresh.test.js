@@ -1,141 +1,141 @@
-"use strict";
-
 // load the ENVIRONMENT variables
-require("dotenv").config();
-const debug = require("debug")("tests");
+require('dotenv').config();
+const debug = require('debug')('tests');
 
 // load assertion library
-const chai = require("chai"),
-  expect = chai.expect,
-  should = chai.should();
+const chai = require('chai');
+
+const {
+  expect,
+} = chai;
 
 // db-setup
-const mongoose = require("mongoose");
-const Story = require("../../models/story.model");
+const mongoose = require('mongoose');
+const Story = require('../../models/story.model');
+
+const refreshUrls = require('../../modules/refreshUrls.js');
+const refreshUrlsIterative = require('../../modules/refreshUrlsIterative.js');
+const refreshSaveUrls = require('../../modules/refreshSaveUrls.js');
+const refreshSaveUrlsIterative = require('../../modules/refreshSaveUrlsIterative.js');
+
 const options = {
   useNewUrlParser: true,
   keepAlive: true,
   keepAliveInitialDelay: 300000,
   promiseLibrary: Promise,
   useFindAndModify: false,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 };
-describe("Refresh: refreshing urls for stories", () => {
-  debug('started')
+describe('Refresh: refreshing urls for stories', () => {
+  debug('started');
   //
   before((done) => {
-    debug('before entered...')
+    debug('before entered...');
     /* open db connection for tests */
-    mongoose.connect(process.env.MONGODB_URI_TESTS, options);
-    mongoose.connection.once("open", () => {
-      debug("db-connected");
+    mongoose.connect(global.config.mongodb_uri_tests, options);
+    mongoose.connection.once('open', () => {
+      debug('db-connected');
       done();
-    }).on("error", error => {
-      console.warn("Error : ", error);
+    }).on('error', (error) => {
+      debug('Error : ', error);
     });
   });
   after(() => {
-    debug('after entered...')
+    debug('after entered...');
     /* close db connection */
     mongoose.connection.close(() => {
-      debug("db-disconnected");
-      //process.exit(0);
-    })
+      debug('db-disconnected');
+      // process.exit(0);
+    });
   });
   beforeEach((done) => {
-    debug('beforeEach entered...')
+    debug('beforeEach entered...');
     /* create 2 db entries */
-    let story1 = new Story({
+    const story1 = new Story({
       story: "Let's talk about the week",
-      title: "Monday & Tuesday",
-      time: "11:24:41",
+      title: 'Monday & Tuesday',
+      time: '11:24:41',
       storylive: true,
-      words: ["Thursday", "Friday"],
+      words: ['Thursday', 'Friday'],
       urls: [
-        "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg",
-        "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg"
-      ]
+        'https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg',
+        'https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg',
+      ],
     });
-    let story2 = new Story({
+    const story2 = new Story({
       story: "Let's talk about the weekend",
-      title: "Saturday & Sunday",
-      time: "11:24:41",
+      title: 'Saturday & Sunday',
+      time: '11:24:41',
       storylive: true,
-      words: ["Thursday", "Friday"],
+      words: ['Thursday', 'Friday'],
       urls: [
-        "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg",
-        "https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg"
-      ]
+        'https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg',
+        'https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg',
+      ],
     });
     story1.save().then(() => {
       story2.save().then(() => {
         done();
-      }).catch(function (error) {
-        debug("Failed!", error);
+      }).catch((error) => {
+        debug('Failed!', error);
       });
     });
   });
   afterEach((done) => {
-    debug('afterEach entered')
+    debug('afterEach entered');
     /* create 2 db entries */
-    //mongoose.connection.collections.development.drop();
+    // mongoose.connection.collections.development.drop();
     /*
-    mongoose.connection.collection(process.env.DATABASE, function (err, collection) {
+    mongoose.connection.collection(global.config.database, function (err, collection) {
       collection.drop().then(() => {
         debug("collection dropped");
         done();
       });
     })
     */
-    mongoose.connection.db.dropCollection(process.env.DATABASE, function (err, result) {
-      debug("Collection dropped")
+    mongoose.connection.db.dropCollection(global.config.database, () => {
+      debug('Collection dropped');
       done();
-    })
+    });
   });
   //
-  it("refresh the urls in 1 story", (done) => {
+  it('refresh the urls in 1 story', (done) => {
     debug('test1 entered');
-    const refresh_urls = require("../../modules/refresh_urls.js");
     Story.find({}).then((obj) => {
-      refresh_urls.process(obj[0]).then(result => {
+      refreshUrls.process(obj[0]).then((result) => {
         expect(result.urls.length).to.equal(obj[0].words.length);
         done();
-      }).catch(function (error) {
-        debug("Failed!", error);
-      })
-    })
+      }).catch((error) => {
+        debug('Failed!', error);
+      });
+    });
   });
   it('refresh the urls in multiple stories', (done) => {
     debug('test2 entered');
-    const refresh_urls_iterative = require('../../modules/refresh_urls_iterative.js');
     Story.find({}).then((objects) => {
-      refresh_urls_iterative.process(objects).then(result => {
+      refreshUrlsIterative.process(objects).then((result) => {
         expect(result.length).to.equal(objects.length);
         done();
-      }).catch(function (error) {
-        debug("Failed!", error);
-      })
-    })
+      }).catch((error) => {
+        debug('Failed!', error);
+      });
+    });
   });
-  it("refresh & save the urls for 1 story", (done) => {
+  it('refresh & save the urls for 1 story', (done) => {
     debug('test3 entered');
-    const refresh_save_urls = require("../../modules/refresh_save_urls.js");
     Story.find({}).then((stories) => {
-      refresh_save_urls.process(stories[0]._id)
+      refreshSaveUrls.process(stories[0]._id)
         .then((res) => {
           expect(res.nModified).to.equal(1);
           done();
-        })
+        });
     });
   });
-  it("refresh & save the urls for multiple stories", (done) => {
+  it('refresh & save the urls for multiple stories', (done) => {
     debug('test4 entered');
-    const refresh_save_urls_iterative = require("../../modules/refresh_save_urls_iterative.js");
-    refresh_save_urls_iterative.process()
+    refreshSaveUrlsIterative.process()
       .then((res) => {
-        for (const entry of res) {
-          expect(entry.nModified).to.equal(1);
-        }
+        res.forEach((entry) => expect(entry.nModified).to.equal(1))
       }).then(() => {
         done();
       });

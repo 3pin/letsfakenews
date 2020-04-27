@@ -3,7 +3,7 @@
 // ... if not redirects them to login
 import React from 'react';
 import {
-  Redirect
+  Redirect,
 } from 'react-router-dom';
 
 export default function withAuth(ComponentToProtect) {
@@ -12,42 +12,42 @@ export default function withAuth(ComponentToProtect) {
       super();
       this.state = {
         loading: true,
-        redirect: false
+        redirect: false,
       };
     }
+
     componentDidMount() {
       fetch('/settings/checkToken')
-        .then(res => {
+        .then((res) => {
           if (res.status === 200) {
             this.setState({
-              loading: false
+              loading: false,
             });
           } else {
             console.log('redirecting');
             this.setState({
               loading: false,
-              redirect: true
+              redirect: true,
             });
-            //const error = new Error(res.error);
-            //throw error;
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     }
+
     render() {
       if (this.state.loading) {
         return null;
       }
       if (this.state.redirect) {
-        return <Redirect to="/login"/>;
+        return <Redirect to="/login" />;
       }
       return (
-        <React.Fragment>
+        <>
           <ComponentToProtect {...this.props} />
-        </React.Fragment>
+        </>
       );
     }
-  }
+  };
 }

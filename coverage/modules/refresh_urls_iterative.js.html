@@ -111,10 +111,10 @@ const refresh_urls = require('../modules/refresh_urls.js');
 module.exports = {
 &nbsp;
   //for an array of nouns: find an image-url to match a noun
-  process: function(input_array) {
-    //debug(input_array);
+  process: function(inputArray) {
+    //debug(inputArray);
     return new Promise((resolve, reject) =&gt; {
-      var promises = input_array.map(refresh_urls.process)
+      var promises = inputArray.map(refresh_urls.process)
       Promise.all(promises).then((result) =&gt; {
           resolve(result);
           //debug(result);

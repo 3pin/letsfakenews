@@ -403,29 +403,29 @@ Eg...
 const debug = require('debug')('nlp');
 const pos = require('pos');
 const tags = process.env.POS_TAGS.split(',');
-const illegal_words = process.env.ILLEGAL_WORDS.split(',');
+const illegalWords = process.env.illegalWords.split(',');
 &nbsp;
 module.exports = {
 &nbsp;
   // input a story (series of phrases) =&gt; return POS across the whole story
-  parse_nouns: function(input_text) {
+  parse_nouns: function(inputText) {
     return new Promise(function(resolve, reject) {
       let uniqueArray = [];
-      let text = input_text.toLowerCase();
+      let text = inputText.toLowerCase();
       debug(text);
       // process input text into words
       let words = new pos.Lexer().lex(text);
       debug(words);
       // filter-out illegal words
-      let legal_words = words.filter(e =&gt; !illegal_words.includes(e));
-      debug(legal_words);
+      let legalWords = words.filter(e =&gt; !illegalWords.includes(e));
+      debug(legalWords);
       // populate an array with key:values for tag:word
       let tagger = new pos.Tagger();
-      let taggedWords = tagger.tag(legal_words);
+      let taggedWords = tagger.tag(legalWords);
       debug(taggedWords)
       // setup empty arrays to store parsed... index_in_story:word
-      let output_indexes = [];
-      let output_words = [];
+      let outputIndexes = [];
+      let outputWords = [];
       let i;
       for (i = 0; i &lt; taggedWords.length; i++) {
         let taggedWord = taggedWords[i];
@@ -435,29 +435,29 @@ module.exports = {
         for (let z of tags) {
           if (tag == z) {
             debug(tag + ':' + word);
-            output_indexes.push(i);
-            output_words.push(word);
+            outputIndexes.push(i);
+            outputWords.push(word);
           }
         }
       }
-      debug(output_indexes)
-      debug(output_words)
+      debug(outputIndexes)
+      debug(outputWords)
       // combine compound-nouns
-      let output_word = [];
-      output_word.push(output_words[0]);
-      for (i = 1; i &lt; output_indexes.length; i++) {
-        <span class="missing-if-branch" title="if path not taken" >I</span>if (output_indexes[i - 1] + 1 == output_indexes[i]) {
-<span class="cstat-no" title="statement not covered" >          output_word[output_word.length - 1] = output_word[output_word.length - 1] + "-" + output_words[i];</span>
+      let outputWord = [];
+      outputWord.push(outputWords[0]);
+      for (i = 1; i &lt; outputIndexes.length; i++) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (outputIndexes[i - 1] + 1 == outputIndexes[i]) {
+<span class="cstat-no" title="statement not covered" >          outputWord[outputWord.length - 1] = outputWord[outputWord.length - 1] + "-" + outputWords[i];</span>
         } else {
-          output_word.push(output_words[i]);
+          outputWord.push(outputWords[i]);
         }
       }
-      for (i = 0; i &lt; output_word.length; i++) {
-        debug('Compounded-Output: ' + output_word[i]);
+      for (i = 0; i &lt; outputWord.length; i++) {
+        debug('Compounded-Output: ' + outputWord[i]);
       }
       // the returned array of unique nouns extraced from the pos:tagger
-      uniqueArray = output_word.filter(function(item, pos) {
-        return output_word.indexOf(item) == pos;
+      uniqueArray = outputWord.filter(function(item, pos) {
+        return outputWord.indexOf(item) == pos;
       });
       // test to determine Promise-Fullfilment
       <span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(uniqueArray)) {
@@ -472,11 +472,11 @@ module.exports = {
   },
 &nbsp;
   // input a story (series of phrases) =&gt; split story into phrases =&gt; return POS's per phrase
-  parse_phrases: function(input_text) {
+  parse_phrases: function(inputText) {
     return new Promise(function(resolve, reject) {
-      let parsed_sentence_array = []
+      let parsedSentenceArray = []
       // data input... text
-      let text = input_text
+      let text = inputText
       debug("Input text: " + text)
       // handle un-finished ends on the input-string
       let lastChar = text.charAt(text.length - 1)
@@ -487,15 +487,15 @@ module.exports = {
         text = text + "."
       }
       // split into phrases via a REGEX arguement
-      let sentence_array = text.match(/\(?[^\.\?\!]+[\.!\?]\)?/g)
-      //let sentence_array = text.split(".")
-      for (let value of sentence_array) {
+      let sentenceArray = text.match(/\(?[^\.\?\!]+[\.!\?]\)?/g)
+      //let sentenceArray = text.split(".")
+      for (let value of sentenceArray) {
         value = value.trim()
-        debug('sentence_array: ' + value)
+        debug('sentenceArray: ' + value)
       }
       // parse according to pos-tags ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
-      for (let values of sentence_array) {
-        let shorter_sentence = ""
+      for (let values of sentenceArray) {
+        let shorterSentence = ""
         let words = new pos.Lexer().lex(values);
         let tagger = new pos.Tagger()
         let taggedWords = tagger.tag(words);
@@ -505,21 +505,21 @@ module.exports = {
           let tag = taggedWord[1]
           for (let z of tags) {
             if (tag == z) {
-              shorter_sentence = shorter_sentence.concat(" " + word)
+              shorterSentence = shorterSentence.concat(" " + word)
             }
           }
         }
-        shorter_sentence = shorter_sentence.trim()
-        parsed_sentence_array.push(shorter_sentence)
+        shorterSentence = shorterSentence.trim()
+        parsedSentenceArray.push(shorterSentence)
       }
-      for (let value of parsed_sentence_array) {
+      for (let value of parsedSentenceArray) {
         debug("Parsed sentence array entry: " + value)
       }
       // test to determine Promise-Fullfilment
-      <span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(parsed_sentence_array)) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(parsedSentenceArray)) {
         debug('done')
-        debug(parsed_sentence_array);
-        resolve(parsed_sentence_array);
+        debug(parsedSentenceArray);
+        resolve(parsedSentenceArray);
       } else {
 <span class="cstat-no" title="statement not covered" >        reject("did not parse an array");</span>
       }

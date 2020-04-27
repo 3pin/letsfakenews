@@ -5,9 +5,11 @@
   "homepage": "https://letsfakenews.com/",
   "proxy": "http://localhost:5000",
   "scripts": {
+    "lint": "eslint . --fix",
+    "lintAll": "eslint --ext .js --ext .jsx . --fix",
     "start": "react-app-rewired start",
     "build": "GENERATE_SOURCEMAP=false react-app-rewired build",
-    "test": "react-app-rewired test",
+    "test": "eslint && react-app-rewired test",
     "eject": "react-app-rewired eject"
   },
   "dependencies": {
@@ -15,6 +17,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "bootstrap": "^4.3.1",
     "customize-cra": "^0.2.14",
+    "eslint-plugin-flowtype": "^3.13.0",
     "eventsource-polyfill": "^0.9.6",
     "history": "^4.9.0",
     "p5": "^0.8.0",
@@ -34,10 +37,16 @@
     "react-sizes": "^2.0.0",
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "save-dev": "0.0.1-security"
   },
   "devDependencies": {
-    "eslint-plugin-flowtype": "^3.13.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.0",
     "fibers": "^4.0.2",
     "jquery": "^3.4.1",
     "node-sass": "^4.13.1",
@@ -45,7 +54,11 @@
     "typescript": "^3.5.3"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "space-before-function-paren": [
+      "error",
+      "never"
+    ]
   },
   "browserslist": {
     "production": [

@@ -1,56 +1,56 @@
-'use strict';
-
 // load the ENVIRONMENT variables
 require('dotenv').config();
-const debug = require('debug')('tests')
+const debug = require('debug')('tests');
 
 // load assertion library
-const chai = require('chai'),
-  expect = chai.expect,
-  should = chai.should();
-const process_story = require('../../modules/process_story.js');
-const process_client_story = require('../../modules/process_client_story.js');
-const process_client_feedback = require('../../modules/process_client_feedback.js');
+const chai = require('chai');
+
+const {
+  expect,
+} = chai;
+
+const processStory = require('../../modules/processStory.js');
+const processClientStory = require('../../modules/processClientStory.js');
+const processClientFeedback = require('../../modules/processClientFeedback.js');
 
 describe('Processing: user_input -> OBJ ready for saving to db', () => {
   it('from string... fetch urls', (done) => {
-    let story = "Pump up the volume"
-    process_story.process(story).then((result) => {
+    const story = 'Pump up the volume';
+    processStory.process(story).then((result) => {
       debug(result);
       expect(result).to.be.an('array');
-      done()
-    }).catch(function (err) {
-      debug("Failed!", err);
-    })
-  })
+      done();
+    }).catch((err) => {
+      debug('Failed!', err);
+    });
+  });
   it('from JSON... add urls & timestamp', (done) => {
-    let client_JSON = {
-      "title": "MUSIC",
-      "story": "Pump up the volume"
+    const clientJSON = {
+      title: 'MUSIC',
+      story: 'Pump up the volume',
     };
-    process_client_story.process(client_JSON).then((result) => {
+    processClientStory.process(clientJSON).then((result) => {
       debug(result);
       expect(result).to.have.property('time');
       expect(result).to.have.property('words');
       expect(result).to.have.property('urls');
-      expect(result).to.have.property('words_title');
-      expect(result).to.have.property('urls_title');
+      expect(result).to.have.property('wordsTitle');
+      expect(result).to.have.property('urlsTitle');
       done();
-    }).catch(function (err) {
-      debug("Failed!", err);
-    })
+    }).catch((err) => {
+      debug('Failed!', err);
+    });
   });
   it('from string... add timestamp', (done) => {
-    let feedback_JSON = {
-      feedback: "great"
+    const feedbackJSON = {
+      feedback: 'great',
     };
-    process_client_feedback.process(feedback_JSON).then((result) => {
+    processClientFeedback.process(feedbackJSON).then((result) => {
       debug(result);
       expect(result.feedback).to.equal('great');
       done();
-    }).catch(function (err) {
-      debug("Failed!", err);
-    })
+    }).catch((err) => {
+      debug('Failed!', err);
+    });
   });
-
 });

@@ -1,27 +1,33 @@
 import React from 'react';
-import {Navbar, Nav} from 'react-bootstrap';
-import {LinkContainer} from "react-router-bootstrap";
+import { Navbar, Nav } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 //
 export default class FrameNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      navExpanded: false
+      navExpanded: false,
     };
   }
-  getInitialState () {
+
+  getInitialState() {
     return {
-      navExpanded: false
-    }
+      navExpanded: false,
+    };
   }
+
+
   setNavExpanded(expanded) {
     this.setState({ navExpanded: expanded });
   }
+
+
   closeNav() {
     this.setState({ navExpanded: false });
   }
+
   render() {
-    //console.log(this.props);
+    // console.log(this.props);
     const links = this.props.links;
     const linksFrame = links.map((entry, i) => <LinkContainer activeClassName="active" key={i} to={`/${entry}`}><Nav.Link>{entry}</Nav.Link></LinkContainer>);
     return (<div>

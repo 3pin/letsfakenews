@@ -8,7 +8,7 @@ export default function Layout(imageLayout, textLayout, aspectRatio, canvasWidth
   textLayout.textFrame_yOrigin = Math.round(containerHeight * textLayout.yOffsetFactor) + textLayout.textFrame_Border;
   textLayout.textFrame_Width = containerWidth - Math.round(2 * textLayout.textFrame_Border);
   textLayout.textFrame_Height = Math.round(containerHeight * textLayout.heightFactor) - textLayout.textFrame_Border;
-  textLayout.fontSize = Math.round(textLayout.textFrame_Height*0.6);
+  textLayout.fontSize = Math.round(textLayout.textFrame_Height * 0.6);
   //
   //
   /* set in from left edge */
@@ -23,11 +23,11 @@ export default function Layout(imageLayout, textLayout, aspectRatio, canvasWidth
   imageLayout.image_Xcentre = imageLayout.imageFrame_xOrigin + Math.round(imageLayout.imageFrame_Width / 2);
   imageLayout.image_Ycentre = imageLayout.imageFrame_yOrigin + Math.round(imageLayout.imageFrame_Height / 2);
   //
-  //console.log(textLayout);
-  //console.log(imageLayout);
+  // console.log(textLayout);
+  // console.log(imageLayout);
   //
   return {
-    imageLayout: imageLayout,
-    textLayout: textLayout
-  }
+    imageLayout,
+    textLayout,
+  };
 }

@@ -144,30 +144,30 @@ return JSON
 'use strict';
 const debug = require('debug')('process_story')
 const nlp = require('../modules/nlp.js');
-const imagesearch_iterative = require('../modules/imagesearch_iterative.js');
-const time_ops = require('../modules/time_ops.js');
+const imagesearchIterative = require('../modules/imagesearchIterative.js');
+const timeOps = require('../modules/timeOps.js');
 &nbsp;
 module.exports = {
 &nbsp;
-  process: function (client_JSON) {
-    debug(client_JSON)
+  process: function (clientJSON) {
+    debug(clientJSON)
     var today = new Date();
-    //client_JSON.time = time_ops.current_time(today).datetime
+    //clientJSON.time = timeOps.current_time(today).datetime
     return new Promise(function (resolve, reject) {
-      time_ops.current_time(today).then((result) =&gt; {
+      timeOps.current_time(today).then((result) =&gt; {
         // add current-time to the JSON
-        client_JSON.time = result.time
-        nlp.parse_nouns(client_JSON.story).then((words) =&gt; {
+        clientJSON.time = result.time
+        nlp.parse_nouns(clientJSON.story).then((words) =&gt; {
           <span class="missing-if-branch" title="if path not taken" >I</span>if (words[0] === undefined) {
 <span class="cstat-no" title="statement not covered" >            debug('no words');</span>
 <span class="cstat-no" title="statement not covered" >            resolve(null);</span>
           } else {
             // add nouns to the JSON
-            client_JSON.words = words
-            imagesearch_iterative.process(words).then((urls) =&gt; {
+            clientJSON.words = words
+            imagesearchIterative.process(words).then((urls) =&gt; {
               // add URLs to the JSON
-              client_JSON.urls = urls
-              resolve(client_JSON)
+              clientJSON.urls = urls
+              resolve(clientJSON)
             });
           }
         });

@@ -1,5 +1,5 @@
-'use strict';
-const debug = require('debug')('routes_settings');
+
+// const debug = require('debug')('routes_settings');
 
 /* declare a new router */
 const routes = require('express').Router();
@@ -8,7 +8,7 @@ const routes = require('express').Router();
 const sse = require('../controllers/settings/sse');
 const mode = require('../controllers/settings/mode');
 const activelist = require('../controllers/settings/activelist');
-//const password = require('../controllers/settings/password');
+// const password = require('../controllers/settings/password');
 const checkToken = require('../controllers/settings/checktoken');
 const authenticate = require('../controllers/settings/authenticate');
 const checkDevice = require('../controllers/settings/checkdevice');
@@ -20,7 +20,7 @@ routes.get('/mode', mode);
 /* fetch activelist from db */
 routes.get('/activelist', activelist);
 /* fetch password from db */
-//routes.get('/password', password);
+// routes.get('/password', password);
 /* check if the user has an authToken... if not ask them to login */
 routes.get('/checkToken', checkToken);
 /* authenticate login:username/password against db */

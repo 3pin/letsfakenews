@@ -144,9 +144,9 @@ const searchSettings = {
 module.exports = {
 &nbsp;
   //find an image-url to match a noun
-  single_url_search: function(input_text) {
+  single_url_search: function(inputText) {
     return new Promise(function(resolve, reject) {
-      let searchterm = input_text
+      let searchterm = inputText
       debug(searchterm)
       client.search(searchterm, searchSettings).then((result) =&gt; {
         let urlArray = []
@@ -156,9 +156,9 @@ module.exports = {
             urlArray.push(item.url)
           }
         }
-        let num_of_result = Math.floor(Math.random() * urlArray.length);
-        debug(urlArray[num_of_result])
-        resolve(urlArray[num_of_result])
+        let numOfResult = Math.floor(Math.random() * urlArray.length);
+        debug(urlArray[numOfResult])
+        resolve(urlArray[numOfResult])
       }).catch(<span class="fstat-no" title="function not covered" >fu</span>nction(error) {
 <span class="cstat-no" title="statement not covered" >        debug("Failed!", error);</span>
       });

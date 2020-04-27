@@ -1,32 +1,33 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 const Base = require('./base.model');
 
-let StorySchema = new Schema({
+const StorySchema = new Schema({
   title: {
     type: String,
     required: true,
-    max: 25
+    max: 25,
   },
   story: {
     type: String,
     required: true,
-    max: 280
+    max: 280,
   },
   storylive: {
     type: Boolean,
-    required: true
+    required: true,
   },
   time: {
     type: String,
-    required: true
+    required: true,
   },
   words: Array,
   urls: Array,
-  words_title: Array,
-  urls_title: Array,
+  wordsTitle: Array,
+  urlsTitle: Array,
 }, {
-  collection: process.env.DATABASE
+  collection: global.config.database,
 });
 
 // Export the model

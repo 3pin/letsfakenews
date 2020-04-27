@@ -1,7 +1,6 @@
-'use strict';
 
 /* module debugging */
-const debug = require('debug')('routes_index');
+// const debug = require('debug')('routes_index');
 
 /* declare a new router */
 const routes = require('express').Router();
@@ -26,7 +25,7 @@ function middleware_auth(req, res, next) {
   next();
 }
 */
-//=============================================================================
+//= ============================================================================
 routes.use('/', write);
 routes.use('/watch', watch);
 routes.use('/admin', admin);

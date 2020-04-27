@@ -114,22 +114,22 @@
 const debug = require('debug')('process_client_module')
 const nlp_module = require('../modules/nlp_module.js');
 const imagesearch_iterative_module = require('../modules/imagesearch_iterative_module.js');
-const time_ops = require('../modules/time_ops.js');
+const timeOps = require('../modules/timeOps.js');
 &nbsp;
 module.exports = {
 &nbsp;
-  process: function(client_JSON) {
-    //debug(client_JSON)
+  process: function(clientJSON) {
+    //debug(clientJSON)
     var today = new Date();
-    //client_JSON.time = time_ops.current_time(today).datetime
+    //clientJSON.time = timeOps.current_time(today).datetime
     return new Promise(function(resolve, reject) {
-      time_ops.current_time(today).then((result) =&gt; {
-        client_JSON.time = result.time
-        nlp_module.parse_nouns(client_JSON.story).then((words) =&gt; {
-          client_JSON.words = words
+      timeOps.current_time(today).then((result) =&gt; {
+        clientJSON.time = result.time
+        nlp_module.parse_nouns(clientJSON.story).then((words) =&gt; {
+          clientJSON.words = words
           imagesearch_iterative_module.iterative_url_search(words).then((urls) =&gt; {
-            client_JSON.urls = urls
-            resolve(client_JSON)
+            clientJSON.urls = urls
+            resolve(clientJSON)
           });
         });
       }).catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {

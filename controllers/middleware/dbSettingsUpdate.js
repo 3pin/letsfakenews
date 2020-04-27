@@ -3,13 +3,13 @@ const Settings = require('../../models/settings.model');
 
 module.exports = (dbSettings) => {
   debug("Running Func to update 'dbSettings'");
-  return new Promise(function (resolve, reject) {
+  return new Promise(((resolve) => {
     Settings.findOneAndUpdate({}, dbSettings, {
-        new: true
-      }).then((res) => {
-        resolve(res);
-      }).catch((err) => {
-        debug(err);
-      });
-  })
-}
+      new: true,
+    }).then((res) => {
+      resolve(res);
+    }).catch((err) => {
+      debug(err);
+    });
+  }));
+};

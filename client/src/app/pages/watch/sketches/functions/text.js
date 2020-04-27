@@ -1,40 +1,43 @@
-import Calc from "./functions/calc";
+import Calc from './calc';
 
-export default function sketch(p) {
-  let initialWidth = 400;
-  let initialHeight = 300;
-  let canvasWidth, canvasHeight;
-  let xPos, yPos, textSize;
-  let inc = -5;
+export default function sketch(P) {
+  const p = P;
+  const initialWidth = 400;
+  const initialHeight = 300;
+  let canvasWidth; let
+    canvasHeight;
+  let xPos; let yPos; let
+    textSize;
+  const inc = -5;
   let storyLength;
-  let textSizeFactor = 8;
-  let story = "Initial Story";
+  const textSizeFactor = 8;
+  let story = 'Initial Story';
   let liveList;
   let img;
-  let imgUrl = "../../images/bgd.jpg";
+  const imgUrl = '../../images/bgd.jpg';
   //
-  p.myCustomRedrawAccordingToNewPropsHandler = props => {
-    console.log("PROPS received...");
+  p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
+    console.log('PROPS received...');
     if (props.liveList.length > 0) {
       liveList = props.liveList;
       console.log(liveList);
     }
   };
   p.setup = () => {
-    console.log("SETUP started...");
+    console.log('SETUP started...');
     canvasWidth = initialWidth;
     canvasHeight = initialHeight;
     p.createCanvas(canvasWidth, canvasHeight);
     img = p.loadImage(imgUrl);
-    p.textFont("Helvetica");
+    p.textFont('Helvetica');
     ({
       textSize,
       xPos,
-      yPos
+      yPos,
     } = Calc(
       canvasWidth,
       canvasHeight,
-      textSizeFactor
+      textSizeFactor,
     ));
     console.log(p.textSize());
     p.textSize(textSize);
@@ -43,26 +46,26 @@ export default function sketch(p) {
     console.log(storyLength);
   };
   p.move = () => {
-    //console.log(xPos)
+    // console.log(xPos)
     if (xPos < -storyLength) {
-      console.log("Reached Storylength:" + xPos);
-      let randomEntry = Math.floor(Math.random() * liveList.length);
+      console.log(`Reached Storylength:${xPos}`);
+      const randomEntry = Math.floor(Math.random() * liveList.length);
       story = liveList[randomEntry].story;
       console.log(story);
       ({
         textSize,
         xPos,
-        yPos
+        yPos,
       } = Calc(
         canvasWidth,
         canvasHeight,
-        textSizeFactor
+        textSizeFactor,
       ));
       p.textSize(textSize);
       storyLength = Math.floor(p.textWidth(story));
       console.log(`StoryLength:${storyLength} \n Story:${story}`);
     } else {
-      xPos = xPos + inc;
+      xPos += inc;
     }
   };
   p.draw = () => {

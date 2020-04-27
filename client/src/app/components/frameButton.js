@@ -1,48 +1,48 @@
 import React from 'react';
 import {
-  Link
+  Link,
 } from 'react-router-dom';
 import {
-  Button
+  Button,
 } from 'react-bootstrap';
 
-//export default class ButtonForm extends React.Component {
+// export default class ButtonForm extends React.Component {
 const FrameButton = (props) => {
   // setup button type & label
   let variant;
   if (props.variant) {
-    variant = props.variant
+    variant = props.variant;
   } else {
-    variant = 'primary'
+    variant = 'primary';
   }
   let buttonLabel;
   if (props.submitting === true) {
-    buttonLabel = "Wait..."
+    buttonLabel = "Wait...";
   } else if (props.buttonLabel) {
-    buttonLabel = props.buttonLabel
+    buttonLabel = props.buttonLabel;
   } else {
-    buttonLabel = 'Submit'
+    buttonLabel = 'Submit';
   }
   let buttonSize;
   if (props.buttonSize) {
-    buttonSize = props.buttonSize
+    buttonSize = props.buttonSize;
   } else {
-    buttonSize = "md"
+    buttonSize = 'md';
   }
   let disabled;
   if (props.submitting === true) {
-    disabled = true
+    disabled = true;
   } else {
-    disabled = false
+    disabled = false;
   }
-  let className
+  let className;
   if (props.className) {
-    className=props.className
+    className = props.className;
   } else {
-    className=""
+    className = '';
   }
   if (props.linkto) {
-    //console.log("button type: linkto")
+    // console.log("button type: linkto")
     return (
       <div className={className}>
         <p>{props.desc}</p>
@@ -50,9 +50,9 @@ const FrameButton = (props) => {
           <Button variant={variant} size={buttonSize}>{buttonLabel}</Button>
         </Link>
       </div>
-    )
+    );
   } else if (props.onClick) {
-    //console.log("button type: connect-API")
+    // console.log("button type: connect-API")
     return (
       <div>
         <p>{props.desc}</p>
@@ -69,4 +69,5 @@ const FrameButton = (props) => {
     )
   }
 }
-export default FrameButton
+
+export default FrameButton;
