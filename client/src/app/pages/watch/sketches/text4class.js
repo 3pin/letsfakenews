@@ -5,8 +5,7 @@ export default function sketch(P) {
   let initialWidth = 534;
   let initialHeight = 300;
   let canvasWidth;
-  let
-    canvasHeight;
+  let canvasHeight;
   const inc = -6;
   const textSizeFactor = 8;
   const story = 'Initial Story';
@@ -85,14 +84,14 @@ export default function sketch(P) {
     }
     p.resizeCanvas(canvasWidth, canvasHeight);
     if (lines.length > 0) {
+      /*
       Object.entries(lines).forEach((line) => {
         line.resize(canvasWidth, canvasHeight);
       });
+      */
+      for (const line of lines) {
+        line.resize(canvasWidth, canvasHeight);
+      }
     }
-    /*
-    for (const line of lines) {
-      line.resize(canvasWidth, canvasHeight);
-    }
-    */
   };
 }
