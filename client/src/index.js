@@ -14,17 +14,22 @@ import {
 import {
   Provider,
 } from 'react-redux';
+import { CookiesProvider } from 'react-cookie';
+
 import registerServiceWorker from './registerServiceWorker';
 import store from './app/store';
 import Routes from './app/pages';
 
 const App = () => (
   <Provider store={store}>
-    <HashRouter>
-      <Routes />
-    </HashRouter>
+    <CookiesProvider>
+      <HashRouter>
+        <Routes />
+      </HashRouter>
+    </CookiesProvider>
   </Provider>
 );
 
 ReactDOM.render(<App />, document.getElementById('react'));
+
 registerServiceWorker();

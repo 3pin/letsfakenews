@@ -16,22 +16,19 @@ export default class FrameNavbar extends React.Component {
     };
   }
 
-
   setNavExpanded(expanded) {
     this.setState({ navExpanded: expanded });
   }
-
 
   closeNav() {
     this.setState({ navExpanded: false });
   }
 
   render() {
-    // console.log(this.props);
-    const links = this.props.links;
+    const { links } = this.props;
     const linksFrame = links.map((entry, i) => <LinkContainer activeClassName="active" key={i} to={`/${entry}`}><Nav.Link>{entry}</Nav.Link></LinkContainer>);
     return (<div>
-      <Navbar fixed="top" bg="light" variant="light" expand="md" onToggle={this.setNavExpanded.bind(this)} expanded={this.state.navExpanded}>
+      <Navbar fixed="top" align="right" bg="light" variant="light" expand="md" onToggle={this.setNavExpanded.bind(this)} expanded={this.state.navExpanded}>
         <LinkContainer to="/landing">
           <a className="navbar-brand" href="/landing">{this.props.title}</a>
         </LinkContainer>

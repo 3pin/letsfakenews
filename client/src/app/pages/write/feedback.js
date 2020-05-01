@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
   feedback: state.feedbackReducer.feedback,
   submitting: state.feedbackReducer.submitting,
 });
-// / which props do we want to inject, given the global store state?
+// / which props do we want to update, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
   submitStarted: () => {
     dispatch(actions.submitStarted());

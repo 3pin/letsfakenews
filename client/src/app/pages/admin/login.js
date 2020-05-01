@@ -1,16 +1,28 @@
 // Login... user logins then backend verifies credentials
 import React from 'react';
 import {
+  connect,
+} from 'react-redux';
+import {
   Form,
   Button,
 } from 'react-bootstrap';
 import {
   Redirect,
+  withRouter,
 } from 'react-router-dom';
 import FrameBanner from '../../components/frameBanner';
-// import FormFrame from '../../../app/components/formframe';
 
-export default class Login extends React.Component {
+import * as actions from '../../actions/changeIsLoggedIn';
+
+// / which props do we want to update, given the global store state?
+const mapDispatchToProps = (dispatch) => ({
+  loginSuccess: () => {
+    dispatch(actions.loginSuccess());
+  },
+});
+
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,6 +59,8 @@ export default class Login extends React.Component {
     })
       .then((res) => {
         if (res.status === 200) {
+          /* dipatch action to change button-UI */
+          this.props.loginSuccess();
           // this.props.history.push('/');
           this.setState(() => ({
             redirect: true,
@@ -119,3 +133,5 @@ export default class Login extends React.Component {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(withRouter(Login));

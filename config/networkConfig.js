@@ -8,5 +8,5 @@ module.exports = {
   https: 'none',
   httpsRedirect: false,
   keepAlive: 30000,
-  tokenAgeMins: 120,
+  tokenAgeMins: 10,
 };

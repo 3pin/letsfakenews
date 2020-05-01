@@ -6,6 +6,7 @@ const feedbackReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SUBMIT_STARTED':
     {
+      console.log('SUBMIT_STARTED');
       return {
         ...state,
         submitting: true,
@@ -13,6 +14,7 @@ const feedbackReducer = (state = initialState, action) => {
     }
     case 'SUBMIT_ENDED':
     {
+      console.log('SUBMIT_ENDED');
       return {
         ...state,
         submitting: false,
