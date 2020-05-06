@@ -6,9 +6,15 @@ ignore:
     - configstore > dot-prop:
         reason: no current fix
         expires: '2020-03-08T11:53:05.592Z'
+      npm > update-notifier > configstore > dot-prop:
+        reason: No remediation available
+        expires: '2020-06-04T19:30:12.249Z'
     - nodemon > update-notifier > configstore > dot-prop:
         reason: no current fix
         expires: '2020-03-08T11:53:05.592Z'
+      npm > libnpx > update-notifier > configstore > dot-prop:
+        reason: No remediation available
+        expires: '2020-06-04T19:30:12.249Z'
     - npm > update-notifier > configstore > dot-prop:
         reason: None given
         expires: '2020-03-08T11:55:08.108Z'
@@ -445,7 +451,7 @@ ignore:
   SNYK-JS-USERAGENT-174737:
     - express-device > device > useragent:
         reason: No remediation available
-        expires: '2020-04-09T15:05:42.246Z'
+        expires: '2020-06-04T19:30:12.249Z'
   'npm:utile:20180614':
     - htdigest > prompt > utile:
         reason: None given
@@ -457,4 +463,8 @@ ignore:
     - npm > libcipm > pacote > npm-registry-fetch > make-fetch-happen > cacache > move-concurrently > copy-concurrently > mkdirp > minimist:
         reason: ''
         expires: '2020-04-10T13:10:30.664Z'
+  SNYK-JS-YARGSPARSER-560381:
+    - npm > libnpx > yargs > yargs-parser:
+        reason: None given
+        expires: '2020-06-04T19:30:12.249Z'
 patch: {}
