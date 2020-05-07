@@ -103,9 +103,9 @@ export default function sketch(P) {
           story = props.story;
           console.log(`containerWidth ${containerWidth}`);
           p.textSize(textLayout.fontSize);
-          storyLength = p.textWidth(story);
+          storyLength = Math.round(p.textWidth(story));
           console.log(`storyLength ${storyLength}`);
-          const totalLength = containerWidth + storyLength;
+          const totalLength = Math.round(containerWidth + storyLength);
           console.log(`totalLength ${totalLength}`);
           const noFrames = fps * timings.imagesDuration;
           console.log(`noFrames ${noFrames}`);

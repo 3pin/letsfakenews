@@ -31,7 +31,7 @@
     "react-dom": "^16.8.6",
     "react-media-player": "^0.7.7",
     "react-p5-wrapper": "^2.0.0",
-    "react-player": "^1.11.1",
+    "react-player": "^1.15.3",
     "react-redux": "^7.1.0",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.0.1",
@@ -57,10 +57,17 @@
   },
   "eslintConfig": {
     "extends": "react-app",
-    "space-before-function-paren": ["error", "never"]
+    "space-before-function-paren": [
+      "error",
+      "never"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
