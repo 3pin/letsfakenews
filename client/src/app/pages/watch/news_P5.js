@@ -83,7 +83,7 @@ export default class visualiseNews extends React.Component {
   onReady() {
     console.log('ON-READY');
     /* load new story into this.state */
-    this.apiGet('/watch/request_new_story')
+    this.apiGet('/watch/requestNewStory')
       .then((res) => this.setState({
         url_index: 0,
         title: res.data.title.toUpperCase(),
@@ -197,22 +197,22 @@ export default class visualiseNews extends React.Component {
     /* load db settings... */
     this.apiGet('/settings/mode').then((res) => {
       // console.log(res.dbSettings);
-      if (res.dbSettings.node_mode === 'production') {
-        console.log(`mode is ${res.dbSettings.node_mode}`);
+      if (res.dbSettings.nodeMode === 'production') {
+        console.log(`mode is ${res.dbSettings.nodeMode}`);
         this.setState({
           popup_duration: diff(this.state.popupStart, this.state.popupEnd),
           imageDuration: diff(this.state.imagesStart, this.state.imagesEnd),
-          mode: res.dbSettings.node_mode,
+          mode: res.dbSettings.nodeMode,
           playing: true,
           controls: false,
           volume: 1,
         });
-      } else if (res.dbSettings.node_mode === 'development') {
-        console.log(`mode is: ${res.dbSettings.node_mode}`);
+      } else if (res.dbSettings.nodeMode === 'development') {
+        console.log(`mode is: ${res.dbSettings.nodeMode}`);
         this.setState({
           popup_duration: diff(this.state.popupStart, this.state.popupEnd),
           imageDuration: diff(this.state.imagesStart, this.state.imagesEnd),
-          mode: res.dbSettings.node_mode,
+          mode: res.dbSettings.nodeMode,
           playing: true,
           controls: true,
           volume: 0,
