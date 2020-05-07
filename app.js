@@ -160,10 +160,11 @@ app.use((err, req, res, next) => {
   next();
 });
 //= ============================================================================
-// db setup
+// import db setup function
 const dbConnect = require('./modules/dbConnect');
-//
+// run function
 dbConnect.Connect();
+//
 db.on('connected', () => {
   debug('Connected to mongoDB.');
 });

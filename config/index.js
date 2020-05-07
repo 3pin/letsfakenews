@@ -19,6 +19,6 @@ const finalConfig = {
   ...setupConfig,
 };
 
-debug(finalConfig);
+// debug(finalConfig);
 
 global.config = finalConfig;

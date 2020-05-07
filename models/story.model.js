@@ -26,8 +26,6 @@ const StorySchema = new Schema({
   urls: Array,
   wordsTitle: Array,
   urlsTitle: Array,
-}, {
-  collection: global.config.database,
 });
 
 // Export the model

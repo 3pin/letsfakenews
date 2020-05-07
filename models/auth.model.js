@@ -16,8 +16,6 @@ const AuthSchema = new Schema({
     type: String,
     required: true,
   },
-}, {
-  collection: global.config.database,
 });
 
 AuthSchema.pre('save', function presave(next) {

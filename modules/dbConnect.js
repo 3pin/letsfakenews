@@ -46,6 +46,10 @@ function Connect() {
     } else {
       // check for existing collections
       client.db.listCollections().toArray((error, collections) => {
+        if (error) {
+          debug('error coming...');
+          debug(err);
+        }
         // if there are no collections existing...
         if (collections.length === 0) {
           debug(
@@ -106,7 +110,6 @@ function Connect() {
             }
           }
         }
-        debug(error);
       });
     }
   });
