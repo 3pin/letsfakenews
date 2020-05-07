@@ -26,6 +26,10 @@ const StorySchema = new Schema({
   urls: Array,
   wordsTitle: Array,
   urlsTitle: Array,
+  room: {
+    type: String,
+    required: true,
+  },
 });
 
 // Export the model

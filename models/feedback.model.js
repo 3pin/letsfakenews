@@ -12,6 +12,10 @@ const FeedbackSchema = new Schema({
     type: String,
     required: true,
   },
+  room: {
+    type: String,
+    required: true,
+  },
 });
 
 // Export the model
