@@ -19,14 +19,14 @@ const newsReducer = (state = initialState, action) => {
         title: action.payload,
       };
     }
-    case 'SUBMIT_STARTED':
+    case 'SUBMIT_STARTED_NEWS':
     {
       return {
         ...state,
         submitting: true,
       };
     }
-    case 'SUBMIT_ENDED':
+    case 'SUBMIT_ENDED_NEWS':
     {
       return {
         ...state,

@@ -22,6 +22,7 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
+    "react/prefer-stateless-function": 0,
     "react/sort-comp": 0,
     "prefer-const": 0,
     "no-restricted-syntax": 0,

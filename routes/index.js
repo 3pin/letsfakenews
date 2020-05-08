@@ -10,6 +10,8 @@ const write = require('./write');
 const watch = require('./watch');
 const admin = require('./admin');
 const settings = require('./settings');
+const room = require('../controllers/room');
+
 /*
 //=============================================================================
 // authenticate
@@ -30,5 +32,13 @@ routes.use('/', write);
 routes.use('/watch', watch);
 routes.use('/admin', admin);
 routes.use('/settings', settings);
+routes.use('/settings', settings);
+routes.post('/room', room);
+/*
+routes.post('/room', (req, res) => {
+  res.send('Room inserted into database successfully');
+  res.send({ express: "Hello 'REACT... route admin' " });
+});
+*/
 
 module.exports = routes;

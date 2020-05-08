@@ -12,14 +12,15 @@ const mapStateToProps = (state) => ({
   story: state.newsReducer.story,
   title: state.newsReducer.title,
   submitting: state.newsReducer.submitting,
+  room: state.roomReducer.room,
 });
 // which props do we want to inject, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
   submitStarted: () => {
     dispatch(actions.submitStarted());
   },
-  submit: (story, title, history) => {
-    dispatch(actions.submit(story, title, history));
+  submit: (story, title, room, history) => {
+    dispatch(actions.submit(story, title, room, history));
   },
 });
 class Review extends React.Component {
@@ -27,12 +28,14 @@ class Review extends React.Component {
     /* dipatch action to change button-UI */
     this.props.submitStarted();
     /* dispatch API submit action */
-    this.props.submit(this.props.story, this.props.title, this.props.history);
+    this.props.submit(this.props.story, this.props.title, this.props.room, this.props.history);
   };
 
   render() {
     const title = `Title: ${this.props.title}`;
     const story = `Story: ${this.props.story}`;
+    const room = `Room: ${this.props.room}`;
+    console.log(this.props);
     // let title = "TITLE: " + this.props.title;
     // let story = "STORY: " + this.props.story;
     return (
@@ -65,7 +68,4 @@ class Review extends React.Component {
     );
   }
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(Review));
+export default connect(mapStateToProps,mapDispatchToProps,)(withRouter(Review));

@@ -17,20 +17,22 @@ export const updateTitle = (title, history) => {
 };
 
 export const submitStarted = () => ({
-  type: 'SUBMIT_STARTED',
+  type: 'SUBMIT_STARTED_NEWS',
   payload: null,
 });
 
-export const submit = (story, title, history) => function (dispatch) {
+export const submit = (story, title, room, history) => function (dispatch) {
   let response;
+  console.log(story, title, room);
   axios.post('/write/news', {
     story,
     title,
+    room,
   }).then((res) => {
     response = res.data;
     console.log(response);
     dispatch({
-      type: 'SUBMIT_ENDED',
+      type: 'SUBMIT_ENDED_NEWS',
       payload: null,
     });
   }).then(() => {

@@ -16,6 +16,7 @@ module.exports = (req, res) => {
   debug('dbSettings...');
   debug(dbSettings);
   const clientJSON = req.body;
+  debug('clientJSON...');
   debug(clientJSON);
   debug('Unprocessed news...');
   /* preprocess 'title' to CAPS */

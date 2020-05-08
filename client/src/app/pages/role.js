@@ -7,8 +7,8 @@ const Landing = () => (
   <div>
     <section>
       <FrameBanner
-        title="LetsFakeNews..."
-        desc="Welcome to LetsFakeNews, broadcasting live from the El-Jazeera news room. Get together with friends to write fake news on your phones while watching on a computer screen."
+        title="Role..."
+        desc="Choose whether you want to write (any device) or watch (only desktop)."
       />
       <hr />
       <FrameButton

@@ -4,6 +4,8 @@ import {
 } from 'redux';
 import logger from 'redux-logger'; // middleware... pretty logging
 import thunk from 'redux-thunk'; // middleware... pretty logging
+import { composeWithDevTools } from 'redux-devtools-extension';
+
 import reducer from './reducers';
 
 // middlwares
@@ -16,6 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // store
 export default createStore(reducer, middleware);
+// export default createStore(reducer, composeWithDevTools());
 
 /*
 //action listeners

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 //= ============================================================================
 /* load the ENVIRONMENT variables for debug */
-require('dotenv').config();
+// require('dotenv').config();
 
 const debug = require('debug')('dbConnect');
 

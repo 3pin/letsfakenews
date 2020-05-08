@@ -1,7 +1,7 @@
 // const _ = require('lodash');
 
 // load the ENVIRONMENT variables
-require('dotenv').config();
+// require('dotenv').config();
 
 /* module debugging */
 const debug = require('debug')('config');

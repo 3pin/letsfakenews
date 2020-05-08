@@ -9,7 +9,7 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  HashRouter,
+  HashRouter as Router,
 } from 'react-router-dom';
 import {
   Provider,
@@ -23,9 +23,9 @@ import Routes from './app/pages';
 const App = () => (
   <Provider store={store}>
     <CookiesProvider>
-      <HashRouter>
+      <Router>
         <Routes />
-      </HashRouter>
+      </Router>
     </CookiesProvider>
   </Provider>
 );

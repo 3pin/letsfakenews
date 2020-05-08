@@ -1,20 +1,26 @@
 const initialState = {
-  feedback: '',
+  room: '',
   submitting: false,
 };
-const feedbackReducer = (state = initialState, action) => {
+const roomReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SUBMIT_STARTED_FEEDBACK':
+    case 'SUBMIT_STARTED_ROOM':
     {
-      console.log('SUBMIT_STARTED');
       return {
         ...state,
         submitting: true,
       };
     }
-    case 'SUBMIT_ENDED_FEEDBACK':
+    case 'SUBMIT_SUCCESS_ROOM':
     {
-      console.log('SUBMIT_ENDED');
+      return {
+        ...state,
+        room: action.payload,
+        submitting: false,
+      };
+    }
+    case 'SUBMIT_FAIL_ROOM':
+    {
       return {
         ...state,
         submitting: false,
@@ -27,4 +33,4 @@ const feedbackReducer = (state = initialState, action) => {
   }
   // return state
 };
-export default feedbackReducer;
+export default roomReducer;

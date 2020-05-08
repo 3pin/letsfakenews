@@ -1,4 +1,3 @@
-
 const debug = require('debug')('sse');
 
 // tap into an sse event-bus

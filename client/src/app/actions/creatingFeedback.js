@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const submitStarted = () => ({
-  type: 'SUBMIT_STARTED',
+  type: 'SUBMIT_STARTED_FEEDBACK',
   payload: null,
 });
 
@@ -10,7 +10,7 @@ export const submit = (feedback, history) => function (dispatch) {
     feedback,
   }).then(() => {
     dispatch({
-      type: 'SUBMIT_ENDED',
+      type: 'SUBMIT_ENDED_FEEDBACK',
       payload: null,
     });
   }).then(() => {
