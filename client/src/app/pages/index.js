@@ -31,14 +31,15 @@ import FrameFooter from '../components/frameFooter';
 
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => ({
-  buttonText: state.isLoggedIn.buttonText,
+  buttonText: state.loginReducer.buttonText,
   room: state.roomReducer.room,
 });
 
 class Routes extends React.Component {
+  /*
   constructor() {
     super();
-    // this.onUnload = this.onUnload.bind(this);
+    this.onUnload = this.onUnload.bind(this);
   }
 
   onUnload() {
@@ -47,12 +48,13 @@ class Routes extends React.Component {
   }
 
   componentDidMount() {
-    // window.addEventListener('beforeunload', this.onUnload());
+    window.addEventListener('beforeunload', this.onUnload());
   }
 
   componentWillUnmount() {
-    // window.removeEventListener('beforeunload', this.onUnload());
+    window.removeEventListener('beforeunload', this.onUnload());
   }
+  */
 
   render() {
     return (

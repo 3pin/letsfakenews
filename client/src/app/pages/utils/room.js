@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
   room: state.roomReducer.room,
   submitting: state.roomReducer.submitting,
 });
-// / which props do we want to update, given the global store state?
+// which props do we want to update, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
   submitStarted: () => {
     actions.submitStarted();

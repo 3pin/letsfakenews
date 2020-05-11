@@ -2,7 +2,7 @@ const initialState = {
   loggedIn: false,
   buttonText: 'Login',
 };
-const isLoggedIn = (state = initialState, action) => {
+const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
     {
@@ -29,4 +29,4 @@ const isLoggedIn = (state = initialState, action) => {
   }
   // return state
 };
-export default isLoggedIn;
+export default loginReducer;

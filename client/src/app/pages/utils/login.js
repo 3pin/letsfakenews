@@ -14,7 +14,7 @@ import {
 
 import FrameBanner from '../../components/frameBanner';
 
-import * as actions from '../../actions/changeIsLoggedIn';
+import * as actions from '../../actions/loginStatus';
 
 // / which props do we want to update, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
