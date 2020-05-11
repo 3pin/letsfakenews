@@ -6,11 +6,12 @@ import {
   HashRouter as Router,
 } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import store from './store';
+import { store, persistor } from './store';
 import Routes from './pages';
 
-
+/*
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem('state');
@@ -40,14 +41,17 @@ store.subscribe(() => {
     todos: store.getState().todos,
   });
 });
+*/
 
 const App = () => (
   <Provider store={store}>
-    <CookiesProvider>
-      <Router>
-        <Routes />
-      </Router>
-    </CookiesProvider>
+    <PersistGate loading={null} persistor={persistor}>
+      <CookiesProvider>
+        <Router>
+          <Routes />
+        </Router>
+      </CookiesProvider>
+    </PersistGate>
   </Provider>
 );
 
