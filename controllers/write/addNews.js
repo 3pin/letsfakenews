@@ -62,6 +62,7 @@ module.exports = (req, res) => {
         });
       }).catch((err) => {
         debug('Err: ', err);
+        res.send('DB_ERROR');
       });
     }
   }).catch((err) => {

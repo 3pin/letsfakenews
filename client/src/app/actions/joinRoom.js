@@ -15,6 +15,7 @@ export const submit = (room, history) => function (dispatch) {
         type: 'SUBMIT_SUCCESS_ROOM',
         payload: room,
       });
+      console.log('pre /role');
       history.push('/role');
     } else {
       dispatch({
@@ -22,6 +23,7 @@ export const submit = (room, history) => function (dispatch) {
         payload: null,
       });
       alert('That room does not exist');
+      console.log('pre /room');
       history.push('/room');
     }
   }).catch((error) => {

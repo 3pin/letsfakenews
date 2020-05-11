@@ -32,7 +32,7 @@ class WriteStory extends React.Component {
       <div>
         <section>
           <FrameBanner
-            title="Write a story..."
+            title="Write a story"
           />
           <FrameForm
             rows="2"

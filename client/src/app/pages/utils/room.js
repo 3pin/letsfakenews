@@ -6,9 +6,9 @@ import {
   withRouter,
 } from 'react-router-dom';
 
-import FrameBanner from '../components/frameBanner';
-import FrameForm from '../components/frameForm';
-import * as actions from '../actions/joinRoom';
+import FrameBanner from '../../components/frameBanner';
+import FrameForm from '../../components/frameForm';
+import * as actions from '../../actions/joinRoom';
 
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => ({
@@ -38,7 +38,7 @@ class Room extends React.Component {
       <div>
         <section>
           <FrameBanner
-            title="Room..."
+            title="Select a room"
             desc="Welcome to LetsFakeNews, broadcasted live by El-Jazeera. Write fake-news on your phone, then watch it live with friends on a shared screen."
           />
           <hr />

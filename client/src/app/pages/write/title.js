@@ -33,7 +33,7 @@ class WriteTitle extends React.Component {
       <div>
         <section>
           <FrameBanner
-            title="Add a title..."
+            title="Add a title"
             desc="Give your fake-story a title"
           />
           <hr />

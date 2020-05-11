@@ -30,19 +30,21 @@ export const submit = (story, title, room, history) => function (dispatch) {
     room,
   }).then((res) => {
     response = res.data;
-    console.log(response);
     dispatch({
       type: 'SUBMIT_ENDED_NEWS',
       payload: null,
     });
   }).then(() => {
-    console.log(response);
+    // console.log(response);
     if (response === 'NO_NOUNS') {
       window.alert('Try again... make sure to include NOUNS in your story');
       history.push('/write/story');
     } else if (response === 'NO_URLS') {
       window.alert("Try again... couldn't find images to match your story");
       history.push('/write/story');
+    } else if (response === 'DB_ERROR') {
+      window.alert('Your story could not be validated: reregister your room ID with the app');
+      history.push('/room');
     } else {
       // window.alert("Thanks for your fake news")
       history.push('/write/thankyou');

@@ -28,10 +28,9 @@ function middleware_auth(req, res, next) {
 }
 */
 //= ============================================================================
-routes.use('/', write);
+routes.use('/write', write);
 routes.use('/watch', watch);
 routes.use('/admin', admin);
-routes.use('/settings', settings);
 routes.use('/settings', settings);
 routes.post('/room', room);
 /*

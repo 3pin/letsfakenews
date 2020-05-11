@@ -7,7 +7,7 @@ const Landing = () => (
   <div>
     <section>
       <FrameBanner
-        title="Admin..."
+        title="Moderate the news"
         desc="These buttons link to pages allowing story moderation & feedback viewing."
       />
       <hr />

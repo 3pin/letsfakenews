@@ -18,7 +18,7 @@ const RoutesAdmin = () => (
         path="/admin/stories"
         render={() => (
           <Stories
-            title="Stories"
+            title="Moderate stories"
             desc="Use this page to moderate fakenews stories in realtime"
             apiHello="/admin/stories"
             apiVisualise="/admin/stories/visualise"
@@ -34,7 +34,7 @@ const RoutesAdmin = () => (
         path="/admin/feedback"
         render={() => (
           <Feedback
-            title="Feedback"
+            title="View feedback"
             desc="Use this page to view user feedback in realtime"
             apiHello="/admin/feedback"
             apiClear="/admin/feedback/clear"
@@ -45,7 +45,7 @@ const RoutesAdmin = () => (
         path="/admin/visualise"
         render={() => (
           <Visualise
-            title="Visuals"
+            title="Setup visualisations"
             desc="Use this page to control the visualisations in realtime"
             apiHello="/admin/visualise"
             apiVisualiseNum="/admin/visualise/num"

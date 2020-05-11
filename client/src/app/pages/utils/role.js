@@ -1,13 +1,13 @@
 import React from 'react';
 //
-import FrameBanner from '../components/frameBanner';
-import FrameButton from '../components/frameButton';
+import FrameBanner from '../../components/frameBanner';
+import FrameButton from '../../components/frameButton';
 
 const Landing = () => (
   <div>
     <section>
       <FrameBanner
-        title="Role..."
+        title="Select a role"
         desc="Choose whether you want to write (any device) or watch (only desktop)."
       />
       <hr />

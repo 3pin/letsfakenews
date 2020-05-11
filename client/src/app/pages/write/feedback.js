@@ -38,7 +38,7 @@ class WriteFeedback extends React.Component {
       <div>
         <section>
           <FrameBanner
-            title="Feedback..."
+            title="Feedback"
             desc="Give your thoughts on using this fake-news service"
           />
           <hr />

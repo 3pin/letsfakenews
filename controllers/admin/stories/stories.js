@@ -8,7 +8,7 @@ module.exports = (req, res) => {
   debug(req.dbSettings.visualise);
   const { dbSettings } = req;
   // debug(req.dbSettings);
-  Story.find({}).sort([['_id', 1]]).then((docs) => {
+  Story.find({ room: 'public' }).sort([['_id', 1]]).then((docs) => {
     // res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
       stories: docs,

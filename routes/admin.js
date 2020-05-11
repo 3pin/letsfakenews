@@ -21,14 +21,8 @@ const visualiseNum = require('../controllers/admin/visualise/num');
 const visualiseDuration = require('../controllers/admin/visualise/duration');
 const visualiseScroller = require('../controllers/admin/visualise/scroller');
 //
-// admin landing
-admin.get('/', (req, res) => {
-  debug("'REACT /admin' says 'Hello' ");
-  res.send({ express: "Hello 'REACT... route admin' " });
-});
-//
 /* display stories database */
-admin.get('/stories/', stories);
+admin.get('/stories', stories);
 // stories macro-ops
 admin.get('/stories/autolive', storiesAutolive);
 admin.get('/stories/refresh', storiesRefresh);

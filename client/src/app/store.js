@@ -4,7 +4,7 @@ import {
 } from 'redux';
 import logger from 'redux-logger'; // middleware... pretty logging
 import thunk from 'redux-thunk'; // middleware... pretty logging
-import { composeWithDevTools } from 'redux-devtools-extension';
+// import { composeWithDevTools } from 'redux-devtools-extension';
 
 import reducer from './reducers';
 

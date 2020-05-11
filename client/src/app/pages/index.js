@@ -18,12 +18,12 @@ import withAuth from '../components/withAuth';
 import checkDevice from '../components/checkDevice';
 // pages
 import Intro from './intro';
-import Room from './room';
-import Role from './role';
+import Room from './utils/room';
+import Role from './utils/role';
 import RoutesWrite from './write';
 import RoutesAdmin from './admin';
 import RoutesWatch from './watch';
-import Login from './admin/login';
+import Login from './utils/login';
 // components
 import Logout from '../components/logout';
 import FrameNavbar from '../components/frameNavbar';
@@ -31,9 +31,28 @@ import FrameNavbar from '../components/frameNavbar';
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => ({
   buttonText: state.isLoggedIn.buttonText,
+  room: state.roomReducer.room,
 });
 
 class Routes extends React.Component {
+  constructor() {
+    super();
+    this.onUnload = this.onUnload.bind(this);
+  }
+
+  onUnload(event) {
+    console.log(this.room);
+    alert('page Refreshed');
+  }
+
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.onUnload());
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.onUnload());
+  }
+
   render() {
     return (
       <Container as="main">

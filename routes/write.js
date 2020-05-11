@@ -9,7 +9,7 @@ const addNews = require('../controllers/write/addNews');
 const addFeedback = require('../controllers/write/addFeedback');
 //= ============================================================================
 // REACT connections: from Users
-write.post('/write/news', addNews);
-write.post('/write/feedback', addFeedback);
+write.post('/news', addNews);
+write.post('/feedback', addFeedback);
 
 module.exports = write;
