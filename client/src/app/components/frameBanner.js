@@ -8,22 +8,17 @@ const mapStateToProps = (state) => ({
 });
 
 const FrameBanner = (props) => {
-  let tempRoom = "'?'";
-  if (props.room) {
-    tempRoom = `'${props.room}'`;
-  }
-  let title = `${props.title}: ${tempRoom}`;
   let Tag;
   if (props.hsize) {
     Tag = props.hsize;
   } else {
     Tag = 'h2';
   }
+  let desc = `Room: ${props.room}`;
   return (
     <div className="banner">
-      <Tag>{title}</Tag>
-      <hr />
-      <p>{props.desc}</p>
+      <Tag>{props.title}</Tag>
+      <p>{desc}</p>
     </div>
   );
 };

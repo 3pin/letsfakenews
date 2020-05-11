@@ -40,7 +40,7 @@ class Routes extends React.Component {
     this.onUnload = this.onUnload.bind(this);
   }
 
-  onUnload(event) {
+  onUnload() {
     console.log(this.room);
     alert('page Refreshed');
   }
