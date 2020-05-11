@@ -38,7 +38,7 @@ const mapStateToProps = (state) => ({
 class Routes extends React.Component {
   constructor() {
     super();
-    this.onUnload = this.onUnload.bind(this);
+    // this.onUnload = this.onUnload.bind(this);
   }
 
   onUnload() {
@@ -47,11 +47,11 @@ class Routes extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this.onUnload());
+    // window.addEventListener('beforeunload', this.onUnload());
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onUnload());
+    // window.removeEventListener('beforeunload', this.onUnload());
   }
 
   render() {

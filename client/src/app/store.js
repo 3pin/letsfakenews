@@ -7,15 +7,17 @@ import thunk from 'redux-thunk'; // middleware... pretty logging
 // import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   persistStore,
-  persistReducer
+  persistReducer,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 
 import reducer from './reducers';
 
 const persistConfig = {
   key: 'root',
   storage,
+  stateReconciler: autoMergeLevel1,
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
 
@@ -29,4 +31,8 @@ if (process.env.NODE_ENV === 'development') {
 
 const store = createStore(persistedReducer, middleware);
 const persistor = persistStore(store);
-export { persistor, store };
+
+export {
+  persistor,
+  store,
+};
