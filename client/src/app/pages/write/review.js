@@ -34,7 +34,6 @@ class Review extends React.Component {
   render() {
     const title = `Title: ${this.props.title}`;
     const story = `Story: ${this.props.story}`;
-    const room = `Room: ${this.props.room}`;
     console.log(this.props);
     // let title = "TITLE: " + this.props.title;
     // let story = "STORY: " + this.props.story;
