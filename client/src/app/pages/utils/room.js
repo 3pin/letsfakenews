@@ -47,6 +47,7 @@ class Room extends React.Component {
             rows="1"
             minLength="3"
             maxLength="10"
+            type= "password"
             content = {this.props.room}
             handleSubmit={this.onHandleSubmit}
           />

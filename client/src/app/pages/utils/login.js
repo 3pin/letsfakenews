@@ -97,7 +97,7 @@ class Login extends React.Component {
       <div>
         {this.renderRedirect()}
         <FrameBanner
-          title="Login..."
+          title="Login"
           desc="Moderator access requires login..."
         />
         <hr />

@@ -27,6 +27,7 @@ import Login from './utils/login';
 // components
 import Logout from '../components/logout';
 import FrameNavbar from '../components/frameNavbar';
+import FrameFooter from '../components/frameFooter';
 
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => ({
@@ -71,6 +72,7 @@ class Routes extends React.Component {
               <Route path="/logout" component={Logout} />
               <Redirect to="/room" />
             </Switch>
+            <FrameFooter />
           </Col>
           <Col as="aside" xs={0} sm={1} md={1} lg={1} xl={1} />
         </Row>
