@@ -8,27 +8,9 @@ import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  HashRouter as Router,
-} from 'react-router-dom';
-import {
-  Provider,
-} from 'react-redux';
-import { CookiesProvider } from 'react-cookie';
-
 import registerServiceWorker from './registerServiceWorker';
-import store from './app/store';
-import Routes from './app/pages';
 
-const App = () => (
-  <Provider store={store}>
-    <CookiesProvider>
-      <Router>
-        <Routes />
-      </Router>
-    </CookiesProvider>
-  </Provider>
-);
+import App from './app/app';
 
 ReactDOM.render(<App />, document.getElementById('react'));
 

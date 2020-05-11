@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'; // middleware... pretty logging
 
 import reducer from './reducers';
 
-// middlwares
+// middlware
 let middleware;
 if (process.env.NODE_ENV === 'development') {
   middleware = applyMiddleware(thunk, logger);
@@ -16,15 +16,7 @@ if (process.env.NODE_ENV === 'development') {
   middleware = applyMiddleware(thunk);
 }
 
-// store
-export default createStore(reducer, middleware);
+const store = createStore(reducer, middleware);
+export default store;
+// export default createStore(reducer, middleware);
 // export default createStore(reducer, composeWithDevTools());
-
-/*
-//action listeners
-store.subscribe(() => {
-  console.log('store changed: ' + store.getState());
-})
-//action creators
-store.dispatch({type: "updateStory", payload: "Leon"})
-*/
