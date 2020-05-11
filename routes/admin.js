@@ -1,6 +1,6 @@
 
 /* module debugging */
-const debug = require('debug')('routes_admin');
+const debug = require('debug')('routes');
 
 /* declare a new router */
 const admin = require('express').Router();

@@ -1,6 +1,4 @@
-const debug = require('debug')('routes_room');
-// import mongoose schemas
-// const Settings = require('../models/settings.model');
+const debug = require('debug')('room');
 
 module.exports = (req, res) => {
   debug('/POST routes_room');
@@ -12,21 +10,11 @@ module.exports = (req, res) => {
   for (let i = 0; i < rooms.length; i += 1) {
     if (rooms[i] === room) {
       res.send(true);
-      debug('Success');
+      debug(true);
       break;
     } else if (i === rooms.length - 1) {
       res.send(false);
-      debug('Failure');
+      debug(false);
     }
   }
-  /* Save to the DB
-  const feedback = new Feedback({ ...result });
-  feedback.save()
-    .then(() => {
-      debug('Document inserted to db_feedback successfully');
-      res.send('Feedback inserted into database successfully');
-    }).catch((err) => {
-      debug('Err: ', err);
-    });
-    */
 };

@@ -1,6 +1,6 @@
 
 // module debugging
-// const debug = require('debug')('routes_write');
+const debug = require('debug')('routes');
 
 /* declare a new router */
 const write = require('express').Router();

@@ -18,9 +18,9 @@ const mapStateToProps = (state) => ({
 // / which props do we want to update, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
   submitStarted: () => {
-    dispatch(actions.submitStarted());
+    actions.submitStarted();
   },
-  submit: (room, history) => {
+  submitNow: (room, history) => {
     dispatch(actions.submit(room, history));
   },
 });
@@ -29,7 +29,7 @@ class Room extends React.Component {
     /* dipatch action to change button-UI to greyed out*/
     this.props.submitStarted();
     /* dispatch API submit action */
-    this.props.submit(room, this.props.history);
+    this.props.submitNow(room, this.props.history);
   }
 
   render() {
