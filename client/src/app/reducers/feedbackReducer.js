@@ -1,6 +1,7 @@
 const initialState = {
   feedback: '',
   submitting: false,
+  error: null,
 };
 const feedbackReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -18,6 +19,15 @@ const feedbackReducer = (state = initialState, action) => {
       return {
         ...state,
         submitting: false,
+      };
+    }
+    case 'SUBMIT_FEEDBACK_FAILED':
+    {
+      console.log('SUBMIT_FEEDBACK_FAILED');
+      return {
+        ...state,
+        submitting: false,
+        error: action.payload,
       };
     }
     default:

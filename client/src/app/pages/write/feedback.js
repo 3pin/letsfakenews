@@ -14,14 +14,15 @@ import * as actions from '../../actions/creatingFeedback';
 const mapStateToProps = (state) => ({
   feedback: state.feedbackReducer.feedback,
   submitting: state.feedbackReducer.submitting,
+  room: state.roomReducer.room,
 });
 // / which props do we want to update, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
   submitStarted: () => {
     dispatch(actions.submitStarted());
   },
-  submit: (feedback, history) => {
-    dispatch(actions.submit(feedback, history));
+  submit: (feedback, room, history) => {
+    dispatch(actions.submit(feedback, room, history));
   },
 });
 class WriteFeedback extends React.Component {
@@ -29,8 +30,8 @@ class WriteFeedback extends React.Component {
     /* dipatch action to change button-UI */
     this.props.submitStarted();
     /* dispatch API submit action */
-    this.props.submit(feedback, this.props.history);
-  }
+    this.props.submit(feedback, this.props.room, this.props.history);
+  };
 
   render() {
     console.log(this.props);

@@ -18,18 +18,18 @@ const mapStateToProps = (state) => ({
 // which props do we want to update, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
   submitStarted: () => {
-    actions.submitStarted();
+    dispatch(actions.submitStarted());
   },
-  submitNow: (room, history) => {
+  submit: (room, history) => {
     dispatch(actions.submit(room, history));
   },
 });
 class Room extends React.Component {
-  onHandleSubmit = (room) => {
+  onHandleSubmit = (content) => {
     /* dipatch action to change button-UI to greyed out*/
     this.props.submitStarted();
     /* dispatch API submit action */
-    this.props.submitNow(room, this.props.history);
+    this.props.submit(content, this.props.history);
   }
 
   render() {
@@ -39,11 +39,10 @@ class Room extends React.Component {
         <section>
           <FrameBanner
             title="Select a room"
-            desc="Welcome to LetsFakeNews, broadcasted live by El-Jazeera. Write fake-news on your phone, then watch it live with friends on a shared screen."
+            desc="Welcome to LetsFakeNews, where you write fake-news on your phone then watch with friends on a screen. To start, input your local news-room (use 'public' if you're a visitor)."
           />
           <hr />
           <FrameForm
-            desc="Input your room's ID? (use 'public' for general access)"
             rows="1"
             minLength="3"
             maxLength="10"

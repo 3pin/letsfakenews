@@ -10,8 +10,8 @@ export const submit = (room, history) => {
     room,
   });
   return (dispatch) => {
-    const onSuccess = (success) => {
-      if (success.data) {
+    const onSuccess = (response) => {
+      if (response.data) {
         dispatch({
           type: 'SUBMIT_SUCCESS_ROOM',
           payload: room,
@@ -25,7 +25,7 @@ export const submit = (room, history) => {
         alert('That room does not exist');
         history.push('/room');
       }
-      return success;
+      return response;
     };
     request.then(onSuccess);
   };

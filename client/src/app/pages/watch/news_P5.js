@@ -1,8 +1,19 @@
 import React from 'react';
+import {
+  connect,
+} from 'react-redux';
+import {
+  withRouter,
+} from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import P5Wrapper from 'react-p5-wrapper';
 import FrameButton from '../../components/frameButton';
 import Sketch from './sketches/news';
+
+// which props do we want to inject, given the global store state?
+const mapStateToProps = (state) => ({
+  room: state.roomReducer.room,
+});
 
 // func to calc timing-durations
 const diff = (start, end) => parseFloat((end - start).toFixed(1));
@@ -26,11 +37,12 @@ const metadata = (data, imageDuration, imagesStart) => {
   };
 };
 
-export default class visualiseNews extends React.Component {
+class visualiseNews extends React.Component {
   constructor(props) {
     super(props);
     //
     this.apiGet = this.apiGet.bind(this);
+    this.apiPost = this.apiPost.bind(this);
     this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onEnded = this.onEnded.bind(this);
@@ -76,14 +88,36 @@ export default class visualiseNews extends React.Component {
   apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
-    if (response.status !== 200) { throw Error(body.message); }
+    if (response.status !== 200) {
+      throw Error(body.message);
+    } else {
+      return body;
+    }
+  };
+
+  apiPost = async (endpoint, data) => {
+    const room = {
+      room: data,
+    };
+    console.log(JSON.stringify(data));
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(room),
+    });
+    const body = await response.json();
+    if (response.status !== 200) {
+      throw Error(body.message);
+    }
     return body;
-  }
+  };
 
   onReady() {
     console.log('ON-READY');
     /* load new story into this.state */
-    this.apiGet('/watch/requestNewStory')
+    this.apiPost('/watch/requestNewStory', this.props.room)
       .then((res) => this.setState({
         url_index: 0,
         title: res.data.title.toUpperCase(),
@@ -277,3 +311,4 @@ export default class visualiseNews extends React.Component {
     );
   }
 }
+export default connect(mapStateToProps)(withRouter(visualiseNews));

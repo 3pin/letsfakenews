@@ -1,7 +1,7 @@
 // public routes into the app
 
 
-const debug = require('debug')('routes_watch');
+const debug = require('debug')('routes');
 // import mongoose schemas
 const Story = require('../../models/story.model');
 // import middelware module to update dbSettings (entryToRead etc)
@@ -9,8 +9,8 @@ const dbSettingsUpdate = require('../middleware/dbSettingsUpdate');
 const dbFetchMode = require('../../modules/dbFetchMode.js');
 
 module.exports = (req, res) => {
+  debug('/routes/watch/requestNewStory');
   // detect client device type
-  debug(req.device.type);
   if (req.device.type === 'desktop') {
     debug('/GET routes/displays/request_new_story');
     let obj;

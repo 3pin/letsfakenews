@@ -4,19 +4,19 @@ import {
 } from 'redux';
 import logger from 'redux-logger'; // middleware... pretty logging
 import thunk from 'redux-thunk'; // middleware... pretty logging
-// import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   persistStore,
   persistReducer,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import storageSession from 'redux-persist/lib/storage/session';
+// import storage from 'redux-persist/lib/storage/';
 import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 
 import reducer from './reducers';
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: storageSession,
   stateReconciler: autoMergeLevel1,
 };
 const persistedReducer = persistReducer(persistConfig, reducer);

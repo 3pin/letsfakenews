@@ -2,6 +2,7 @@ const initialState = {
   story: '',
   title: '',
   submitting: false,
+  error: null,
 };
 const newsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -33,6 +34,15 @@ const newsReducer = (state = initialState, action) => {
         story: '',
         title: '',
         submitting: false,
+      };
+    }
+    case 'SUBMIT_NEWS_FAILED':
+    {
+      console.log('SUBMIT_NEWS_FAILED');
+      return {
+        ...state,
+        submitting: false,
+        error: action.payload,
       };
     }
     default:

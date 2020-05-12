@@ -1,25 +1,33 @@
 import axios from 'axios';
-
+// change BUTTON-UI to reflect submission-status-started
 export const submitStarted = () => ({
   type: 'SUBMIT_STARTED_FEEDBACK',
   payload: null,
 });
-
-export const submit = (feedback, history) => function (dispatch) {
-  axios.post('/write/feedback', {
+// async action follows backend-validation
+export const submit = (feedback, room, history) => {
+  // console.log(feedback, room);
+  let request = axios.post('/write/feedback', {
     feedback,
-  }).then(() => {
-    dispatch({
-      type: 'SUBMIT_ENDED_FEEDBACK',
-      payload: null,
-    });
-  }).then(() => {
-    history.push('/write/thankyou');
-  })
-    .catch((error) => {
+    room,
+  });
+  return (dispatch) => {
+    const onSuccess = (response) => {
+      // console.log(response);
       dispatch({
-        type: 'error',
-        payload: error,
+        type: 'SUBMIT_ENDED_FEEDBACK',
+        payload: null,
       });
-    });
+      history.push('/write/thankyou');
+      return response;
+    };
+    const onError = (error) => {
+      dispatch({
+        type: 'SUBMIT_FEEDBACK_FAILED',
+        payload: error.response.data.msg,
+      });
+      return error;
+    };
+    request.then(onSuccess, onError);
+  };
 };
