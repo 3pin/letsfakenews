@@ -16,7 +16,11 @@ import FrameBanner from '../../components/frameBanner';
 
 import * as actions from '../../actions/loginStatus';
 
-// / which props do we want to update, given the global store state?
+// which props do we want to inject, given the global store state?
+const mapStateToProps = (state) => ({
+  room: state.roomReducer.room,
+});
+// which props do we want to update, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
   loginSuccess: () => {
     dispatch(actions.loginSuccess());
@@ -30,6 +34,7 @@ class Login extends React.Component {
       username: '',
       password: '',
       redirect: false,
+      room: this.props.room,
     };
   }
 
@@ -72,7 +77,7 @@ class Login extends React.Component {
             password: '',
           }));
           this.nameInput.focus();
-          alert('Error logging in please try again');
+          alert(JSON.stringify(res.error));
           // const error = new Error(res.error);
           // throw error;
         }
@@ -135,4 +140,4 @@ class Login extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(withRouter(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

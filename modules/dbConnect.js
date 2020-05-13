@@ -34,7 +34,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-function dbConnect() {
+function Connect() {
   mongoose.connect(global.config.mongodbUri, options, (err, client) => {
     if (err) {
       debug('error coming...');
@@ -129,4 +129,4 @@ function dbConnect() {
     }
   });
 }
-module.exports.Connect = dbConnect;
+module.exports.Connect = Connect;

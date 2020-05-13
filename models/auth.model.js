@@ -16,6 +16,10 @@ const AuthSchema = new Schema({
     type: String,
     required: true,
   },
+  room: {
+    type: String,
+    required: true,
+  },
 });
 
 AuthSchema.pre('save', function presave(next) {
@@ -44,8 +48,10 @@ AuthSchema.methods.isCorrectPassword = function isCorrectPassword(password, call
   debug(password, this.password);
   bcrypt.compare(password, this.password, (err, same) => {
     if (err) {
+      debug('err');
       callback(err);
-    } else {
+    } else if (same) {
+      debug('running same');
       callback(err, same);
     }
   });

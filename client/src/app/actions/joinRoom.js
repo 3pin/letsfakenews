@@ -27,6 +27,13 @@ export const submit = (room, history) => {
       }
       return response;
     };
-    request.then(onSuccess);
+    const onError = (error) => {
+      dispatch({
+        type: 'SUBMIT_NEWS_FAILED',
+        payload: error.response.data.msg,
+      });
+      return error;
+    };
+    request.then(onSuccess, onError);
   };
 };

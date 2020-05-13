@@ -1,6 +1,6 @@
 
 /* module debugging */
-debug = require('debug')('routes');
+const debug = require('debug')('room');
 
 /* declare a new router */
 const routes = require('express').Router();
@@ -10,7 +10,7 @@ const write = require('./write');
 const watch = require('./watch');
 const admin = require('./admin');
 const settings = require('./settings');
-const room = require('../controllers/room');
+const room = require('../controllers/settings/room');
 
 /*
 //=============================================================================
@@ -33,11 +33,11 @@ routes.use('/watch', watch);
 routes.use('/admin', admin);
 routes.use('/settings', settings);
 routes.post('/room', room);
-/*
-routes.post('/room', (req, res) => {
-  res.send('Room inserted into database successfully');
-  res.send({ express: "Hello 'REACT... route admin' " });
+
+routes.get('/room', (req, res) => {
+  debug('hello');
+  res.send('Hello');
 });
-*/
+
 
 module.exports = routes;

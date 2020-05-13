@@ -5,6 +5,13 @@ import {
 import {
   withRouter,
 } from 'react-router-dom';
+import {
+  withCookies,
+  Cookies
+} from 'react-cookie';
+import {
+  instanceOf
+} from 'prop-types';
 
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
@@ -24,12 +31,29 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actions.submit(room, history));
   },
 });
-class Room extends React.Component {
+class InnerRoom extends React.Component {
+
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
+
   onHandleSubmit = (content) => {
     /* dipatch action to change button-UI to greyed out*/
     this.props.submitStarted();
     /* dispatch API submit action */
     this.props.submit(content, this.props.history);
+  }
+
+  componentDidMount() {
+    const {
+      cookies
+    } = this.props;
+    try {
+      cookies.remove('token');
+      console.log("Removed cookie named 'token'");
+    } catch (err) {
+      console.log("No cookie named 'token' present");
+    }
   }
 
   render() {
@@ -56,4 +80,5 @@ class Room extends React.Component {
     );
   }
 }
+const Room = withCookies(InnerRoom);
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Room));

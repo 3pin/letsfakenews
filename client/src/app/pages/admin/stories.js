@@ -5,6 +5,7 @@ import {
   Table,
   Button,
 } from 'react-bootstrap';
+import axios from 'axios';
 
 export default class Stories extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ export default class Stories extends React.Component {
     };
   }
 
+  /*
   apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
@@ -39,6 +41,16 @@ export default class Stories extends React.Component {
       return body;
     }
   }
+  */
+  apiGet (endpoint) {
+    axios.get(endpoint).then((response) => {
+      if (response.status !== 200) {
+        throw Error(response.message);
+      } else {
+        return response.data;
+      }
+    });
+  };
 
   apiPost = async (endpoint, data) => {
     const response = await fetch(endpoint, {
