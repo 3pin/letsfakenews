@@ -1,4 +1,4 @@
-const debug = require('debug')('room');
+const debug = require('debug')('controller');
 
 module.exports = (req, res) => {
   debug('/POST routes_room');

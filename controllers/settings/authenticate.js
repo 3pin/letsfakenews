@@ -1,4 +1,4 @@
-const debug = require('debug')('authenticate');
+const debug = require('debug')('controller');
 const jwt = require('jsonwebtoken');
 const Auth = require('../../models/auth.model');
 

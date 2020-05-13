@@ -1,4 +1,8 @@
 import React from 'react';
+import {
+  connect
+} from 'react-redux';
+
 import FrameBanner from '../../components/frameBanner';
 import 'eventsource-polyfill';
 import {
@@ -7,7 +11,12 @@ import {
 } from 'react-bootstrap';
 import axios from 'axios';
 
-export default class Stories extends React.Component {
+// which props do we want to inject, given the global store state?
+const mapStateToProps = (state) => ({
+  room: state.roomReducer.room,
+});
+
+class Stories extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.NODE_ENV === 'production') {
@@ -28,6 +37,7 @@ export default class Stories extends React.Component {
     this.state = {
       stories: [],
       autolive: false,
+      room: this.props.room,
     };
   }
 
@@ -42,11 +52,16 @@ export default class Stories extends React.Component {
     }
   }
   */
-  apiGet (endpoint) {
-    axios.get(endpoint).then((response) => {
+  apiGet(endpoint, room) {
+    axios.get(endpoint, {
+      params: {
+        room: room,
+      }
+    }).then((response) => {
       if (response.status !== 200) {
         throw Error(response.message);
       } else {
+        console.log(response);
         return response.data;
       }
     });
@@ -69,40 +84,90 @@ export default class Stories extends React.Component {
 
   handleAutolive() {
     /* update status of autolive */
-    this.apiGet(this.props.apiAutolive)
-      .then((res) => {
-        this.setState({
-          autolive: JSON.parse(res.autolive),
-        });
+    axios.get(this.props.apiAutolive, {
+      params: {
+        room: this.state.room,
+      }
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
         console.log(res);
-      }).catch((err) => console.log(err));
+        this.setState({
+          autolive: res.data.autolive,
+        });
+      }
+    }).catch((err) => console.log(err));
   }
 
   handleRefresh() {
     /* Connect to API to refresh imagery */
     document.activeElement.blur();
-    this.apiGet(this.props.apiRefresh).then((res) => console.log(res)).catch((err) => console.log(err));
+    axios.get(this.props.apiRefresh, {
+      params: {
+        room: this.state.room,
+      }
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        console.log(res);
+      }
+    }).catch((err) => console.log(err));
+    /*
+    this.apiGet(this.props.apiRefresh, this.props.room).then((res) => console.log(res)).catch((err) => console.log(err));
+    */
   }
 
   handleClear() {
     /* Connect to API and clear all from database */
     document.activeElement.blur();
     /* Connect to API and clear feedback from database */
-    this.apiPost(this.props.apiClear).then((res) => this.setState({
-      stories: res.stories,
-      activelistLength: res.activelistLength,
-      visualise: 0,
-    })).catch((err) => console.log(err));
+    axios.delete(this.props.apiClear, {
+      params: {
+        room: this.state.room,
+      }
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        console.log(res);
+        this.setState({
+          stories: res.data.stories,
+          activelistLength: res.data.activelistLength,
+          visualise: 0,
+        })
+      }
+    }).catch((err) => console.log(err));
   }
 
   handleRemove(row) {
     document.activeElement.blur();
     /* Connect to API and delete single entry from database */
+    axios.delete(this.props.apiRemove, {
+      params: {
+        room: this.state.room,
+        row: row,
+      }
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        console.log(res);
+        this.setState({
+          stories: res.data.stories,
+          activelistLength: res.data.activelistLength,
+          visualise: res.data.visualise,
+        })
+      }
+    }).catch((err) => console.log(err));
+    /*
     this.apiPost(this.props.apiRemove, row).then((res) => this.setState({
       stories: res.stories,
       activelistLength: res.activelistLength,
       visualise: JSON.parse(res.visualise),
     })).catch((err) => console.log(err));
+    */
   }
 
   handleStorylive(row) {
@@ -117,15 +182,23 @@ export default class Stories extends React.Component {
   }
 
   componentDidMount() {
-    /* load autolive-status & stories from Db */
-    this.apiGet(this.props.apiHello)
-      .then((res) => {
+    /* load autolive-status & stories from db */
+    axios.get(this.props.apiHello, {
+      params: {
+        room: this.props.room,
+      }
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        // console.log(res);
         this.setState({
-          autolive: JSON.parse(res.autolive),
-          stories: res.stories,
+          autolive: res.data.autolive,
+          stories: res.data.stories,
         });
-        console.log(res);
-      }).catch((err) => console.log(err));
+      }
+    }).catch((err) => console.log(err));
+
     /* open sse listener */
     this.eventSource.addEventListener('story', (e) => {
       console.log('A new story triggered a refresh of the stories_list');
@@ -185,7 +258,7 @@ export default class Stories extends React.Component {
             <tr>
               <td>Clear all stories from database</td>
               <td>
-                <Button variant="outline-danger" onClick={() => { window.confirm('Are you sure you wish to delete this item?') ? this.handleClear() : document.activeElement.blur(); }} />
+                <Button variant="outline-danger" onClick={() => { window.confirm('Are you sure you wish to delete all stories?') ? this.handleClear() : document.activeElement.blur(); }} />
               </td>
             </tr>
           </tbody>
@@ -250,3 +323,4 @@ export default class Stories extends React.Component {
     );
   }
 }
+export default connect(mapStateToProps)(Stories);

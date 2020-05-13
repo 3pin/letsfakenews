@@ -27,9 +27,9 @@ admin.get('/stories', stories);
 admin.get('/stories/autolive', storiesAutolive);
 admin.get('/stories/refresh', storiesRefresh);
 /* clear a database */
-admin.post('/stories/clear', storiesClear);
+admin.delete('/stories/clear', storiesClear);
 // stories row-ops
-admin.post('/stories/remove', storiesRemove);
+admin.delete('/stories/remove', storiesRemove);
 admin.post('/stories/storylive', storiesStorylive);
 //
 /* display feedback database */

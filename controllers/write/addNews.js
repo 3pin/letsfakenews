@@ -1,5 +1,5 @@
 
-const debug = require('debug')('routes_write');
+const debug = require('debug')('controller');
 /* tap into an sse event-bus */
 const bus = require('../../modules/eventbus');
 /* load update module */
@@ -12,9 +12,15 @@ const processClientStory = require('../../modules/processClientStory.js');
 module.exports = (req, res) => {
   debug('/POST routes/add_title_story');
   /* fetch db settings */
-  const { dbSettings } = req;
-  debug('dbSettings...');
+  let dbSettings;
+  for (let i = 0; i < req.dbSettings.length; i += 1) {
+    if (req.dbSettings[i].room === req.body.room) {
+      dbSettings = req.dbSettings[i];
+      break;
+    }
+  }
   debug(dbSettings);
+  debug(req.body);
   const clientJSON = req.body;
   debug('clientJSON...');
   debug(clientJSON);

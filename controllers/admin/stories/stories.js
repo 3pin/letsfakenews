@@ -1,14 +1,20 @@
 
-const debug = require('debug')('routes_admin');
+const debug = require('debug')('controller');
 // import mongoose 'Story' schema
 const Story = require('../../../models/story.model');
 
 module.exports = (req, res) => {
   debug('/GET /admin/stories');
-  debug(req.dbSettings.visualise);
-  const { dbSettings } = req;
-  // debug(req.dbSettings);
-  Story.find({ room: 'public' }).sort([['_id', 1]]).then((docs) => {
+  debug(req.query.room);
+  let dbSettings;
+  for (let i = 0; i < req.dbSettings.length; i += 1) {
+    if (req.dbSettings[i].room === req.query.room) {
+      dbSettings = req.dbSettings[i];
+      break;
+    }
+  }
+  debug(dbSettings);
+  Story.find({ room: req.query.room }).sort([['_id', 1]]).then((docs) => {
     // res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
       stories: docs,

@@ -1,5 +1,5 @@
 
-const debug = require('debug')('routes_admin');
+const debug = require('debug')('controller');
 const refreshSaveUrlsIterative = require('../../../modules/refreshSaveUrlsIterative.js');
 
 module.exports = (req, res) => {

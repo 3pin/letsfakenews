@@ -1,5 +1,5 @@
 
-const debug = require('debug')('routes_admin');
+const debug = require('debug')('controller');
 // load update module
 const dbSettingsUpdate = require('../../middleware/dbSettingsUpdate');
 // import mongoose 'Story' schema
@@ -10,9 +10,21 @@ const bus = require('../../../modules/eventbus');
 module.exports = (req, res) => {
   debug('/routes/story/remove');
   // remove entry from activevisualiselist in dB
-  const { dbSettings } = req;
+  debug(req.query.room);
+  debug(req.query.row);
+  debug(req.query.row.title);
+  debug(req.query.row.__type);
+  debug(req.query.row._id);
+  let dbSettings;
+  for (let i = 0; i < req.dbSettings.length; i += 1) {
+    if (req.dbSettings[i].room === req.query.room) {
+      dbSettings = req.dbSettings[i];
+      break;
+    }
+  }
+  debug(dbSettings);
   debug(dbSettings.activelist);
-  dbSettings.activelist = dbSettings.activelist.filter((item) => item != req.body._id);
+  dbSettings.activelist = dbSettings.activelist.filter((item) => item != req.query.row._id);
   debug(dbSettings.activelist);
   // offset the next-story-to-read to account for deleted entry
   dbSettings.entryToRead -= 1;
@@ -20,10 +32,8 @@ module.exports = (req, res) => {
     debug(docs);
   });
   // delete entry from acreq.tual db
-  const query = {
-    _id: req.body._id,
-  };
-  debug(req.body._id);
+  // const query = { room: req.query.room, __type: 'Story' };
+  const query = { _id: req.query.row._id };
   Story.findOneAndDelete(query).then((docs) => {
     debug(docs);
   }).then(() => {
