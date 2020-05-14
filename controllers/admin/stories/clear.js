@@ -9,15 +9,8 @@ const dbSettingsUpdate = require('../../middleware/dbSettingsUpdate');
 module.exports = (req, res) => {
   debug('/DELETE /routes/admin/clear');
   /* set the db collection */
-  let dbSettings;
-  for (let i = 0; i < req.dbSettings.length; i += 1) {
-    if (req.dbSettings[i].room === req.query.room) {
-      dbSettings = req.dbSettings[i];
-      break;
-    }
-  }
-  debug(dbSettings);
   const query = { room: req.query.room };
+  const { dbSettings } = req;
   /* delete all db entries */
   Story.deleteMany(query).then((docs, err) => {
     if (err) {

@@ -7,13 +7,7 @@ module.exports = (req, res) => {
   const {
     room,
   } = req.query;
-  let dbSettings;
-  for (let i = 0; i < req.dbSettings.length; i += 1) {
-    if (req.dbSettings[i].room === room) {
-      dbSettings = req.dbSettings[i];
-      break;
-    }
-  }
+  const { dbSettings } = req;
   Story.find({
     room,
   }).sort([['_id', 1]]).then((docs) => {

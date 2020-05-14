@@ -12,14 +12,7 @@ const processClientStory = require('../../modules/processClientStory.js');
 module.exports = (req, res) => {
   debug('/POST routes/add_title_story');
   /* fetch db settings */
-  let dbSettings;
-  for (let i = 0; i < req.dbSettings.length; i += 1) {
-    if (req.dbSettings[i].room === req.body.room) {
-      dbSettings = req.dbSettings[i];
-      break;
-    }
-  }
-  debug(dbSettings);
+  const { dbSettings } = req;
   debug(req.body);
   const clientJSON = req.body;
   debug('clientJSON...');

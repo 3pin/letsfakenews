@@ -13,13 +13,7 @@ module.exports = (req, res) => {
   const { newStorylive } = req.body.data;
   const { room } = req.query;
   debug(_id, newStorylive, room);
-  let dbSettings;
-  for (let i = 0; i < req.dbSettings.length; i += 1) {
-    if (req.dbSettings[i].room === room) {
-      dbSettings = req.dbSettings[i];
-      break;
-    }
-  }
+  const { dbSettings } = req;
   if (newStorylive === true) {
     debug(`newStoryLive true: ${newStorylive}`);
     /* add to activelist */

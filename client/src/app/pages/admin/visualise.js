@@ -1,11 +1,20 @@
 import React from 'react';
-import FrameBanner from '../../components/frameBanner';
+import {
+  connect
+} from 'react-redux';
+import axios from 'axios';
 import 'eventsource-polyfill';
 import {
   Table,
 } from 'react-bootstrap';
+import FrameBanner from '../../components/frameBanner';
 
-export default class Stories extends React.Component {
+// which props do we want to inject, given the global store state?
+const mapStateToProps = (state) => ({
+  room: state.roomReducer.room,
+});
+
+class Visualise extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.NODE_ENV === 'production') {
@@ -31,7 +40,11 @@ export default class Stories extends React.Component {
   apiGet = async (endpoint) => {
     const response = await fetch(endpoint);
     const body = await response.json();
-    if (response.status !== 200) { throw Error(body.message); } else { return body; }
+    if (response.status !== 200) {
+      throw Error(body.message);
+    } else {
+      return body;
+    }
   }
 
   apiPost = async (endpoint, data) => {
@@ -43,7 +56,9 @@ export default class Stories extends React.Component {
       body: JSON.stringify(data),
     });
     const body = await response.json();
-    if (response.status !== 200) { throw Error(body.message); }
+    if (response.status !== 200) {
+      throw Error(body.message);
+    }
     return body;
   };
 
@@ -52,10 +67,26 @@ export default class Stories extends React.Component {
     const data = {
       visualiseNum: e.currentTarget.value,
     };
-    // connect to API to update db and then update this component
-    this.apiPost(this.props.apiVisualiseNum, data).then((res) => this.setState({
-      visualiseNum: res.visualiseNum,
-    })).catch((err) => console.log(err));
+    // update db then with 'res' update this component
+    const {
+      room
+    } = this.props;
+    axios.put(this.props.apiVisualiseNum, {
+      data
+    }, {
+      params: {
+        room,
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        // console.log(res);
+        this.setState({
+          visualiseNum: res.data.visualiseNum,
+        });
+      }
+    }).catch((err) => console.log(err));
   }
 
   handleDurationChange(e) {
@@ -63,10 +94,26 @@ export default class Stories extends React.Component {
     const data = {
       imageDuration: e.currentTarget.value,
     };
-    // connect to API to update db and then update this component
-    this.apiPost(this.props.apiDurationChange, data).then((res) => this.setState({
-      imageDuration: res.imageDuration,
-    })).catch((err) => console.log(err));
+    // update db then with 'res' update this component
+    const {
+      room
+    } = this.props;
+    axios.put(this.props.apiDurationChange, {
+      data
+    }, {
+      params: {
+        room,
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        // console.log(res);
+        this.setState({
+          imageDuration: res.data.imageDuration,
+        });
+      }
+    }).catch((err) => console.log(err));
   }
 
   handleScrollerChange(e) {
@@ -74,24 +121,50 @@ export default class Stories extends React.Component {
     const data = {
       textScrollers: e.currentTarget.value,
     };
-    // connect to API to update db and then update this component
-    this.apiPost(this.props.apiScrollerChange, data).then((res) => this.setState({
-      textScrollers: res.textScrollers,
-    })).catch((err) => console.log(err));
+    // update db then with 'res' update this component
+    const {
+      room
+    } = this.props;
+    axios.put(this.props.apiScrollerChange, {
+      data
+    }, {
+      params: {
+        room,
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        // console.log(res);
+        this.setState({
+          textScrollers: res.data.textScrollers,
+        });
+      }
+    }).catch((err) => console.log(err));
   }
 
   componentDidMount() {
     /* load autolive-status & stories from Db */
-    this.apiGet(this.props.apiHello)
-      .then((res) => {
+    const {
+      room
+    } = this.props;
+    axios.get(this.props.apiHello, {
+      params: {
+        room,
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        // console.log(res);
         this.setState({
-          activelistLength: res.activelistLength,
-          visualiseNum: res.visualiseNum,
-          textScrollers: res.textScrollers,
-          imageDuration: res.imageDuration,
+          activelistLength: res.data.activelistLength,
+          visualiseNum: res.data.visualiseNum,
+          textScrollers: res.data.textScrollers,
+          imageDuration: res.data.imageDuration,
         });
-        console.log(res);
-      }).catch((err) => console.log(err));
+      }
+    }).catch((err) => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('activelistChange', (e) => {
       console.log('A change triggered a refresh of the activelist');
@@ -186,3 +259,4 @@ export default class Stories extends React.Component {
     );
   }
 }
+export default connect(mapStateToProps)(Visualise);

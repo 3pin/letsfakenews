@@ -13,17 +13,8 @@ module.exports = (req, res) => {
   const { _id } = req.query;
   const { room } = req.query;
   debug(_id, room);
-  let dbSettings;
-  for (let i = 0; i < req.dbSettings.length; i += 1) {
-    if (req.dbSettings[i].room === room) {
-      dbSettings = req.dbSettings[i];
-      break;
-    }
-  }
-  // debug(dbSettings);
-  debug(dbSettings.activelist);
+  const { dbSettings } = req;
   dbSettings.activelist = dbSettings.activelist.filter((item) => item != _id);
-  debug(dbSettings.activelist);
   // offset the next-story-to-read to account for deleted entry
   dbSettings.entryToRead -= 1;
   dbSettingsUpdate(dbSettings).then((docs) => {

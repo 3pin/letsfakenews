@@ -41,8 +41,8 @@ admin.delete('/feedback/clear', feedbackClear);
 //
 /* display visualise controls */
 admin.get('/visualise', visualise);
-admin.post('/visualise/num', visualiseNum);
-admin.post('/visualise/duration', visualiseDuration);
-admin.post('/visualise/scroller', visualiseScroller);
+admin.put('/visualise/num', visualiseNum);
+admin.put('/visualise/duration', visualiseDuration);
+admin.put('/visualise/scroller', visualiseScroller);
 
 module.exports = admin;
