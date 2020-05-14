@@ -11,6 +11,7 @@ const {
 
 // db-setup
 const mongoose = require('mongoose');
+
 const Story = require('../../models/story.model');
 
 const refreshUrls = require('../../modules/refreshUrls.js');
@@ -32,7 +33,7 @@ describe('Refresh: refreshing urls for stories', () => {
   before((done) => {
     debug('before entered...');
     /* open db connection for tests */
-    mongoose.connect(global.config.mongodbUriTests, options);
+    mongoose.connect(global.gConfig.mongodbUriTests, options);
     mongoose.connection.once('open', () => {
       debug('db-connected');
       done();
@@ -61,6 +62,7 @@ describe('Refresh: refreshing urls for stories', () => {
         'https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg',
         'https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg',
       ],
+      room: 'test',
     });
     const story2 = new Story({
       story: "Let's talk about the weekend",
@@ -72,6 +74,7 @@ describe('Refresh: refreshing urls for stories', () => {
         'https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg',
         'https://www.premiumwishes.com/wp-content/uploads/2018/01/16-1.jpg',
       ],
+      room: 'test',
     });
     story1.save().then(() => {
       story2.save().then(() => {
@@ -93,7 +96,7 @@ describe('Refresh: refreshing urls for stories', () => {
       });
     })
     */
-    mongoose.connection.db.dropCollection(global.config.database, () => {
+    mongoose.connection.db.dropCollection(global.gConfig.database, () => {
       debug('Collection dropped');
       done();
     });
@@ -101,7 +104,7 @@ describe('Refresh: refreshing urls for stories', () => {
   //
   it('refresh the urls in 1 story', (done) => {
     debug('test1 entered');
-    Story.find({}).then((obj) => {
+    Story.find({ room: 'test' }).then((obj) => {
       refreshUrls.process(obj[0]).then((result) => {
         expect(result.urls.length).to.equal(obj[0].words.length);
         done();
@@ -112,7 +115,7 @@ describe('Refresh: refreshing urls for stories', () => {
   });
   it('refresh the urls in multiple stories', (done) => {
     debug('test2 entered');
-    Story.find({}).then((objects) => {
+    Story.find({ room: 'test' }).then((objects) => {
       refreshUrlsIterative.process(objects).then((result) => {
         expect(result.length).to.equal(objects.length);
         done();
@@ -123,7 +126,7 @@ describe('Refresh: refreshing urls for stories', () => {
   });
   it('refresh & save the urls for 1 story', (done) => {
     debug('test3 entered');
-    Story.find({}).then((stories) => {
+    Story.find({ room: 'test' }).then((stories) => {
       refreshSaveUrls.process(stories[0]._id)
         .then((res) => {
           expect(res.nModified).to.equal(1);
@@ -133,7 +136,7 @@ describe('Refresh: refreshing urls for stories', () => {
   });
   it('refresh & save the urls for multiple stories', (done) => {
     debug('test4 entered');
-    refreshSaveUrlsIterative.process()
+    refreshSaveUrlsIterative.process('test')
       .then((res) => {
         res.forEach((entry) => expect(entry.nModified).to.equal(1))
       }).then(() => {

@@ -4,7 +4,8 @@ const refreshSaveUrlsIterative = require('../../../modules/refreshSaveUrlsIterat
 
 module.exports = (req, res) => {
   debug('/routes/databases/refresh');
-  refreshSaveUrlsIterative.process().then((result) => {
+  const { room } = req.query;
+  refreshSaveUrlsIterative.process(room).then((result) => {
     debug(result);
     // res.redirect('/admin/stories');
   }).then(() => {

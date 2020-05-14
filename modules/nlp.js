@@ -35,8 +35,8 @@ Eg...
 const debug = require('debug')('nlp');
 const pos = require('pos');
 
-const tags = global.config.posTags;
-const { illegalWords } = global.config;
+const tags = global.gConfig.posTags;
+const { illegalWords } = global.gConfig;
 
 module.exports = {
 

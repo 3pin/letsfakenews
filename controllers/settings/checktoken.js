@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const {
   secret,
-} = global.config;
+} = global.gConfig;
 
 module.exports = (req, res, next) => {
   debug('Entered middleware to check token-authorisation');

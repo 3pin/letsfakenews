@@ -1,3 +1,7 @@
+const rooms = process.env.ROOMS.split(',');
+const usernames = process.env.ROOMS_ADMINS.split(',');
+const passwords = process.env.ROOMS_PASSWORDS.split(',');
+
 module.exports = {
   database: process.env.DATABASE,
   mongodbUri: process.env.MONGODB_URI,
@@ -5,8 +9,8 @@ module.exports = {
   dbMode: 'next',
   entryToRead: 0,
   roomSetup: {
-    rooms: process.env.ROOMS.split(','),
-    usernames: process.env.ROOMS_ADMINS.split(','),
-    passwords: process.env.ROOMS_PASSWORDS.split(','),
+    rooms,
+    usernames,
+    passwords,
   },
 };

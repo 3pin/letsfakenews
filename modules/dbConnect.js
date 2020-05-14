@@ -11,18 +11,18 @@ const Auth = require('../models/auth.model');
 const Settings = require('../models/settings.model');
 /*
 const settingsObj = {
-  entryToRead: parseInt(global.config.entryToRead, 10),
-  autolive: global.config.autolive,
+  entryToRead: parseInt(global.gConfig.entryToRead, 10),
+  autolive: global.gConfig.autolive,
   activelist: [],
-  dbMode: global.config.dbMode,
-  nodeMode: global.config.nodeEnv,
-  visualise: global.config.visualise,
-  imageDuration: global.config.imageDuration,
-  textScrollers: global.config.textScrollers,
+  dbMode: global.gConfig.dbMode,
+  nodeMode: global.gConfig.nodeEnv,
+  visualise: global.gConfig.visualise,
+  imageDuration: global.gConfig.imageDuration,
+  textScrollers: global.gConfig.textScrollers,
 };
 const authObj = {
-  username: global.config.username,
-  password: global.config.password,
+  username: global.gConfig.username,
+  password: global.gConfig.password,
 };
 */
 const options = {
@@ -35,7 +35,7 @@ const options = {
 };
 
 function Connect() {
-  mongoose.connect(global.config.mongodbUri, options, (err, client) => {
+  mongoose.connect(global.gConfig.mongodbUri, options, (err, client) => {
     if (err) {
       debug('error coming...');
       debug(err);
@@ -54,14 +54,14 @@ function Connect() {
         // if there are no collections existing...
         if (collections.length === 0) {
           debug(
-            `No db exists... creating database: ${global.config.database}`,
+            `No db exists... creating database: ${global.gConfig.database}`,
           );
-          for (let i = 0; i < global.config.roomSetup.rooms.length; i += 1) {
+          for (let i = 0; i < global.gConfig.roomSetup.rooms.length; i += 1) {
             // create a user-entry for authorisation to backend...
             const authObj = {
-              room: global.config.roomSetup.rooms[i],
-              username: global.config.roomSetup.usernames[i],
-              password: global.config.roomSetup.passwords[i],
+              room: global.gConfig.roomSetup.rooms[i],
+              username: global.gConfig.roomSetup.usernames[i],
+              password: global.gConfig.roomSetup.passwords[i],
             };
             const auth = new Auth(authObj);
             auth.save().then((doc) => {
@@ -69,15 +69,15 @@ function Connect() {
             });
             // create a settings-entry
             const settingsObj = {
-              entryToRead: parseInt(global.config.entryToRead, 10),
-              autolive: global.config.autolive,
+              entryToRead: parseInt(global.gConfig.entryToRead, 10),
+              autolive: global.gConfig.autolive,
               activelist: [],
-              dbMode: global.config.dbMode,
-              nodeMode: global.config.nodeEnv,
-              visualise: global.config.visualise,
-              imageDuration: global.config.imageDuration,
-              textScrollers: global.config.textScrollers,
-              room: global.config.roomSetup.rooms[i],
+              dbMode: global.gConfig.dbMode,
+              nodeMode: global.gConfig.nodeEnv,
+              visualise: global.gConfig.visualise,
+              imageDuration: global.gConfig.imageDuration,
+              textScrollers: global.gConfig.textScrollers,
+              room: global.gConfig.roomSetup.rooms[i],
             };
             const settings = new Settings(settingsObj);
             settings.save().then((res) => {
@@ -88,16 +88,16 @@ function Connect() {
           // else for exiting collections...
           for (let index = 0; index < collections.length; index += 1) {
             debug(`CollectionName:${collections[index].name}`);
-            if (collections[index].name === global.config.database) {
+            if (collections[index].name === global.gConfig.database) {
               debug('Collection already exists, so loading...');
               break;
             } else if (index === collections.length - 1) {
-              for (let i = 0; i < global.config.roomSetup.rooms.length; i += 1) {
+              for (let i = 0; i < global.gConfig.roomSetup.rooms.length; i += 1) {
                 // create a user-entry for authorisation to backend...
                 const authObj = {
-                  room: global.config.roomSetup.rooms[i],
-                  username: global.config.roomSetup.usernames[i],
-                  password: global.config.roomSetup.passwords[i],
+                  room: global.gConfig.roomSetup.rooms[i],
+                  username: global.gConfig.roomSetup.usernames[i],
+                  password: global.gConfig.roomSetup.passwords[i],
                 };
                 const auth = new Auth(authObj);
                 auth.save().then((doc) => {
@@ -105,15 +105,15 @@ function Connect() {
                 });
                 // create a settings-entry
                 const settingsObj = {
-                  entryToRead: parseInt(global.config.entryToRead, 10),
-                  autolive: global.config.autolive,
+                  entryToRead: parseInt(global.gConfig.entryToRead, 10),
+                  autolive: global.gConfig.autolive,
                   activelist: [],
-                  dbMode: global.config.dbMode,
-                  nodeMode: global.config.nodeEnv,
-                  visualise: global.config.visualise,
-                  imageDuration: global.config.imageDuration,
-                  textScrollers: global.config.textScrollers,
-                  room: global.config.roomSetup.rooms[i],
+                  dbMode: global.gConfig.dbMode,
+                  nodeMode: global.gConfig.nodeEnv,
+                  visualise: global.gConfig.visualise,
+                  imageDuration: global.gConfig.imageDuration,
+                  textScrollers: global.gConfig.textScrollers,
+                  room: global.gConfig.roomSetup.rooms[i],
                 };
                 const settings = new Settings(settingsObj);
                 settings.save().then((res) => {

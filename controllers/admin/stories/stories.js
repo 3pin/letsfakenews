@@ -1,4 +1,3 @@
-
 const debug = require('debug')('controller');
 // import mongoose 'Story' schema
 const Story = require('../../../models/story.model');
@@ -13,8 +12,9 @@ module.exports = (req, res) => {
       break;
     }
   }
-  debug(dbSettings);
-  Story.find({ room: req.query.room }).sort([['_id', 1]]).then((docs) => {
+  Story.find({
+    room: req.query.room,
+  }).sort([['_id', 1]]).then((docs) => {
     // res.send({express: "Hello 'REACT /admin/feedback' "});
     res.send({
       stories: docs,

@@ -24,13 +24,13 @@ const visualiseScroller = require('../controllers/admin/visualise/scroller');
 /* display stories database */
 admin.get('/stories', stories);
 // stories macro-ops
-admin.get('/stories/autolive', storiesAutolive);
+admin.put('/stories/autolive', storiesAutolive);
 admin.get('/stories/refresh', storiesRefresh);
 /* clear a database */
 admin.delete('/stories/clear', storiesClear);
 // stories row-ops
 admin.delete('/stories/remove', storiesRemove);
-admin.post('/stories/storylive', storiesStorylive);
+admin.put('/stories/storylive', storiesStorylive);
 //
 /* display feedback database */
 admin.get('/feedback', feedback);

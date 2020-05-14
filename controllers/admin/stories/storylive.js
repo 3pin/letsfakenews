@@ -1,5 +1,5 @@
 
-const debug = require('debug')('routes_admin');
+const debug = require('debug')('controller');
 /* import mongoose schemas */
 const Story = require('../../../models/story.model');
 /* import function */
@@ -8,69 +8,54 @@ const dbSettingsUpdate = require('../../middleware/dbSettingsUpdate');
 const bus = require('../../../modules/eventbus');
 
 module.exports = (req, res) => {
-  debug('/routes/admin/storylive');
-  const storySettings = req.body;
-  const { dbSettings } = req;
-  debug(`_id: ${storySettings._id} currently set to: ${storySettings.storylive}`);
-  /* checkbox true/false? -> add/remove from activelist */
-  if (storySettings.storylive === true) {
-    debug('Set to FALSE');
-    /* remove entry from activelist */
-    dbSettings.activelist = dbSettings.activelist.filter((item) => item != storySettings._id);
+  debug('PUT: /routes/admin/storylive');
+  const { _id } = req.body.data;
+  const { newStorylive } = req.body.data;
+  const { room } = req.query;
+  debug(_id, newStorylive, room);
+  let dbSettings;
+  for (let i = 0; i < req.dbSettings.length; i += 1) {
+    if (req.dbSettings[i].room === room) {
+      dbSettings = req.dbSettings[i];
+      break;
+    }
+  }
+  if (newStorylive === true) {
+    debug(`newStoryLive true: ${newStorylive}`);
+    /* add to activelist */
+    dbSettings.activelist.push(_id);
+    dbSettings.entryToRead = dbSettings.activelist.length - 1;
+    dbSettings.dbMode = 'next';
+  } else {
+    debug(`newStoryLive false: ${newStorylive}`);
+    /* remove from activelist */
+    dbSettings.activelist = dbSettings.activelist.filter((item) => item != _id);
     debug(`activelist:${dbSettings.activelist.length} VS... visualise-amount:${dbSettings.visualise}`);
     /* check if activelist.length < visualise.length */
     if (dbSettings.activelist.length <= dbSettings.visualise) {
       debug(`activelist:${dbSettings.activelist.length} is <= visualise-amount:${dbSettings.visualise}`);
       dbSettings.visualise = dbSettings.activelist.length;
     }
-    dbSettingsUpdate(dbSettings).then((doc) => {
-      debug(`db updated to: ${doc}`);
-      bus.emit('activelistChange', dbSettings.activelist.length);
-    });
-    /* update db storylive entry */
-    Story.findByIdAndUpdate(storySettings._id, {
-      storylive: false,
-    }, {
-      new: true,
-    }).then(() => {
-      /* send new db to frontend to update REACT state */
-      Story.find({}).sort([['_id', 1]]).then((docs) => {
-        debug(docs);
-        res.json({
-          stories: docs,
-          activelistLength: dbSettings.activelist.length,
-          visualise: dbSettings.visualise,
-        });
-      });
-    }).catch((err) => {
-      debug(err);
-    });
-  } else {
-    debug('Set to TRUE');
-    dbSettings.activelist.push(storySettings._id);
-    dbSettings.entryToRead = dbSettings.activelist.length - 1;
-    dbSettings.dbMode = 'next';
-    dbSettingsUpdate(dbSettings).then((doc) => {
-      debug(`dd updated to: ${doc}`);
-      bus.emit('activelistChange', dbSettings.activelist.length);
-    });
-    /* update db storylive entry */
-    Story.findByIdAndUpdate(storySettings._id, {
-      storylive: true,
-    }, {
-      new: true,
-    }).then(() => {
-      /* send new db to frontend to update REACT state */
-      Story.find({}).sort([['_id', 1]]).then((docs) => {
-        debug(docs);
-        res.json({
-          stories: docs,
-          activelistLength: dbSettings.activelist.length,
-          visualise: dbSettings.visualise,
-        });
-      });
-    }).catch((err) => {
-      debug(err);
-    });
   }
+  // update db.Settings.schema
+  dbSettingsUpdate(dbSettings, room).then((doc) => {
+    debug(`db updated to: ${doc}`);
+    bus.emit('activelistChange', dbSettings.activelist.length);
+  });
+  /* update db storylive entry */
+  Story.findByIdAndUpdate(_id, {
+    storylive: newStorylive,
+  }).then(() => {
+    /* send new db to frontend to update REACT state */
+    Story.find({ room }).sort([['_id', 1]]).then((docs) => {
+      // debug(docs);
+      res.send({
+        stories: docs,
+        activelistLength: dbSettings.activelist.length,
+        visualise: dbSettings.visualise,
+      });
+    });
+  }).catch((err) => {
+    debug(err);
+  });
 };

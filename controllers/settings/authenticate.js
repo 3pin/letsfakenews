@@ -41,20 +41,20 @@ module.exports = (req, res) => {
         } else {
           debug('same');
           // Setup token
-          const time = Number(global.config.tokenAgeMins) * 60000;
+          const time = Number(global.gConfig.tokenAgeMins) * 60000;
           const payload = {
             username,
           };
           const {
             secret,
-          } = global.config;
+          } = global.gConfig;
           const token = jwt.sign(payload, secret, {
             expiresIn: time,
           });
           // Setup Cookie
           const cookieOptions = {
-            httpOnly: global.config.cookieoptionHttponly,
-            sameSite: global.config.cookieoption_samesit,
+            httpOnly: global.gConfig.cookieoptionHttponly,
+            sameSite: global.gConfig.cookieoption_samesit,
             maxAge: time,
             secure: false,
             signed: false,

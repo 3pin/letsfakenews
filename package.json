@@ -59,6 +59,7 @@
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",
     "jquery": "^3.5.0",
+    "mocha": "^7.1.2",
     "nyc": "^15.0.0",
     "snazzy": "^8.0.0",
     "snyk": "^1.298.1"

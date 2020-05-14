@@ -19,10 +19,10 @@ require('dotenv').config();
 const debug = require('debug')('app');
 
 /* load global config */
-const config = require('./config');
+const gConfig = require('./config');
 
-if (global.config.nodeEnv !== 'production') {
-  debug(`App Mode: ${global.config.nodeEnv}`);
+if (global.gConfig.nodeEnv !== 'production') {
+  debug(`App Mode: ${global.gConfig.nodeEnv}`);
   /* log all system env variables */
   // debug(process.env);
 }
@@ -31,20 +31,20 @@ if (global.config.nodeEnv !== 'production') {
 const app = express();
 debug(`App Name: ${process.env.npm_package_name}`);
 debug(
-  `Port:${global.config.port} mode:${global.config.nodeEnv} db_uri:${global.config.mongodbUri} database:${global.config.DATABASE}`,
+  `Port:${global.gConfig.port} mode:${global.gConfig.nodeEnv} db_uri:${global.gConfig.mongodbUri} database:${global.gConfig.database}`,
 );
 //= ============================================================================
 // middleware
 
 // You can set morgan to log differently depending on your environment
-if (global.config.nodeEnv === 'development') {
+if (global.gConfig.nodeEnv === 'development') {
   app.use(morgan('combined'));
 }
 
 // adding cookies to req headers
-if (global.config.cookieparserSecure) {
+if (global.gConfig.cookieparserSecure) {
   debug('Cookies are secure');
-  app.use(cookieParser(global.config.secret));
+  app.use(cookieParser(global.gConfig.secret));
 } else {
   debug('Cookies are NOT secure');
   app.use(cookieParser());
@@ -61,10 +61,10 @@ app.use(
 // add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
-if (global.config.cors === 'whitelist') {
+if (global.gConfig.cors === 'whitelist') {
   debug('CORS:whitelist');
   const whitelist = [];
-  whitelist.push(global.config.whitelist);
+  whitelist.push(global.gConfig.whitelist);
   debug(`whitelist: ${whitelist}`);
   const corsOptions = {
     origin(origin, callback) {
@@ -76,10 +76,10 @@ if (global.config.cors === 'whitelist') {
     },
   };
   app.use(cors(corsOptions));
-} else if (global.config.cors === 'all') {
+} else if (global.gConfig.cors === 'all') {
   debug('CORS:all');
   app.use(cors());
-} else if (global.config.cors === 'off') {
+} else if (global.gConfig.cors === 'off') {
   debug('CORS:none');
 } else {
   // this is in response to cors === 'none'
@@ -87,13 +87,13 @@ if (global.config.cors === 'whitelist') {
 }
 
 // force HSTS on the clients requests
-if (global.config.HSTS) {
+if (global.gConfig.HSTS) {
   debug('Using helmet for HSTS');
   app.use(helmet());
 }
 
 // ... production mode => serve static files for React
-if (global.config.httpsRedirect) {
+if (global.gConfig.httpsRedirect) {
   debug('Redirecting HTTP to HTTPS');
   app.use((req, res, next) => {
     const reqType = req.headers['x-forwarded-proto'];
@@ -106,7 +106,7 @@ if (global.config.httpsRedirect) {
 }
 
 // ... production mode => serve static files for React
-if (global.config.nodeEnv === 'production') {
+if (global.gConfig.nodeEnv === 'production') {
   debug(`Serving: ${__dirname}/client/build/index.html`);
   app.use(express.static(`${__dirname}/client/build`));
   app.use(favicon(path.join(__dirname, '/client/build', 'favicon.ico')));

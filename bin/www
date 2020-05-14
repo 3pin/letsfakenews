@@ -11,11 +11,11 @@ var app = require('../app');
 /*
 Create HTTP server.
 */
-if (global.config.https === 'heroku') {
+if (global.gConfig.https === 'heroku') {
   var https = require('https');
   //var server = https.createServer(httpsOptions,app);
   var server = https.createServer(app);
-} else if (global.config.https === 'manual') {
+} else if (global.gConfig.https === 'manual') {
   const fs = require('fs');
   var httpsOptions = {
     key: fs.readFileSync('./certs/key.pem'),
@@ -32,7 +32,7 @@ if (global.config.https === 'heroku') {
 /*
 Get port from environment and store in Express.
 */
-var port = normalizePort(global.config.port || 5000);
+var port = normalizePort(global.gConfig.port || 5000);
 app.set('port', port);
 
 /*

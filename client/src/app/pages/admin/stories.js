@@ -25,7 +25,6 @@ class Stories extends React.Component {
       this.eventSource = new EventSource('http://localhost:5000/settings/sse');
     }
     //
-    this.apiGet = this.apiGet.bind(this);
     this.apiPost = this.apiPost.bind(this);
     //
     this.handleAutolive = this.handleAutolive.bind(this);
@@ -40,32 +39,6 @@ class Stories extends React.Component {
       room: this.props.room,
     };
   }
-
-  /*
-  apiGet = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const body = await response.json();
-    if (response.status !== 200) {
-      throw Error(body.message);
-    } else {
-      return body;
-    }
-  }
-  */
-  apiGet(endpoint, room) {
-    axios.get(endpoint, {
-      params: {
-        room: room,
-      }
-    }).then((response) => {
-      if (response.status !== 200) {
-        throw Error(response.message);
-      } else {
-        console.log(response);
-        return response.data;
-      }
-    });
-  };
 
   apiPost = async (endpoint, data) => {
     const response = await fetch(endpoint, {
@@ -82,11 +55,15 @@ class Stories extends React.Component {
     return body;
   };
 
-  handleAutolive() {
-    /* update status of autolive */
-    axios.get(this.props.apiAutolive, {
+  handleAutolive(event) {
+    /* PUT: update status of autolive */
+    let newAutolive = !this.state.autolive;
+    let room = this.state.room;
+    axios.put(this.props.apiAutolive, {
+      data: newAutolive
+    }, {
       params: {
-        room: this.state.room,
+        room: room
       }
     }).then((res) => {
       if (res.status !== 200) {
@@ -114,9 +91,6 @@ class Stories extends React.Component {
         console.log(res);
       }
     }).catch((err) => console.log(err));
-    /*
-    this.apiGet(this.props.apiRefresh, this.props.room).then((res) => console.log(res)).catch((err) => console.log(err));
-    */
   }
 
   handleClear() {
@@ -161,24 +135,35 @@ class Stories extends React.Component {
         })
       }
     }).catch((err) => console.log(err));
-    /*
-    this.apiPost(this.props.apiRemove, row).then((res) => this.setState({
-      stories: res.stories,
-      activelistLength: res.activelistLength,
-      visualise: JSON.parse(res.visualise),
-    })).catch((err) => console.log(err));
-    */
   }
 
   handleStorylive(row) {
+    const { _id } = row;
+    const { room } = this.state;
+    const { storylive } = row;
+    console.log(_id, room, storylive);
     /* Connect to API to update storylive-setting for entry in database */
-    this.apiPost(this.props.apiStorylive, row).then((res) => this.setState({
-      stories: res.stories,
-      activelistLength: res.activelistLength,
-      visualise: JSON.parse(res.visualise),
-    }, () => {
-      console.log(this.state);
-    })).catch((err) => console.log(err));
+    axios.put(this.props.apiStorylive, {
+      data: {
+        _id,
+        newStorylive: !storylive
+      }
+    }, {
+      params: {
+        room: room
+      }
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        console.log(res);
+        this.setState({
+          stories: res.data.stories,
+          activelistLength: res.data.activelistLength,
+          visualise: res.data.visualise,
+        });
+      }
+    }).catch((err) => console.log(err));
   }
 
   componentDidMount() {
