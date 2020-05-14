@@ -53,6 +53,8 @@ AuthSchema.methods.isCorrectPassword = function isCorrectPassword(password, call
     } else if (same) {
       debug('running same');
       callback(err, same);
+    } else {
+      debug('nothing happened');
     }
   });
 };
