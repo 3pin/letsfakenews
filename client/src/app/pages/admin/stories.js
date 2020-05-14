@@ -117,11 +117,14 @@ class Stories extends React.Component {
 
   handleRemove(row) {
     document.activeElement.blur();
+    const { _id } = row;
+    const { room } = this.state;
+    console.log(_id, room);
     /* Connect to API and delete single entry from database */
     axios.delete(this.props.apiRemove, {
       params: {
-        room: this.state.room,
-        row: row,
+        room,
+        _id,
       }
     }).then((res) => {
       if (res.status !== 200) {

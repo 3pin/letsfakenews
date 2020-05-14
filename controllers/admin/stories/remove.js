@@ -10,21 +10,19 @@ const bus = require('../../../modules/eventbus');
 module.exports = (req, res) => {
   debug('/routes/story/remove');
   // remove entry from activevisualiselist in dB
-  debug(req.query.room);
-  debug(req.query.row);
-  debug(req.query.row.title);
-  debug(req.query.row.__type);
-  debug(req.query.row._id);
+  const { _id } = req.query;
+  const { room } = req.query;
+  debug(_id, room);
   let dbSettings;
   for (let i = 0; i < req.dbSettings.length; i += 1) {
-    if (req.dbSettings[i].room === req.query.room) {
+    if (req.dbSettings[i].room === room) {
       dbSettings = req.dbSettings[i];
       break;
     }
   }
-  debug(dbSettings);
+  // debug(dbSettings);
   debug(dbSettings.activelist);
-  dbSettings.activelist = dbSettings.activelist.filter((item) => item != req.query.row._id);
+  dbSettings.activelist = dbSettings.activelist.filter((item) => item != _id);
   debug(dbSettings.activelist);
   // offset the next-story-to-read to account for deleted entry
   dbSettings.entryToRead -= 1;
@@ -32,13 +30,13 @@ module.exports = (req, res) => {
     debug(docs);
   });
   // delete entry from acreq.tual db
-  // const query = { room: req.query.room, __type: 'Story' };
-  const query = { _id: req.query.row._id };
+  // const query = { room: room, __type: 'Story' };
+  const query = { _id };
   Story.findOneAndDelete(query).then((docs) => {
     debug(docs);
   }).then(() => {
     // fetch the db to refresh the frontend
-    Story.find({}).sort([['_id', 1]]).then((docs) => {
+    Story.find({ room }).sort([['_id', 1]]).then((docs) => {
       debug(docs);
       /* tell visualise-pages about activeListChange */
       bus.emit('activelistChange', dbSettings.activelist.length);
@@ -48,7 +46,7 @@ module.exports = (req, res) => {
         dbSettings.visualise = dbSettings.activelist.length;
         dbSettingsUpdate(dbSettings)
       }
-      res.json({
+      res.send({
         stories: docs,
         activelistChange: dbSettings.activelist.length,
         visualise: dbSettings.visualise,
