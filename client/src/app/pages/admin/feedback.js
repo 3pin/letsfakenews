@@ -1,9 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import {
+  Table,
+  Button,
+} from 'react-bootstrap';
 import FrameBanner from '../../components/frameBanner';
 import 'eventsource-polyfill';
-import { Table, Button } from 'react-bootstrap';
 
-export default class Feedback extends React.Component {
+// which props do we want to inject, given the global store state?
+const mapStateToProps = (state) => ({
+  room: state.roomReducer.room,
+});
+
+class Feedback extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.NODE_ENV === 'production') {
@@ -11,41 +21,31 @@ export default class Feedback extends React.Component {
     } else {
       this.eventSource = new EventSource('http://localhost:5000/settings/sse');
     }
-    this.apiGet = this.apiGet.bind(this);
-    this.apiPost = this.apiPost.bind(this);
     this.handleClear = this.handleClear.bind(this);
     this.state = {
       feedback: [],
     };
   }
 
-  apiGet = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const body = await response.json();
-    if (response.status !== 200) { throw Error(body.message); }
-    return body;
-  }
-
-  apiPost = async (endpoint, data) => {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const body = await response.json();
-    if (response.status !== 200) { throw Error(body.message); }
-    return body;
-  };
-
   handleClear() {
+    const { room } = this.props;
     /* Connect to API and clear all from database */
     document.activeElement.blur();
     /* Connect to API and clear feedback from database */
-    this.apiPost(this.props.apiClear).then((res) => this.setState({
-      feedback: res.feedback,
-    })).catch((err) => console.log(err));
+    axios.delete(this.props.apiClear, {
+      params: {
+        room,
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        console.log(res);
+        this.setState({
+          feedback: res.data.feedback,
+        });
+      }
+    }).catch((err) => console.log(err));
   }
 
   componentDidMount() {
@@ -59,9 +59,21 @@ export default class Feedback extends React.Component {
       console.log('--- SSE EVENTSOURCE ERROR: ', e);
     };
     /* load database into this.state */
-    this.apiGet(this.props.apiHello).then((res) => this.setState({
-      feedback: res.feedback,
-    })).catch((err) => console.log(err));
+    const { room } = this.props;
+    axios.get(this.props.apiHello, {
+      params: {
+        room,
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        // console.log(res);
+        this.setState({
+          feedback: res.data.feedback,
+        });
+      }
+    }).catch((err) => console.log(err));
   }
 
   componentWillUnmount() {
@@ -139,3 +151,4 @@ export default class Feedback extends React.Component {
     );
   }
 }
+export default connect(mapStateToProps)(Feedback);

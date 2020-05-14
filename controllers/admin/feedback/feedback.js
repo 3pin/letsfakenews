@@ -1,12 +1,16 @@
 
-const debug = require('debug')('routes_admin');
+const debug = require('debug')('controller');
 // import mongoose 'Story' schema
 const Feedback = require('../../../models/feedback.model');
 
 module.exports = (req, res) => {
   debug('/GET /admin/feedback');
-  Feedback.find({}).sort([['_id', 1]]).then((docs) => {
-    // res.send({express: "Hello 'REACT /admin/feedback' "});
+  const {
+    room,
+  } = req.query;
+  debug(room);
+  Feedback.find({ room }).sort([['_id', 1]]).then((docs) => {
+    debug(docs);
     res.send({
       feedback: docs,
     });

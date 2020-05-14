@@ -21,21 +21,23 @@ const visualiseNum = require('../controllers/admin/visualise/num');
 const visualiseDuration = require('../controllers/admin/visualise/duration');
 const visualiseScroller = require('../controllers/admin/visualise/scroller');
 //
-/* display stories database */
+/* stories: display all */
 admin.get('/stories', stories);
-// stories macro-ops
+/* stories: autolive */
 admin.put('/stories/autolive', storiesAutolive);
+/* stories: refresh */
 admin.get('/stories/refresh', storiesRefresh);
-/* clear a database */
+/* stories: delete all */
 admin.delete('/stories/clear', storiesClear);
-// stories row-ops
+/* story: delete */
 admin.delete('/stories/remove', storiesRemove);
+/* storye: storylive */
 admin.put('/stories/storylive', storiesStorylive);
 //
-/* display feedback database */
+/* feedback: display all */
 admin.get('/feedback', feedback);
-/* clear a database */
-admin.post('/feedback/clear', feedbackClear);
+/* feedback: delete all */
+admin.delete('/feedback/clear', feedbackClear);
 //
 /* display visualise controls */
 admin.get('/visualise', visualise);
