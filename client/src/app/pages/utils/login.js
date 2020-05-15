@@ -11,6 +11,7 @@ import {
   Redirect,
   withRouter,
 } from 'react-router-dom';
+import axios from 'axios';
 
 import FrameBanner from '../../components/frameBanner';
 
@@ -34,7 +35,6 @@ class Login extends React.Component {
       username: '',
       password: '',
       redirect: false,
-      room: this.props.room,
     };
   }
 
@@ -54,37 +54,34 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    fetch('/settings/authenticate', {
-      body: JSON.stringify(this.state),
-      method: 'POST',
-      credentials: 'include',
-      cache: 'no-cache',
-      headers: {
-        'Content-Type': 'application/json',
+    const {
+      room,
+    } = this.props;
+    const data = this.state;
+    axios.post('/settings/authenticate', {
+      data,
+    }, {
+      params: {
+        room,
       },
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          /* dipatch action to change button-UI */
-          this.props.loginSuccess();
-          // this.props.history.push('/');
-          this.setState(() => ({
-            redirect: true,
-          }));
-        } else {
-          this.setState(() => ({
-            username: '',
-            password: '',
-          }));
-          this.nameInput.focus();
-          alert(JSON.stringify(res.error));
-          // const error = new Error(res.error);
-          // throw error;
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    }).then((res) => {
+      console.log(res);
+      if (res.status === 200) {
+        // dipatch action to change button-UI
+        this.props.loginSuccess();
+        // this.props.history.push('/');
+        this.setState(() => ({
+          redirect: true,
+        }));
+      } else {
+        this.setState(() => ({
+          username: '',
+          password: '',
+        }));
+        this.nameInput.focus();
+        alert(JSON.stringify(res.error));
+      }
+    }).catch((err) => console.log(err));
   }
 
   renderRedirect() {

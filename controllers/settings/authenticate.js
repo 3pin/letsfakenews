@@ -2,44 +2,46 @@ const debug = require('debug')('controller');
 const jwt = require('jsonwebtoken');
 const Auth = require('../../models/auth.model');
 
+
 module.exports = (req, res) => {
   debug('/settings/authenticate');
-  debug(req.body);
   const {
     username,
     password,
-    room,
-  } = req.body;
+  } = req.body.data;
+  debug(username, password);
   Auth.findOne({
-    room,
-  }, (err, obj) => {
+    username,
+  }, (err, user) => {
     if (err) {
+      debug('error: Internal error please try again');
       res.status(500)
         .json({
           error: 'Internal error please try again',
         });
-    } else if (!obj) {
+    } else if (!user) {
+      debug('error: incorrect username');
       res.status(401)
         .json({
           error: 'Incorrect username',
         });
     } else {
-      debug(obj);
-      obj.isCorrectPassword(password, (error, same) => {
+      debug(user);
+      user.isCorrectPassword(password, (error, same) => {
         if (error) {
-          debug('error');
+          debug('error: Internal error please try again');
           res.status(500)
             .json({
-              error: 'Internal error, please try again',
+              error: 'Internal error please try again',
             });
         } else if (!same) {
-          debug('!same');
+          debug('error: Incorrect password');
           res.status(401)
             .json({
-              error: 'Incorrect password, please try again',
+              error: 'Incorrect password',
             });
         } else {
-          debug('same');
+          debug('Correct password');
           // Setup token
           const time = Number(global.gConfig.tokenAgeMins) * 60000;
           const payload = {

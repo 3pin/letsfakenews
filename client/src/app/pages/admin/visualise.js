@@ -23,8 +23,6 @@ class Visualise extends React.Component {
       this.eventSource = new EventSource('http://localhost:5000/settings/sse');
     }
     //
-    this.apiGet = this.apiGet.bind(this);
-    this.apiPost = this.apiPost.bind(this);
     this.handleVisualsLength = this.handleVisualsLength.bind(this);
     this.handleDurationChange = this.handleDurationChange.bind(this);
     this.handleScrollerChange = this.handleScrollerChange.bind(this);
@@ -37,31 +35,6 @@ class Visualise extends React.Component {
     };
   }
 
-  apiGet = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const body = await response.json();
-    if (response.status !== 200) {
-      throw Error(body.message);
-    } else {
-      return body;
-    }
-  }
-
-  apiPost = async (endpoint, data) => {
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const body = await response.json();
-    if (response.status !== 200) {
-      throw Error(body.message);
-    }
-    return body;
-  };
-
   handleVisualsLength(e) {
     // console.log(`onInput fired with value: '${e.currentTarget.value}'`);
     const data = {
@@ -69,10 +42,10 @@ class Visualise extends React.Component {
     };
     // update db then with 'res' update this component
     const {
-      room
+      room,
     } = this.props;
     axios.put(this.props.apiVisualiseNum, {
-      data
+      data,
     }, {
       params: {
         room,

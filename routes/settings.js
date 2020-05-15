@@ -2,30 +2,29 @@
 const debug = require('debug')('routes');
 
 /* declare a new router */
-const routes = require('express').Router();
+const settings = require('express').Router();
 
-/* routes */
+/* settings */
 const sse = require('../controllers/settings/sse');
 const mode = require('../controllers/settings/mode');
 const activelist = require('../controllers/settings/activelist');
-// const password = require('../controllers/settings/password');
 const checkToken = require('../controllers/settings/checktoken');
 const authenticate = require('../controllers/settings/authenticate');
 const checkDevice = require('../controllers/settings/checkdevice');
 
 /* sub to SSE */
-routes.get('/sse', sse);
+settings.get('/sse', sse);
 /* fetch mode from db */
-routes.get('/mode', mode);
+settings.get('/mode', mode);
 /* fetch activelist from db */
-routes.get('/activelist', activelist);
+settings.get('/activelist', activelist);
 /* fetch password from db */
-// routes.get('/password', password);
+// settings.get('/password', password);
 /* check if the user has an authToken... if not ask them to login */
-routes.get('/checkToken', checkToken);
+settings.get('/checkToken', checkToken);
 /* authenticate login:username/password against db */
-routes.post('/authenticate', authenticate);
+settings.post('/authenticate', authenticate);
 /* check device Type ... desktop or mobile? */
-routes.get('/checkDevice', checkDevice);
+settings.get('/checkDevice', checkDevice);
 
-module.exports = routes;
+module.exports = settings;

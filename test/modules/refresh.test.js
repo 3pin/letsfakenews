@@ -89,7 +89,7 @@ describe('Refresh: refreshing urls for stories', () => {
     /* create 2 db entries */
     // mongoose.connection.collections.development.drop();
     /*
-    mongoose.connection.collection(global.config.database, function (err, collection) {
+    mongoose.connection.collection(global.gConfig.database, function (err, collection) {
       collection.drop().then(() => {
         debug("collection dropped");
         done();

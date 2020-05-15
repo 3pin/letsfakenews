@@ -57,6 +57,25 @@ class Routes extends React.Component {
   */
 
   render() {
+    if (this.props.room === '') {
+      console.log('No room selected');
+      return (
+        <Container as="main">
+          <FrameNavbar className="navbar" title="LetsFakeNews" links={['Room', 'Role', 'Write', 'Watch', 'Admin', this.props.buttonText]} />
+          <Row>
+            <Col as="aside" xs={0} sm={1} md={1} lg={1} xl={1} />
+            <Col as="article" xs={12} sm={10} md={10} lg={10} xl={10}>
+              <Switch>
+                <Route path="/room" component={Room} />
+                <Redirect to="/room" />
+              </Switch>
+              <FrameFooter />
+            </Col>
+            <Col as="aside" xs={0} sm={1} md={1} lg={1} xl={1} />
+          </Row>
+        </Container>
+      );
+    }
     return (
       <Container as="main">
         <FrameNavbar className="navbar" title="LetsFakeNews" links={['Room', 'Role', 'Write', 'Watch', 'Admin', this.props.buttonText]} />
