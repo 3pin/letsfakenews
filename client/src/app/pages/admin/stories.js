@@ -54,7 +54,9 @@ class Stories extends React.Component {
           autolive: res.data.autolive,
         });
       }
-    }).catch((err) => console.log(err));
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   handleRefresh() {

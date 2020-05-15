@@ -11,7 +11,10 @@ const activelist = require('../controllers/settings/activelist');
 const checkToken = require('../controllers/settings/checktoken');
 const authenticate = require('../controllers/settings/authenticate');
 const checkDevice = require('../controllers/settings/checkdevice');
+const room = require('../controllers/settings/room');
 
+/* check if room valid */
+settings.get('/room', room);
 /* sub to SSE */
 settings.get('/sse', sse);
 /* fetch mode from db */

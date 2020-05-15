@@ -5,6 +5,7 @@ import {
 import {
   withRouter,
 } from 'react-router-dom';
+import axios from 'axios';
 import ReactPlayer from 'react-player';
 import P5Wrapper from 'react-p5-wrapper';
 import FrameButton from '../../components/frameButton';
@@ -41,8 +42,6 @@ class visualiseNews extends React.Component {
   constructor(props) {
     super(props);
     //
-    this.apiGet = this.apiGet.bind(this);
-    this.apiPost = this.apiPost.bind(this);
     this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onEnded = this.onEnded.bind(this);
@@ -85,50 +84,29 @@ class visualiseNews extends React.Component {
     };
   }
 
-  apiGet = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const body = await response.json();
-    if (response.status !== 200) {
-      throw Error(body.message);
-    } else {
-      return body;
-    }
-  };
-
-  apiPost = async (endpoint, data) => {
-    const room = {
-      room: data,
-    };
-    console.log(JSON.stringify(data));
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(room),
-    });
-    const body = await response.json();
-    if (response.status !== 200) {
-      throw Error(body.message);
-    }
-    return body;
-  };
-
   onReady() {
     console.log('ON-READY');
     /* load new story into this.state */
-    this.apiPost('/watch/requestNewStory', this.props.room)
-      .then((res) => this.setState({
+    axios.get('/watch/requestNewStory', {
+      params: {
+        room: this.props.room,
+      },
+    }).then((res) => {
+      console.log(res);
+      const { urls, markers } = metadata(res.data, this.state.imageDuration, this.state.imagesStart);
+      this.setState({
         url_index: 0,
         title: res.data.title.toUpperCase(),
         story: res.data.story,
-        urls: metadata(res.data, this.state.imageDuration, this.state.imagesStart).urls,
-        markers: metadata(res.data, this.state.imageDuration, this.state.imagesStart).markers,
-      }))
-      .then(() => {
-        console.log(this.state);
-        console.log('Media now ready');
-      }).catch((err) => console.log(err));
+        urls,
+        markers,
+      });
+    }).then(() => {
+      console.log(this.state);
+      console.log('Media now ready');
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
   onProgress(e) {
@@ -136,17 +114,18 @@ class visualiseNews extends React.Component {
     this.setState({
       playedSeconds: e.playedSeconds.toFixed(2),
     });
-    /* change url-image according to markers... */
+    // change url-image according to markers...
     const currentSec = e.playedSeconds;
     if (currentSec >= this.state.markers[this.state.url_index] && this.state.url_index < this.state.markers.length - 1) {
+      const url_index = this.state.url_index + 1;
       // console.log('marker passed secs:' + this.state.markers[this.state.url_index] + ' current url index:' + this.state.url_index);
       this.setState({
-        url_index: this.state.url_index + 1,
+        url_index,
       });
       // console.log('new url index: ' + this.state.url_index);
       // console.log('new url: ' + this.state.urls[this.state.url_index]);
     }
-    /* change interface according to markers */
+    // change interface according to markers
     if (currentSec >= this.state.popupStart && currentSec <= this.state.popupEnd) {
       // console.log('popup & title should be visible');
       this.setState({
@@ -227,26 +206,33 @@ class visualiseNews extends React.Component {
       componentWidth: this.refs.parent.offsetWidth,
     });
     document.addEventListener('fullscreenchange', this.exitFullscreen, false);
-    /* calculate durations && */
     /* load db settings... */
-    this.apiGet('/settings/mode').then((res) => {
-      // console.log(res.dbSettings);
-      if (res.dbSettings.nodeMode === 'production') {
-        console.log(`mode is ${res.dbSettings.nodeMode}`);
+    /* load autolive-status & stories from db */
+    axios.get('/settings/mode', {
+      params: {
+        room: this.props.room,
+      },
+    }).then((res) => {
+      const popup_duration = diff(this.state.popupStart, this.state.popupEnd);
+      const imageDuration = diff(this.state.imagesStart, this.state.imagesEnd);
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else if (res.data.dbSettings.nodeMode === 'production') {
+        console.log(`mode is ${res.data.dbSettings.nodeMode}`);
         this.setState({
-          popup_duration: diff(this.state.popupStart, this.state.popupEnd),
-          imageDuration: diff(this.state.imagesStart, this.state.imagesEnd),
-          mode: res.dbSettings.nodeMode,
+          popup_duration,
+          imageDuration,
+          mode: res.data.dbSettings.nodeMode,
           playing: true,
           controls: false,
           volume: 1,
         });
-      } else if (res.dbSettings.nodeMode === 'development') {
-        console.log(`mode is: ${res.dbSettings.nodeMode}`);
+      } else {
+        console.log(`mode is: ${res.data.dbSettings.nodeMode}`);
         this.setState({
-          popup_duration: diff(this.state.popupStart, this.state.popupEnd),
-          imageDuration: diff(this.state.imagesStart, this.state.imagesEnd),
-          mode: res.dbSettings.nodeMode,
+          popup_duration,
+          imageDuration,
+          mode: res.data.dbSettings.nodeMode,
           playing: true,
           controls: true,
           volume: 0,

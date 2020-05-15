@@ -12,17 +12,17 @@ module.exports = (req, res) => {
     room,
   } = req.query;
   /* delete all db entries */
-  // const query = { room: room };
-  Feedback.deleteMany(room).then((docs, err) => {
+  Feedback.deleteMany({ room }).then((docs, err) => {
     if (err) {
       debug(err);
     } else {
       debug(docs);
       // debug(docs.result.n + " document(s) deleted");
     }
-    res.send({
-      feedback: [],
-    });
+    res.status(200)
+      .json({
+        feedback: [],
+      });
   }).catch((err) => {
     debug('Err: ', err);
   });

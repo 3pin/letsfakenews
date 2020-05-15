@@ -9,8 +9,9 @@ module.exports = (req, res) => {
   const { dbSettings } = req;
   dbSettings.autolive = req.body.data;
   dbSettingsUpdate(dbSettings, req.query.room).then(() => {
-    res.send({
-      autolive: req.body.data,
-    });
+    res.status(200)
+      .json({
+        autolive: req.body.data,
+      });
   });
 };

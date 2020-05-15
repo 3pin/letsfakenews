@@ -81,7 +81,9 @@ class Login extends React.Component {
         this.nameInput.focus();
         alert(JSON.stringify(res.error));
       }
-    }).catch((err) => console.log(err));
+    }).catch((err) => {
+      alert(err.response.data.message);
+    });
   }
 
   renderRedirect() {

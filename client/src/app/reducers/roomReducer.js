@@ -23,6 +23,7 @@ const roomReducer = (state = initialState, action) => {
     {
       return {
         ...state,
+        room: action.payload,
         submitting: false,
       };
     }

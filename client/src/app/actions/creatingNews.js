@@ -25,7 +25,10 @@ export const submit = (story, title, room, history) => {
   let request = axios.post('/write/news', {
     story,
     title,
-    room,
+  }, {
+    params: {
+      room,
+    },
   });
   return (dispatch) => {
     const onSuccess = (response) => {

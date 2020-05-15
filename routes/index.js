@@ -10,7 +10,6 @@ const write = require('./write');
 const watch = require('./watch');
 const admin = require('./admin');
 const settings = require('./settings');
-const room = require('../controllers/settings/room');
 
 /*
 //=============================================================================
@@ -32,12 +31,5 @@ routes.use('/write', write);
 routes.use('/watch', watch);
 routes.use('/admin', admin);
 routes.use('/settings', settings);
-routes.post('/room', room);
-
-routes.get('/room', (req, res) => {
-  debug('hello');
-  res.send('Hello');
-});
-
 
 module.exports = routes;

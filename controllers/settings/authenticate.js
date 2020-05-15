@@ -17,13 +17,13 @@ module.exports = (req, res) => {
       debug('error: Internal error please try again');
       res.status(500)
         .json({
-          error: 'Internal error please try again',
+          message: 'Internal error please try again',
         });
     } else if (!user) {
       debug('error: incorrect username');
       res.status(401)
         .json({
-          error: 'Incorrect username',
+          message: 'Incorrect username',
         });
     } else {
       debug(user);
@@ -32,13 +32,13 @@ module.exports = (req, res) => {
           debug('error: Internal error please try again');
           res.status(500)
             .json({
-              error: 'Internal error please try again',
+              message: 'Internal error please try again',
             });
         } else if (!same) {
           debug('error: Incorrect password');
           res.status(401)
             .json({
-              error: 'Incorrect password',
+              message: 'Incorrect password',
             });
         } else {
           debug('Correct password');

@@ -5,6 +5,7 @@ import React from 'react';
 import {
   Redirect,
 } from 'react-router-dom';
+import axios from 'axios';
 
 export default function checkDevice(ComponentToProtect) {
   return class extends React.Component {
@@ -17,27 +18,20 @@ export default function checkDevice(ComponentToProtect) {
     }
 
     componentDidMount() {
-      fetch('/settings/checkDevice')
-        .then((res) => {
-          if (res.status === 200) {
-            console.log('This is a Desktop device');
-            this.setState({
-              loading: false,
-            });
-          } else {
-            console.log('Redirecting... This is NOT a Desktop device');
-            this.setState({
-              loading: false,
-              redirect: true,
-            });
-            alert('Only desktop browsers can access the LetsFakeNews service');
-            // const error = new Error(res.error);
-            // throw error;
-          }
-        })
-        .catch((err) => {
-          console.error(err);
+      //
+      /* load autolive-status & stories from db */
+      axios.get('/settings/checkDevice').then((response) => {
+        console.log(response.data.message);
+        this.setState({
+          loading: false,
         });
+      }).catch((err) => {
+        alert(err.response.data.message);
+        this.setState({
+          loading: false,
+          redirect: true,
+        });
+      });
     }
 
     render() {
@@ -45,12 +39,12 @@ export default function checkDevice(ComponentToProtect) {
         return null;
       }
       if (this.state.redirect) {
-        return <Redirect to="/landing" />;
+        return <Redirect to="/role" />;
       }
       return (
         <>
-          <ComponentToProtect {...this.props} />
-        </>
+          <ComponentToProtect {...this.props} /> <
+        />
       );
     }
   };

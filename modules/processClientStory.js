@@ -6,7 +6,7 @@ return JSON
 */
 
 
-const debug = require('debug')('process_story');
+const debug = require('debug')('module');
 const nlp = require('./nlp.js');
 const imagesearchIterative = require('./imagesearchIterative.js');
 const timeOps = require('./timeOps.js');

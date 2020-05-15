@@ -26,7 +26,7 @@ module.exports = (req, res) => {
   Story.findOneAndDelete(query).then((docs) => {
     debug(docs);
   }).then(() => {
-    // fetch the db to refresh the frontend
+    // get the db to refresh the frontend
     Story.find({ room }).sort([['_id', 1]]).then((docs) => {
       debug(docs);
       /* tell visualise-pages about activeListChange */

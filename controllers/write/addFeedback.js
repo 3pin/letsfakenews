@@ -1,5 +1,5 @@
 
-const debug = require('debug')('routes_write');
+const debug = require('debug')('controller');
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');
 // import mongoose schemas
@@ -10,7 +10,9 @@ const processClientFeedback = require('../../modules/processClientFeedback.js');
 module.exports = (req, res) => {
   debug('/POST routes/add_feedback');
   // Get our form values. These rely on the "name" attributes
+  const { room } = req.query;
   const clientJSON = req.body;
+  clientJSON.room = room;
   processClientFeedback.process(clientJSON).then((result) => {
     debug('About to save to db');
     // Save to the DB

@@ -2,7 +2,7 @@ const debug = require('debug')('middleware');
 const Settings = require('../../models/settings.model');
 
 module.exports = (dbSettings, room) => {
-  debug("Running Func to update 'dbSettings'");
+  debug("Entered func to update 'dbSettings'");
   return new Promise(((resolve) => {
     Settings.findOneAndUpdate({
       room,

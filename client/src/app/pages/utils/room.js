@@ -37,6 +37,13 @@ class InnerRoom extends React.Component {
     cookies: instanceOf(Cookies).isRequired
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      room: this.props.room,
+    }
+  }
+
   onHandleSubmit = (content) => {
     /* dipatch action to change button-UI to greyed out*/
     this.props.submitStarted();

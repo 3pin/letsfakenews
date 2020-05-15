@@ -45,7 +45,9 @@ class Feedback extends React.Component {
           feedback: res.data.feedback,
         });
       }
-    }).catch((err) => console.log(err));
+    }).catch((err) => {
+      console.log(err.response.data.message);
+    });
   }
 
   componentDidMount() {

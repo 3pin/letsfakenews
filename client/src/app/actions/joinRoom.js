@@ -6,18 +6,20 @@ export const submitStarted = () => ({
 });
 
 export const submit = (room, history) => {
-  const request = axios.post('/room', {
-    room,
+  const request = axios.get('/settings/room', {
+    params: {
+      room,
+    },
   });
   return (dispatch) => {
     const onSuccess = (response) => {
-      if (response.data) {
-        dispatch({
-          type: 'SUBMIT_SUCCESS_ROOM',
-          payload: room,
-        });
-        history.push('/role');
-      } else {
+      console.log(response.data.message);
+      dispatch({
+        type: 'SUBMIT_SUCCESS_ROOM',
+        payload: room,
+      });
+      history.push('/role');
+      /*else {
         dispatch({
           type: 'SUBMIT_FAIL_ROOM',
           payload: null,
@@ -26,12 +28,16 @@ export const submit = (room, history) => {
         history.push('/room');
       }
       return response;
+      */
     };
     const onError = (error) => {
+      console.log(error.response.data.message);
       dispatch({
-        type: 'SUBMIT_NEWS_FAILED',
-        payload: error.response.data.msg,
+        type: 'SUBMIT_FAIL_ROOM',
+        payload: '',
       });
+      // history.push('/room');
+      alert('That room does not exist');
       return error;
     };
     request.then(onSuccess, onError);

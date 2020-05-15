@@ -1,6 +1,5 @@
 // public routes into the app
 
-
 const debug = require('debug')('routes');
 // import mongoose schemas
 const Story = require('../../models/story.model');
@@ -13,27 +12,26 @@ module.exports = (req, res) => {
   // detect client device type
   if (req.device.type === 'desktop') {
     debug('/GET routes/displays/request_new_story');
+    const { dbSettings } = req;
+    const { room } = req.query;
     let obj;
     // choose an id from activelist[]...
-    if (req.dbSettings.dbMode === 'next') {
-      obj = dbFetchMode.nextEntry(req.dbSettings.activelist, req.dbSettings.entryToRead);
+    if (dbSettings.dbMode === 'next') {
+      obj = dbFetchMode.nextEntry(dbSettings.activelist, dbSettings.entryToRead);
     } else {
-      obj = dbFetchMode.randomEntry(req.dbSettings.activelist);
+      obj = dbFetchMode.randomEntry(dbSettings.activelist);
     }
     const { id } = obj;
     debug(`id to read from activelist: ${id}`);
     // fetch the JSON from db
     Story.findById(id, (err, data) => {
       debug(data);
-      res.send({
-        data,
-      });
-      debug(err);
+      res.send(data);
     }).then(() => {
-      // save settings to req.dbSettings for for next time-around
-      req.dbSettings.entryToRead = obj.entryToRead;
-      req.dbSettings.dbMode = obj.dbMode;
-      dbSettingsUpdate(req.dbSettings).then((docs) => {
+      // save settings to dbSettings for for next time-around
+      dbSettings.entryToRead = obj.entryToRead;
+      dbSettings.dbMode = obj.dbMode;
+      dbSettingsUpdate(dbSettings, room).then((docs) => {
         debug('Settings for next time around: ', docs);
       });
     }).catch((err) => {

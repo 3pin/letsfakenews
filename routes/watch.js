@@ -10,7 +10,7 @@ const requestNewStory = require('../controllers/watch/requestNewStory');
 const visualise = require('../controllers/watch/visualiseCalcFrontend');
 
 // REACT connection
-watch.post('/requestNewStory', requestNewStory);
+watch.get('/requestNewStory', requestNewStory);
 watch.get('/visualise', visualise);
 
 module.exports = watch;

@@ -5,6 +5,7 @@ import React from 'react';
 import {
   Redirect,
 } from 'react-router-dom';
+import axios from 'axios';
 
 export default function withAuth(ComponentToProtect) {
   return class extends React.Component {
@@ -17,23 +18,21 @@ export default function withAuth(ComponentToProtect) {
     }
 
     componentDidMount() {
-      fetch('/settings/checkToken')
-        .then((res) => {
-          if (res.status === 200) {
-            this.setState({
-              loading: false,
-            });
-          } else {
-            console.log('redirecting');
-            this.setState({
-              loading: false,
-              redirect: true,
-            });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
+      //
+      /* load autolive-status & stories from db */
+      axios.get('/settings/checkToken').then(() => {
+        console.log('redirecting');
+        this.setState({
+          loading: false,
         });
+      }).catch((err) => {
+        console.log(JSON.stringify(err.response.data.message));
+        alert(err.response.data.message);
+        this.setState({
+          loading: false,
+          redirect: true,
+        });
+      });
     }
 
     render() {

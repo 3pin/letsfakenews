@@ -9,7 +9,10 @@ export const submit = (feedback, room, history) => {
   // console.log(feedback, room);
   let request = axios.post('/write/feedback', {
     feedback,
-    room,
+  }, {
+    params: {
+      room,
+    },
   });
   return (dispatch) => {
     const onSuccess = (response) => {

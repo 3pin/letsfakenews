@@ -13,11 +13,13 @@ module.exports = (req, res) => {
   debug('/POST routes/add_title_story');
   /* fetch db settings */
   const { dbSettings } = req;
+  const { room } = req.query;
   debug(req.body);
   const clientJSON = req.body;
   debug('clientJSON...');
   debug(clientJSON);
   debug('Unprocessed news...');
+  clientJSON.room = room;
   /* preprocess 'title' to CAPS */
   // clientJSON.title = clientJSON.title.toUpperCase();
   /* preprocess 'title' & 'story' removing linebreaks */
