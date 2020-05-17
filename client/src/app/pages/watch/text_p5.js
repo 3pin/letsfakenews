@@ -1,10 +1,18 @@
 import React from 'react';
 import P5Wrapper from 'react-p5-wrapper';
+import { connect } from 'react-redux';
+import axios from 'axios';
+
 import FrameButton from '../../components/frameButton';
 import Sketch from './sketches/text4class';
 import 'eventsource-polyfill';
 
-export default class visualiseText extends React.Component {
+// which props do we want to inject, given the global store state?
+const mapStateToProps = (state) => ({
+  room: state.roomReducer.room,
+});
+
+class visualiseText extends React.Component {
   constructor(props) {
     super(props);
     if (process.env.NODE_ENV === 'production') {
@@ -12,7 +20,6 @@ export default class visualiseText extends React.Component {
     } else {
       this.eventSource = new EventSource('http://localhost:5000/settings/sse');
     }
-    this.apiGet = this.apiGet.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.state = {
@@ -23,23 +30,24 @@ export default class visualiseText extends React.Component {
     };
   }
 
-  apiGet = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
-
   refreshList() {
     /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then((res) => {
-        console.log(res);
+    const { room } = this.props;
+    axios.get(this.state.apiHello, {
+      params: {
+        room,
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        // console.log(res);
         this.setState({
-          liveList: res.liveList,
-          textScrollers: res.textScrollers,
+          liveList: res.data.liveList,
+          textScrollers: res.data.textScrollers,
         });
-      }).catch((err) => console.log(err));
+      }
+    }).catch((err) => console.log(err));
   }
 
   goFullscreen() {
@@ -58,20 +66,29 @@ export default class visualiseText extends React.Component {
   }
 
   componentDidMount() {
+    const { room } = this.props;
+    console.log(room);
     /* pass in the rendered componentWidth to state */
     console.log(this.refs.parent.offsetWidth);
     this.setState({
       componentWidth: this.refs.parent.offsetWidth,
     });
     /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then((res) => {
-        console.log(res.liveList);
+    axios.get(this.state.apiHello, {
+      params: {
+        room,
+      },
+    }).then((res) => {
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else {
+        // console.log(res);
         this.setState({
-          liveList: res.liveList,
-          textScrollers: res.textScrollers,
+          liveList: res.data.liveList,
+          textScrollers: res.data.textScrollers,
         });
-      }).catch((err) => console.log(err));
+      }
+    }).catch((err) => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('activelistChange', (e) => {
       console.log('Backend changes triggered a refresh of the activelist');
@@ -103,3 +120,4 @@ export default class visualiseText extends React.Component {
     );
   }
 }
+export default connect(mapStateToProps)(visualiseText);

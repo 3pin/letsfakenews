@@ -3,6 +3,7 @@ const debug = require('debug')('controller');
 
 module.exports = (req, res) => {
   debug(`Entered middleware to check device type: ${req.device.type}`);
+  // debug(req);
   if (req.device.type === 'desktop') {
     debug('SUCCESS');
     res.status(200).json({

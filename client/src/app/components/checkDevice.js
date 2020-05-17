@@ -7,20 +7,33 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 
+import { store } from '../store';
+
 export default function checkDevice(ComponentToProtect) {
+  // grab current state
+  const state = store.getState();
+  const { room } = state.roomReducer;
+
   return class extends React.Component {
     constructor() {
       super();
       this.state = {
         loading: true,
         redirect: false,
+        room,
       };
     }
 
     componentDidMount() {
       //
+      console.log(this.props);
+      console.log(this.state);
       /* load autolive-status & stories from db */
-      axios.get('/settings/checkDevice').then((response) => {
+      axios.get('/settings/checkDevice', {
+        params: {
+          room,
+        },
+      }).then((response) => {
         console.log(response.data.message);
         this.setState({
           loading: false,
@@ -43,8 +56,8 @@ export default function checkDevice(ComponentToProtect) {
       }
       return (
         <>
-          <ComponentToProtect {...this.props} /> <
-        />
+          <ComponentToProtect {...this.props} />
+        < />
       );
     }
   };
