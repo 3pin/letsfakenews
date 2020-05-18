@@ -80,11 +80,10 @@ class visualiseImages extends React.Component {
       this.setState({
         liveList: res.data.liveList,
         imageDuration: res.data.imageDuration,
+      }, () => {
+        console.log(`post-refresh.. starting startTimer @interval: ${this.state.imageDuration * 1000}`);
+        timerId = this.startTimer(this.state.imageDuration * 1000).id;
       });
-    }).then(() => {
-      /* start new timer to run changeImage */
-      console.log('post-refresh.. starting startTimer');
-      timerId = this.startTimer(this.state.imageDuration * 1000).id;
     }).catch((err) => console.log(err));
   }
 
@@ -101,9 +100,10 @@ class visualiseImages extends React.Component {
     })
     */
     /* sequentially pick imageSet from this.state.liveList */
+    const imageSet = this.state.liveList[this.state.imageSetIndex].urlsTitle;
     return new Promise(() => {
       this.setState({
-        imageSet: this.state.liveList[this.state.imageSetIndex].urlsTitle,
+        imageSet,
         imageIndex: 0,
       });
     });
@@ -112,39 +112,39 @@ class visualiseImages extends React.Component {
   changeImage() {
     /* every Xsecs step through the this.state.imageSet until end... then pickImages() */
     console.log('changeImage... display next Image in set');
+    const incImageIndex = this.state.imageIndex + 1;
+    const incImageSetIndex = this.state.imageSetIndex + 1;
     if (this.state.imageIndex < this.state.imageSet.length - 1) {
       this.setState({
-        imageIndex: this.state.imageIndex + 1,
+        imageIndex: incImageIndex,
+      });
+    } else if (this.state.imageSetIndex === this.state.liveList.length - 1) {
+      /* if imageSetIndex reached the end of imageSet then reset */
+      this.setState({
+        imageSetIndex: 0,
+      }, () => {
+        this.pickImages();
       });
     } else {
-      /* if imageSetIndex reached the end of imageSet then reset */
-      if (this.state.imageSetIndex === this.state.liveList.length - 1) {
-        this.setState({
-          imageSetIndex: 0,
-        }, () => {
-          this.pickImages();
-        });
-      } else {
-        /* increment imageSetIndex */
-        this.setState({
-          imageSetIndex: this.state.imageSetIndex + 1,
-        }, () => {
-          this.pickImages();
-        });
-      }
+      /* increment imageSetIndex */
+      this.setState({
+        imageSetIndex: incImageSetIndex,
+      }, () => {
+        this.pickImages();
+      });
     }
   }
 
   startTimer(delay) {
     const id = setInterval(() => this.changeImage(), delay);
-    console.log(`timerid: ${id}`);
+    console.log(`start timerid: ${id}`);
     return {
       id,
     };
   }
 
   endTimer(id) {
-    console.log(`timerid: ${id}`);
+    console.log(`end timerid: ${id}`);
     clearInterval(id);
   }
 

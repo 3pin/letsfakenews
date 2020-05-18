@@ -28,6 +28,7 @@ module.exports = (req, res) => {
     res.json({
       liveList,
       textScrollers: dbSettings.textScrollers,
+      imageDuration: dbSettings.imageDuration,
     });
   });
 };
