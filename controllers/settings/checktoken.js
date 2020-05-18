@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
   debug('Entered middleware to check token-authorisation');
   // debug(req);
   const token = req.cookies.token || req.body.token || req.query.token || req.headers['x-access-token'];
-  debug(token);
+  debug(`token: ${token}`);
   if (!token) {
     debug('No token in client-req');
     return res.status(401).json({

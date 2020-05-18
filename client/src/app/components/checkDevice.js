@@ -18,6 +18,7 @@ export default function checkDevice(ComponentToProtect) {
     constructor() {
       super();
       this.state = {
+        apiHello: '/settings/checkDevice',
         loading: true,
         redirect: false,
         room,
@@ -29,7 +30,7 @@ export default function checkDevice(ComponentToProtect) {
       console.log(this.props);
       console.log(this.state);
       /* load autolive-status & stories from db */
-      axios.get('/settings/checkDevice', {
+      axios.get(this.state.apiHello, {
         params: {
           room,
         },

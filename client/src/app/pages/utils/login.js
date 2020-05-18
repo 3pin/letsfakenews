@@ -32,6 +32,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      apiHello: '/settings/authenticate',
       username: '',
       password: '',
       redirect: false,
@@ -58,7 +59,7 @@ class Login extends React.Component {
       room,
     } = this.props;
     const data = this.state;
-    axios.post('/settings/authenticate', {
+    axios.post(this.state.apiHello, {
       data,
     }, {
       params: {

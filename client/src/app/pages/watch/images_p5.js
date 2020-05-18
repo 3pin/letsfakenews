@@ -1,13 +1,23 @@
 import React from 'react';
 import P5Wrapper from 'react-p5-wrapper';
+import {
+  connect,
+} from 'react-redux';
+import axios from 'axios';
+
 import FrameButton from '../../components/frameButton';
 import Sketch from './sketches/images';
 // import Sketch from "./sketches/sketch4class";
 import 'eventsource-polyfill';
 
+// which props do we want to inject, given the global store state?
+const mapStateToProps = (state) => ({
+  room: state.roomReducer.room,
+});
+
 let timerId = 1;
 
-export default class visualiseImages extends React.Component {
+class visualiseImages extends React.Component {
   constructor(props) {
     super(props);
     this._isMounted = false;
@@ -16,7 +26,6 @@ export default class visualiseImages extends React.Component {
     } else {
       this.eventSource = new EventSource('http://localhost:5000/settings/sse');
     }
-    this.apiGet = this.apiGet.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.pickImages = this.pickImages.bind(this);
@@ -36,25 +45,10 @@ export default class visualiseImages extends React.Component {
         height: '100%',
         margin: 'auto',
       },
-      imgStyle: {
-        /* border: '2px solid blue',
-        background: 'pink', */
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        objectFit: 'contain',
-      },
       imageDuration: 2,
       componentWidth: undefined,
     };
   }
-
-  apiGet = async (endpoint) => {
-    const response = await fetch(endpoint);
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-    return body;
-  };
 
   goFullscreen() {
     document.activeElement.blur();
@@ -77,18 +71,21 @@ export default class visualiseImages extends React.Component {
     /* cancel timer and restart timer */
     this.endTimer(timerId);
     /* load  story from database into state */
-    this.apiGet(this.state.apiHello)
-      .then((res) => {
-        console.log(res.liveList);
-        this.setState({
-          liveList: res.liveList,
-          imageDuration: res.imageDuration,
-        });
-      }).then(() => {
-        /* start new timer to run changeImage */
-        console.log('post-refresh.. starting startTimer');
-        timerId = this.startTimer(this.state.imageDuration * 1000).id;
-      }).catch((err) => console.log(err));
+    axios.get(this.state.apiHello, {
+      params: {
+        room: this.props.room,
+      },
+    }).then((res) => {
+      console.log(res);
+      this.setState({
+        liveList: res.data.liveList,
+        imageDuration: res.data.imageDuration,
+      });
+    }).then(() => {
+      /* start new timer to run changeImage */
+      console.log('post-refresh.. starting startTimer');
+      timerId = this.startTimer(this.state.imageDuration * 1000).id;
+    }).catch((err) => console.log(err));
   }
 
   pickImages() {
@@ -203,3 +200,5 @@ export default class visualiseImages extends React.Component {
     );
   }
 }
+// export default connect(mapStateToProps)(withRouter(visualiseImages));
+export default connect(mapStateToProps)(visualiseImages);

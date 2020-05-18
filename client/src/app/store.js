@@ -8,8 +8,8 @@ import {
   persistStore,
   persistReducer,
 } from 'redux-persist';
-import storageSession from 'redux-persist/lib/storage/session';
-// import storage from 'redux-persist/lib/storage/';
+// import storageSession from 'redux-persist/lib/storage/session';
+import storageSession from 'redux-persist/lib/storage/';
 import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1';
 
 import reducer from './reducers';

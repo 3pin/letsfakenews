@@ -7,20 +7,36 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 
+import {
+  store
+} from '../store';
+
 export default function withAuth(ComponentToProtect) {
+  // grab current state
+  const state = store.getState();
+  const {
+    room
+  } = state.roomReducer;
+
   return class extends React.Component {
     constructor() {
       super();
       this.state = {
+        apiHello: '/settings/checkToken',
         loading: true,
         redirect: false,
+        room,
       };
     }
 
     componentDidMount() {
       //
       /* load autolive-status & stories from db */
-      axios.get('/settings/checkToken').then(() => {
+      axios.get(this.state.apiHello, {
+        params: {
+          room,
+        },
+      }).then(() => {
         console.log('redirecting');
         this.setState({
           loading: false,
@@ -44,8 +60,8 @@ export default function withAuth(ComponentToProtect) {
       }
       return (
         <>
-          <ComponentToProtect {...this.props} />
-        </>
+          <ComponentToProtect {...this.props} /> <
+        />
       );
     }
   };

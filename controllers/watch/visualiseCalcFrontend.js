@@ -15,6 +15,7 @@ module.exports = (req, res) => {
     if (req.dbSettings.visualise < activeStories.length) {
       // the default... no_stories_to_visualise is < activelist
       debug('amount < list');
+      debug(activeStories.length, req.dbSettings.visualise);
       liveList = activeStories.slice(activeStories.length - req.dbSettings.visualise, activeStories.length);
       debug(liveList);
     } else {

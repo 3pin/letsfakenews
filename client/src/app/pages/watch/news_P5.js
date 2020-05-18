@@ -2,9 +2,6 @@ import React from 'react';
 import {
   connect,
 } from 'react-redux';
-import {
-  withRouter,
-} from 'react-router-dom';
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import P5Wrapper from 'react-p5-wrapper';
@@ -49,6 +46,7 @@ class visualiseNews extends React.Component {
     this.exitFullscreen = this.exitFullscreen.bind(this);
     //
     this.state = {
+      apiHello: '/watch/requestNewStory',
       mode: '',
       // timings
       playedSeconds: 0,
@@ -87,7 +85,7 @@ class visualiseNews extends React.Component {
   onReady() {
     console.log('ON-READY');
     /* load new story into this.state */
-    axios.get('/watch/requestNewStory', {
+    axios.get(this.state.apiHello, {
       params: {
         room: this.props.room,
       },
@@ -297,4 +295,5 @@ class visualiseNews extends React.Component {
     );
   }
 }
-export default connect(mapStateToProps)(withRouter(visualiseNews));
+// export default connect(mapStateToProps)(withRouter(visualiseNews));
+export default connect(mapStateToProps)(visualiseNews);
