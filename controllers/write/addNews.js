@@ -52,7 +52,7 @@ module.exports = (req, res) => {
             stories,
           }
           /* tell eventbus about a new-story to trigger refresh of admin-frontend */
-          bus.emit('story', storiesObj);
+          bus.emit('news', storiesObj);
           /* if storylive is TRUE, then should be auto added to activelist */
           if (story.storylive === true) {
             dbSettings.activelist.push(story._id);

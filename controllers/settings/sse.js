@@ -58,22 +58,22 @@ module.exports = (req, res) => {
       res.write('\n\n');
     }
   });
-  /* 'story' message to update admin page */
-  bus.on('story', (data) => {
-    if (!res.finished) {
-      // debug(data);
-      debug('SSE story-msg to be emmitted from eventbus');
-      res.write('event: story\n');
-      res.write(`data: ${JSON.stringify(data)}`);
-      res.write('\n\n');
-    }
-  });
   /* 'activelistChange' message to update visualise pages */
   bus.on('activelistChange', (data) => {
     if (!res.finished) {
       debug(data);
       debug('SSE activelistChange-msg to be emmitted from eventbus');
       res.write('event: activelistChange\n');
+      res.write(`data: ${JSON.stringify(data)}`);
+      res.write('\n\n');
+    }
+  });
+  /* 'story' message to update admin page */
+  bus.on('news', (data) => {
+    if (!res.finished) {
+      // debug(data);
+      debug('SSE story-msg to be emmitted from eventbus');
+      res.write('event: news\n');
       res.write(`data: ${JSON.stringify(data)}`);
       res.write('\n\n');
     }

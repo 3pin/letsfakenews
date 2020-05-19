@@ -166,7 +166,7 @@ class Stories extends React.Component {
       }
     }).catch((err) => console.log(err));
     /* open sse listener */
-    this.eventSource.addEventListener('story', (e) => {
+    this.eventSource.addEventListener('news', (e) => {
       console.log('A new story triggered a refresh of the stories_list');
       const data = JSON.parse(e.data);
       if (data.room === room) {
