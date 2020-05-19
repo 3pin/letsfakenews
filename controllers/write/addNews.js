@@ -57,7 +57,7 @@ module.exports = (req, res) => {
               debug(output);
               /* tell eventbus about a new-story to trigger update of activeList */
               debug('SSE event triggered by New_Story');
-              bus.emit('activelistChange', output.activelist.length);
+              bus.emit('activelistChange', dbSettings.activelist.length);
             });
           }
         });
