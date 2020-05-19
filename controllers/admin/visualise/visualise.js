@@ -10,7 +10,12 @@ module.exports = (req, res) => {
   } = req.query;
   debug(room);
   const { dbSettings } = req;
-  bus.emit('activelistChange', dbSettings.activelist.length);
+  const activelistObj = {
+    room,
+    update: dbSettings.activelist.length,
+  }
+  bus.emit('activelistChange', activelistObj);
+  // bus.emit('activelistChange', dbSettings.activelist.length);
   res.send({
     activelistLength: dbSettings.activelist.length,
     visualiseNum: dbSettings.visualise,

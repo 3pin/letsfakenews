@@ -33,8 +33,14 @@ module.exports = (req, res) => {
   }
   // update db.Settings.schema
   dbSettingsUpdate(dbSettings, room).then((doc) => {
-    debug(`db updated to: ${doc}`);
-    bus.emit('activelistChange', dbSettings.activelist.length);
+    debug(`db updated... ${doc}`);
+    debug(doc);
+    const activelistObj = {
+      room,
+      update: doc.activelist.length,
+    }
+    bus.emit('activelistChange', activelistObj);
+    // bus.emit('activelistChange', dbSettings.activelist.length);
   });
   /* update db storylive entry */
   Story.findByIdAndUpdate(_id, {

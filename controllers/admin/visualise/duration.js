@@ -16,7 +16,12 @@ module.exports = (req, res) => {
   dbSettings.imageDuration = imageDuration;
   dbSettingsUpdate(dbSettings, room).then((result) => {
     debug(result);
-    bus.emit('activelistChange', dbSettings.activelist.length);
+    const activelistObj = {
+      room,
+      update: dbSettings.activelist.length,
+    }
+    bus.emit('activelistChange', activelistObj);
+    // bus.emit('activelistChange', dbSettings.activelist.length);
     res.send({
       imageDuration: result.imageDuration,
     });

@@ -17,8 +17,8 @@ module.exports = (req, res) => {
   dbSettings.activelist = dbSettings.activelist.filter((item) => item != _id);
   // offset the next-story-to-read to account for deleted entry
   dbSettings.entryToRead -= 1;
-  dbSettingsUpdate(dbSettings).then((docs) => {
-    debug(docs);
+  dbSettingsUpdate(dbSettings, room).then((doc) => {
+    debug(doc);
   });
   // delete entry from acreq.tual db
   // const query = { room: room, __type: 'Story' };
@@ -30,12 +30,17 @@ module.exports = (req, res) => {
     Story.find({ room }).sort([['_id', 1]]).then((docs) => {
       debug(docs);
       /* tell visualise-pages about activeListChange */
-      bus.emit('activelistChange', dbSettings.activelist.length);
+      const activelistObj = {
+        room,
+        update: dbSettings.activelist.length,
+      }
+      bus.emit('activelistChange', activelistObj);
+      // bus.emit('activelistChange', dbSettings.activelist.length);
       /* check if activelist.length < visualise.length */
       if (dbSettings.activelist.length <= dbSettings.visualise) {
         debug(`activelist:${dbSettings.activelist.length} is less than visualise amount:${dbSettings.visualise}`);
         dbSettings.visualise = dbSettings.activelist.length;
-        dbSettingsUpdate(dbSettings)
+        dbSettingsUpdate(dbSettings, room)
       }
       res.send({
         stories: docs,

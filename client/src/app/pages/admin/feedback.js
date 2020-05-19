@@ -54,7 +54,14 @@ class Feedback extends React.Component {
     /* open sse listener */
     this.eventSource.addEventListener('feedback', (e) => {
       console.log('A new feedback was processed by the backend');
-      this.setState({ feedback: JSON.parse(e.data) });
+      const data = JSON.parse(e.data);
+      if (data.room === this.props.room) {
+        console.log('the new feedback relates to this room');
+        this.setState({
+          feedback: data.feedbacks,
+        });
+      }
+      // this.setState({ feedback: JSON.parse(e.data) });
     });
     // Catche errors
     this.eventSource.onerror = (e) => {

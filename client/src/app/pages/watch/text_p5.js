@@ -91,8 +91,11 @@ class visualiseText extends React.Component {
     }).catch((err) => console.log(err));
     /* open sse listener */
     this.eventSource.addEventListener('activelistChange', (e) => {
-      console.log('Backend changes triggered a refresh of the activelist');
-      this.refreshList();
+      console.log('A change triggered a refresh of the activelist');
+      const data = JSON.parse(e.data);
+      if (data.room === this.props.room) {
+        this.refreshList();
+      }
     });
     // Catches errors
     this.eventSource.onerror = (e) => {

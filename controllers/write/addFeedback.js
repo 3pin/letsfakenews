@@ -24,9 +24,15 @@ module.exports = (req, res) => {
       }).then(() => {
         debug('Refreshing the feedback-admin-frontend');
         // fetch the updated db
-        Feedback.find({}).then((docs) => {
+        Feedback.find({}).then((feedbacks) => {
           // tell eventbus about a new-feedback to trigger refresh of admin-frontend
-          bus.emit('feedback', docs);
+          const feedbackObj = {
+            room,
+            feedbacks,
+          }
+          /* tell eventbus about a new-story to trigger refresh of admin-frontend */
+          bus.emit('feedback', feedbackObj);
+          // bus.emit('feedback', docs);
           debug('SSE event triggered by New_Feedback');
         });
       }).catch((err) => {

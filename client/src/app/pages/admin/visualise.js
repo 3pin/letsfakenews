@@ -142,15 +142,19 @@ class Visualise extends React.Component {
     this.eventSource.addEventListener('activelistChange', (e) => {
       console.log('A change triggered a refresh of the activelist');
       console.log(e);
-      if (JSON.parse(e.data) < this.state.visualiseNum) {
-        this.setState({
-          activelistLength: JSON.parse(e.data),
-          visualiseNum: JSON.parse(e.data),
-        });
-      } else {
-        this.setState({
-          activelistLength: JSON.parse(e.data),
-        });
+      const data = JSON.parse(e.data);
+      console.log(data);
+      if (data.room === room) {
+        if (data.update < this.state.visualiseNum) {
+          this.setState({
+            activelistLength: data.update,
+            visualiseNum: data.update,
+          });
+        } else {
+          this.setState({
+            activelistLength: data.update,
+          });
+        }
       }
     });
     /* Catches errors */

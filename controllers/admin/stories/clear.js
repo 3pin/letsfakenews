@@ -9,7 +9,8 @@ const dbSettingsUpdate = require('../../middleware/dbSettingsUpdate');
 module.exports = (req, res) => {
   debug('/DELETE /routes/admin/clear');
   /* set the db collection */
-  const query = { room: req.query.room };
+  const { room } = req.query;
+  const query = { room };
   const { dbSettings } = req;
   /* delete all db entries */
   Story.deleteMany(query).then((docs, err) => {
@@ -28,9 +29,16 @@ module.exports = (req, res) => {
     /* empty the active activelist */
     dbSettings.activelist = [];
     dbSettings.entryToRead = 0;
-    dbSettingsUpdate(dbSettings, req.query.room);
+    dbSettingsUpdate(dbSettings, room).then((doc) => {
+      debug(doc);
+    });
     /* tell visualise-pages about activeListChange */
-    bus.emit('activelistChange', 0);
+    const activelistObj = {
+      room,
+      update: 0,
+    }
+    bus.emit('activelistChange', activelistObj);
+    // bus.emit('activelistChange', 0);
   }).catch((err) => {
     debug('Err: ', err);
   });

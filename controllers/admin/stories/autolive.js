@@ -4,11 +4,12 @@ const dbSettingsUpdate = require('../../middleware/dbSettingsUpdate');
 
 module.exports = (req, res) => {
   /* update an entries display-checkbox */
-  debug(req.body.data);
-  debug(req.query);
+  const { room } = req.query;
   const { dbSettings } = req;
+  debug(room, dbSettings);
   dbSettings.autolive = req.body.data;
-  dbSettingsUpdate(dbSettings, req.query.room).then(() => {
+  dbSettingsUpdate(dbSettings, room).then((doc) => {
+    debug(doc);
     res.status(200)
       .json({
         autolive: req.body.data,

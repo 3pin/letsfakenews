@@ -44,20 +44,29 @@ module.exports = (req, res) => {
         debug('Document inserted to db successfully...');
         res.send('Success');
         /* fetch all entries matching the Story-model from db sorted by ascending key '_id' ... */
-        Story.find({}).sort([['_id', 1]]).then((docs) => {
+        Story.find({}).sort([['_id', 1]]).then((stories) => {
           debug('stories in db are ...');
+          debug(stories);
+          const storiesObj = {
+            room,
+            stories,
+          }
           /* tell eventbus about a new-story to trigger refresh of admin-frontend */
-          bus.emit('story', docs);
+          bus.emit('story', storiesObj);
           /* if storylive is TRUE, then should be auto added to activelist */
           if (story.storylive === true) {
             dbSettings.activelist.push(story._id);
             dbSettings.entryToRead = dbSettings.activelist.length - 1;
             dbSettings.dbMode = 'next';
-            dbSettingsUpdate(dbSettings).then((output) => {
+            dbSettingsUpdate(dbSettings, room).then((output) => {
               debug(output);
               /* tell eventbus about a new-story to trigger update of activeList */
               debug('SSE event triggered by New_Story');
-              bus.emit('activelistChange', dbSettings.activelist.length);
+              const activelistObj = {
+                room,
+                update: dbSettings.activelist.length,
+              }
+              bus.emit('activelistChange', activelistObj);
             });
           }
         });
