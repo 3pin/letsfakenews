@@ -15,6 +15,7 @@ import FrameButton from '../../components/frameButton';
 const mapStateToProps = (state) => ({
   story: state.newsReducer.story,
   title: state.newsReducer.title,
+  error: state.newsReducer.error,
   submitting: state.newsReducer.submitting,
   room: state.roomReducer.room,
 });
@@ -87,4 +88,4 @@ class Review extends React.Component {
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps, )(withRouter(Review));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Review));

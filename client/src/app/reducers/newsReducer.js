@@ -41,6 +41,8 @@ const newsReducer = (state = initialState, action) => {
       console.log('SUBMIT_NEWS_FAILED');
       return {
         ...state,
+        story: '',
+        title: '',
         submitting: false,
         error: action.payload,
       };

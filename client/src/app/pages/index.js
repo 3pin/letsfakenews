@@ -24,6 +24,7 @@ import RoutesWrite from './write';
 import RoutesAdmin from './admin';
 import RoutesWatch from './watch';
 import Login from './utils/login';
+import Error from './utils/error';
 // components
 import Logout from '../components/logout';
 import FrameNavbar from '../components/frameNavbar';
@@ -33,30 +34,37 @@ import FrameFooter from '../components/frameFooter';
 const mapStateToProps = (state) => ({
   buttonText: state.loginReducer.buttonText,
   room: state.roomReducer.room,
+  desc: state.errorReducer.desc,
+  linkto: state.errorReducer.linkto,
 });
 
 class Routes extends React.Component {
-  /*
-  constructor() {
-    super();
-    this.onUnload = this.onUnload.bind(this);
+  constructor(props) {
+    super(props);
+    // this.onUnload = this.onUnload.bind(this);
+    this.state = {
+      desc: this.props.desc,
+      linkto: this.props.linkto,
+    };
   }
-
+  /*
   onUnload() {
     console.log(this.room);
     alert('page Refreshed');
   }
+  */
 
   componentDidMount() {
-    window.addEventListener('beforeunload', this.onUnload());
+    // window.addEventListener('beforeunload', this.onUnload());
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onUnload());
+    // window.removeEventListener('beforeunload', this.onUnload());
   }
-  */
 
   render() {
+    console.log(this.props);
+    console.log(this.state);
     if (this.props.room === '') {
       console.log('No room selected');
       return (
@@ -91,6 +99,7 @@ class Routes extends React.Component {
               <Route path="/admin" component={withAuth(RoutesAdmin)} />
               <Route path="/login" component={Login} />
               <Route path="/logout" component={Logout} />
+              <Route path="/error" component={Error} />
               <Redirect to="/room" />
             </Switch>
             <FrameFooter />

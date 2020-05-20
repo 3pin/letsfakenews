@@ -37,7 +37,15 @@ export const submit = (room, history) => {
         payload: '',
       });
       // history.push('/room');
-      alert('That room does not exist');
+      // alert('That room does not exist');
+      const obj = {
+        desc: 'That room does not exist',
+        linkto: '/room',
+      };
+      dispatch({
+        type: 'ERROR',
+        payload: obj,
+      });
       return error;
     };
     request.then(onSuccess, onError);
