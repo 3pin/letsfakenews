@@ -5,7 +5,7 @@ import {
 import {
   withRouter,
 } from 'react-router-dom';
-import * as actions from '../../actions/creatingNews';
+import * as actions from '../../actions/newsCreator';
 
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';

@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
-import * as actions from '../../actions/creatingNews';
+import * as actions from '../../actions/newsCreator';
 
 /* which props do we want to inject, given the global store state? */
 const mapStateToProps = (state) => ({

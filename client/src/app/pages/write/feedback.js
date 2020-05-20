@@ -8,7 +8,7 @@ import {
 
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
-import * as actions from '../../actions/creatingFeedback';
+import * as actions from '../../actions/feedbackCreator';
 
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => ({

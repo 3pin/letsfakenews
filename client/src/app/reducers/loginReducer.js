@@ -1,6 +1,8 @@
 const initialState = {
   loggedIn: false,
   buttonText: 'Login',
+  username: '',
+  password: '',
 };
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {

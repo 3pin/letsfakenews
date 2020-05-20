@@ -8,14 +8,12 @@ import {
   Button,
 } from 'react-bootstrap';
 import {
-  Redirect,
   withRouter,
 } from 'react-router-dom';
-import axios from 'axios';
 
 import FrameBanner from '../../components/frameBanner';
 
-import * as actions from '../../actions/loginStatus';
+import * as actions from '../../actions/loginCreator';
 
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => ({
@@ -23,8 +21,8 @@ const mapStateToProps = (state) => ({
 });
 // which props do we want to update, given the global store state?
 const mapDispatchToProps = (dispatch) => ({
-  loginSuccess: () => {
-    dispatch(actions.loginSuccess());
+  submit: (data, room, history) => {
+    dispatch(actions.submit(data, room, history));
   },
 });
 
@@ -32,10 +30,8 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiHello: '/settings/authenticate',
       username: '',
       password: '',
-      redirect: false,
     };
   }
 
@@ -59,48 +55,13 @@ class Login extends React.Component {
       room,
     } = this.props;
     const data = this.state;
-    axios.post(this.state.apiHello, {
-      data,
-    }, {
-      params: {
-        room,
-      },
-    }).then((res) => {
-      console.log(res);
-      if (res.status === 200) {
-        // dipatch action to change button-UI
-        this.props.loginSuccess();
-        // this.props.history.push('/');
-        this.setState(() => ({
-          redirect: true,
-        }));
-      } else {
-        this.setState(() => ({
-          username: '',
-          password: '',
-        }));
-        this.nameInput.focus();
-        alert(JSON.stringify(res.error));
-      }
-    }).catch((err) => {
-      alert(err.response.data.message);
-    });
-  }
-
-  renderRedirect() {
-    const {
-      redirect,
-    } = this.state;
-    if (redirect) {
-      return <Redirect to="/admin" />;
-    }
-    return null;
+    /* dispatch API submit action */
+    this.props.submit(data, room, this.props.history);
   }
 
   render() {
     return (
       <div>
-        {this.renderRedirect()}
         <FrameBanner
           title="Login"
           desc="Moderator access requires login..."

@@ -10,27 +10,27 @@ module.exports = (req, res) => {
     password,
   } = req.body.data;
   debug(username, password);
-  Auth.findOne({ username }, (user) => {
+  Auth.findOne({ username }).then((user) => {
+    debug(user);
     if (!user) {
       debug('error: incorrect username');
       res.status(401)
         .json({
-          message: 'Incorrect username',
+          message: 'WRONG_USERNAME',
         });
     } else {
       debug(user);
       user.isCorrectPassword(password, (error, same) => {
         if (error) {
           debug('error: Internal error please try again');
-          res.status(500)
-            .json({
-              message: 'Internal error please try again',
-            });
+          res.status(500).json({
+            message: 'DB_ERROR',
+          });
         } else if (!same) {
           debug('error: Incorrect password');
           res.status(401)
             .json({
-              message: 'Incorrect password',
+              message: 'WRONG_PASSWORD',
             });
         } else {
           debug('Correct password');

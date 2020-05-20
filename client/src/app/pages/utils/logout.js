@@ -12,7 +12,7 @@ import {
 import {
   instanceOf
 } from 'prop-types';
-import * as actions from '../actions/loginStatus';
+import * as actions from '../../actions/loginCreator';
 
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => ({

@@ -9,13 +9,11 @@ module.exports = (req, res) => {
   debug(rooms);
   for (let i = 0; i < rooms.length; i += 1) {
     if (rooms[i] === room) {
-      res.status(200).json({
-        message: 'Your chosen room is valid',
-      });
+      res.send('Your chosen room is valid');
       break;
     } else if (i === rooms.length - 1) {
       res.status(401).json({
-        message: 'Invalid room provided',
+        message: 'INCORRECT_ROOM',
       });
     }
   }

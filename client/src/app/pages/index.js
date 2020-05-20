@@ -15,7 +15,7 @@ import {
 
 // middleware
 import withAuth from '../components/withAuth';
-import checkDevice from '../components/checkDevice';
+import checkDevice from './utils/checkDevice';
 // pages
 import Intro from './intro';
 import Room from './utils/room';
@@ -26,7 +26,7 @@ import RoutesWatch from './watch';
 import Login from './utils/login';
 import Error from './utils/error';
 // components
-import Logout from '../components/logout';
+import Logout from './utils/logout';
 import FrameNavbar from '../components/frameNavbar';
 import FrameFooter from '../components/frameFooter';
 

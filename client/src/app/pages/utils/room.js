@@ -15,7 +15,7 @@ import {
 
 import FrameBanner from '../../components/frameBanner';
 import FrameForm from '../../components/frameForm';
-import * as actions from '../../actions/joinRoom';
+import * as actions from '../../actions/roomCreator';
 
 // which props do we want to inject, given the global store state?
 const mapStateToProps = (state) => ({

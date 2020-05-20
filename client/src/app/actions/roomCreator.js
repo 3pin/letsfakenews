@@ -19,33 +19,26 @@ export const submit = (room, history) => {
         payload: room,
       });
       history.push('/role');
-      /*else {
-        dispatch({
-          type: 'SUBMIT_FAIL_ROOM',
-          payload: null,
-        });
-        alert('That room does not exist');
-        history.push('/room');
-      }
-      return response;
-      */
     };
     const onError = (error) => {
       console.log(error.response.data.message);
       dispatch({
         type: 'SUBMIT_FAIL_ROOM',
-        payload: '',
+        payload: '-',
       });
       // history.push('/room');
       // alert('That room does not exist');
-      const obj = {
-        desc: 'That room does not exist',
-        linkto: '/room',
-      };
+      const obj = {};
+      if (error.response.data.message === 'INCORRECT_ROOM') {
+        obj.desc = 'Incorrect Room (that room does not exist).';
+        obj.linkto = '/room';
+        // window.alert('Try again... make sure to include NOUNS in your story');
+      }
       dispatch({
         type: 'ERROR',
         payload: obj,
       });
+      history.push('/error');
       return error;
     };
     request.then(onSuccess, onError);
