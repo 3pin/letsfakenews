@@ -13,13 +13,9 @@ module.exports = (req, res) => {
   const query = { room };
   const { dbSettings } = req;
   /* delete all db entries */
-  Story.deleteMany(query).then((docs, err) => {
-    if (err) {
-      debug(err);
-    } else {
-      debug(docs);
-      // debug(docs.result.n + " document(s) deleted");
-    }
+  Story.deleteMany(query).then((docs) => {
+    debug(docs);
+    // debug(docs.result.n + " document(s) deleted");
     res.send({
       stories: [],
       activelistChange: 0,
@@ -41,5 +37,8 @@ module.exports = (req, res) => {
     // bus.emit('activelistChange', 0);
   }).catch((err) => {
     debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

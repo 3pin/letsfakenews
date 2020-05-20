@@ -14,5 +14,10 @@ module.exports = (req, res) => {
       .json({
         autolive: req.body.data,
       });
+  }).catch((err) => {
+    debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

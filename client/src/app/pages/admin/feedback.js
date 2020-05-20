@@ -37,16 +37,19 @@ class Feedback extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        console.log(res);
-        this.setState({
-          feedback: res.data.feedback,
-        });
+      console.log(res);
+      this.setState({
+        feedback: res.data.feedback,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'That action could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
+        // window.alert('Your story could not be validated: reregister your room ID with the app');
       }
-    }).catch((err) => {
-      console.log(err.response.data.message);
+      window.history.push('/error');
     });
   }
 
@@ -74,15 +77,20 @@ class Feedback extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        // console.log(res);
-        this.setState({
-          feedback: res.data.feedback,
-        });
+      // console.log(res);
+      this.setState({
+        feedback: res.data.feedback,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your connection could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
+        // window.alert('Your story could not be validated: reregister your room ID with the app');
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
   }
 
   componentWillUnmount() {

@@ -9,5 +9,10 @@ module.exports = (req, res) => {
     res.send({
       response: result.activelist,
     });
+  }).catch((err) => {
+    debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

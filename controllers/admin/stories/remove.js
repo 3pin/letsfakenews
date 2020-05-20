@@ -49,6 +49,9 @@ module.exports = (req, res) => {
       });
     });
   }).catch((err) => {
-    debug('Error: ', err);
+    debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

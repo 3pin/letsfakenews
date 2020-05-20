@@ -34,12 +34,12 @@ module.exports = (req, res) => {
     // debug(result.urls[0]);
     if (result === null) {
       // res.send('NO_NOUNS');
-      res.status(400).json({
+      res.status(422).json({
         message: 'NO_NOUNS',
       });
     } else if (result.urls[0] === undefined) {
       // res.send('NO_URLS');
-      res.status(400).json({
+      res.status(422).json({
         message: 'NO_URLS',
       });
     } else {
@@ -78,7 +78,9 @@ module.exports = (req, res) => {
         });
       }).catch((err) => {
         debug('Err: ', err);
-        res.send('DB_ERROR');
+        res.status(500).json({
+          message: 'DB_ERROR',
+        });
       });
     }
   }).catch((err) => {

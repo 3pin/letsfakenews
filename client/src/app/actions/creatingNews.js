@@ -31,34 +31,11 @@ export const submit = (story, title, room, history) => {
     },
   });
   return (dispatch) => {
-    const obj = {};
     const onSuccess = (response) => {
       dispatch({
         type: 'SUBMIT_ENDED_NEWS',
         payload: null,
       });
-      // console.log(response.data);
-      /*
-      if (response.data === 'NO_NOUNS') {
-        obj.desc = 'Try again... make sure to include NOUNS in your story';
-        obj.linkto = '/write/story';
-        window.alert('Try again... make sure to include NOUNS in your story');
-        history.push('/write/story');
-      } else if (response.data === 'NO_URLS') {
-        obj.desc = "Try again... couldn't find images to match your story";
-        obj.linkto = '/write/story';
-        window.alert("Try again... couldn't find images to match your story");
-        history.push('/write/story');
-      } else if (response.data === 'DB_ERROR') {
-        obj.desc = 'Your story could not be validated: reregister your room ID with the app';
-        obj.linkto = '/room';
-        window.alert('Your story could not be validated: reregister your room ID with the app');
-        history.push('/room');
-      } else {
-        // window.alert("Thanks for your fake news")
-        history.push('/write/thankyou');
-      }
-      */
       return response;
     };
     const onError = (error) => {
@@ -68,25 +45,24 @@ export const submit = (story, title, room, history) => {
         type: 'SUBMIT_NEWS_FAILED',
         payload: error.response.data.msg,
       });
+      const obj = {};
       if (error.response.data.message === 'NO_NOUNS') {
-        obj.desc = 'Try again... make sure to include NOUNS in your story';
+        obj.desc = "That didn't work because your story must include NOUNS.";
         obj.linkto = '/write/story';
         // window.alert('Try again... make sure to include NOUNS in your story');
-        history.push('/error');
       } else if (error.response.data.message === 'NO_URLS') {
-        obj.desc = "Try again... couldn't find images to match your story";
+        obj.desc = "That didn't work because we couldn't find any images to match your story.";
         obj.linkto = '/write/story';
         // window.alert("Try again... couldn't find images to match your story");
-        history.push('/error');
       } else if (error.response.data.message === 'DB_ERROR') {
-        obj.desc = 'Your story could not be validated: reregister your room ID with the app';
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
         obj.linkto = '/room';
         // window.alert('Your story could not be validated: reregister your room ID with the app');
-        history.push('/error');
       } else {
         // window.alert("Thanks for your fake news")
         // history.push('/write/thankyou');
       }
+      history.push('/error');
       dispatch({
         type: 'ERROR',
         payload: obj,

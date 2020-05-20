@@ -17,5 +17,10 @@ module.exports = (req, res) => {
       visualise: dbSettings.visualise,
       autolive: dbSettings.autolive,
     });
+  }).catch((err) => {
+    debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

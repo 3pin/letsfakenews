@@ -46,16 +46,18 @@ class Stories extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        console.log(res);
-        this.setState({
-          autolive: res.data.autolive,
-        });
+      console.log(res);
+      this.setState({
+        autolive: res.data.autolive,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => {
-      console.log(err);
+      window.history.push('/error');
     });
   }
 
@@ -68,12 +70,16 @@ class Stories extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        console.log(res);
+      console.log(res);
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
   }
 
   handleClear() {
@@ -86,15 +92,19 @@ class Stories extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        console.log(res);
-        this.setState({
-          stories: res.data.stories,
-        });
+      console.log(res);
+      this.setState({
+        stories: res.data.stories,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
   }
 
   handleRemove(row) {
@@ -109,15 +119,19 @@ class Stories extends React.Component {
         _id,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        console.log(res);
-        this.setState({
-          stories: res.data.stories,
-        });
+      console.log(res);
+      this.setState({
+        stories: res.data.stories,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
   }
 
   handleStorylive(row) {
@@ -136,15 +150,19 @@ class Stories extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        console.log(res);
-        this.setState({
-          stories: res.data.stories,
-        });
+      console.log(res);
+      this.setState({
+        stories: res.data.stories,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
   }
 
   componentDidMount() {
@@ -155,16 +173,19 @@ class Stories extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        // console.log(res);
-        this.setState({
-          autolive: res.data.autolive,
-          stories: res.data.stories,
-        });
+      this.setState({
+        autolive: res.data.autolive,
+        stories: res.data.stories,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
     /* open sse listener */
     this.eventSource.addEventListener('news', (e) => {
       console.log('A new story triggered a refresh of the stories_list');

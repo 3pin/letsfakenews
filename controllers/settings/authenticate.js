@@ -10,16 +10,8 @@ module.exports = (req, res) => {
     password,
   } = req.body.data;
   debug(username, password);
-  Auth.findOne({
-    username,
-  }, (err, user) => {
-    if (err) {
-      debug('error: Internal error please try again');
-      res.status(500)
-        .json({
-          message: 'Internal error please try again',
-        });
-    } else if (!user) {
+  Auth.findOne({ username }, (user) => {
+    if (!user) {
       debug('error: incorrect username');
       res.status(401)
         .json({
@@ -66,5 +58,10 @@ module.exports = (req, res) => {
         }
       });
     }
+  }).catch((err) => {
+    debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

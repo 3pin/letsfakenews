@@ -51,15 +51,19 @@ class Visualise extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        // console.log(res);
-        this.setState({
-          visualiseNum: res.data.visualiseNum,
-        });
+      // console.log(res);
+      this.setState({
+        visualiseNum: res.data.visualiseNum,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
   }
 
   handleDurationChange(e) {
@@ -78,15 +82,19 @@ class Visualise extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        // console.log(res);
-        this.setState({
-          imageDuration: res.data.imageDuration,
-        });
+      // console.log(res);
+      this.setState({
+        imageDuration: res.data.imageDuration,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'That action could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
   }
 
   handleScrollerChange(e) {
@@ -105,15 +113,19 @@ class Visualise extends React.Component {
         room,
       },
     }).then((res) => {
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else {
-        // console.log(res);
-        this.setState({
-          textScrollers: res.data.textScrollers,
-        });
+      // console.log(res);
+      this.setState({
+        textScrollers: res.data.textScrollers,
+      });
+    }).catch((error) => {
+      console.log(error.response.data.message);
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'That action could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
       }
-    }).catch((err) => console.log(err));
+      window.history.push('/error');
+    });
   }
 
   componentDidMount() {

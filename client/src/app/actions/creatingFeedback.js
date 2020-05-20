@@ -29,6 +29,17 @@ export const submit = (feedback, room, history) => {
         type: 'SUBMIT_FEEDBACK_FAILED',
         payload: error.response.data.msg,
       });
+      const obj = {};
+      if (error.response.data.message === 'DB_ERROR') {
+        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.linkto = '/room';
+        // window.alert('Your story could not be validated: reregister your room ID with the app');
+      }
+      history.push('/error');
+      dispatch({
+        type: 'ERROR',
+        payload: obj,
+      });
       return error;
     };
     request.then(onSuccess, onError);

@@ -25,5 +25,10 @@ module.exports = (req, res) => {
     res.send({
       textScrollers: dbSettings.textScrollers,
     });
+  }).catch((err) => {
+    debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

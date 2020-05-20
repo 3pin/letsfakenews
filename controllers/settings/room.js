@@ -15,7 +15,7 @@ module.exports = (req, res) => {
       break;
     } else if (i === rooms.length - 1) {
       res.status(401).json({
-        message: 'Unauthorized: Invalid room provided',
+        message: 'Invalid room provided',
       });
     }
   }

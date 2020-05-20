@@ -14,5 +14,10 @@ module.exports = (req, res) => {
     res.send({
       feedback: docs,
     });
+  }).catch((err) => {
+    debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

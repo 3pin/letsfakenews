@@ -27,5 +27,10 @@ module.exports = (req, res) => {
       .json({
         visualiseNum: result.visualise,
       });
+  }).catch((err) => {
+    debug('Err: ', err);
+    res.status(500).json({
+      message: 'DB_ERROR',
+    });
   });
 };

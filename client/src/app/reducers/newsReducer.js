@@ -2,7 +2,6 @@ const initialState = {
   story: '',
   title: '',
   submitting: false,
-  error: null,
 };
 const newsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -44,7 +43,6 @@ const newsReducer = (state = initialState, action) => {
         story: '',
         title: '',
         submitting: false,
-        error: action.payload,
       };
     }
     default:

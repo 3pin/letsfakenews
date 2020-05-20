@@ -1,7 +1,6 @@
 const initialState = {
   feedback: '',
   submitting: false,
-  error: null,
 };
 const feedbackReducer = (state = initialState, action) => {
   switch (action.type) {
