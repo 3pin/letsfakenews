@@ -8,7 +8,7 @@ const Landing = () => (
     <section>
       <FrameBanner
         title="Select a role"
-        desc="Choose whether you want to write (any device) or watch (only desktop)."
+        desc="Now choose whether to WRITE or WATCH fake news."
       />
       <hr />
       <FrameButton

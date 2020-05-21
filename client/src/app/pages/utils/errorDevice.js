@@ -10,7 +10,7 @@ function ErrorDevice() {
       <section>
         <FrameBanner
           title="Sorry"
-          desc="Access denied: only desktop computers can watch the news."
+          desc="Access denied: news can only be watched on desktop devices."
         />
         <hr />
         <FrameButton

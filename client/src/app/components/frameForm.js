@@ -39,7 +39,7 @@ export default class FrameForm extends React.Component {
     }
   }
   componentDidMount() {
-    this.nameInput.focus();
+    // this.nameInput.focus();
     this.setState((state) => ({content: this.props.content}))
   }
   componentWillUnmount() {

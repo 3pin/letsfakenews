@@ -32,15 +32,15 @@ export const submit = (data, room, history) => {
       console.log(error.response.data.message);
       const obj = {};
       if (error.response.data.message === 'WRONG_USERNAME') {
-        obj.desc = `'${data.username}' is not the valid username for your room.`;
+        obj.desc = `'${data.username}' is not the valid username for this news room.`;
         obj.linkto = '/login';
         // window.alert('Try again... make sure to include NOUNS in your story');
       } else if (error.response.data.message === 'WRONG_PASSWORD') {
-        obj.desc = `'${data.password}' is not the valid password for your room.`;
+        obj.desc = `'${data.password}' is not the valid password for this news room.`;
         obj.linkto = '/login';
         // window.alert("Try again... couldn't find images to match your story");
       } else if (error.response.data.message === 'DB_ERROR') {
-        obj.desc = 'Your story could not be validated: ensure you have selected a valid room.';
+        obj.desc = 'Error: ensure you have selected a valid news room.';
         obj.linkto = '/room';
         // window.alert('Your story could not be validated: reregister your room ID with the app');
       } else {
