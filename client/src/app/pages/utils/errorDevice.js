@@ -1,28 +1,20 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 // import { store } from '../../store';
 
 import FrameBanner from '../../components/frameBanner';
 import FrameButton from '../../components/frameButton';
 
-function Error() {
-  // grab required state
-  const { desc, linkto } = useSelector((state) => state.errorReducer);
-  /*
-  const state = store.getState();
-  const { desc } = state.errorReducer;
-  const { linkto } = state.errorReducer;
-  */
+function ErrorDevice() {
   return (
     <div>
       <section>
         <FrameBanner
           title="Sorry"
-          desc={desc}
+          desc="You can only watch the news on a desktop device"
         />
         <hr />
         <FrameButton
-          linkto={linkto}
+          linkto="/role"
           buttonLabel="Try-Again"
         />
         <hr />
@@ -30,4 +22,4 @@ function Error() {
     </div>
   );
 }
-export default Error;
+export default ErrorDevice;

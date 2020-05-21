@@ -24,13 +24,13 @@ export const submit = (room, history) => {
       console.log(error.response.data.message);
       dispatch({
         type: 'SUBMIT_FAIL_ROOM',
-        payload: '-',
+        payload: '',
       });
       // history.push('/room');
       // alert('That room does not exist');
       const obj = {};
       if (error.response.data.message === 'INCORRECT_ROOM') {
-        obj.desc = 'Incorrect Room (that room does not exist).';
+        obj.desc = `The room '${room}' does not exist.`;
         obj.linkto = '/room';
         // window.alert('Try again... make sure to include NOUNS in your story');
       }

@@ -32,11 +32,11 @@ export const submit = (data, room, history) => {
       console.log(error.response.data.message);
       const obj = {};
       if (error.response.data.message === 'WRONG_USERNAME') {
-        obj.desc = 'Incorrect Username (for current room).';
+        obj.desc = `'${data.username}' is not the valid username for your room.`;
         obj.linkto = '/login';
         // window.alert('Try again... make sure to include NOUNS in your story');
       } else if (error.response.data.message === 'WRONG_PASSWORD') {
-        obj.desc = 'Incorrect Password (for current Room).';
+        obj.desc = `'${data.password}' is not the valid password for your room.`;
         obj.linkto = '/login';
         // window.alert("Try again... couldn't find images to match your story");
       } else if (error.response.data.message === 'DB_ERROR') {

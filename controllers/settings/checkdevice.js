@@ -15,7 +15,7 @@ module.exports = (req, res) => {
     debug('FAILED');
     res.status(401)
       .json({
-        message: 'Only desktop computers can watch the news',
+        message: 'NOT_DESKTOP',
       });
     // res.send('Display page can only be accessed via desktop-browsers');
   }

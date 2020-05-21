@@ -25,6 +25,7 @@ import RoutesAdmin from './admin';
 import RoutesWatch from './watch';
 import Login from './utils/login';
 import Error from './utils/error';
+import ErrorDevice from './utils/errorDevice';
 // components
 import Logout from './utils/logout';
 import FrameNavbar from '../components/frameNavbar';
@@ -74,6 +75,8 @@ class Routes extends React.Component {
             <Col as="aside" xs={0} sm={1} md={1} lg={1} xl={1} />
             <Col as="article" xs={12} sm={10} md={10} lg={10} xl={10}>
               <Switch>
+                <Route exact path="/" component={Intro} />
+                <Route path="/error" component={Error} />
                 <Route path="/room" component={Room} />
                 <Redirect to="/room" />
               </Switch>
@@ -92,14 +95,15 @@ class Routes extends React.Component {
           <Col as="article" xs={12} sm={10} md={10} lg={10} xl={10}>
             <Switch>
               <Route exact path="/" component={Intro} />
+              <Route path="/error" component={Error} />
               <Route path="/room" component={Room} />
               <Route path="/role" component={Role} />
               <Route path="/write" component={RoutesWrite} />
               <Route path="/watch" component={checkDevice(RoutesWatch)} />
+              <Route path="/errordevice" component={ErrorDevice} />
               <Route path="/admin" component={withAuth(RoutesAdmin)} />
               <Route path="/login" component={Login} />
               <Route path="/logout" component={Logout} />
-              <Route path="/error" component={Error} />
               <Redirect to="/room" />
             </Switch>
             <FrameFooter />

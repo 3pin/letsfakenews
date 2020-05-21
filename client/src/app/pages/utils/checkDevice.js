@@ -40,7 +40,7 @@ export default function checkDevice(ComponentToProtect) {
           loading: false,
         });
       }).catch((err) => {
-        alert(err.response.data.message);
+        // alert(err.response.data.message);
         this.setState({
           loading: false,
           redirect: true,
@@ -53,7 +53,7 @@ export default function checkDevice(ComponentToProtect) {
         return null;
       }
       if (this.state.redirect) {
-        return <Redirect to="/role" />;
+        return <Redirect to="/errordevice" />;
       }
       return (
         <>
