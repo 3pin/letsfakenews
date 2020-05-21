@@ -43,7 +43,7 @@ export default function withAuth(ComponentToProtect) {
         });
       }).catch((err) => {
         console.log(JSON.stringify(err.response.data.message));
-        alert(err.response.data.message);
+        // alert(err.response.data.message);
         this.setState({
           loading: false,
           redirect: true,
@@ -56,7 +56,7 @@ export default function withAuth(ComponentToProtect) {
         return null;
       }
       if (this.state.redirect) {
-        return <Redirect to="/login" />;
+        return <Redirect to="/errorauth" />;
       }
       return (
         <>

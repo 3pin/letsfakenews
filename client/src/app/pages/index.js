@@ -26,6 +26,7 @@ import RoutesWatch from './watch';
 import Login from './utils/login';
 import Error from './utils/error';
 import ErrorDevice from './utils/errorDevice';
+import ErrorAuth from './utils/errorAuth';
 // components
 import Logout from './utils/logout';
 import FrameNavbar from '../components/frameNavbar';
@@ -102,6 +103,7 @@ class Routes extends React.Component {
               <Route path="/watch" component={checkDevice(RoutesWatch)} />
               <Route path="/errordevice" component={ErrorDevice} />
               <Route path="/admin" component={withAuth(RoutesAdmin)} />
+              <Route path="/errorauth" component={ErrorAuth} />
               <Route path="/login" component={Login} />
               <Route path="/logout" component={Logout} />
               <Redirect to="/room" />

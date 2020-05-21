@@ -10,12 +10,12 @@ function ErrorDevice() {
       <section>
         <FrameBanner
           title="Sorry"
-          desc="Access denied: only desktop computers can watch the news."
+          desc="Access denied: you must first log-in to access the 'admin' page."
         />
         <hr />
         <FrameButton
-          linkto="/role"
-          buttonLabel="Return"
+          linkto="/login"
+          buttonLabel="Log-In"
         />
         <hr />
       </section>

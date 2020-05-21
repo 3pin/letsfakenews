@@ -35,7 +35,7 @@ export default class FrameForm extends React.Component {
     if (this.state.content.length >= this.props.minLength) {
       this.props.handleSubmit(this.state.content);
     } else {
-      window.alert('What you wrote is too short')
+      window.alert('What you wrote is too short');
     }
   }
   componentDidMount() {
