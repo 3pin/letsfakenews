@@ -103,6 +103,11 @@ class visualiseText extends React.Component {
     };
   }
 
+  componentWillUnmount() {
+    /* close sse listener */
+    this.eventSource.close();
+  }
+
   render() {
     return (
       <div ref="parent">
