@@ -6,67 +6,86 @@ import {
   Button,
 } from 'react-bootstrap';
 
-// export default class ButtonForm extends React.Component {
-const FrameButton = (props) => {
-  // setup button type & label
-  let variant;
-  if (props.variant) {
-    variant = props.variant;
-  } else {
-    variant = 'primary';
+class FrameButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.button = React.createRef();
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
-  let buttonLabel;
-  if (props.submitting === true) {
-    buttonLabel = "Wait...";
-  } else if (props.buttonLabel) {
-    buttonLabel = props.buttonLabel;
-  } else {
-    buttonLabel = 'Submit';
+
+  handleKeyPress(event) {
+    if (event.keyCode === 13) {
+      this.button.current.click();
+    }
   }
-  let buttonSize;
-  if (props.buttonSize) {
-    buttonSize = props.buttonSize;
-  } else {
-    buttonSize = 'md';
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress);
   }
-  let disabled;
-  if (props.submitting === true) {
-    disabled = true;
-  } else {
-    disabled = false;
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress);
   }
-  let className;
-  if (props.className) {
-    className = props.className;
-  } else {
-    className = '';
-  }
-  if (props.linkto) {
-    // console.log("button type: linkto")
-    return (
-      <div className={className}>
-        <p>{props.desc}</p>
-        <Link to={props.linkto}>
-          <Button variant={variant} size={buttonSize}>{buttonLabel}</Button>
-        </Link>
-      </div>
-    );
-  }
-  if (props.onClick) {
-    // console.log("button type: connect-API")
+
+  render() {
+    // setup button type & label
+    let variant, buttonLabel, buttonSize, disabled, className;
+    if (this.props.variant) {
+      variant = this.props.variant;
+    } else {
+      variant = 'primary';
+    }
+    if (this.props.submitting) {
+      buttonLabel = 'Wait...';
+    } else if (this.props.buttonLabel) {
+      buttonLabel = this.props.buttonLabel;
+    } else {
+      buttonLabel = 'Submit';
+    }
+    if (this.props.buttonSize) {
+      buttonSize = this.props.buttonSize;
+    } else {
+      buttonSize = 'md';
+    }
+    if (this.props.disabled) {
+      disabled = true;
+    }
+    if (this.props.submitting) {
+      disabled = true;
+    }
+    if (this.props.className) {
+      className = this.props.className;
+    } else {
+      className = '';
+    }
+    if (this.props.linkto) {
+      // console.log('button-type:linkto');
+      return (
+        <div className={className}>
+          <p>{this.props.desc}</p>
+          <Link to={this.props.linkto}>
+            <Button ref={this.button} variant={variant} size={buttonSize}>{buttonLabel}</Button>
+          </Link>
+        </div>
+      );
+    }
+    if (this.props.onClick) {
+      // console.log('button-type:connect-API');
+      return (
+        <div>
+          <p>{this.props.desc}</p>
+          <Button ref={this.button} onClick={this.props.onClick} variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
+        </div>
+      );
+    }
+    // console.log('button-type:formSubmission');
     return (
       <div>
-        <p>{props.desc}</p>
-        <Button onClick={props.onClick} variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
+        <p>{this.props.desc}</p>
+        <Button ref={this.button} type="submit" variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
       </div>
     );
   }
-  return (
-    <div>
-      <p>{props.desc}</p>
-      <Button type="submit" variant={variant} size={buttonSize} disabled={disabled}>{buttonLabel}</Button>
-    </div>
-  );
-};
+}
 
 export default FrameButton;

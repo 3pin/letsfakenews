@@ -34,24 +34,29 @@ class Review extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
-  handleClick = () => {
+
+  handleClick() {
     /* dipatch action to change button-UI */
     this.props.submitStarted();
     /* dispatch API submit action */
     this.props.submit(this.props.story, this.props.title, this.props.room, this.props.history);
-  };
+  }
+
   handleKeyPress(event) {
+    console.log('entered handleKeyPress');
     if (event.keyCode === 13) {
       this.handleClick();
     }
   }
-  // change code below this line
+
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyPress);
   }
+
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyPress);
   }
+
   render() {
     const title = `Title: ${this.props.title}`;
     const story = `Story: ${this.props.story}`;
@@ -75,12 +80,6 @@ class Review extends React.Component {
             variant="primary"
             submitting={this.props.submitting}
             onClick={this.handleClick}
-          />
-          <hr />
-          <FrameButton
-            variant="secondary"
-            linkto="/write/story"
-            buttonLabel="Update"
           />
           <hr />
         </section>

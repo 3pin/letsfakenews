@@ -8,42 +8,45 @@ export default class FrameForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      content: ''
+      content: '',
+      disabled: true,
     }
   }
+  // route RETURN-key to form-submit
   onKeyDown = (e) => {
     if (e.keyCode === 13 && e.shiftKey === false) {
-      e.preventDefault()
-      this.processSubmit()
+      this.handleSubmit()
     }
   }
+  // handle user input
   handleChange = (e) => {
-    if (e.keyCode === 13 && e.shiftKey === false) {
-      e.preventDefault()
-      this.processSubmit()
+    this.setState({
+      content: e.target.value
+    }, this.testMinLength);
+  }
+  // disable/enable formSubmission
+  testMinLength = () => {
+    if (this.state.content.length >= this.props.minLength) {
+      this.setState({
+        disabled: false,
+      })
     } else {
       this.setState({
-        content: e.target.value
+        disabled: true,
       })
     }
   }
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.processSubmit()
-  }
-  processSubmit = () => {
+  // handle form-submit
+  handleSubmit = () => {
     if (this.state.content.length >= this.props.minLength) {
       this.props.handleSubmit(this.state.content);
-    } else {
-      window.alert('What you wrote is too short');
     }
   }
   componentDidMount() {
+    console.log(this.props);
+    console.log(this.state);
     // this.nameInput.focus();
     this.setState((state) => ({content: this.props.content}))
-  }
-  componentWillUnmount() {
-    //this.props.handleSubmit(this.state.content);
   }
   render() {
     // setup char-counter
@@ -74,6 +77,7 @@ export default class FrameForm extends React.Component {
             linkto={this.props.linkto}
             onClick={this.props.onClick}
             desc={this.props.desc}
+            disabled={this.state.disabled}
             variant={this.props.variant}
             submitting={this.props.submitting}
             buttonLabel={this.props.buttonLabel}/>
