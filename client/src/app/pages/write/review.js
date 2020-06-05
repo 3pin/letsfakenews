@@ -32,29 +32,14 @@ class Review extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   handleClick() {
     /* dipatch action to change button-UI */
+    console.log('handleClick');
     this.props.submitStarted();
     /* dispatch API submit action */
     this.props.submit(this.props.story, this.props.title, this.props.room, this.props.history);
-  }
-
-  handleKeyPress(event) {
-    console.log('entered handleKeyPress');
-    if (event.keyCode === 13) {
-      this.handleClick();
-    }
-  }
-
-  componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyPress);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyPress);
   }
 
   render() {

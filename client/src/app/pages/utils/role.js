@@ -14,7 +14,7 @@ const Landing = () => (
       <FrameButton
         linkto="/write"
         buttonLabel="Write"
-        desc="Write fakenews (phone etc.)"
+        desc="Write fakenews (any device)"
       />
       <hr />
       <FrameButton
