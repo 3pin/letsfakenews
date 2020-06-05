@@ -12,18 +12,6 @@ export default class FrameForm extends React.Component {
       disabled: true,
     }
   }
-  // route RETURN-key to form-submit
-  onKeyDown = (e) => {
-    if (e.keyCode === 13 && e.shiftKey === false) {
-      this.handleSubmit()
-    }
-  }
-  // handle user input
-  handleChange = (e) => {
-    this.setState({
-      content: e.target.value
-    }, this.testMinLength);
-  }
   // disable/enable formSubmission
   testMinLength = () => {
     if (this.state.content.length >= this.props.minLength) {
@@ -36,10 +24,24 @@ export default class FrameForm extends React.Component {
       })
     }
   }
-  // handle form-submit
-  handleSubmit = () => {
+  // handle-user-input
+  handleChange = (e) => {
+    this.setState({
+      content: e.target.value
+    }, this.testMinLength);
+  }
+  // handle-form-submit
+  handleSubmit = (e) => {
     if (this.state.content.length >= this.props.minLength) {
+      e.preventDefault();
       this.props.handleSubmit(this.state.content);
+    }
+  }
+  // route RETURN key to handle-form-submit
+  onKeyPress = (e) => {
+    if (e.keyCode === 13 && e.shiftKey === false) {
+      // e.preventDefault();
+      this.handleSubmit(e);
     }
   }
   componentDidMount() {
