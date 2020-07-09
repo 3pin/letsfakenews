@@ -8,25 +8,31 @@ ignore:
         expires: '2020-03-08T11:53:05.592Z'
       npm > update-notifier > configstore > dot-prop:
         reason: No remediation available
-        expires: '2020-06-04T19:30:12.249Z'
+        expires: '2020-08-08T08:21:14.985Z'
     - nodemon > update-notifier > configstore > dot-prop:
         reason: no current fix
         expires: '2020-03-08T11:53:05.592Z'
       npm > libnpx > update-notifier > configstore > dot-prop:
         reason: No remediation available
+        expires: '2020-08-08T08:21:14.985Z'
+    - npm > update-notifier > configstore > dot-prop:
+        reason: None given
+        expires: '2020-03-08T11:55:08.108Z'
+    - npm > libnpx > update-notifier > configstore > dot-prop:
+        reason: None given
+        expires: '2020-03-08T11:55:08.108Z'
+    - npm > update-notifier > configstore > dot-prop:
+        reason: No remediation available
+        expires: '2020-04-09T15:05:42.246Z'
+    - npm > libnpx > update-notifier > configstore > dot-prop:
+        reason: No remediation available
+        expires: '2020-04-09T15:05:42.246Z'
+    - npm > update-notifier > configstore > dot-prop:
+        reason: No remediation available
         expires: '2020-06-04T19:30:12.249Z'
-    - npm > update-notifier > configstore > dot-prop:
-        reason: None given
-        expires: '2020-03-08T11:55:08.108Z'
-    - npm > libnpx > update-notifier > configstore > dot-prop:
-        reason: None given
-        expires: '2020-03-08T11:55:08.108Z'
-    - npm > update-notifier > configstore > dot-prop:
-        reason: No remediation available
-        expires: '2020-04-09T15:05:42.246Z'
     - npm > libnpx > update-notifier > configstore > dot-prop:
         reason: No remediation available
-        expires: '2020-04-09T15:05:42.246Z'
+        expires: '2020-06-04T19:30:12.249Z'
   SNYK-JS-KINDOF-537849:
     - anymatch > micromatch > kind-of:
         reason: no current fix
@@ -451,7 +457,7 @@ ignore:
   SNYK-JS-USERAGENT-174737:
     - express-device > device > useragent:
         reason: No remediation available
-        expires: '2020-06-04T19:30:12.249Z'
+        expires: '2020-08-08T08:21:14.985Z'
   'npm:utile:20180614':
     - htdigest > prompt > utile:
         reason: None given
@@ -466,5 +472,5 @@ ignore:
   SNYK-JS-YARGSPARSER-560381:
     - npm > libnpx > yargs > yargs-parser:
         reason: None given
-        expires: '2020-06-04T19:30:12.249Z'
+        expires: '2020-08-08T08:21:14.985Z'
 patch: {}
