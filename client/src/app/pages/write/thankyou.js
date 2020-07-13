@@ -10,7 +10,7 @@ const Thankyou = () => (
       <hr />
       <FrameButton buttonLabel="Write" linkto="/write/story" desc="Write more fakenews" />
       <hr />
-      <FrameButton variant="secondary" buttonLabel="Role" linkto="/role" desc="Return to role-page" />
+      <FrameButton variant="secondary" buttonLabel="Watch" linkto="/watch" desc="Watch the fakenews stream on a computer" />
       <hr />
       <FrameButton variant="secondary" buttonLabel="Feedback" linkto="/write/feedback" desc="Leave your feedback" />
       <hr />
