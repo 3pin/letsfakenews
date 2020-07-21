@@ -17,7 +17,7 @@
     "test_coverage_text": "nyc --reporter=text mocha ./test --recursive",
     "test_coverage_html": "nyc --reporter=html mocha ./test --recursive",
     "test_snyk": "snyk test && mocha ./test --recursive",
-    "test": "mocha ./test --recursive",
+    "test": "snyk test && mocha ./test --recursive",
     "test_nlp": "mocha ./test/modules/nlp.test.js",
     "test_imagesearch": "mocha ./test/modules/imagesearch.test.js",
     "test_process": "mocha ./test/modules/process.test.js",
@@ -42,7 +42,7 @@
     "http-auth": "^4.1.2",
     "ismobilejs": "^1.1.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.22",
+    "mongoose": "^5.9.25",
     "morgan": "^1.10.0",
     "node": "13.7.0",
     "npm": "^6.14.6",
@@ -62,6 +62,6 @@
     "mocha": "^7.2.0",
     "nyc": "^15.1.0",
     "snazzy": "^8.0.0",
-    "snyk": "^1.361.0"
+    "snyk": "^1.364.0"
   }
 }
