@@ -186,13 +186,19 @@ class visualiseNews extends React.Component {
       i.msRequestFullscreen();
     }
     /* reset & restart */
+    this.setState({
+      playing: true,
+    });
     this.onEnded();
   }
 
   exitFullscreen() {
     if (!document.fullscreenElement) {
       console.log('fullscreen exited');
-      /* reset & restart */
+      /* stop & reset */
+      this.setState({
+        playing: false,
+      });
       this.onEnded();
     }
   }
@@ -211,24 +217,22 @@ class visualiseNews extends React.Component {
         room: this.props.room,
       },
     }).then((res) => {
-      const popup_duration = diff(this.state.popupStart, this.state.popupEnd);
+      // const popup_duration = diff(this.state.popupStart, this.state.popupEnd);
       const imageDuration = diff(this.state.imagesStart, this.state.imagesEnd);
       if (res.status !== 200) {
         throw Error(res.message);
       } else if (res.data.dbSettings.nodeMode === 'production') {
         console.log(`mode is ${res.data.dbSettings.nodeMode}`);
         this.setState({
-          popup_duration,
           imageDuration,
           mode: res.data.dbSettings.nodeMode,
-          playing: true,
+          playing: false,
           controls: false,
           volume: 1,
         });
       } else {
         console.log(`mode is: ${res.data.dbSettings.nodeMode}`);
         this.setState({
-          popup_duration,
           imageDuration,
           mode: res.data.dbSettings.nodeMode,
           playing: true,
@@ -247,7 +251,7 @@ class visualiseNews extends React.Component {
     return (
       <div ref="parent">
         <FrameButton
-          buttonLabel="Fullscreen"
+          buttonLabel="Play Fullscreen"
           onClick={this.goFullscreen.bind(this.videoContainer)}
         />
         <hr />
@@ -268,6 +272,7 @@ class visualiseNews extends React.Component {
           />
           <div id="p5_container">
             <P5Wrapper
+              mode={this.state.mode}
               sketch={Sketch}
               vidUrl={this.state.url}
               componentWidth={this.state.componentWidth}

@@ -8,20 +8,20 @@ const Landing = () => (
     <section>
       <FrameBanner
         title="Select a role"
-        desc="Now choose whether to WRITE or WATCH fake news."
+        desc="Choose whether you want to WRITE or WATCH fake-news."
       />
       <hr />
       <FrameButton
         linkto="/write"
         buttonLabel="Write"
-        desc="Write fakenews (any device)"
+        desc="Write fakenews (on a phone)"
       />
       <hr />
       <FrameButton
         variant="secondary"
         linkto="/watch"
         buttonLabel="Watch"
-        desc="Watch fakenews (computer only)"
+        desc="Watch fakenews (on a computer only)"
       />
       <hr />
     </section>

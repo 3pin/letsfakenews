@@ -112,7 +112,7 @@ class visualiseText extends React.Component {
     return (
       <div ref="parent">
         <FrameButton
-          buttonLabel="Fullscreen"
+          buttonLabel="Play Fullscreen"
           onClick={this.goFullscreen.bind(this.container)}
         />
         <hr />

@@ -2,17 +2,17 @@ import Aspect from './functions/aspect';
 
 export default function sketch(P) {
   const p = P;
+  const initialAspectRatio = 1.78;
+  const corsUrl = 'https://cors-anywhere.herokuapp.com/';
   let initialWidth = 534;
   let initialHeight = 300;
-  let canvasWidth; let
-    canvasHeight;
-  const corsUrl = 'https://cors-anywhere.herokuapp.com/';
+  let canvasWidth;
+  let canvasHeight;
   let imgUrl = '../../images/bgd.jpg';
   let img;
-  let imgWidth; let
-    imgHeight;
+  let imgWidth;
+  let imgHeight;
   let setupCount = 0;
-  const initialAspectRatio = 1.78;
   let aspectRatio = initialAspectRatio;
   //
   p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
