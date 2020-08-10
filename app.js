@@ -61,11 +61,11 @@ app.use(
 // add the 'device' property to all 'req' objects to be able to detect mobile vs desktop devices
 app.use(device.capture());
 
+// setup CORS
+const { whitelist } = global.gConfig;
+debug(`whitelist: ${whitelist[0]}`);
 if (global.gConfig.cors === 'whitelist') {
   debug('CORS:whitelist');
-  const whitelist = [];
-  whitelist.push(global.gConfig.whitelist);
-  debug(`whitelist: ${whitelist}`);
   const corsOptions = {
     origin(origin, callback) {
       if (whitelist.indexOf(origin) !== -1) {
@@ -76,11 +76,17 @@ if (global.gConfig.cors === 'whitelist') {
     },
   };
   app.use(cors(corsOptions));
+} else if (global.gConfig.cors === 'origin') {
+  debug(typeof whitelist[0]);
+  const corsOptions = {
+    origin: whitelist[0],
+    optionsSuccessStatus: 200,
+  }
+  app.use(cors(corsOptions));
+  debug('CORS:origin only');
 } else if (global.gConfig.cors === 'all') {
   debug('CORS:all');
   app.use(cors());
-} else if (global.gConfig.cors === 'off') {
-  debug('CORS:none');
 } else {
   // this is in response to cors === 'none'
   debug('CORS:CORS not setup');

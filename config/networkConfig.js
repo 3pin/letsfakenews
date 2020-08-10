@@ -1,9 +1,11 @@
+const whitelist = process.env.WHITELIST.split(',');
+
 module.exports = {
-  whitelist: process.env.WHITELIST,
+  whitelist,
   cookieoptionHttponly: false,
   cookieoptionSamesite: false,
   cookieparserSecure: false,
-  cors: 'all',
+  cors: process.env.CORS,
   hsts: false,
   https: 'none',
   httpsRedirect: false,
