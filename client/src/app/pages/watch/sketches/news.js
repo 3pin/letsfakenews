@@ -84,11 +84,7 @@ export default function sketch(P) {
       if (props.image) {
         if (props.image !== previousImg) {
           previousImg = props.image;
-          if (props.mode === 'development') {
-            imgUrl = corsUrl + props.image;
-          } else {
-            imgUrl = props.image;
-          }
+          imgUrl = corsUrl + props.image;
           img = p.loadImage(imgUrl, (image) => {
             ({ imgWidth, imgHeight } = Aspect(
               image,

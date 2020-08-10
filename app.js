@@ -76,7 +76,7 @@ if (global.gConfig.cors === 'whitelist') {
     },
   };
   app.use(cors(corsOptions));
-} else if (global.gConfig.cors === 'origin') {
+} else if (global.gConfig.cors === 'originOnly') {
   debug(typeof whitelist[0]);
   const corsOptions = {
     origin: whitelist[0],
