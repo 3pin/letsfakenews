@@ -24,6 +24,7 @@ export default function sketch(P) {
   let font;
   const fontUrl = './Arial.ttf';
   let img;
+  let previousImg = '';
   let imgWidth;
   let imgHeight;
   let timings = {};
@@ -81,7 +82,8 @@ export default function sketch(P) {
         // console.log(playedSeconds);
       }
       if (props.image) {
-        if (props.image !== imgUrl) {
+        if (props.image !== previousImg) {
+          previousImg = props.image;
           if (props.mode === 'development') {
             imgUrl = corsUrl + props.image;
           } else {
