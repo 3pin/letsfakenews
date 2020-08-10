@@ -55,7 +55,6 @@ export default function sketch(P) {
   //
   p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
     // console.log("PROPS received...");
-    //
     if (props.componentWidth && props.timings && setupCount < 1) {
       setupCount = 1;
       timings = props.timings;
