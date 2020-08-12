@@ -46,20 +46,16 @@ module.exports = {
     return new Promise(((resolve, reject) => {
       let uniqueArray = [];
       const text = inputText.toLowerCase();
-      debug('text:');
       debug(text);
       // process input text into words
       const words = new pos.Lexer().lex(text);
-      debug('words:');
       debug(words);
       // filter-out illegal words
       const legalWords = words.filter((e) => !illegalWords.includes(e));
-      debug('legalWords:');
       debug(legalWords);
       // populate an array with key:values for tag:word
       const tagger = new pos.Tagger();
       const taggedWords = tagger.tag(legalWords);
-      debug('taggedWords:');
       debug(taggedWords);
       // setup empty arrays to store parsed... index_in_story:word
       const outputIndexes = [];
@@ -78,28 +74,25 @@ module.exports = {
           }
         })
       }
-      debug('outputIndexes:');
       debug(outputIndexes);
-      debug('outputWords:');
       debug(outputWords);
       // combine compound-nouns
       const outputWord = [];
       outputWord.push(outputWords[0]);
-      for (i = 1; i < outputIndexes.length; i += 1) {
+      for (let i = 1; i < outputIndexes.length; i += 1) {
         if (outputIndexes[i - 1] + 1 === outputIndexes[i]) {
           outputWord[outputWord.length - 1] = `${outputWord[outputWord.length - 1]}-${outputWords[i]}`;
         } else {
           outputWord.push(outputWords[i]);
         }
       }
-      for (i = 0; i < outputWord.length; i += 1) {
+      for (let i = 0; i < outputWord.length; i += 1) {
         debug(`Compounded-Output: ${outputWord[i]}`);
       }
       // the returned array of unique nouns extraced from the pos:tagger
       uniqueArray = outputWord.filter((item, position) => outputWord.indexOf(item) === position);
       // test to determine Promise-Fullfilment
       if (Array.isArray(uniqueArray)) {
-        debug('uniqueArray:');
         debug(uniqueArray);
         resolve(uniqueArray);
       } else {
