@@ -1,10 +1,10 @@
 const whitelist = process.env.WHITELIST.split(',');
 
 module.exports = {
-  whitelist,
+  cookieparserSecure: JSON.parse(process.env.SECURE),
   cookieoptionHttponly: false,
-  cookieoptionSamesite: false,
-  cookieparserSecure: false,
+  cookieoptionSamesite: process.env.SAMESITE,
+  whitelist,
   cors: process.env.CORS,
   hsts: false,
   https: 'none',

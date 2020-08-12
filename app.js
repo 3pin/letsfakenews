@@ -43,10 +43,10 @@ if (global.gConfig.nodeEnv === 'development') {
 
 // adding cookies to req headers
 if (global.gConfig.cookieparserSecure) {
-  debug('Cookies are secure');
+  debug('Cookie-parsing IS secure');
   app.use(cookieParser(global.gConfig.secret));
 } else {
-  debug('Cookies are NOT secure');
+  debug('Cookie-parsing NOT secure');
   app.use(cookieParser());
 }
 
