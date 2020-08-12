@@ -82,17 +82,28 @@ export default function sketch(P) {
         // console.log(playedSeconds);
       }
       if (props.image) {
+        // console.log(props.image);
         if (props.image !== previousImg) {
           previousImg = props.image;
           imgUrl = corsUrl + props.image;
-          img = p.loadImage(imgUrl, (image) => {
-            ({ imgWidth, imgHeight } = Aspect(
-              image,
-              imageLayout.imageFrame_Width / imageLayout.imageFrame_Height,
-              imageLayout.imageFrame_Width,
-              imageLayout.imageFrame_Height,
-            ));
-          });
+          if (props.imageCaching) {
+            console.log('loading image to cache...');
+            // loadImages into cache before needed
+            img = p.loadImage(imgUrl, () => {
+              // tell parent that: image is cached so send on the next one
+              props.imageInc('DONE');
+            });
+          } else {
+            // loadImages according to markers
+            img = p.loadImage(imgUrl, (image) => {
+              ({ imgWidth, imgHeight } = Aspect(
+                image,
+                imageLayout.imageFrame_Width / imageLayout.imageFrame_Height,
+                imageLayout.imageFrame_Width,
+                imageLayout.imageFrame_Height,
+              ));
+            });
+          }
         }
       }
       if (props.title) {

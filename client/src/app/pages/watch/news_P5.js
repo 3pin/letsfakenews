@@ -44,6 +44,7 @@ class visualiseNews extends React.Component {
     this.onEnded = this.onEnded.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
     this.exitFullscreen = this.exitFullscreen.bind(this);
+    this.handleImageInc = this.handleImageInc.bind(this);
     //
     this.state = {
       apiHello: '/watch/requestNewStory',
@@ -61,6 +62,8 @@ class visualiseNews extends React.Component {
       markers: [],
       // array index for currently-displayed image from url-array
       url_index: 0,
+      // Boolean as to whether to loadImages to cache in sketch
+      imageCaching: true,
       // interface elements visibility
       popup_title: {
         display: 'none',
@@ -83,17 +86,21 @@ class visualiseNews extends React.Component {
   }
 
   onReady() {
-    console.log('ON-READY');
+    console.log('onReady');
     /* load new story into this.state */
     axios.get(this.state.apiHello, {
       params: {
         room: this.props.room,
       },
     }).then((res) => {
-      console.log(res);
-      const { urls, markers } = metadata(res.data, this.state.imageDuration, this.state.imagesStart);
+      // console.log(res);
+      const {
+        urls,
+        markers
+      } = metadata(res.data, this.state.imageDuration, this.state.imagesStart);
       this.setState({
         url_index: 0,
+        imageCaching: true,
         title: res.data.title.toUpperCase(),
         story: res.data.story,
         urls,
@@ -101,7 +108,7 @@ class visualiseNews extends React.Component {
       });
     }).then(() => {
       console.log(this.state);
-      console.log('Media now ready');
+      console.log('Metadata now setup');
     }).catch((err) => {
       console.log(err);
     });
@@ -169,6 +176,9 @@ class visualiseNews extends React.Component {
     console.log('Media Ended');
     /* the next line will rewind and then trigger this.onReady() */
     this.player.seekTo(0);
+    this.setState({
+      playing: false,
+    });
   }
 
   goFullscreen() {
@@ -203,6 +213,34 @@ class visualiseNews extends React.Component {
     }
   }
 
+  handleImageInc(val) {
+    // let val = value;
+    console.log(val, this.state.url_index + 1, this.state.urls.length);
+    if (this.state.url_index < this.state.urls.length - 1) {
+      console.log('Sending next image to be CACHED');
+      let newIndex = this.state.url_index + 1;
+      this.setState({
+        url_index: newIndex,
+      });
+    } else {
+      console.log('All images CACHED');
+      this.setState({
+        imageCaching: false,
+      }, () => {
+        this.setState({
+          url_index: 0,
+        }, () => {
+          this.setState({
+            playing: true,
+          });
+        });
+      });
+    }
+  }
+  // url_index: 0
+  // playing: true
+
+
   componentDidMount() {
     console.log('componentDidMount');
     /* pass in the rendered componentWidth to state */
@@ -235,7 +273,7 @@ class visualiseNews extends React.Component {
         this.setState({
           imageDuration,
           mode: res.data.dbSettings.nodeMode,
-          playing: true,
+          playing: false,
           controls: true,
           volume: 0,
         });
@@ -280,6 +318,10 @@ class visualiseNews extends React.Component {
               popup_title_text={this.state.title}
               image_frame={this.state.image_frame}
               image={this.state.urls[this.state.url_index]}
+              imageIndex={this.state.url_index}
+              numImages={this.state.urls.length}
+              imageCaching={this.state.imageCaching}
+              imageInc={this.handleImageInc}
               scroll-left={this.state.scroller}
               scroller_text={this.state.story}
               playedSeconds={this.state.playedSeconds}

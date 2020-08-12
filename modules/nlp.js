@@ -11,6 +11,7 @@ VBG   verb, gerund            ie. eating
 VBN   verb, past part         ie. eaten
 VBP   Verb, present           ie. eat
 VBZ   Verb, present           ie. eats
+JJ    Adjective               ie. runs
 Eg...
 [ 'It', 'PRP' ],
 [ 'is', 'VBZ' ],
@@ -32,7 +33,7 @@ Eg...
 */
 
 
-const debug = require('debug')('nlp');
+const debug = require('debug')('module');
 const pos = require('pos');
 
 const tags = global.gConfig.posTags;
@@ -45,35 +46,41 @@ module.exports = {
     return new Promise(((resolve, reject) => {
       let uniqueArray = [];
       const text = inputText.toLowerCase();
+      debug('text:');
       debug(text);
       // process input text into words
       const words = new pos.Lexer().lex(text);
+      debug('words:');
       debug(words);
       // filter-out illegal words
       const legalWords = words.filter((e) => !illegalWords.includes(e));
+      debug('legalWords:');
       debug(legalWords);
       // populate an array with key:values for tag:word
       const tagger = new pos.Tagger();
       const taggedWords = tagger.tag(legalWords);
+      debug('taggedWords:');
       debug(taggedWords);
       // setup empty arrays to store parsed... index_in_story:word
       const outputIndexes = [];
       const outputWords = [];
-      let i;
-      for (i = 0; i < taggedWords.length; i += 1) {
+      // let i;
+      for (let i = 0; i < taggedWords.length; i += 1) {
         const taggedWord = taggedWords[i];
         const word = taggedWord[0];
         const tag = taggedWord[1];
         // debug_module_parse('Word:' + word + ' - Tag:' + tag)
-        tags.forEach((entry, index) => {
+        tags.forEach((entry) => {
           if (tag === entry) {
             debug(`${tag}:${word}`);
-            outputIndexes.push(index);
+            outputIndexes.push(i);
             outputWords.push(word);
           }
         })
       }
+      debug('outputIndexes:');
       debug(outputIndexes);
+      debug('outputWords:');
       debug(outputWords);
       // combine compound-nouns
       const outputWord = [];
@@ -92,6 +99,7 @@ module.exports = {
       uniqueArray = outputWord.filter((item, position) => outputWord.indexOf(item) === position);
       // test to determine Promise-Fullfilment
       if (Array.isArray(uniqueArray)) {
+        debug('uniqueArray:');
         debug(uniqueArray);
         resolve(uniqueArray);
       } else {
@@ -123,7 +131,7 @@ module.exports = {
       // let sentenceArray = text.split(".")
       sentenceArray.forEach((value) => {
         value.trim()
-        // parse according to pos-tags ["NN", "NNP", "NNPS", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
+        // parse according to pos-tags
         let shorterSentence = '';
         const words = new pos.Lexer().lex(value);
         const tagger = new pos.Tagger();
