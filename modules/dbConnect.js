@@ -74,6 +74,7 @@ function Connect() {
               activelist: [],
               dbMode: global.gConfig.dbMode,
               nodeMode: global.gConfig.nodeEnv,
+              corsAnywhere: global.gConfig.corsAnywhere,
               visualise: global.gConfig.visualise,
               imageDuration: global.gConfig.imageDuration,
               textScrollers: global.gConfig.textScrollers,

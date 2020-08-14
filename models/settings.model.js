@@ -40,6 +40,10 @@ const SettingsSchema = new Schema({
     type: String,
     required: true,
   },
+  corsAnywhere: {
+    type: String,
+    required: true,
+  },
 });
 
 // Export the model

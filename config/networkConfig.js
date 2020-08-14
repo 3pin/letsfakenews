@@ -11,4 +11,5 @@ module.exports = {
   httpsRedirect: false,
   keepAlive: 30000,
   tokenAgeMins: 10,
+  corsAnywhere: process.env.CORS_ANYWHERE,
 };

@@ -12,7 +12,9 @@ export default function sketch(P) {
   let aspectRatio = initialAspectRatio;
   let playedSeconds = 0;
   const fps = 60;
-  const corsUrl = 'https://cors-anywhere.herokuapp.com/';
+  // const corsUrl = 'https://cors-anywhere.herokuapp.com/';
+  // const corsUrl = 'http://localhost:8080/';
+  let corsUrl;
   let imgUrl;
   let containerWidth;
   let containerHeight;
@@ -110,6 +112,9 @@ export default function sketch(P) {
         if (title !== props.title) {
           title = props.title;
         }
+      }
+      if (props.corsAnywhere) {
+        corsUrl = props.corsAnywhere;
       }
       if (props.story) {
         if (story !== props.story) {

@@ -38,6 +38,7 @@ const metadata = (data, imageDuration, imagesStart) => {
 class visualiseNews extends React.Component {
   constructor(props) {
     super(props);
+    this.frameRef = React.createRef()
     //
     this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
@@ -49,6 +50,7 @@ class visualiseNews extends React.Component {
     this.state = {
       apiHello: '/watch/requestNewStory',
       mode: '',
+      corsAnywhere: '',
       // timings
       playedSeconds: 0,
       popupStart: 6.2,
@@ -93,7 +95,7 @@ class visualiseNews extends React.Component {
         room: this.props.room,
       },
     }).then((res) => {
-      // console.log(res);
+      console.log(res);
       const {
         urls,
         markers
@@ -238,7 +240,7 @@ class visualiseNews extends React.Component {
     console.log('componentDidMount');
     /* pass in the rendered componentWidth to state */
     this.setState({
-      componentWidth: this.refs.parent.offsetWidth,
+      componentWidth: this.frameRef.current.offsetWidth,
     });
     document.addEventListener('fullscreenchange', this.exitFullscreen, false);
     /* load db settings... */
@@ -248,6 +250,7 @@ class visualiseNews extends React.Component {
         room: this.props.room,
       },
     }).then((res) => {
+      console.log(res);
       // const popup_duration = diff(this.state.popupStart, this.state.popupEnd);
       const imageDuration = diff(this.state.imagesStart, this.state.imagesEnd);
       if (res.status !== 200) {
@@ -257,6 +260,7 @@ class visualiseNews extends React.Component {
         this.setState({
           imageDuration,
           mode: res.data.dbSettings.nodeMode,
+          corsAnywhere: res.data.dbSettings.corsAnywhere,
           controls: false,
           volume: 1,
         });
@@ -265,6 +269,7 @@ class visualiseNews extends React.Component {
         this.setState({
           imageDuration,
           mode: res.data.dbSettings.nodeMode,
+          corsAnywhere: res.data.dbSettings.corsAnywhere,
           controls: true,
           volume: 0,
         });
@@ -278,7 +283,7 @@ class visualiseNews extends React.Component {
 
   render() {
     return (
-      <div ref="parent">
+      <div ref={this.frameRef}>
         <FrameButton
           buttonLabel="Play Fullscreen"
           onClick={this.goFullscreen.bind(this.videoContainer)}
@@ -303,6 +308,7 @@ class visualiseNews extends React.Component {
             <P5Wrapper
               mode={this.state.mode}
               sketch={Sketch}
+              corsAnywhere={this.state.corsAnywhere}
               vidUrl={this.state.url}
               componentWidth={this.state.componentWidth}
               popup_title={this.state.popup_title}
