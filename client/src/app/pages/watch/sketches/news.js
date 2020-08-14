@@ -94,6 +94,9 @@ export default function sketch(P) {
             img = p.loadImage(imgUrl, () => {
               // tell parent that: image is cached so send on the next one
               props.imageInc('DONE');
+            }, () => {
+              console.log('Loading to cache failed');
+              props.imageInc('DONE');
             });
           } else {
             // loadImages according to markers
@@ -104,6 +107,8 @@ export default function sketch(P) {
                 imageLayout.imageFrame_Width,
                 imageLayout.imageFrame_Height,
               ));
+            }, () => {
+              console.log('Loading failed');
             });
           }
         }

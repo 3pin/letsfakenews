@@ -14,7 +14,7 @@ GoogleImages size-options: icon, small, medium, large, xlarge, xxlarge, huge
 (cc_publicdomain | cc_attribute%7Ccc_sharealike | cc_nonderived ! cc_noncommercial
 imgType: photo, face, stock
 */
-const searchSettings = {
+const _searchSettings = {
   c2coff: '1',
   imgSize: 'huge',
   imgType: 'photo',
@@ -23,7 +23,20 @@ const searchSettings = {
   rights: '!cc_noncommercial',
   safe: 'high',
   searchType: 'image',
-  siteSearch: 'https://www.facebook.com/',
+  siteSearch: 'https://www.facebook.com',
+  siteSearchFilter: 'e',
+};
+const searchSettings = {
+  filter: '1',
+  googleHost: 'google.com',
+  imgSize: 'huge',
+  imgType: 'photo',
+  linkSite: 'yes',
+  language: 'en',
+  rights: 'cc_publicdomain',
+  safe: 'high',
+  searchType: 'image',
+  siteSearch: 'https://www.facebook.com',
   siteSearchFilter: 'e',
 };
 

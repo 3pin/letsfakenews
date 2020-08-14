@@ -38,7 +38,7 @@ const metadata = (data, imageDuration, imagesStart) => {
 class visualiseNews extends React.Component {
   constructor(props) {
     super(props);
-    this.frameRef = React.createRef()
+    this.parentFrame = React.createRef()
     //
     this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
@@ -240,7 +240,7 @@ class visualiseNews extends React.Component {
     console.log('componentDidMount');
     /* pass in the rendered componentWidth to state */
     this.setState({
-      componentWidth: this.frameRef.current.offsetWidth,
+      componentWidth: this.parentFrame.current.offsetWidth,
     });
     document.addEventListener('fullscreenchange', this.exitFullscreen, false);
     /* load db settings... */
@@ -283,7 +283,7 @@ class visualiseNews extends React.Component {
 
   render() {
     return (
-      <div ref={this.frameRef}>
+      <div ref={this.parentFrame}>
         <FrameButton
           buttonLabel="Play Fullscreen"
           onClick={this.goFullscreen.bind(this.videoContainer)}
