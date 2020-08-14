@@ -88,12 +88,13 @@ function Connect() {
         } else {
           // else for exiting collections...
           for (let index = 0; index < collections.length; index += 1) {
-            debug(`CollectionName:${collections[index].name}`);
+            debug(`CollectionName:${collections[index].name} @index:${index}`);
             if (collections[index].name === global.gConfig.database) {
               debug('Collection already exists, so loading...');
               break;
             } else if (index === collections.length - 1) {
               for (let i = 0; i < global.gConfig.roomSetup.rooms.length; i += 1) {
+                debug('No collection exists, creating a new collection...');
                 // create a user-entry for authorisation to backend...
                 const authObj = {
                   room: global.gConfig.roomSetup.rooms[i],
@@ -115,6 +116,7 @@ function Connect() {
                   imageDuration: global.gConfig.imageDuration,
                   textScrollers: global.gConfig.textScrollers,
                   room: global.gConfig.roomSetup.rooms[i],
+                  corsAnywhere: global.gConfig.corsAnywhere,
                 };
                 const settings = new Settings(settingsObj);
                 settings.save().then((res) => {
