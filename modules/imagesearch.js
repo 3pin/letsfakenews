@@ -14,6 +14,7 @@ GoogleImages size-options: icon, small, medium, large, xlarge, xxlarge, huge
 (cc_publicdomain | cc_attribute%7Ccc_sharealike | cc_nonderived ! cc_noncommercial
 imgType: photo, face, stock
 */
+
 const _searchSettings = {
   c2coff: '1',
   imgSize: 'huge',

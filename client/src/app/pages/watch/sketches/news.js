@@ -130,11 +130,14 @@ export default function sketch(P) {
           console.log(`storyLength ${storyLength}`);
           const totalLength = Math.round(containerWidth + storyLength);
           console.log(`totalLength ${totalLength}`);
+          console.log(`fps ${fps}`);
           const noFrames = fps * timings.imagesDuration;
           console.log(`noFrames ${noFrames}`);
-          const inc = (totalLength / noFrames).toFixed(2);
+          const inc = 1.0 * (totalLength / noFrames).toFixed(2);
           console.log(`inc ${inc}`);
-          storyXinc = Math.round(inc);
+          /* no need for rounding as it puts timings out */
+          // storyXinc = Math.ceil(inc);
+          storyXinc = inc;
           console.log(`storyXinc ${storyXinc}`);
           storyXpos = containerWidth;
         }
