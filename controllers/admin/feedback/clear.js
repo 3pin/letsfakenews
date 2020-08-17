@@ -1,9 +1,7 @@
-
 const debug = require('debug')('controller');
 // import mongoose 'Story' schema
 // const Base = require('../../../models/base.model');
 const Feedback = require('../../../models/feedback.model');
-
 
 module.exports = (req, res) => {
   debug('/DELETE /routes/admin/feedback/clear');

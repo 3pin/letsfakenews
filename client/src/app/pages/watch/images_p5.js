@@ -7,10 +7,10 @@ import axios from 'axios';
 
 import FrameButton from '../../components/frameButton';
 import Sketch from './sketches/images';
-// import Sketch from "./sketches/sketch4class";
+/* import Sketch from "./sketches/sketch4class"; */
 import 'eventsource-polyfill';
 
-// which props do we want to inject, given the global store state?
+/* which props do we want to inject, given the global store state? */
 const mapStateToProps = (state) => ({
   room: state.roomReducer.room,
 });
@@ -20,6 +20,7 @@ let timerId = 1;
 class visualiseImages extends React.Component {
   constructor(props) {
     super(props);
+    this.parentFrame = React.createRef();
     this._isMounted = false;
     if (process.env.NODE_ENV === 'production') {
       this.eventSource = new EventSource('/settings/sse');
@@ -39,14 +40,17 @@ class visualiseImages extends React.Component {
       imageSetIndex: 0,
       imageIndex: 0,
       imagecontainerStyle: {
-        /* border: '2px solid green',
-        background: 'green', */
+        /*
+        border: '2px solid green',
+        background: 'green',
+        */
         width: '100%',
         height: '100%',
         margin: 'auto',
       },
       imageDuration: 2,
       componentWidth: undefined,
+      corsAnywhere: '',
     };
   }
 
@@ -77,9 +81,12 @@ class visualiseImages extends React.Component {
       },
     }).then((res) => {
       console.log(res);
+      console.log(`mode is ${res.data.nodeMode}`);
+      console.log(`cors URL is ${res.data.corsAnywhere}`);
       this.setState({
         liveList: res.data.liveList,
         imageDuration: res.data.imageDuration,
+        corsAnywhere: res.data.corsAnywhere,
       }, () => {
         console.log(`post-refresh.. starting startTimer @interval: ${this.state.imageDuration * 1000}`);
         timerId = this.startTimer(this.state.imageDuration * 1000).id;
@@ -145,13 +152,13 @@ class visualiseImages extends React.Component {
 
   endTimer(id) {
     console.log(`end timerid: ${id}`);
-    clearInterval(id);
+    clearInterval(this.id);
   }
 
   componentDidMount() {
     /* pass in the rendered componentWidth to state */
     this.setState({
-      componentWidth: this.refs.parent.offsetWidth,
+      componentWidth: this.parentFrame.current.offsetWidth,
     });
     this._isMounted = true;
     /* open sse listener to trigger a refresh:response which will update this.state.liveList */
@@ -184,7 +191,7 @@ class visualiseImages extends React.Component {
   render() {
     // console.log(this.state)
     return (
-      <div ref="parent">
+      <div ref={this.parentFrame}>
         <FrameButton
           buttonLabel="Play Fullscreen"
           onClick={this.goFullscreen.bind(this.container)}
@@ -196,6 +203,7 @@ class visualiseImages extends React.Component {
             liveList={this.state.liveList}
             src={this.state.imageSet[this.state.imageIndex]}
             componentWidth={this.state.componentWidth}
+            corsAnywhere={this.state.corsAnywhere}
           />
         </div>
 

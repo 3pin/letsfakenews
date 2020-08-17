@@ -4,7 +4,6 @@ processes the URLS field in each
 return the updates array of DB documents
 */
 
-
 const debug = require('debug')('refresh_urls_iterative');
 const refreshUrls = require('./refreshUrls.js');
 

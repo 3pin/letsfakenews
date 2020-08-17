@@ -3,7 +3,6 @@ takes an array ids that reference DB-documents
 iteratively passes on each id for its url field to be refreshed/saved
 */
 
-
 const debug = require('debug')('module');
 const refreshSaveUrls = require('./refreshSaveUrls.js');
 const Story = require('../models/story.model');

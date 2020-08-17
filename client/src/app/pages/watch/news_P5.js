@@ -8,25 +8,25 @@ import P5Wrapper from 'react-p5-wrapper';
 import FrameButton from '../../components/frameButton';
 import Sketch from './sketches/news';
 
-// which props do we want to inject, given the global store state?
+/* which props do we want to inject, given the global store state? */
 const mapStateToProps = (state) => ({
   room: state.roomReducer.room,
 });
 
-// func to calc timing-durations
+/* func to calc timing-durations */
 const diff = (start, end) => parseFloat((end - start).toFixed(1));
-// function process-multimedia-metadata
+/* function process-multimedia-metadata */
 const metadata = (data, imageDuration, imagesStart) => {
-  // load imge_URLS
+  /* load imge_URLS */
   const imageLocations = data.urls;
   const urls = [];
   for (const url in imageLocations) {
     urls.push(imageLocations[url]);
   }
-  // calculate multimedia metadata
+  /* calculate multimedia metadata */
   const picDuration = Math.round(imageDuration / urls.length);
   const markers = [];
-  for (let i = 1; i <= urls.length; i++) {
+  for (let i = 1; i <= urls.length; i += 1) {
     markers.push(Math.round(imagesStart + picDuration * i));
   }
   return {
@@ -38,35 +38,33 @@ const metadata = (data, imageDuration, imagesStart) => {
 class visualiseNews extends React.Component {
   constructor(props) {
     super(props);
-    this.parentFrame = React.createRef()
-    //
+    this.parentFrame = React.createRef();
     this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
     this.exitFullscreen = this.exitFullscreen.bind(this);
     this.handleImageInc = this.handleImageInc.bind(this);
-    //
     this.state = {
       apiHello: '/watch/requestNewStory',
       mode: '',
       corsAnywhere: '',
-      // timings
+      /* timings */
       playedSeconds: 0,
       popupStart: 6.2,
       popupEnd: 11.3,
       imagesStart: 17.6,
       imagesEnd: 41.1,
-      // story data
+      /* story data */
       title: '',
       story: '',
       urls: [],
       markers: [],
-      // array index for currently-displayed image from url-array
-      url_index: 0,
-      // Boolean as to whether to loadImages to cache in sketch
+      /* array index for currently-displayed image from url-array */
+      urlIndex: 0,
+      /* Boolean as to whether to loadImages to cache in sketch */
       imageCaching: true,
-      // interface elements visibility
+      /* interface elements visibility */
       popup_title: {
         display: 'none',
       },
@@ -98,10 +96,10 @@ class visualiseNews extends React.Component {
       console.log(res);
       const {
         urls,
-        markers
+        markers,
       } = metadata(res.data, this.state.imageDuration, this.state.imagesStart);
       this.setState({
-        url_index: 0,
+        urlIndex: 0,
         imageCaching: true,
         title: res.data.title.toUpperCase(),
         story: res.data.story,
@@ -121,18 +119,16 @@ class visualiseNews extends React.Component {
     this.setState({
       playedSeconds: e.playedSeconds.toFixed(2),
     });
-    // change url-image according to markers...
+    /* change url-image according to markers... */
     const currentSec = e.playedSeconds;
-    if (currentSec >= this.state.markers[this.state.url_index] && this.state.url_index < this.state.markers.length - 1) {
-      const url_index = this.state.url_index + 1;
-      // console.log('marker passed secs:' + this.state.markers[this.state.url_index] + ' current url index:' + this.state.url_index);
+    if (currentSec >= this.state.markers[this.state.urlIndex] && this.state.urlIndex < this.state.markers.length - 1) {
+      let { urlIndex } = this.state;
+      urlIndex += 1;
       this.setState({
-        url_index,
+        urlIndex,
       });
-      // console.log('new url index: ' + this.state.url_index);
-      // console.log('new url: ' + this.state.urls[this.state.url_index]);
     }
-    // change interface according to markers
+    /* change interface according to markers */
     if (currentSec >= this.state.popupStart && currentSec <= this.state.popupEnd) {
       // console.log('popup & title should be visible');
       this.setState({
@@ -178,7 +174,7 @@ class visualiseNews extends React.Component {
     document.activeElement.blur();
     console.log('Entering fullscreen');
     const i = this.videoContainer;
-    // go full-screen with cross-browser support
+    /* go full-screen with cross-browser support */
     if (i.requestFullscreen) {
       i.requestFullscreen();
     } else if (i.webkitRequestFullscreen) {
@@ -212,13 +208,13 @@ class visualiseNews extends React.Component {
   }
 
   handleImageInc(val) {
-    // let val = value;
-    console.log(val, this.state.url_index + 1, this.state.urls.length);
-    if (this.state.url_index < this.state.urls.length - 1) {
+    console.log(val, this.state.urlIndex + 1, this.state.urls.length);
+    if (this.state.urlIndex < this.state.urls.length - 1) {
       console.log('Sending next image to be CACHED');
-      let newIndex = this.state.url_index + 1;
+      let { urlIndex } = this.state;
+      urlIndex += 1;
       this.setState({
-        url_index: newIndex,
+        urlIndex,
       });
     } else {
       console.log('All images CACHED');
@@ -226,7 +222,7 @@ class visualiseNews extends React.Component {
         imageCaching: false,
       }, () => {
         this.setState({
-          url_index: 0,
+          urlIndex: 0,
         }, () => {
           this.setState({
             playing: true,
@@ -314,8 +310,8 @@ class visualiseNews extends React.Component {
               popup_title={this.state.popup_title}
               popup_title_text={this.state.title}
               image_frame={this.state.image_frame}
-              image={this.state.urls[this.state.url_index]}
-              imageIndex={this.state.url_index}
+              image={this.state.urls[this.state.urlIndex]}
+              imageIndex={this.state.urlIndex}
               numImages={this.state.urls.length}
               imageCaching={this.state.imageCaching}
               imageInc={this.handleImageInc}

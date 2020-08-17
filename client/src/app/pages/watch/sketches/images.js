@@ -3,7 +3,6 @@ import Aspect from './functions/aspect';
 export default function sketch(P) {
   const p = P;
   const initialAspectRatio = 1.78;
-  const corsUrl = 'https://cors-anywhere.herokuapp.com/';
   let initialWidth = 534;
   let initialHeight = 300;
   let canvasWidth;
@@ -14,6 +13,7 @@ export default function sketch(P) {
   let imgHeight;
   let setupCount = 0;
   let aspectRatio = initialAspectRatio;
+  let corsUrl;
   //
   p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
     console.log('PROPS received...');
@@ -27,6 +27,9 @@ export default function sketch(P) {
       canvasHeight = initialHeight;
       console.log(`canvasWidth:${canvasWidth} canvasHeight:${canvasHeight}`);
       p.resizeCanvas(initialWidth, initialHeight);
+    }
+    if (props.corsAnywhere) {
+      corsUrl = props.corsAnywhere;
     }
     if (props.src !== undefined) {
       setupCount += 1;

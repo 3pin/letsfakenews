@@ -2,7 +2,6 @@
 // returns {time: currentTimeWord, datetime:currentDatetimePrint, dbname:currentDatetimeWord}
 // eg. dbname = timeOps.current_time().dbname
 
-
 const debug = require('debug')('timeOps');
 
 module.exports = {

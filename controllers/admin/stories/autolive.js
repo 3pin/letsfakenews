@@ -1,4 +1,3 @@
-
 const debug = require('debug')('controller');
 const dbSettingsUpdate = require('../../middleware/dbSettingsUpdate');
 

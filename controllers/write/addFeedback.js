@@ -1,4 +1,3 @@
-
 const debug = require('debug')('controller');
 // tap into an sse event-bus
 const bus = require('../../modules/eventbus');

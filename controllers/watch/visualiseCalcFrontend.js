@@ -1,4 +1,3 @@
-
 const debug = require('debug')('controller');
 const Story = require('../../models/story.model');
 
@@ -29,6 +28,8 @@ module.exports = (req, res) => {
       liveList,
       textScrollers: dbSettings.textScrollers,
       imageDuration: dbSettings.imageDuration,
+      nodeMode: dbSettings.nodeMode,
+      corsAnywhere: dbSettings.corsAnywhere,
     });
   });
 };

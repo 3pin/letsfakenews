@@ -1,4 +1,3 @@
-
 const debug = require('debug')('controller');
 // import mongoose 'Story' schema
 const Story = require('../../../models/story.model');

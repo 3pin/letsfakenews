@@ -5,7 +5,6 @@ process nouns for URLs
 return urls
 */
 
-
 const debug = require('debug')('story');
 const nlp = require('./nlp.js');
 const imagesearchIterative = require('./imagesearchIterative.js');

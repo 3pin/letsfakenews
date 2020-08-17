@@ -1,4 +1,3 @@
-
 const debug = require('debug')('mode');
 const bus = require('../../modules/eventbus');
 

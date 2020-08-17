@@ -32,7 +32,6 @@ Eg...
 [ 'themselves', 'PRP' ],
 */
 
-
 const debug = require('debug')('module');
 const pos = require('pos');
 

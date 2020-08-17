@@ -12,8 +12,6 @@ export default function sketch(P) {
   let aspectRatio = initialAspectRatio;
   let playedSeconds = 0;
   const fps = 60;
-  // const corsUrl = 'https://cors-anywhere.herokuapp.com/';
-  // const corsUrl = 'http://localhost:8080/';
   let corsUrl;
   let imgUrl;
   let containerWidth;
@@ -90,16 +88,16 @@ export default function sketch(P) {
           imgUrl = corsUrl + props.image;
           if (props.imageCaching) {
             console.log('loading image to cache...');
-            // loadImages into cache before needed
+            /* loadImages into cache before needed */
             img = p.loadImage(imgUrl, () => {
-              // tell parent that: image is cached so send on the next one
+              /* tell parent that: image is cached so send on the next one */
               props.imageInc('DONE');
             }, () => {
               console.log('Loading to cache failed');
               props.imageInc('DONE');
             });
           } else {
-            // loadImages according to markers
+            /* loadImages according to markers */
             img = p.loadImage(imgUrl, (image) => {
               ({ imgWidth, imgHeight } = Aspect(
                 image,

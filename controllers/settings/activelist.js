@@ -1,4 +1,3 @@
-
 const debug = require('debug')('activelist');
 const Settings = require('../../models/settings.model');
 

@@ -3,7 +3,6 @@ takes an array of searchterms
 matches searchterm:image via google-image-search
 */
 
-
 const debug = require('debug')('imagesearchIterative');
 const imagesearch = require('./imagesearch');
 

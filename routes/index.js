@@ -1,6 +1,5 @@
-
 /* module debugging */
-const debug = require('debug')('room');
+// const debug = require('debug')('room');
 
 /* declare a new router */
 const routes = require('express').Router();

@@ -1,4 +1,3 @@
-
 const debug = require('debug')('routes_watch');
 const randomCalc = require('../../modules/dbFetchMode');
 const Story = require('../../models/story.model');

@@ -1,5 +1,4 @@
-
-const debug = require('debug')('routes');
+// const debug = require('debug')('routes');
 
 /* declare a new router */
 const settings = require('express').Router();

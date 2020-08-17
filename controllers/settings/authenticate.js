@@ -2,7 +2,6 @@ const debug = require('debug')('controller');
 const jwt = require('jsonwebtoken');
 const Auth = require('../../models/auth.model');
 
-
 module.exports = (req, res) => {
   debug('/settings/authenticate');
   const {

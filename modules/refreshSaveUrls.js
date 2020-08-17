@@ -4,7 +4,6 @@ REFRESH the url field in the document
 UPDATE the document in the DB via _id/url
 */
 
-
 const debug = require('debug')('refresh_save_urls');
 const imagesearchIterative = require('./imagesearchIterative.js');
 // import mongoose schemas
