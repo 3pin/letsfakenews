@@ -41,7 +41,7 @@ class visualiseNews extends React.Component {
     this.parentFrame = React.createRef();
     this.onReady = this.onReady.bind(this);
     this.onProgress = this.onProgress.bind(this);
-    this.handleReset = this.handleReset.bind(this);
+    this.handleRestart = this.handleRestart.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
     this.exitFullscreen = this.exitFullscreen.bind(this);
     this.handleImageInc = this.handleImageInc.bind(this);
@@ -185,26 +185,40 @@ class visualiseNews extends React.Component {
       i.msRequestFullscreen();
     }
     /* reset & restart */
-    this.handleReset();
+    this.handleRestart();
   }
 
   exitFullscreen() {
     if (!document.fullscreenElement) {
       console.log('fullscreen exited');
       /* stop & reset */
-      this.handleReset();
+      this.handleRestart();
     }
   }
 
-  handleReset() {
-    console.log('Media Ended');
+  handleRestart() {
+    console.log('Media Restarting');
+    /* rewind and retrigger onReady() */
+    // this.player.seekTo(0);
+    //
+    /* stop imageCaching if running */
+    this.setState({
+      imageCaching: false,
+    }, () => {
+      // rewind and retrigger onReady()
+      console.log('About to Rewind to Start');
+      this.player.seekTo(0);
+    });
+    //
     /* stop playback */
+    /*
     this.setState({
       playing: false,
     }, () => {
-      /* rewind and retrigger onReady() */
+      // rewind and retrigger onReady()
       this.player.seekTo(0);
     });
+    */
   }
 
   handleImageInc(val) {
@@ -257,7 +271,6 @@ class visualiseNews extends React.Component {
           imageDuration,
           mode: res.data.dbSettings.nodeMode,
           corsAnywhere: res.data.dbSettings.corsAnywhere,
-          controls: false,
           volume: 1,
         });
       } else {
@@ -266,7 +279,6 @@ class visualiseNews extends React.Component {
           imageDuration,
           mode: res.data.dbSettings.nodeMode,
           corsAnywhere: res.data.dbSettings.corsAnywhere,
-          controls: true,
           volume: 0,
         });
       }
@@ -297,7 +309,7 @@ class visualiseNews extends React.Component {
             playing={this.state.playing}
             onReady={this.onReady.bind(this)}
             onProgress={this.onProgress.bind(this)}
-            onEnded={this.handleReset.bind(this)}
+            onEnded={this.handleRestart.bind(this)}
             url={this.state.url}
           />
           <div id="p5_container">

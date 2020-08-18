@@ -200,7 +200,7 @@ export default function sketch(P) {
     }
   };
   window.onresize = () => {
-    console.log('resize clicked');
+    console.log('window resized');
     if (!window.screenTop && !window.screenY) {
       console.log('condition: ENTERING FULLSCREEN');
       canvasWidth = window.screen.width;
