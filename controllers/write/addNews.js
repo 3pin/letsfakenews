@@ -26,63 +26,83 @@ module.exports = (req, res) => {
   clientJSON.story = clientJSON.story.replace(/(\r\n|\n|\r)/gm, ' ');
   /* process... add storylive, add NLP_words, add matching urls */
   clientJSON.storylive = dbSettings.autolive;
-  processClientStory.process(clientJSON).then((result) => {
-    /* 'result' now contains: story/title/storylive/time/words/urls */
-    debug('Processed news...');
-    debug(result);
-    // debug(result.urls[0]);
-    if (result === null) {
-      // res.send('NO_NOUNS');
-      res.status(422).json({
-        message: 'NO_NOUNS',
-      });
-    } else if (result.urls[0] === undefined) {
-      // res.send('NO_URLS');
-      res.status(422).json({
-        message: 'NO_URLS',
-      });
-    } else {
-      const story = new Story({ ...result });
-      debug(story.storylive);
-      debug(story._id);
-      story.save().then(() => {
-        debug('Document inserted to db successfully...');
-        res.send('Success');
-        /* fetch all entries matching the Story-model from db sorted by ascending key '_id' ... */
-        Story.find({}).sort([['_id', 1]]).then((stories) => {
-          debug('stories in db are ...');
-          debug(stories);
-          const storiesObj = {
-            room,
-            stories,
-          }
-          /* tell eventbus about a new-story to trigger refresh of admin-frontend */
-          bus.emit('news', storiesObj);
-          /* if storylive is TRUE, then should be auto added to activelist */
-          if (story.storylive === true) {
-            dbSettings.activelist.push(story._id);
-            dbSettings.entryToRead = dbSettings.activelist.length - 1;
-            dbSettings.dbMode = 'next';
-            dbSettingsUpdate(dbSettings, room).then((output) => {
-              debug(output);
-              /* tell eventbus about a new-story to trigger update of activeList */
-              debug('SSE event triggered by New_Story');
-              const activelistObj = {
-                room,
-                update: dbSettings.activelist.length,
-              }
-              bus.emit('activelistChange', activelistObj);
-            });
-          }
-        });
-      }).catch((err) => {
-        debug('Err: ', err);
-        res.status(500).json({
-          message: 'DB_ERROR',
-        });
-      });
+  const storyWords = clientJSON.story.split(' ');
+  debug(`storyWords: ${storyWords}`);
+  let longestWord = '';
+  for (let i = 0; i < storyWords.length; i += 1) {
+    if (storyWords[i].length > longestWord.length) {
+      longestWord = storyWords[i];
     }
-  }).catch((err) => {
-    debug('Err: ', err);
-  });
+  }
+  if (storyWords.length < 2) {
+    debug('Story has only 1 word');
+    res.status(422).json({
+      message: 'STORY_WORDCOUNT',
+    });
+  } else if (longestWord.length > 45) {
+    debug('Story has at least 1 non-word');
+    res.status(422).json({
+      message: 'STORY_NONWORD',
+    });
+  } else {
+    processClientStory.process(clientJSON).then((result) => {
+      /* 'result' now contains: story/title/storylive/time/words/urls */
+      debug('Processed news...');
+      debug(result);
+      // debug(result.urls[0]);
+      if (result === null) {
+        debug('Either the story or title contain no nouns');
+        res.status(422).json({
+          message: 'NO_NOUNS',
+        });
+      } else if (result.urls[0] === undefined) {
+        debug('Either the story of title contain no nouns');
+        res.status(422).json({
+          message: 'NO_URLS',
+        });
+      } else {
+        const story = new Story({ ...result });
+        debug(story.storylive);
+        debug(story._id);
+        story.save().then(() => {
+          debug('Document inserted to db successfully...');
+          res.send('Success');
+          /* fetch all entries matching the Story-model from db sorted by ascending key '_id' ... */
+          Story.find({}).sort([['_id', 1]]).then((stories) => {
+            debug('stories in db are ...');
+            debug(stories);
+            const storiesObj = {
+              room,
+              stories,
+            }
+            /* tell eventbus about a new-story to trigger refresh of admin-frontend */
+            bus.emit('news', storiesObj);
+            /* if storylive is TRUE, then should be auto added to activelist */
+            if (story.storylive === true) {
+              dbSettings.activelist.push(story._id);
+              dbSettings.entryToRead = dbSettings.activelist.length - 1;
+              dbSettings.dbMode = 'next';
+              dbSettingsUpdate(dbSettings, room).then((output) => {
+                debug(output);
+                /* tell eventbus about a new-story to trigger update of activeList */
+                debug('SSE event triggered by New_Story');
+                const activelistObj = {
+                  room,
+                  update: dbSettings.activelist.length,
+                }
+                bus.emit('activelistChange', activelistObj);
+              });
+            }
+          });
+        }).catch((err) => {
+          debug('Err: ', err);
+          res.status(500).json({
+            message: 'DB_ERROR',
+          });
+        });
+      }
+    }).catch((err) => {
+      debug('Err: ', err);
+    });
+  }
 };
