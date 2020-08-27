@@ -34,8 +34,8 @@ module.exports = (req, res) => {
       longestWord = storyWords[i];
     }
   }
-  if (storyWords.length < 2) {
-    debug('Story has only 1 word');
+  if (storyWords.length < 5) {
+    debug('Story has less than 5 words');
     res.status(422).json({
       message: 'STORY_WORDCOUNT',
     });

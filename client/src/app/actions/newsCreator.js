@@ -58,7 +58,7 @@ export const submit = (story, title, room, history) => {
         obj.linkto = '/write/story';
         // window.alert("Try again... couldn't find images to match your story");
       } else if (error.response.data.message === 'STORY_WORDCOUNT') {
-        obj.desc = 'Your story could not be validated: ensure it contains more than 1 word.';
+        obj.desc = 'Your story could not be validated: it needs more words to be broadcast.';
         obj.linkto = '/write/story';
         // window.alert('Your story could not be validated: reregister your room ID with the app');
       } else if (error.response.data.message === 'STORY_NONWORD') {
