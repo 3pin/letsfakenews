@@ -123,7 +123,6 @@ if (global.gConfig.nodeEnv === 'production') {
   debug(`Serving: ${__dirname}/client/public/index.html`);
   app.use(express.static(`${__dirname}/client/public`));
   app.use(favicon(path.join(__dirname, '/client/public', 'favicon.ico')));
-  // app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
   app.get('/', (req, res) => {
     debug(req);
     res.sendFile(path.join(__dirname, '/client/public/index.html'));
