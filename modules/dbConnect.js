@@ -35,7 +35,7 @@ const options = {
 };
 
 function Connect() {
-  mongoose.connect(global.gConfig.mongodbUri, options, (err, client) => {
+  mongoose.connect(global.gConfig.mongodbUri, options, (err) => {
     if (err) {
       debug('error coming...');
       debug(err);
@@ -45,9 +45,8 @@ function Connect() {
     if (mongoose.connection.readyState === 0) {
       debug('Cannot connect to specified database');
     } else {
-      // debug(client);
       // check for existing collections
-      client.db.listCollections().toArray((error, collections) => {
+      mongoose.connection.db.listCollections().toArray((error, collections) => {
         if (error) {
           debug('error coming...');
           debug(err);
