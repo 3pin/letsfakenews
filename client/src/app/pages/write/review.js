@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  connect
+  connect,
 } from 'react-redux';
 import {
-  withRouter
+  withRouter,
 } from 'react-router-dom';
 
 import * as actions from '../../actions/newsCreator';

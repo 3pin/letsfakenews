@@ -32,7 +32,7 @@ Eg...
 [ 'themselves', 'PRP' ],
 */
 
-const debug = require('debug')('module');
+const debug = require('debug')('nlp');
 const pos = require('pos');
 
 const tags = global.gConfig.posTags;
@@ -57,39 +57,31 @@ module.exports = {
       const taggedWords = tagger.tag(legalWords);
       debug(taggedWords);
       // setup empty arrays to store parsed... index_in_story:word
-      const outputIndexes = [];
-      const outputWords = [];
+      const processedWords = [];
+      const processedTags = [];
       // let i;
       for (let i = 0; i < taggedWords.length; i += 1) {
-        const taggedWord = taggedWords[i];
-        const word = taggedWord[0];
-        const tag = taggedWord[1];
-        // debug_module_parse('Word:' + word + ' - Tag:' + tag)
-        tags.forEach((entry) => {
-          if (tag === entry) {
-            debug(`${tag}:${word}`);
-            outputIndexes.push(i);
-            outputWords.push(word);
-          }
-        })
+        const word = taggedWords[i][0];
+        processedWords.push(word);
+        const tag = taggedWords[i][1];
+        processedTags.push(tag);
+        // debug(`Word: ${word} - Tag: ${tag}`);
       }
-      debug(outputIndexes);
-      debug(outputWords);
-      // combine compound-nouns
-      const outputWord = [];
-      outputWord.push(outputWords[0]);
-      for (let i = 1; i < outputIndexes.length; i += 1) {
-        if (outputIndexes[i - 1] + 1 === outputIndexes[i]) {
-          outputWord[outputWord.length - 1] = `${outputWord[outputWord.length - 1]}-${outputWords[i]}`;
+      debug(processedWords);
+      debug(processedTags);
+      // combine consecutive-nouns
+      const joinedWords = [];
+      joinedWords.push(processedWords[0]);
+      for (let i = 1; i < processedTags.length; i += 1) {
+        if (processedTags[i - 1] === processedTags[i]) {
+          joinedWords[joinedWords.length - 1] = `${joinedWords[joinedWords.length - 1]}-${processedWords[i]}`;
         } else {
-          outputWord.push(outputWords[i]);
+          joinedWords.push(processedWords[i]);
         }
       }
-      for (let i = 0; i < outputWord.length; i += 1) {
-        debug(`Compounded-Output: ${outputWord[i]}`);
-      }
+      debug(joinedWords);
       // the returned array of unique nouns extraced from the pos:tagger
-      uniqueArray = outputWord.filter((item, position) => outputWord.indexOf(item) === position);
+      uniqueArray = joinedWords.filter((item, position) => joinedWords.indexOf(item) === position);
       // test to determine Promise-Fullfilment
       if (Array.isArray(uniqueArray)) {
         debug(uniqueArray);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  connect
+  connect,
 } from 'react-redux';
 import axios from 'axios';
 import 'eventsource-polyfill';
@@ -73,10 +73,10 @@ class Visualise extends React.Component {
     };
     // update db then with 'res' update this component
     const {
-      room
+      room,
     } = this.props;
     axios.put(this.props.apiDurationChange, {
-      data
+      data,
     }, {
       params: {
         room,
@@ -104,10 +104,10 @@ class Visualise extends React.Component {
     };
     // update db then with 'res' update this component
     const {
-      room
+      room,
     } = this.props;
     axios.put(this.props.apiScrollerChange, {
-      data
+      data,
     }, {
       params: {
         room,
@@ -131,7 +131,7 @@ class Visualise extends React.Component {
   componentDidMount() {
     /* load autolive-status & stories from Db */
     const {
-      room
+      room,
     } = this.props;
     axios.get(this.props.apiHello, {
       params: {

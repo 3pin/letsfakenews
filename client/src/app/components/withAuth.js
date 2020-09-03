@@ -8,14 +8,14 @@ import {
 import axios from 'axios';
 
 import {
-  store
+  store,
 } from '../store';
 
 export default function withAuth(ComponentToProtect) {
   // grab current state
   const state = store.getState();
   const {
-    room
+    room,
   } = state.roomReducer;
 
   return class extends React.Component {
@@ -60,7 +60,10 @@ export default function withAuth(ComponentToProtect) {
       }
       return (
         <>
-          <ComponentToProtect {...this.props} /> <
+          <ComponentToProtect {...this.props} />
+          {' '}
+
+        <
         />
       );
     }

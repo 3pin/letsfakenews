@@ -5,7 +5,7 @@ fetch image-url per noun and add to JSON
 return JSON
 */
 
-const debug = require('debug')('module');
+const debug = require('debug')('processClientStory');
 const nlp = require('./nlp.js');
 const imagesearchIterative = require('./imagesearchIterative.js');
 const timeOps = require('./timeOps.js');
