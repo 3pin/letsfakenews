@@ -45,6 +45,7 @@ function Connect() {
     if (mongoose.connection.readyState === 0) {
       debug('Cannot connect to specified database');
     } else {
+      // debug(client);
       // check for existing collections
       client.db.listCollections().toArray((error, collections) => {
         if (error) {

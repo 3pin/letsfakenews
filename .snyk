@@ -466,12 +466,12 @@ ignore:
     - npm > libnpm > libnpmaccess > npm-registry-fetch > make-fetch-happen > cacache > move-concurrently > copy-concurrently > mkdirp > minimist:
         reason: None given
         expires: '2020-04-10T13:10:30.664Z'
-      express-generator > mkdirp > minimist:
-        reason: None given
-        expires: '2020-09-04T13:49:39.575Z'
     - npm > libcipm > pacote > npm-registry-fetch > make-fetch-happen > cacache > move-concurrently > copy-concurrently > mkdirp > minimist:
         reason: ''
         expires: '2020-04-10T13:10:30.664Z'
+    - express-generator > mkdirp > minimist:
+        reason: None given
+        expires: '2020-09-04T13:49:39.575Z'
   SNYK-JS-YARGSPARSER-560381:
     - npm > libnpx > yargs > yargs-parser:
         reason: None given

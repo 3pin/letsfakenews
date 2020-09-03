@@ -5,6 +5,7 @@ module.exports = (req, res) => {
   debug(`Entered middleware to check device type: ${req.device.type}`);
   // debug(req);
   if (req.device.type === 'desktop') {
+  // if (mydevice === 'desktop') {
     debug('SUCCESS');
     res.status(200).json({
       message: 'You are on a desktop device',
