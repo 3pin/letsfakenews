@@ -15,7 +15,6 @@
   "dependencies": {
     "axios": "^0.21.1",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "bootstrap": "^4.5.1",
     "customize-cra": "^0.2.14",
     "eventsource-polyfill": "^0.9.6",
     "history": "^4.9.0",
