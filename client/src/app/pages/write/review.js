@@ -46,8 +46,6 @@ class Review extends React.Component {
     const title = `Title: ${this.props.title}`;
     const story = `Story: ${this.props.story}`;
     console.log(this.props);
-    // let title = "TITLE: " + this.props.title;
-    // let story = "STORY: " + this.props.story;
     return (
       <div>
         <section>
@@ -65,6 +63,11 @@ class Review extends React.Component {
             variant="primary"
             submitting={this.props.submitting}
             onClick={this.handleClick}
+          />
+          <FrameButton
+            variant="secondary"
+            buttonLabel="Go Back"
+            linkto="/write/story"
           />
           <hr />
         </section>

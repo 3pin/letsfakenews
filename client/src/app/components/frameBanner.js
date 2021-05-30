@@ -13,6 +13,9 @@ const FrameBanner = (props) => {
       <Tag>{props.title}</Tag>
       <hr />
       <p>{props.desc}</p>
+      <p>{props.desc2}</p>
+      <p>{props.desc3}</p>
+      <p>{props.desc4}</p>
     </div>
   );
 };

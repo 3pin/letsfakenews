@@ -40,13 +40,13 @@ class WriteFeedback extends React.Component {
         <section>
           <FrameBanner
             title="Feedback"
-            desc="Give your thoughts on using this fake-news service"
+            desc="Please give us feedback on your experience using this service"
           />
           <hr />
           <FrameForm
             rows="2"
-            minLength="5"
-            maxLength="180"
+            minLength="10"
+            maxLength="140"
             content={this.props.feedback}
             submitting={this.props.submitting}
             handleSubmit={this.onHandleSubmit}

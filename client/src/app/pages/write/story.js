@@ -33,6 +33,7 @@ class WriteStory extends React.Component {
         <section>
           <FrameBanner
             title="Write a story"
+            desc="Story length must be 100-140 chars"
           />
           <FrameForm
             rows="2"

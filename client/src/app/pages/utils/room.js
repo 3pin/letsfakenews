@@ -69,8 +69,11 @@ class InnerRoom extends React.Component {
       <div>
         <section>
           <FrameBanner
-            title="Select a room"
-            desc="Welcome to LetsFakeNews, where you write fake-news on your phone then watch with friends on a screen. To start, choose your local news-room (use 'Public' if you're a visitor)."
+            title="Welcome"
+            desc="Gather you’re friends together to have fun creating fake news for the El-Jazeera channel."
+            desc2="To write news, use this webapp on your phone."
+            desc3="To watch the news, use this webapp on a shared screen (laptop or projector)."
+            desc4="To get started enter the ‘Public’ news room, but if you're at a private event enter your local news room."
           />
           <hr />
           <FrameForm

@@ -7,9 +7,16 @@ import FrameButton from '../../components/frameButton';
 const Landing = () => (
   <div>
     <section>
-      <FrameBanner title="Create fake-news" desc="Pretend you're a journalist trying to trick the news-room with a fake report. To ensure it's published use correct spelling, grammar & punctuation with no more than 140 chars (like an old tweet!)." />
+      <FrameBanner
+        title="Create fake-news"
+        desc="Pretend you're a journalist trying to trick the news-room with a fake report."
+        desc2="To ensure it's published use correct spelling, grammar & punctuation with no more than 140 characters."
+      />
       <hr />
-      <FrameButton linkto="/write/story" buttonLabel="Start" />
+      <FrameButton
+        linkto="/write/story"
+        buttonLabel="Start"
+      />
       <hr />
     </section>
   </div>
