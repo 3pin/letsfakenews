@@ -36,7 +36,7 @@ export const submit = (data, room, history) => {
         obj.linkto = '/login';
         // window.alert('Try again... make sure to include NOUNS in your story');
       } else if (error.response.data.message === 'WRONG_PASSWORD') {
-        obj.desc = `'${data.password}' is not the valid password for this news room.`;
+        obj.desc = `The password entered for that username is incorrect.`;
         obj.linkto = '/login';
         // window.alert("Try again... couldn't find images to match your story");
       } else if (error.response.data.message === 'DB_ERROR') {

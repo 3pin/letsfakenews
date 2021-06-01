@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
 });
 
 const FrameFooter = (props) => {
-  let room = `Current-Room: ${props.room}`;
+  let room = `News-Room: ${props.room}`;
   return (
     <div className="banner">
       <p>{room}</p>

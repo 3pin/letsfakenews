@@ -134,8 +134,8 @@ export default function sketch(P) {
           const inc = 1.0 * (totalLength / noFrames).toFixed(2);
           console.log(`inc ${inc}`);
           /* no need for rounding as it puts timings out */
-          // storyXinc = Math.ceil(inc);
-          storyXinc = inc;
+          storyXinc = Math.ceil(inc);
+          //storyXinc = inc;
           console.log(`storyXinc ${storyXinc}`);
           storyXpos = containerWidth;
         }
@@ -205,6 +205,7 @@ export default function sketch(P) {
       console.log('condition: ENTERING FULLSCREEN');
       canvasWidth = window.screen.width;
       canvasHeight = window.screen.height;
+      console.log(`canvasWidth:${canvasWidth}, canvasHeight:${canvasHeight}`);
       aspectRatio = window.screen.width / window.screen.height;
       if (aspectRatio < initialAspectRatio) {
         containerWidth = canvasWidth;
@@ -213,7 +214,7 @@ export default function sketch(P) {
         containerHeight = canvasHeight;
         containerWidth = Math.round(canvasHeight / initialAspectRatio);
       }
-      console.log(`containerWidth:${containerWidth} containerHeight:${containerHeight}`);
+      console.log(`containerWidth:${containerWidth}, containerHeight:${containerHeight}`);
     } else {
       console.log('condition: EXITING FULLSCREEN');
       canvasWidth = initialWidth;

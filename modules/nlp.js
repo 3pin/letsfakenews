@@ -36,6 +36,7 @@ const debug = require('debug')('nlp');
 const pos = require('pos');
 
 const tags = global.gConfig.posTags;
+debug(tags);
 const { illegalWords } = global.gConfig;
 
 module.exports = {
@@ -43,49 +44,49 @@ module.exports = {
   // input a story (series of phrases) => return POS across the whole story
   parse_nouns(inputText) {
     return new Promise(((resolve, reject) => {
-      let uniqueArray = [];
+      let uniqueWords = [];
       const text = inputText.toLowerCase();
-      debug(text);
+      //debug(text);
       // process input text into words
       const words = new pos.Lexer().lex(text);
-      debug(words);
+      //debug(words);
       // filter-out illegal words
       const legalWords = words.filter((e) => !illegalWords.includes(e));
-      debug(legalWords);
-      // populate an array with key:values for tag:word
+      //debug(legalWords);
+      // populate a 2d-array with key:values for tag:word
       const tagger = new pos.Tagger();
       const taggedWords = tagger.tag(legalWords);
       debug(taggedWords);
+
+      // combine consecutive-nouns
+      const joinedWords = [];
+      joinedWords.push(taggedWords[0]);
+      for (let i = 1; i < taggedWords.length; i += 1) {
+        if (taggedWords[i - 1][1] === taggedWords[i][1]) {
+          joinedWords[joinedWords.length - 1][0] = `${joinedWords[joinedWords.length - 1][0]}-${taggedWords[i][0]}`;
+        } else {
+          joinedWords.push(taggedWords[i]);
+        }
+      }
+      debug(joinedWords);
+
       // setup empty arrays to store parsed... index_in_story:word
       const processedWords = [];
       const processedTags = [];
       // let i;
-      for (let i = 0; i < taggedWords.length; i += 1) {
-        const word = taggedWords[i][0];
-        processedWords.push(word);
-        const tag = taggedWords[i][1];
-        processedTags.push(tag);
-        // debug(`Word: ${word} - Tag: ${tag}`);
-      }
-      debug(processedWords);
-      debug(processedTags);
-      // combine consecutive-nouns
-      const joinedWords = [];
-      joinedWords.push(processedWords[0]);
-      for (let i = 1; i < processedTags.length; i += 1) {
-        if (processedTags[i - 1] === processedTags[i]) {
-          joinedWords[joinedWords.length - 1] = `${joinedWords[joinedWords.length - 1]}-${processedWords[i]}`;
-        } else {
-          joinedWords.push(processedWords[i]);
+      for (let i = 0; i < joinedWords.length; i += 1) {
+        if (tags.includes(joinedWords[i][1])) {
+          processedWords.push(joinedWords[i][0]);
         }
       }
-      debug(joinedWords);
-      // the returned array of unique nouns extraced from the pos:tagger
-      uniqueArray = joinedWords.filter((item, position) => joinedWords.indexOf(item) === position);
+      debug(processedWords);
+
+      // filter out any repeated words from the array before returning
+      uniqueWords = processedWords.filter((item, position) => processedWords.indexOf(item) === position);
       // test to determine Promise-Fullfilment
-      if (Array.isArray(uniqueArray)) {
-        debug(uniqueArray);
-        resolve(uniqueArray);
+      if (Array.isArray(uniqueWords)) {
+        debug(uniqueWords);
+        resolve(uniqueWords);
       } else {
         reject(Error('did not parse an array'));
       }
