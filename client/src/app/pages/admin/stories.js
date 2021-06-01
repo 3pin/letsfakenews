@@ -1,5 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {
+  connect
+} from 'react-redux';
 import axios from 'axios';
 import {
   Table,
@@ -38,7 +40,9 @@ class Stories extends React.Component {
   handleAutolive() {
     /* PUT: update status of autolive */
     let newAutolive = !this.state.autolive;
-    let { room } = this.props;
+    let {
+      room
+    } = this.props;
     axios.put(this.props.apiAutolive, {
       data: newAutolive,
     }, {
@@ -62,7 +66,9 @@ class Stories extends React.Component {
   }
 
   handleRefresh() {
-    const { room } = this.props;
+    const {
+      room
+    } = this.props;
     /* Connect to API to refresh imagery */
     document.activeElement.blur();
     axios.get(this.props.apiRefresh, {
@@ -83,7 +89,9 @@ class Stories extends React.Component {
   }
 
   handleClear() {
-    const { room } = this.props;
+    const {
+      room
+    } = this.props;
     /* Connect to API and clear all from database */
     document.activeElement.blur();
     /* Connect to API and clear feedback from database */
@@ -109,8 +117,12 @@ class Stories extends React.Component {
 
   handleRemove(row) {
     document.activeElement.blur();
-    const { _id } = row;
-    const { room } = this.props;
+    const {
+      _id
+    } = row;
+    const {
+      room
+    } = this.props;
     console.log(_id, room);
     /* Connect to API and delete single entry from database */
     axios.delete(this.props.apiRemove, {
@@ -135,9 +147,15 @@ class Stories extends React.Component {
   }
 
   handleStorylive(row) {
-    const { _id } = row;
-    const { room } = this.props;
-    const { storylive } = row;
+    const {
+      _id
+    } = row;
+    const {
+      room
+    } = this.props;
+    const {
+      storylive
+    } = row;
     console.log(_id, room, storylive);
     /* Connect to API to update storylive-setting for entry in database */
     axios.put(this.props.apiStorylive, {
@@ -166,7 +184,9 @@ class Stories extends React.Component {
   }
 
   componentDidMount() {
-    const { room } = this.props;
+    const {
+      room
+    } = this.props;
     /* load autolive-status & stories from db */
     axios.get(this.props.apiHello, {
       params: {
@@ -265,25 +285,37 @@ class Stories extends React.Component {
                 #
               </th>
               <th style={{
-                width: '20%',
+                width: '15%',
               }}
               >
                 Title
               </th>
               <th style={{
-                width: '65%',
+                width: '15%',
+              }}
+              >
+                Title Nouns
+              </th>
+              <th style={{
+                width: '35%',
               }}
               >
                 Story
               </th>
               <th style={{
-                width: '6%',
+                width: '35%',
+              }}
+              >
+                Story Nouns
+              </th>
+              <th style={{
+                width: '5%',
               }}
               >
                 Delete
               </th>
               <th style={{
-                width: '4%',
+                width: '5%',
               }}
               >
                 Live
@@ -292,13 +324,14 @@ class Stories extends React.Component {
           </thead>
           <tbody>
             {
-              (this.state.stories.length > 0)
-                ? this.state.stories.map((entry, index) => (
+              (this.state.stories.length > 0) ? this.state.stories.map((entry, index) => (
                   <tr key={index}>
                     <td style={{ display: 'none' }}>{entry._id}</td>
                     <td>{index + 1}</td>
                     <td>{entry.title}</td>
+                    <td>{entry.wordsTitle.join(", ")}</td>
                     <td>{entry.story}</td>
+                    <td>{entry.words.join(", ")}</td>
                     <td>
                       <Button variant="outline-danger" onClick={() => this.handleRemove(entry)} />
                     </td>

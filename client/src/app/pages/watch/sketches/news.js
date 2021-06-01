@@ -57,7 +57,6 @@ export default function sketch(P) {
   p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
     // console.log("PROPS received...");
     if (props.componentWidth && props.timings && setupCount < 1) {
-      setupCount = 1;
       timings = props.timings;
       initialWidth = props.componentWidth;
       initialHeight = Math.round(props.componentWidth / aspectRatio);
@@ -76,6 +75,7 @@ export default function sketch(P) {
         containerWidth,
         containerHeight,
       ));
+      setupCount = 1;
     } else {
       if (props.playedSeconds) {
         playedSeconds = props.playedSeconds;
@@ -134,8 +134,8 @@ export default function sketch(P) {
           const inc = 1.0 * (totalLength / noFrames).toFixed(2);
           console.log(`inc ${inc}`);
           /* no need for rounding as it puts timings out */
-          storyXinc = Math.ceil(inc);
-          //storyXinc = inc;
+          //storyXinc = Math.ceil(inc);
+          storyXinc = inc;
           console.log(`storyXinc ${storyXinc}`);
           storyXpos = containerWidth;
         }

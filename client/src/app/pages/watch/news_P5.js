@@ -82,6 +82,7 @@ class visualiseNews extends React.Component {
       volume: 1,
       progressInterval: 500,
       url: 'https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4',
+      setupCount: 0,
     };
   }
 
@@ -292,10 +293,6 @@ class visualiseNews extends React.Component {
   render() {
     return (
       <div ref={this.parentFrame}>
-        <FrameButton
-          buttonLabel="Play Fullscreen"
-          onClick={this.goFullscreen.bind(this.videoContainer)}
-        />
         <hr />
         <div id="videoContainer" ref={(videoContainer) => { this.videoContainer = videoContainer; }}>
           <ReactPlayer
@@ -332,6 +329,7 @@ class visualiseNews extends React.Component {
               playedSeconds={this.state.playedSeconds}
               title={this.state.title}
               story={this.state.story}
+              setupCount={this.state.setupCount}
               timings={{
                 popupStart: this.state.popupStart,
                 popupEnd: this.state.popupEnd,
