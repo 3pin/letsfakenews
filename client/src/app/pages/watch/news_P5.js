@@ -39,12 +39,13 @@ class visualiseNews extends React.Component {
   constructor(props) {
     super(props);
     this.parentFrame = React.createRef();
-    this.onReady = this.onReady.bind(this);
+    this.loadNewStory = this.loadNewStory.bind(this);
     this.onProgress = this.onProgress.bind(this);
-    this.handleRestart = this.handleRestart.bind(this);
+    this.onEnded = this.onEnded.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
     this.exitFullscreen = this.exitFullscreen.bind(this);
     this.handleImageInc = this.handleImageInc.bind(this);
+    this.sketchController = this.sketchController.bind(this);
     this.state = {
       apiHello: '/watch/requestNewStory',
       mode: '',
@@ -62,8 +63,6 @@ class visualiseNews extends React.Component {
       markers: [],
       /* array index for currently-displayed image from url-array */
       urlIndex: 0,
-      /* Boolean as to whether to loadImages to cache in sketch */
-      imageCaching: true,
       /* interface elements visibility */
       popup_title: {
         display: 'none',
@@ -82,12 +81,47 @@ class visualiseNews extends React.Component {
       volume: 1,
       progressInterval: 500,
       url: 'https://res.cloudinary.com/hi58qepi6/video/upload/v1548956607/aljazeera-desktop.mp4',
-      setupCount: 0,
+      sketchState: 'STOP',
+      stopOnUnmount: true,
+      loop: false
     };
   }
 
-  onReady() {
-    console.log('onReady');
+  sketchController(val) {
+    console.log(`sketchController(${val})`);
+    if (val === 'META') {
+      this.setState({
+        sketchState: 'META',
+      });
+    } else if (val === 'CACHE') {
+      this.setState({
+        sketchState: 'CACHE',
+      });
+    } else if (val === 'TEXT') {
+      this.setState({
+        sketchState: 'TEXT',
+      });
+    } else if (val === 'PLAY') {
+      this.setState({
+        sketchState: 'PLAY',
+      }, () => {
+        this.setState({
+          playing: true,
+        })
+      });
+    } else if (val === 'STOP') {
+      this.player.seekTo(0);
+      this.setState({
+        sketchState: 'STOP',
+      }, () => {
+        this.setState({
+          playing: false,
+        })
+      });
+    }
+  }
+
+  loadNewStory() {
     /* load new story into this.state */
     axios.get(this.state.apiHello, {
       params: {
@@ -97,22 +131,110 @@ class visualiseNews extends React.Component {
       console.log(res);
       const {
         urls,
-        markers,
+        markers
       } = metadata(res.data, this.state.imageDuration, this.state.imagesStart);
       this.setState({
         urlIndex: 0,
-        imageCaching: true,
         title: res.data.title.toUpperCase(),
         story: res.data.story,
         urls,
         markers,
-      });
-    }).then(() => {
-      console.log(this.state);
-      console.log('Metadata now setup');
+      }, () => {
+        this.setState({
+          sketchState: 'META'
+        }, () => {
+          //console.log(this.state);
+          console.log('Metadata now setup');
+        })
+      })
     }).catch((err) => {
       console.log(err);
     });
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount');
+    /* pass in the rendered componentWidth to state */
+    this.setState({
+      componentWidth: this.parentFrame.current.offsetWidth,
+    });
+    document.addEventListener('fullscreenchange', this.exitFullscreen, false);
+    document.addEventListener('webkitfullscreenchange', this.exitFullscreen, false);
+    document.addEventListener('mozfullscreenchange', this.exitFullscreen, false);
+    document.addEventListener('MSFullscreenChange', this.exitFullscreen, false);
+    /* load settings  from db */
+    axios.get('/settings/mode', {
+      params: {
+        room: this.props.room,
+      },
+    }).then((res) => {
+      console.log(res);
+      // const popup_duration = diff(this.state.popupStart, this.state.popupEnd);
+      const imageDuration = diff(this.state.imagesStart, this.state.imagesEnd);
+      if (res.status !== 200) {
+        throw Error(res.message);
+      } else if (res.data.dbSettings.nodeMode === 'production') {
+        // console.log(`mode is ${res.data.dbSettings.nodeMode}`);
+        this.setState({
+          imageDuration,
+          mode: res.data.dbSettings.nodeMode,
+          corsAnywhere: res.data.dbSettings.corsAnywhere,
+          volume: 1,
+        });
+      } else {
+        // console.log(`mode is: ${res.data.dbSettings.nodeMode}`);
+        this.setState({
+          imageDuration,
+          mode: res.data.dbSettings.nodeMode,
+          corsAnywhere: res.data.dbSettings.corsAnywhere,
+          volume: 0,
+          controls: false,
+        });
+      }
+    }).then(() => {
+      console.log(`mode is: ${this.state.mode}`);
+    }).catch((err) => console.log(err));
+  }
+
+  goFullscreen() {
+    console.log(`Entering Fullscreen`);
+    /* go full-screen with cross-browser support */
+    document.activeElement.blur();
+    const i = this.videoContainer;
+    if (i.requestFullscreen) {
+      i.requestFullscreen();
+    } else if (i.webkitRequestFullscreen) {
+      i.webkitRequestFullscreen();
+    } else if (i.mozRequestFullScreen) {
+      i.mozRequestFullScreen();
+    } else if (i.msRequestFullscreen) {
+      i.msRequestFullscreen();
+    }
+    this.loadNewStory();
+  }
+
+  handleImageInc(val) {
+    console.log(`handleimageInc(): handleImageInc(${val})`);
+    console.log(val, this.state.urlIndex + 1, this.state.urls.length);
+    if (this.state.urlIndex < this.state.urls.length - 1) {
+      console.log('Sending next image to be CACHED');
+      let {
+        urlIndex
+      } = this.state;
+      urlIndex += 1;
+      this.setState({
+        urlIndex,
+      });
+    } else {
+      console.log('All images CACHED');
+      this.setState({
+        sketchState: 'TEXT',
+      }, () => {
+        this.setState({
+          urlIndex: 0,
+        });
+      });
+    }
   }
 
   onProgress(e) {
@@ -123,7 +245,9 @@ class visualiseNews extends React.Component {
     /* change url-image according to markers... */
     const currentSec = e.playedSeconds;
     if (currentSec >= this.state.markers[this.state.urlIndex] && this.state.urlIndex < this.state.markers.length - 1) {
-      let { urlIndex } = this.state;
+      let {
+        urlIndex
+      } = this.state;
       urlIndex += 1;
       this.setState({
         urlIndex,
@@ -171,128 +295,43 @@ class visualiseNews extends React.Component {
     }
   }
 
-  goFullscreen() {
-    document.activeElement.blur();
-    console.log('Entering fullscreen');
-    const i = this.videoContainer;
-    /* go full-screen with cross-browser support */
-    if (i.requestFullscreen) {
-      i.requestFullscreen();
-    } else if (i.webkitRequestFullscreen) {
-      i.webkitRequestFullscreen();
-    } else if (i.mozRequestFullScreen) {
-      i.mozRequestFullScreen();
-    } else if (i.msRequestFullscreen) {
-      i.msRequestFullscreen();
-    }
-    /* reset & restart */
-    this.handleRestart();
+  onEnded() {
+    console.log('Media Restarting');
+    this.player.seekTo(0);
+    this.loadNewStory();
   }
 
   exitFullscreen() {
+    //console.log(`Fullscreen Event`);
+    this.player.seekTo(0);
+    this.setState({
+      sketchState: 'STOP'
+    }, () => {
+      this.setState({
+        playing: false
+      })
+    })
     if (!document.fullscreenElement) {
-      console.log('fullscreen exited');
-      /* stop & reset */
-      this.handleRestart();
+      console.log('Fullscreen exiting');
     }
-  }
-
-  handleRestart() {
-    console.log('Media Restarting');
-    /* rewind and retrigger onReady() */
-    // this.player.seekTo(0);
-    //
-    /* stop imageCaching if running */
-    this.setState({
-      imageCaching: false,
-    }, () => {
-      // rewind and retrigger onReady()
-      console.log('About to Rewind to Start');
-      this.player.seekTo(0);
-    });
-    //
-    /* stop playback */
-    /*
-    this.setState({
-      playing: false,
-    }, () => {
-      // rewind and retrigger onReady()
-      this.player.seekTo(0);
-    });
-    */
-  }
-
-  handleImageInc(val) {
-    console.log(val, this.state.urlIndex + 1, this.state.urls.length);
-    if (this.state.urlIndex < this.state.urls.length - 1) {
-      console.log('Sending next image to be CACHED');
-      let { urlIndex } = this.state;
-      urlIndex += 1;
-      this.setState({
-        urlIndex,
-      });
-    } else {
-      console.log('All images CACHED');
-      this.setState({
-        imageCaching: false,
-      }, () => {
-        this.setState({
-          urlIndex: 0,
-        }, () => {
-          this.setState({
-            playing: true,
-          });
-        });
-      });
-    }
-  }
-
-  componentDidMount() {
-    console.log('componentDidMount');
-    /* pass in the rendered componentWidth to state */
-    this.setState({
-      componentWidth: this.parentFrame.current.offsetWidth,
-    });
-    document.addEventListener('fullscreenchange', this.exitFullscreen, false);
-    /* load db settings... */
-    /* load autolive-status & stories from db */
-    axios.get('/settings/mode', {
-      params: {
-        room: this.props.room,
-      },
-    }).then((res) => {
-      console.log(res);
-      // const popup_duration = diff(this.state.popupStart, this.state.popupEnd);
-      const imageDuration = diff(this.state.imagesStart, this.state.imagesEnd);
-      if (res.status !== 200) {
-        throw Error(res.message);
-      } else if (res.data.dbSettings.nodeMode === 'production') {
-        console.log(`mode is ${res.data.dbSettings.nodeMode}`);
-        this.setState({
-          imageDuration,
-          mode: res.data.dbSettings.nodeMode,
-          corsAnywhere: res.data.dbSettings.corsAnywhere,
-          volume: 1,
-        });
-      } else {
-        console.log(`mode is: ${res.data.dbSettings.nodeMode}`);
-        this.setState({
-          imageDuration,
-          mode: res.data.dbSettings.nodeMode,
-          corsAnywhere: res.data.dbSettings.corsAnywhere,
-          volume: 0,
-        });
-      }
-    }).catch((err) => console.log(err));
   }
 
   componentWillUnmount() {
     document.removeEventListener('fullscreenchange', this.exitFullscreen, false);
+    document.removeEventListener('webkitfullscreenchange', this.exitFullscreen, false);
+    document.removeEventListener('mozfullscreenchange', this.exitFullscreen, false);
+    document.removeEventListener('MSFullscreenChange', this.exitFullscreen, false);
+    console.log('unmounting');
   }
 
   render() {
     return (
       <div ref={this.parentFrame}>
+        <FrameButton
+          buttonLabel="Fullscreen"
+          desc="Use this button to enter fullscreen & the ESC key to later exit"
+          onClick={this.goFullscreen.bind(this.videoContainer)}
+        />
         <hr />
         <div id="videoContainer" ref={(videoContainer) => { this.videoContainer = videoContainer; }}>
           <ReactPlayer
@@ -304,9 +343,8 @@ class visualiseNews extends React.Component {
             controls={this.state.controls}
             progressInterval={this.state.progressInterval}
             playing={this.state.playing}
-            onReady={this.onReady.bind(this)}
             onProgress={this.onProgress.bind(this)}
-            onEnded={this.handleRestart.bind(this)}
+            onEnded={this.onEnded.bind(this)}
             url={this.state.url}
           />
           <div id="p5_container">
@@ -322,14 +360,14 @@ class visualiseNews extends React.Component {
               image={this.state.urls[this.state.urlIndex]}
               imageIndex={this.state.urlIndex}
               numImages={this.state.urls.length}
-              imageCaching={this.state.imageCaching}
               imageInc={this.handleImageInc}
               scroll-left={this.state.scroller}
               scroller_text={this.state.story}
               playedSeconds={this.state.playedSeconds}
               title={this.state.title}
               story={this.state.story}
-              setupCount={this.state.setupCount}
+              sketchState={this.state.sketchState}
+              sketchController={this.sketchController}
               timings={{
                 popupStart: this.state.popupStart,
                 popupEnd: this.state.popupEnd,
