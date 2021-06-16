@@ -95,7 +95,7 @@ export default function sketch(P) {
         storyLength = Math.round(p.textWidth(story));
         const totalLength = Math.round(containerWidth + storyLength);
         const noFrames = fps * timings.imagesDuration;
-        const inc = 1.5 * (totalLength / noFrames).toFixed(2);
+        const inc = 1.75 * (totalLength / noFrames).toFixed(2);
         storyXinc = Math.ceil(inc);
         console.log(`inc:${inc} storyXinc:${storyXinc}`)
         /* reset scrolling-text to off-screen */
