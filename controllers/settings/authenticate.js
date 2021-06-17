@@ -49,6 +49,7 @@ module.exports = (req, res) => {
             httpOnly: global.gConfig.cookieoptionHttponly,
             sameSite: global.gConfig.cookieoptionSamesite,
             maxAge: time,
+            secure: true
           };
           debug(cookieOptions);
           res.cookie('token', token, cookieOptions).sendStatus(200);

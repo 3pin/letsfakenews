@@ -6,7 +6,7 @@ import FrameButton from '../../components/frameButton';
 const LandingWatch = () => (
   <div>
     <section>
-      <FrameBanner title="Watch fake-news" desc="Use these buttons to display stories as fake-news or visualise them as word-tracks... both will display in fullscreen." />
+      <FrameBanner title="Watch fake-news" desc="Choose how to visualise the news. Only compatible with Google's Chrome browser." />
       <hr />
       <FrameButton buttonLabel="News" linkto="/watch/news" desc="Watch the fake-news broadcast live from the news-room" />
       <hr />

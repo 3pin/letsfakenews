@@ -43,7 +43,7 @@ class visualiseNews extends React.Component {
     this.onProgress = this.onProgress.bind(this);
     this.onEnded = this.onEnded.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
-    this.exitFullscreen = this.exitFullscreen.bind(this);
+    this.handleFullscreenEvent = this.handleFullscreenEvent.bind(this);
     this.handleImageInc = this.handleImageInc.bind(this);
     this.sketchController = this.sketchController.bind(this);
     this.state = {
@@ -158,10 +158,12 @@ class visualiseNews extends React.Component {
     this.setState({
       componentWidth: this.parentFrame.current.offsetWidth,
     });
-    document.addEventListener('fullscreenchange', this.exitFullscreen, false);
-    document.addEventListener('webkitfullscreenchange', this.exitFullscreen, false);
-    document.addEventListener('mozfullscreenchange', this.exitFullscreen, false);
-    document.addEventListener('MSFullscreenChange', this.exitFullscreen, false);
+    document.addEventListener('fullscreenchange', this.handleFullscreenEvent, false);
+    /*
+    document.addEventListener('webkitfullscreenchange', this.handleFullscreenEvent, false);
+    document.addEventListener('mozfullscreenchange', this.handleFullscreenEvent, false);
+    document.addEventListener('MSFullscreenChange', this.handleFullscreenEvent, false);
+    */
     /* load settings  from db */
     axios.get('/settings/mode', {
       params: {
@@ -201,6 +203,7 @@ class visualiseNews extends React.Component {
     /* go full-screen with cross-browser support */
     document.activeElement.blur();
     const i = this.videoContainer;
+    console.log(i);
     if (i.requestFullscreen) {
       i.requestFullscreen();
     } else if (i.webkitRequestFullscreen) {
@@ -301,26 +304,31 @@ class visualiseNews extends React.Component {
     this.loadNewStory();
   }
 
-  exitFullscreen() {
-    //console.log(`Fullscreen Event`);
-    this.player.seekTo(0);
-    this.setState({
-      sketchState: 'STOP'
-    }, () => {
-      this.setState({
-        playing: false
-      })
-    })
+  handleFullscreenEvent() {
+    console.log(`Fullscreen Event`);
     if (!document.fullscreenElement) {
-      console.log('Fullscreen exiting');
+      console.log('Fullscreen Event: EXIT');
+      this.setState({
+        sketchState: 'STOP'
+      }, () => {
+        this.setState({
+          playing: false
+        }, () => {
+          this.player.seekTo(0);
+        })
+      })
+    } else {
+      console.log('Fullscreen Event: ENTER');
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('fullscreenchange', this.exitFullscreen, false);
-    document.removeEventListener('webkitfullscreenchange', this.exitFullscreen, false);
-    document.removeEventListener('mozfullscreenchange', this.exitFullscreen, false);
-    document.removeEventListener('MSFullscreenChange', this.exitFullscreen, false);
+    document.removeEventListener('fullscreenchange', this.handleFullscreenEvent, false);
+    /*
+    document.removeEventListener('webkitfullscreenchange', this.handleFullscreenEvent, false);
+    document.removeEventListener('mozfullscreenchange', this.handleFullscreenEvent, false);
+    document.removeEventListener('MSFullscreenChange', this.handleFullscreenEvent, false);
+    */
     console.log('unmounting');
   }
 

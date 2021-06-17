@@ -154,7 +154,7 @@ export default function sketch(P) {
     p.createCanvas(canvasWidth, canvasHeight);
     p.rectMode(p.CORNER);
     p.imageMode(p.CENTER);
-    p.smooth();
+    //p.smooth();
     font = p.loadFont(fontUrl);
     p.textFont(font);
   };
