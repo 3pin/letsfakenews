@@ -2,7 +2,6 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://www.letsfakenews.com/",
   "proxy": "http://localhost:5000",
   "scripts": {
     "lint": "eslint . --fix",
