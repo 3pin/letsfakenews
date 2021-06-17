@@ -329,7 +329,7 @@ class visualiseNews extends React.Component {
       <div ref={this.parentFrame}>
         <FrameButton
           buttonLabel="Fullscreen"
-          desc="Use this button to enter fullscreen & the ESC key to later exit"
+          desc="Click the below button to start playback in fullscreen"
           onClick={this.goFullscreen.bind(this.videoContainer)}
         />
         <hr />
