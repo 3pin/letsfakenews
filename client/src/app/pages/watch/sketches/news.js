@@ -57,7 +57,6 @@ export default function sketch(P) {
   p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
     // console.log("PROPS received...");
     // console.log(`props.sketchState:${props.sketchState} props.image:${props.image}`);
-    console.log(`props.corsAnywhere:${props.corsAnywhere}`);
     if (props.sketchState === 'META' && props.componentWidth && props.timings && props.corsAnywhere) {
       console.log(`CODE BLOCK: META`);
       runDraw = 'STOP';
@@ -71,13 +70,7 @@ export default function sketch(P) {
       if (props.image !== previousImg) {
         // console.log(`This is a new image:${imgUrl}`);
         previousImg = props.image;
-        if (corsUrl !== 'null') {
-          console.log(`corsUrl not null`)
-          imgUrl = corsUrl + props.image;
-        } else {
-          console.log(`corsUrl null`)
-          imgUrl = props.image;
-        }
+        imgUrl = corsUrl + props.image;
         if (runDraw === 'STOP') {
           console.log('loading image to cache...');
           /* loadImages into cache before needed */
@@ -118,14 +111,8 @@ export default function sketch(P) {
       if (props.image !== previousImg) {
         console.log(`This is a new image:${imgUrl}`);
         previousImg = props.image;
-        if (corsUrl !== 'null') {
-          console.log(`corsUrl not null`)
-          imgUrl = corsUrl + props.image;
-        } else {
-          console.log(`corsUrl null`)
-          imgUrl = props.image;
-        }
-        console.log(`imgUrl:${imgUrl}`);
+        imgUrl = corsUrl + props.image;
+        // console.log(`imgUrl:${imgUrl}`);
         img = p.loadImage(imgUrl, (image) => {
           ({
             imgWidth,
