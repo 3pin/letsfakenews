@@ -110,12 +110,13 @@ class visualiseNews extends React.Component {
         })
       });
     } else if (val === 'STOP') {
-      this.player.seekTo(0);
       this.setState({
         sketchState: 'STOP',
       }, () => {
         this.setState({
           playing: false,
+        }, () => {
+          this.player.seekTo(0);
         })
       });
     }
@@ -300,8 +301,16 @@ class visualiseNews extends React.Component {
 
   onEnded() {
     console.log('Media Restarting');
-    this.player.seekTo(0);
-    this.loadNewStory();
+    this.setState({
+      sketchState: 'STOP',
+    }, () => {
+      this.setState({
+        playing: false,
+      }, () => {
+        this.player.seekTo(0);
+        this.loadNewStory();
+      })
+    });
   }
 
   handleFullscreenEvent() {
