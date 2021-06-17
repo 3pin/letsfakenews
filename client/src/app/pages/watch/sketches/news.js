@@ -71,7 +71,11 @@ export default function sketch(P) {
       if (props.image !== previousImg) {
         // console.log(`This is a new image:${imgUrl}`);
         previousImg = props.image;
-        imgUrl = corsUrl + props.image;
+        if (corsUrl != 'null') {
+          imgUrl = corsUrl + props.image;
+        } else {
+          imgUrl = props.image;
+        }
         if (runDraw === 'STOP') {
           console.log('loading image to cache...');
           /* loadImages into cache before needed */
@@ -112,7 +116,11 @@ export default function sketch(P) {
       if (props.image !== previousImg) {
         console.log(`This is a new image:${imgUrl}`);
         previousImg = props.image;
-        imgUrl = corsUrl + props.image;
+        if (corsUrl != 'null') {
+          imgUrl = corsUrl + props.image;
+        } else {
+          imgUrl = props.image;
+        }
         console.log(`imgUrl:${imgUrl}`);
         img = p.loadImage(imgUrl, (image) => {
           ({
