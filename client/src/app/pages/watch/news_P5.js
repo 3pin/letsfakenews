@@ -43,7 +43,7 @@ class visualiseNews extends React.Component {
     this.onProgress = this.onProgress.bind(this);
     this.onEnded = this.onEnded.bind(this);
     this.goFullscreen = this.goFullscreen.bind(this);
-    this.handleFullscreenEvent = this.handleFullscreenEvent.bind(this);
+    this.exitFullscreen = this.exitFullscreen.bind(this);
     this.handleImageInc = this.handleImageInc.bind(this);
     this.sketchController = this.sketchController.bind(this);
     this.state = {
@@ -110,7 +110,6 @@ class visualiseNews extends React.Component {
         })
       });
     } else if (val === 'STOP') {
-      /*
       this.player.seekTo(0);
       this.setState({
         sketchState: 'STOP',
@@ -119,7 +118,6 @@ class visualiseNews extends React.Component {
           playing: false,
         })
       });
-      */
     }
   }
 
@@ -160,10 +158,10 @@ class visualiseNews extends React.Component {
     this.setState({
       componentWidth: this.parentFrame.current.offsetWidth,
     });
-    document.addEventListener('fullscreenchange', this.handleFullscreenEvent, false);
-    document.addEventListener('webkitfullscreenchange', this.handleFullscreenEvent, false);
-    document.addEventListener('mozfullscreenchange', this.handleFullscreenEvent, false);
-    document.addEventListener('MSFullscreenChange', this.handleFullscreenEvent, false);
+    document.addEventListener('fullscreenchange', this.exitFullscreen, false);
+    document.addEventListener('webkitfullscreenchange', this.exitFullscreen, false);
+    document.addEventListener('mozfullscreenchange', this.exitFullscreen, false);
+    document.addEventListener('MSFullscreenChange', this.exitFullscreen, false);
     /* load settings  from db */
     axios.get('/settings/mode', {
       params: {
@@ -199,7 +197,7 @@ class visualiseNews extends React.Component {
   }
 
   goFullscreen() {
-    console.log(`Entering goFullscreen`);
+    console.log(`Entering Fullscreen`);
     /* go full-screen with cross-browser support */
     document.activeElement.blur();
     const i = this.videoContainer;
@@ -303,29 +301,26 @@ class visualiseNews extends React.Component {
     this.loadNewStory();
   }
 
-  handleFullscreenEvent() {
-    console.log(`Fullscreen Event`);
-    if (!document.fullscreenElement) {
-      console.log('Exited Fullscreen');
+  exitFullscreen() {
+    //console.log(`Fullscreen Event`);
+    this.player.seekTo(0);
+    this.setState({
+      sketchState: 'STOP'
+    }, () => {
       this.setState({
-        sketchState: 'STOP'
-      }, () => {
-        this.setState({
-          playing: false
-        }, () => {
-          this.player.seekTo(0);
-        })
+        playing: false
       })
-    } else {
-      console.log(`Entered Fullscreen`);
+    })
+    if (!document.fullscreenElement) {
+      console.log('Fullscreen exiting');
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('fullscreenchange', this.handleFullscreenEvent, false);
-    document.removeEventListener('webkitfullscreenchange', this.handleFullscreenEvent, false);
-    document.removeEventListener('mozfullscreenchange', this.handleFullscreenEvent, false);
-    document.removeEventListener('MSFullscreenChange', this.handleFullscreenEvent, false);
+    document.removeEventListener('fullscreenchange', this.exitFullscreen, false);
+    document.removeEventListener('webkitfullscreenchange', this.exitFullscreen, false);
+    document.removeEventListener('mozfullscreenchange', this.exitFullscreen, false);
+    document.removeEventListener('MSFullscreenChange', this.exitFullscreen, false);
     console.log('unmounting');
   }
 
