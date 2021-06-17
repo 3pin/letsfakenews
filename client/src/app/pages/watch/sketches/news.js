@@ -57,6 +57,7 @@ export default function sketch(P) {
   p.myCustomRedrawAccordingToNewPropsHandler = (props) => {
     // console.log("PROPS received...");
     // console.log(`props.sketchState:${props.sketchState} props.image:${props.image}`);
+    console.log(`props.corsAnywhere:${props.corsAnywhere}`);
     if (props.sketchState === 'META' && props.componentWidth && props.timings && props.corsAnywhere) {
       console.log(`CODE BLOCK: META`);
       runDraw = 'STOP';
