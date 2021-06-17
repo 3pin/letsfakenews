@@ -71,9 +71,11 @@ export default function sketch(P) {
       if (props.image !== previousImg) {
         // console.log(`This is a new image:${imgUrl}`);
         previousImg = props.image;
-        if (corsUrl != 'null') {
+        if (corsUrl !== 'null') {
+          console.log(`corsUrl not null`)
           imgUrl = corsUrl + props.image;
         } else {
+          console.log(`corsUrl null`)
           imgUrl = props.image;
         }
         if (runDraw === 'STOP') {
@@ -116,9 +118,11 @@ export default function sketch(P) {
       if (props.image !== previousImg) {
         console.log(`This is a new image:${imgUrl}`);
         previousImg = props.image;
-        if (corsUrl != 'null') {
+        if (corsUrl !== 'null') {
+          console.log(`corsUrl not null`)
           imgUrl = corsUrl + props.image;
         } else {
+          console.log(`corsUrl null`)
           imgUrl = props.image;
         }
         console.log(`imgUrl:${imgUrl}`);
